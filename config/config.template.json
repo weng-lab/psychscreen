@@ -1,0 +1,13 @@
+{
+    "graphql": {
+        "service": "SERVICEURL"
+    },
+    "restapis": {        
+        "streampeaksService": "STREAMPEAKSHOST",
+        "streammemeService": "STREAMMEMEOCCUHOST"
+    },
+    "assemblies": {
+        "human": "GRCh38",
+        "mouse": "mm10"
+    }
+}

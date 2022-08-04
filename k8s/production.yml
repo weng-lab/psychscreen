@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: psychscreen-app-deployment
+  labels:
+    app: psychscreen-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: psychscreen-app
+  template:
+    metadata:
+      labels:
+        app: psychscreen-app
+    spec:
+      containers:
+      - name: psychscreen-app
+        image: gcr.io/devenv-215523/psychscreen-app
+        env:
+        - name: ENVIRONMENT
+          value: production
+        - name: SERVICEURL
+          value: https://ga.staging.wenglab.org/graphql
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: psychscreen-app-service
+  labels:
+    app: psychscreen-app
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: psychscreen-app
+---
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: psychscreen-cert
+spec:
+  domains:
+    - psychscreen.wenglab.org
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: psychscreen-app-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "psychscreen-external-ip"
+    kubernetes.io/ingress.allow-http: "true"
+    networking.gke.io/managed-certificates: "psychscreen-cert"
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: psychscreen-app-service
+              port:
+                number: 80
