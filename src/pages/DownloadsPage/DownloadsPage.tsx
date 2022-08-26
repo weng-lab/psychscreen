@@ -25,12 +25,12 @@ const DownloadsPage: React.FC = () => {
                 </Typography>
                 <div style={{ height: "2em" }} />
                 <a href="https://storage.googleapis.com/gcp.wenglab.org/adult-bCREs.bed" download style={{ textDecoration: "none" }}>
-                    <Button primary variant="contained">
+                    <Button bvariant="filled" btheme="light">
                         <DownloadIcon /> Adult brain cCREs
                     </Button>
                 </a>&nbsp;
                 <a href="https://storage.googleapis.com/gcp.wenglab.org/fetal-bCREs.bed" download style={{ textDecoration: "none" }}>
-                    <Button primary variant="contained">
+                    <Button bvariant="filled" btheme="light">
                         <DownloadIcon /> Fetal brain cCREs
                     </Button>
                 </a>
