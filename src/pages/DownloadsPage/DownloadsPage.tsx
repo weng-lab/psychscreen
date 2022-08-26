@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/system';
 import DownloadIcon from '@mui/icons-material/Download';
 
+import { PORTALS } from '../../App';
+
 const DownloadsPage: React.FC = () => {
     const navigate = useNavigate();
     return (
@@ -15,6 +17,7 @@ const DownloadsPage: React.FC = () => {
             <AppBar
                 onDownloadsClicked={() => navigate("/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onPortalClicked={index => navigate(PORTALS[index][0])}
             />
             <Container style={{ marginTop: "5em", marginLeft: "6em", width: "40%" }}>
                 <Typography
