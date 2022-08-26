@@ -4,14 +4,20 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/system';
-import { Alert, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import BoltIcon from '@mui/icons-material/Bolt';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 
-import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
 
-import BRAIN from '../../assets/brain.png';
 import { PORTALS } from '../../App';
+import BRAIN from '../../assets/brain.png';
+
+const PORTAL_SELECT_OPTIONS = [
+    { value: "disease/trait", name: "Disease/Trait", helperText: "e.g. schizophrenia, years of education" },
+    { value: "gene/bcre", name: "Gene/bCRE", helperText: "e.g. APOE, SOX4" },
+    { value: "snp/qtl", name: "SNP/QTL", helperText: "e.g. rs2836883, rs7690700" }
+];
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -43,25 +49,14 @@ const HomePage: React.FC = () => {
                         <Typography
                             type="body"
                             size="large"
-                            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px", marginBottom: "14px" }}
+                            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px", marginBottom: "56px" }}
                         >
                             <AccessibilityNewIcon style={{ marginRight: "9px" }} /> Accessible to all
                         </Typography>
-                        <Alert severity='info'>
-                            <Typography
-                                type="title"
-                                size="large"
-                            >
-                                This page is in development.
-                            </Typography>
-                            <Typography
-                                type="body"
-                                size="medium"
-                            >
-                                Use the "downloads" link at the top right to download some analysis results, including a set of
-                                brain-active cis-regulatory elements.
-                            </Typography>
-                        </Alert>
+                        <SearchBoxWithSelect
+                            selectOptions={PORTAL_SELECT_OPTIONS}
+                            style={{ marginBottom: "14px" }}
+                        />
                     </Container>
                 </Grid>
                 <Grid item sm={6}>
