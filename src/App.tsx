@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import '@zscreen/psychscreen-ui-components/src/App.css';
 
 import './App.css';
-import { HomePage } from './pages/HomePage';
-import { DownloadsPage } from './pages/DownloadsPage';
-import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './pages/Portals';
+import { HomePage as WebHomePage } from './web/HomePage';
+import { HomePage as TabletHomePage } from './tablet/HomePage';
+import { DownloadsPage } from './web/DownloadsPage';
+import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
+import { useViewportSize } from './hooks/useViewportSize';
 
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
@@ -15,6 +17,9 @@ export const PORTALS: [ string, React.FC ][] = [
 ];
 
 const App: React.FC = () => {
+
+    const { width, height } = useViewportSize();
+    const HomePage = useMemo( () => width >= 1280 ? WebHomePage : TabletHomePage, [ width ] );
 
     return (
         <Router>

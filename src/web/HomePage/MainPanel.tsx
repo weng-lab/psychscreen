@@ -4,13 +4,8 @@ import BoltIcon from '@mui/icons-material/Bolt';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import { Typography, SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
 
+import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';
 import BRAIN from '../../assets/brain.png';
-
-const PORTAL_SELECT_OPTIONS = [
-    { value: "disease/trait", name: "Disease/Trait", helperText: "e.g. schizophrenia, years of education" },
-    { value: "gene/bcre", name: "Gene/bCRE", helperText: "e.g. APOE, SOX4" },
-    { value: "snp/qtl", name: "SNP/QTL", helperText: "e.g. rs2836883, rs7690700" }
-];
 
 const MainPanel: React.FC<GridProps> = props => (
     <Grid {...props} container>
