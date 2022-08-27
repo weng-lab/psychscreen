@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import '@zscreen/psychscreen-ui-components/src/App.css';
 
 import './App.css';
@@ -19,9 +19,10 @@ const App: React.FC = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/downloads" element={<DownloadsPage />} />
-                { PORTALS.map( portal => <Route path={portal[0] as string} element={React.createElement(portal[1], {})} /> )}
+                <Route path="/" element={<Navigate replace to="/psychscreen" />} />
+                <Route path="/psychscreen" element={<HomePage />} />
+                <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
+                { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
             </Routes>
         </Router>
     );

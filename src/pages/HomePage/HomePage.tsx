@@ -16,9 +16,9 @@ const HomePage: React.FC = () => {
     return (
         <>
             <AppBar
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
-                onPortalClicked={index => navigate(PORTALS[index][0])}
+                onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />
             <MainPanel />
