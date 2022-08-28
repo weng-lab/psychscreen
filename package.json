@@ -1,6 +1,6 @@
 {
   "name": "psychscreen",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "homepage": "https://weng-lab.github.io/psychscreen",
   "dependencies": {

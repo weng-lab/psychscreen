@@ -11,10 +11,10 @@ import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl from "./AssociatedSnpQtl";
 
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
-    const {disease} = useParams()
+    const {disease} = useParams();
     const navigate = useNavigate();
 
-    const [page, setPage] = useState<number>(0)
+    const [page, setPage] = useState<number>(0);
     return (
         <>
             <AppBar
@@ -54,7 +54,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             
                     </Container>
                 </Grid>
-                {page===0 && 
+                { page === 0 && (
                     <Grid item sm={12}>
                         <Container style={{ marginTop: "50px", marginLeft: "150px" }}>
                             <Typography
@@ -102,23 +102,20 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             </Typography>
                         </Container>
                     </Grid>
-                }
-                {page===1  && 
+                )}
+                { page === 1 && (
                     <Grid item sm={12}>
                         <GeneAssociations/>
                     </Grid>
 
-                }
-                {page===2 && 
+                )}
+                { page === 2 && (
                     <Grid item sm={12}>
                         <AssociatedSnpQtl/>
                     </Grid>
-
-                }
+                )}
             </Grid>
         </>
     );
-
 }
-
-export default DiseaseTraitDetails
+export default DiseaseTraitDetails;

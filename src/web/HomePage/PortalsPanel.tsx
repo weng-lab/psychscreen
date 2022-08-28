@@ -27,7 +27,7 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
         </Grid>
         <Grid item sm={6}>
             <Container style={{ marginLeft: "160px", marginTop: "111px", width: "508px", paddingLeft: "50px" }}>
-                <img src={DiseaseTrait} style={{ width: "100%" }} />
+                <img alt="Disease/Trait Portal" src={DiseaseTrait} style={{ width: "100%" }} />
             </Container>
         </Grid>
         <Grid item sm={6}>
@@ -112,7 +112,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => (
         </Grid>
         <Grid item sm={4}>
             <Container style={{ width: "508px", paddingLeft: "50px" }}>
-                <img src={GeneBCRE} style={{ width: "100%" }} />
+                <img alt="Gene bCRE portal" src={GeneBCRE} style={{ width: "100%" }} />
             </Container>
         </Grid>
     </Grid>
@@ -122,7 +122,7 @@ const SNPQTLPortalPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
         <Grid item sm={6}>
             <Container style={{ marginLeft: "160px", marginTop: "111px", width: "508px", paddingLeft: "100px" }}>
-                <img src={SNPQTL} style={{ width: "120%" }} />
+                <img alt="SNP/QTL Portal" src={SNPQTL} style={{ width: "120%" }} />
             </Container>
         </Grid>
         <Grid item sm={6}>
@@ -208,7 +208,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => (
         </Grid>
         <Grid item sm={4}>
             <Container style={{ width: "508px", paddingLeft: "50px" }}>
-                <img src={SingleCell} style={{ width: "100%" }} />
+                <img alt="single cell portal" src={SingleCell} style={{ width: "100%" }} />
             </Container>
         </Grid>
     </Grid>

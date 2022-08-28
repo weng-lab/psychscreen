@@ -18,7 +18,7 @@ export const PORTALS: [ string, React.FC ][] = [
 
 const App: React.FC = () => {
 
-    const { width, height } = useViewportSize();
+    const { width } = useViewportSize();
     const HomePage = useMemo( () => width >= 1280 ? WebHomePage : TabletHomePage, [ width ] );
 
     return (
