@@ -2,7 +2,8 @@ import React from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import BoltIcon from '@mui/icons-material/Bolt';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import { Typography, SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@zscreen/psychscreen-ui-components';
+import { SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
 
 import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';
 import BRAIN from '../../assets/brain.png';

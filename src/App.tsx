@@ -8,7 +8,7 @@ import { HomePage as TabletHomePage } from './tablet/HomePage';
 import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
 import { useViewportSize } from './hooks/useViewportSize';
-
+import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTrailDetails';
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
     [ "/gene", GenePortal ],
@@ -27,6 +27,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Navigate replace to="/psychscreen" />} />
                 <Route path="/psychscreen" element={<HomePage />} />
                 <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
+                <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
                 { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
             </Routes>
         </Router>

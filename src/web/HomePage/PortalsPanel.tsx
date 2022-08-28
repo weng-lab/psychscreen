@@ -7,8 +7,12 @@ import DiseaseTrait from '../../assets/disease-trait.png';
 import GeneBCRE from '../../assets/gene-bcre.png';
 import SNPQTL from '../../assets/snp-qtl.png';
 import SingleCell from '../../assets/single-cell.png';
+import { useNavigate } from 'react-router-dom';
 
-const DiseaseTraitPortalPanel: React.FC<GridProps> = props => (
+const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
+    const navigate = useNavigate();  
+    
+    return(
     <Grid container {...props}>
         <Grid item sm={12}>
             <Container style={{ marginLeft: "160px", width: "741px" }}>
@@ -57,11 +61,11 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => (
                 >
                     <CheckIcon style={{ marginRight: "9px" }} /> 1,103 bCRE/trait associations
                 </Typography>
-                <Button bvariant="filled" btheme="light">Explore Diseases/Traits</Button>
+                <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/traits")}} >Explore Diseases/Traits</Button>
             </Container>
         </Grid>
     </Grid>
-);
+)};
 
 const GeneBCREPortalPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
