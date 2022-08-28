@@ -41,7 +41,7 @@ const MainPanel: React.FC<GridProps> = props => (
         </Grid>
         <Grid item sm={6}>
             <Container style={{ marginTop: "63px" }}>
-                <img src={BRAIN} style={{ width: "75%" }} />
+                <img alt="PsychSCREEN" src={BRAIN} style={{ width: "75%" }} />
             </Container>
         </Grid>
     </Grid>
