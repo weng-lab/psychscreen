@@ -4,16 +4,18 @@ import Box from '@mui/material/Box';
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import React, { useState } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, GridProps } from '@mui/material';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl from "./AssociatedSnpQtl";
 
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
-    const {disease} = useParams();
+    const { disease } = useParams();
     const navigate = useNavigate();  
     const [page, setPage] = useState<number>(0);
+    const { state }: any = useLocation();
+    const { searchvalue } = state ? state : { searchvalue: ''} 
 
     return (
         <>
@@ -25,7 +27,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 <Grid item sm={6}>
                     <Container style={{marginTop: "50px", marginLeft: "100px", width: "841px" }}>
                         <ArrowBack onClick={()=>{                            
-                            navigate("/psychscreen/traits")
+                            navigate("/psychscreen/traits", { state: { searchvalue: searchvalue } } )
                         }} style={{ width: "70px", height: "70px", color: "#E0E0E0" }}/>
                     </Container>
                 </Grid>  
@@ -48,9 +50,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean cursus turpis a orci volutpat, id congue leo laoreet. Nulla facilisi. Duis sit amet lorem faucibus, venenatis dui a, ultricies mi. In hac habitasse platea dictumst. Vestibulum ac laoreet tortor. 
                         </Typography>
                         <br/>
-                        <Button bvariant="filled" btheme="light" onClick={()=>{ setPage(0)}} >Overview</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant="filled" btheme="light" onClick={()=>{ setPage(1)}} >Gene Associations</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant="filled" btheme="light" onClick={()=>{ setPage(2)}} >{'Associated SNP & xQTL'}</Button>
+                        <Button bvariant={page===0 ? "filled" : "outlined"} btheme="light" onClick={()=>{ setPage(0)}} >Overview</Button>&nbsp;&nbsp;&nbsp;
+                        <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}} >Gene Associations</Button>&nbsp;&nbsp;&nbsp;
+                        <Button bvariant={page===2 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(2)}} >{'Associated SNP & xQTL'}</Button>
                             
                     </Container>
                 </Grid>

@@ -92,10 +92,10 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                     <Slide direction="up" in timeout={1000}>
                         <Container style={{ marginLeft: "12px", marginTop: "170px" }}>            
                             <HorizontalCard width={600}
-                                onCardClick={(val?: string) => {
-                                    navigate(`/psychscreen/traits/${val}`)
+                                onCardClick={(v?: string) => {
+                                    navigate(`/psychscreen/traits/${v}`, { state: { searchvalue: val } })
                                 }}
-                                cardContentText={diseaseCards || DISEASE_CARDS} 
+                                cardContentText={diseaseCards} 
                             />            
                         </Container>
                     </Slide>              
