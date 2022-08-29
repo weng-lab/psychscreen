@@ -4,7 +4,7 @@ import '@zscreen/psychscreen-ui-components/src/App.css';
 
 import './App.css';
 import { HomePage as WebHomePage } from './web/HomePage';
-import { HomePage as TabletHomePage } from './tablet/HomePage';
+import { HomePage as TabletHomePage } from './mobile-portrait/HomePage';
 import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
 import { useViewportSize } from './hooks/useViewportSize';
@@ -18,8 +18,8 @@ export const PORTALS: [ string, React.FC ][] = [
 
 const App: React.FC = () => {
 
-    const { width } = useViewportSize();
-    const HomePage = useMemo( () => width >= 1280 ? WebHomePage : TabletHomePage, [ width ] );
+    const { width, height } = useViewportSize();
+    const HomePage = useMemo( () => width < 1280 && height > width ? TabletHomePage : WebHomePage, [ width ] );
 
     return (
         <Router>
