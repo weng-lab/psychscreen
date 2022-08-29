@@ -1,5 +1,5 @@
 
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import React, { useState } from 'react';
@@ -12,9 +12,9 @@ import AssociatedSnpQtl from "./AssociatedSnpQtl";
 
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const {disease} = useParams();
-    const navigate = useNavigate();
-
+    const navigate = useNavigate();  
     const [page, setPage] = useState<number>(0);
+
     return (
         <>
             <AppBar

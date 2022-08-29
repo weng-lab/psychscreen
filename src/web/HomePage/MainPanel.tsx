@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import BoltIcon from '@mui/icons-material/Bolt';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import { Typography } from '@zscreen/psychscreen-ui-components';
 import { SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
-
+import { useNavigate } from 'react-router-dom';
 import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';
 import BRAIN from '../../assets/brain.png';
 
-const MainPanel: React.FC<GridProps> = props => (
+const MainPanel: React.FC<GridProps> = props => {
+    const [searchVal, setSearchVal] = useState<string>('')     
+    const navigate = useNavigate(); 
+    const [selectedPortal, setSelectedPortal] =  useState<string>('Disease/Trait');
+    
+    return (
     <Grid {...props} container>
         <Grid item sm={6}>
             <Container style={{ marginTop: "147px", marginLeft: "100px", width: "741px" }}>
@@ -34,8 +39,26 @@ const MainPanel: React.FC<GridProps> = props => (
                     <AccessibilityNewIcon style={{ marginRight: "9px" }} /> Accessible to all
                 </Typography>
                 <SearchBoxWithSelect
+                    onSelectChange={(val: {name: string})=>{                    
+                        setSelectedPortal(val.name)
+                    }}
                     selectOptions={PORTAL_SELECT_OPTIONS}
                     style={{ marginBottom: "14px" }}
+                    onChange={e => { 
+                        if(e.target.value===''){
+                            
+                        }
+                        setSearchVal(e.target.value)                            
+                    }}
+                    onClick={()=>{
+                        if(searchVal !== ''){   
+                            if(selectedPortal==='Disease/Trait')
+                            {
+                                navigate("/psychscreen/traits", { state: { searchvalue: searchVal } })
+                            }
+                            
+                         }
+                    }}
                 />
             </Container>
         </Grid>
@@ -45,5 +68,5 @@ const MainPanel: React.FC<GridProps> = props => (
             </Container>
         </Grid>
     </Grid>
-);
+)};
 export default MainPanel;

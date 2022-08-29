@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, GridProps, Slide } from '@mui/material';
 import DiseaseTrait from '../../../assets/disease-trait.png';
 import { Typography } from '@zscreen/psychscreen-ui-components';
@@ -12,10 +12,18 @@ import CheckIcon from '@mui/icons-material/Check';
 import { SearchBox } from '@zscreen/psychscreen-ui-components';
 import HorizontalCard  from './HorizontalCard';
 
-const DiseaseTraitPortal: React.FC<GridProps> = (props) => {
+const DISEASE_CARDS = [{cardLabel: "Schizophrenia", val: "Schizophrenia", cardDesc: "Description"},
+{cardLabel: "Schizoaffective disorder", val: "Schizoaffective disorder", cardDesc: "Description"},
+{cardLabel: "Schizoid Personality disorder", val: "Schizoid Personality disorder", cardDesc: "Description"},
+{cardLabel: "Schizophreniform disorder", val: "Schizophreniform disorder", cardDesc: "Description"},
+{cardLabel: "Schizoid Personality disorder", val: "Schizoid Personality disorder", cardDesc: "Description"}]
+
+const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
+    const { state }: any = useLocation();
+    const { searchvalue } = state ? state : { searchvalue: ''} 
     const navigate = useNavigate(); 
-    const [searchVal, setSearchVal] = useState<string>('')     
-    const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(undefined)
+    const [ val, setVal ] = useState<string>(searchvalue)         
+    const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(searchvalue!=='' ? DISEASE_CARDS:  undefined)
     
     return (
         <>
@@ -57,19 +65,16 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props) => {
                         <CheckIcon style={{ marginRight: "9px" }} /> 1,103 bCRE/trait associations
                     </Typography>
                     <SearchBox
+                        value={val}
                         onChange={e => { 
                             if(e.target.value===''){
                                 setdiseaseCards(undefined)
                             }
-                            setSearchVal(e.target.value)                            
+                            setVal(e.target.value)                            
                         }}
                         onClick={() => {                             
-                            if(searchVal !== ''){                                    
-                                setdiseaseCards([{cardLabel: "Schizophrenia", val: "Schizophrenia", cardDesc: "Description"},
-                                {cardLabel: "Schizoaffective disorder", val: "Schizoaffective disorder", cardDesc: "Description"},
-                                {cardLabel: "Schizoid Personality disorder", val: "Schizoid Personality disorder", cardDesc: "Description"},
-                                {cardLabel: "Schizophreniform disorder", val: "Schizophreniform disorder", cardDesc: "Description"},
-                                {cardLabel: "Schizoid Personality disorder", val: "Schizoid Personality disorder", cardDesc: "Description"}])
+                            if(val !== ''){                                    
+                                setdiseaseCards(DISEASE_CARDS)
                             }
                         }}                
                         helperText={"e.g. schizophrenia, years of education"}                            
@@ -78,20 +83,22 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props) => {
             </Grid>
             <Grid item xs={6}>
                 {!diseaseCards ? 
-                (<Container style={{ marginTop: "130px" }}>
-                    <img alt="disease/trait portal" src={DiseaseTrait} style={{ width: "60%" ,height: "100%" }} />
-                </Container>)
-                : (             
+                ( 
+                    <Container style={{ marginTop: "130px" }}>
+                        <img alt="disease/trait portal" src={DiseaseTrait} style={{ width: "60%" ,height: "100%" }} />
+                    </Container>
+                )
+                : ( 
                     <Slide direction="up" in timeout={1000}>
                         <Container style={{ marginLeft: "12px", marginTop: "170px" }}>            
                             <HorizontalCard width={600}
                                 onCardClick={(val?: string) => {
                                     navigate(`/psychscreen/traits/${val}`)
                                 }}
-                                cardContentText={diseaseCards} 
+                                cardContentText={diseaseCards || DISEASE_CARDS} 
                             />            
                         </Container>
-                    </Slide>
+                    </Slide>              
                 )}
             </Grid>
         </Grid>
