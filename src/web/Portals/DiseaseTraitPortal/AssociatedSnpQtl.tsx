@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
-import { Typography, Button } from '@zscreen/psychscreen-ui-components';
-import DataTable from "./DataTable";
+import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 
 const SNP_QTL_ASSOCIATION_DATA = Array(10).fill({
     Chromosome: 'chr12',
@@ -27,7 +26,7 @@ const AssociatedSnpQtl: React.FC<GridProps> = props => {
                     <Button style={{ marginTop: "30px" }} bvariant={table===2 ? "filled" : "outlined"} btheme="light"  onClick={()=>{ setTable(2)}} >Table 2</Button>&nbsp;&nbsp;&nbsp;
                     <br/>
                     <br/>
-                    <DataTable style={{ width: "max-content" }}  tabledata={SNP_QTL_ASSOCIATION_DATA}/>
+                    <CustomizedTable style={{ width: "max-content" }}  tabledata={SNP_QTL_ASSOCIATION_DATA}/>
                 </Container>
             </Grid>
         </Grid>

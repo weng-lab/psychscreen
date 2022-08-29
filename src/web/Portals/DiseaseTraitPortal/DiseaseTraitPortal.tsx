@@ -9,8 +9,8 @@ import { Grid, Container, GridProps, Slide } from '@mui/material';
 import DiseaseTrait from '../../../assets/disease-trait.png';
 import { Typography } from '@zscreen/psychscreen-ui-components';
 import CheckIcon from '@mui/icons-material/Check';
-import { SearchBox } from '@zscreen/psychscreen-ui-components';
-import HorizontalCard  from './HorizontalCard';
+import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
+//import HorizontalCard  from './HorizontalCard';
 
 const DISEASE_CARDS = [{cardLabel: "Schizophrenia", val: "Schizophrenia", cardDesc: "Description"},
 {cardLabel: "Schizoaffective disorder", val: "Schizoaffective disorder", cardDesc: "Description"},

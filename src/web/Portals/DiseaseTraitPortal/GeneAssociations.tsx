@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Container } from '@mui/material';
-import { Typography, Button } from '@zscreen/psychscreen-ui-components';
-import DataTable from "./DataTable";
+import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
 
 const GENE_ASSOCIATION_DATA = Array(10).fill({
@@ -29,8 +28,7 @@ const GeneAssociations: React.FC<GridProps> = props => {
                     <Button bvariant={table===2 ? "filled" : "outlined"} btheme="light"  onClick={()=>{ setTable(2)}} >Table 2</Button>&nbsp;&nbsp;&nbsp;
                     <br/>
                     <br/>
-                        <DataTable style={{ width: "100%" }} tabledata={GENE_ASSOCIATION_DATA}/>                
-                    
+                        <CustomizedTable style={{ width: "100%" }} tabledata={GENE_ASSOCIATION_DATA}/>     
                 </Container>
             </Grid>
         </Grid>
