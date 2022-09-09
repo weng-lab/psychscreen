@@ -9,6 +9,8 @@ import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
 import { useViewportSize } from './hooks/useViewportSize';
 import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTrailDetails';
+import { useTheme, useMediaQuery } from '@material-ui/core';
+
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
     [ "/gene", GenePortal ],
@@ -19,7 +21,11 @@ export const PORTALS: [ string, React.FC ][] = [
 const App: React.FC = () => {
 
     const { width, height } = useViewportSize();
-    const HomePage = useMemo( () => width < 1280 && height > width ? TabletHomePage : WebHomePage, [ width ] );
+    const theme = useTheme();
+    //useMediaQuery(theme.breakpoints.down('sm'))   
+   // const HomePage = useMemo( () => width < 1280 && height > width ? TabletHomePage : WebHomePage, [ width ] );
+
+    const HomePage =  useMediaQuery(theme.breakpoints.down('sm'))    ? TabletHomePage : WebHomePage;
 
     return (
         <Router>

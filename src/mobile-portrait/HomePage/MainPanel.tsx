@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import BoltIcon from '@mui/icons-material/Bolt';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import { Typography } from '@zscreen/psychscreen-ui-components';
 import { SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
+import { useNavigate } from 'react-router-dom';
 
 import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';
 import { useViewportSize } from '../../hooks/useViewportSize';
@@ -11,6 +12,9 @@ import BRAIN from '../../assets/brain.png';
 
 const MainPanel: React.FC<GridProps> = props => {
     const { width } = useViewportSize();
+    const [searchVal, setSearchVal] = useState<string>('')     
+    const navigate = useNavigate(); 
+    const [selectedPortal, setSelectedPortal] =  useState<string>('Disease/Trait');
     return (
         <Grid {...props} container>
             <Grid item xs={6}>
@@ -46,6 +50,24 @@ const MainPanel: React.FC<GridProps> = props => {
                         containerWidth={width}
                         selectOptions={PORTAL_SELECT_OPTIONS}
                         style={{ marginBottom: "14px" }}
+                        onSelectChange={(val: {name: string})=>{                    
+                            setSelectedPortal(val.name)
+                        }}
+                        onChange={e => { 
+                            if(e.target.value===''){
+                                
+                            }
+                            setSearchVal(e.target.value)                            
+                        }}
+                        onClick={()=>{
+                            if(searchVal !== ''){   
+                                if(selectedPortal==='Disease/Trait')
+                                {
+                                    navigate("/psychscreen/traits", { state: { searchvalue: searchVal } })
+                                }
+                                
+                             }
+                        }}
                     />
                 </Container>
             </Grid>

@@ -14,7 +14,8 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
     
     return(
     <Grid container {...props}>
-        <Grid item sm={12}>
+        <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
+        <Grid item sm={0}  md={0} lg={11} xl={10}>
             <Container style={{ marginLeft: "160px", width: "741px" }}>
                 <Typography
                     type="body"
@@ -25,12 +26,13 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
                 </Typography>
             </Container>
         </Grid>
-        <Grid item sm={6}>
-            <Container style={{ marginLeft: "160px", marginTop: "111px", width: "508px", paddingLeft: "50px" }}>
+        <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
+        <Grid item sm={6} md={8} lg={6} xl={5}>
+            <Container style={{ marginTop: "111px", width: "508px" }}>
                 <img alt="Disease/Trait Portal" src={DiseaseTrait} style={{ width: "100%" }} />
             </Container>
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} md={4} lg={4} xl={3}>
             <Container style={{ marginTop: "140px" }}>
                 <Typography
                     type="body"
@@ -64,12 +66,14 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
                 <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/traits")}} >Explore Diseases/Traits</Button>
             </Container>
         </Grid>
+        <Grid item sm={0} md={0} lg={1} xl={2} ></Grid>
     </Grid>
 )};
 
 const GeneBCREPortalPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
-        <Grid item sm={5}>
+        <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
+        <Grid item sm={6} md={8} lg={5} xl={4}>
             <Container style={{ marginLeft: "200px" }}>
                 <Typography
                     type="body"
@@ -110,22 +114,24 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => (
                 <Button bvariant="filled" btheme="light">Explore Genes/bCREs</Button>
             </Container>
         </Grid>
-        <Grid item sm={4}>
-            <Container style={{ width: "508px", paddingLeft: "50px" }}>
+        <Grid item sm={6} md={4} lg={5} xl={4}>
+            <Container style={{ width: "508px" }}>
                 <img alt="Gene bCRE portal" src={GeneBCRE} style={{ width: "100%" }} />
             </Container>
         </Grid>
+        <Grid item sm={0} md={0} lg={1} xl={2} ></Grid>
     </Grid>
 );
 
 const SNPQTLPortalPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
-        <Grid item sm={6}>
-            <Container style={{ marginLeft: "160px", marginTop: "111px", width: "508px", paddingLeft: "100px" }}>
+        <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
+        <Grid item  sm={6} md={8} lg={6} xl={5}>
+            <Container style={{ marginTop: "111px", width: "508px"}}>
                 <img alt="SNP/QTL Portal" src={SNPQTL} style={{ width: "120%" }} />
             </Container>
         </Grid>
-        <Grid item sm={6}>
+        <Grid item sm={6} md={4} lg={4} xl={3}>
             <Container style={{ marginTop: "140px" }}>
                 <Typography
                     type="body"
@@ -167,12 +173,14 @@ const SNPQTLPortalPanel: React.FC<GridProps> = props => (
                 <Button bvariant="filled" btheme="light">Explore SNPs/QTLs</Button>
             </Container>
         </Grid>
+        <Grid item sm={0} md={0} lg={1} xl={2} ></Grid>
     </Grid>
 );
 
 const SingleCellPortalPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
-        <Grid item sm={5}>
+        <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
+        <Grid item sm={6} md={8} lg={5} xl={4}>
             <Container style={{ marginLeft: "200px" }}>
                 <Typography
                     type="body"
@@ -206,11 +214,12 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => (
                 <Button bvariant="filled" btheme="light">Explore Single Cells</Button>
             </Container>
         </Grid>
-        <Grid item sm={4}>
-            <Container style={{ width: "508px", paddingLeft: "50px" }}>
+        <Grid item sm={6} md={4} lg={5} xl={4}>
+            <Container style={{ width: "508px" }}>
                 <img alt="single cell portal" src={SingleCell} style={{ width: "100%" }} />
             </Container>
         </Grid>
+        <Grid item sm={0} md={0} lg={1} xl={2} ></Grid>
     </Grid>
 );
 

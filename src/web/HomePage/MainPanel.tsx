@@ -15,8 +15,9 @@ const MainPanel: React.FC<GridProps> = props => {
     
     return (
     <Grid {...props} container>
-        <Grid item sm={6}>
-            <Container style={{ marginTop: "147px", marginLeft: "100px", width: "741px" }}>
+        <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
+        <Grid item  sm={9} md={8} lg={7} xl={5}>
+            <Container style={{ marginTop: "147px", width: "741px" }}>
                 <Typography
                     type="display"
                     size="medium"
@@ -62,11 +63,12 @@ const MainPanel: React.FC<GridProps> = props => {
                 />
             </Container>
         </Grid>
-        <Grid item sm={6}>
-            <Container style={{ marginTop: "63px" }}>
--               <img alt="PsychSCREEN" src={BRAIN} style={{ width: "75%" }} />
+        <Grid item sm={3} md={4} lg={3} xl={3}>
+            <Container style={{ marginTop: "143px" }}>
+-               <img alt="PsychSCREEN" src={BRAIN} style={{ width: "85%" }} />
             </Container>
         </Grid>
+        <Grid item sm={0} md={0} lg={1} xl={2} ></Grid>
     </Grid>
 )};
 export default MainPanel;
