@@ -9,7 +9,7 @@ import { PORTALS } from '../../App';
 import MainPanel from './MainPanel';
 import { Typography } from '@zscreen/psychscreen-ui-components';
 
-const Logo: React.FC = () => (
+export const Logo: React.FC = () => (
     <div>
         <Typography
             type="display"

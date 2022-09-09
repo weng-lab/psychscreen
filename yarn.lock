@@ -2570,10 +2570,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zscreen/psychscreen-ui-components@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@zscreen/psychscreen-ui-components/-/psychscreen-ui-components-0.6.0.tgz#c4f96b30f3bb32a82bf0ec2c343de0c9e05fd4c1"
-  integrity sha512-jmtBU799qG4PDKbD4HurxxAU9Wim4dTB4SrfaOK1/sKsnPxUz9Tfd6i7i5uxmPOOP3xXWXkHbwOTXXEWFTi1lg==
+"@zscreen/psychscreen-ui-components@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@zscreen/psychscreen-ui-components/-/psychscreen-ui-components-0.6.1.tgz#49eb301eb6a2e0d9a324ff17142067296ef37db1"
+  integrity sha512-RZlsb4xGhT0MZIAxtZSULsg7grB5Y1mkS0Q1LfQ4uCgrcPGqXjww+hgxXhARXa9d5yU+66NxzVylqqLwAlkinQ==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"
