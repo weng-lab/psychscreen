@@ -9,17 +9,21 @@ import { PORTALS } from '../../App';
 import MainPanel from './MainPanel';
 import { Typography } from '@zscreen/psychscreen-ui-components';
 
-export const Logo: React.FC = () => (
-    <div>
-        <Typography
-            type="display"
-            size="medium"
-            style={{ display: "inline-block", fontWeight: 700, fontSize: "20px", lineHeight: "15px", textAlign: "left", marginLeft: "-30px" }}
-        >
-            psych<br />&nbsp;screen
-        </Typography>
-    </div>
-);
+export const Logo: React.FC = () => {
+    const navigate = useNavigate();
+    
+    return(
+        <div>
+            <Typography
+                type="display"
+                size="medium"
+                style={{ display: "inline-block", fontWeight: 700, fontSize: "20px", lineHeight: "15px", textAlign: "left", marginLeft: "-30px" }}
+                onClick={() => navigate("/")}
+            >
+                psych<br />&nbsp;screen
+            </Typography>
+        </div>
+)};
 
 const HomePage: React.FC = () => {
     const navigate = useNavigate();

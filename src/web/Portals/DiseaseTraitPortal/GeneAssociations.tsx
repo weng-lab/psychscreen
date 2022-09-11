@@ -3,6 +3,8 @@ import { Grid, Container } from '@mui/material';
 import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
 
+
+export type GeneAssociationsProps = GridProps;
 const GENE_ASSOCIATION_DATA = Array(10).fill({
     Symbol: 'DRD2',
     'Overall Association Score': 0.60,
@@ -11,11 +13,11 @@ const GENE_ASSOCIATION_DATA = Array(10).fill({
     'RNA Expression': 'No data'
 });
 
-const GeneAssociations: React.FC<GridProps> = props => {
+const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
     const [ table, setTable ] = useState(1);
-    return (
+    return (        
         <Grid container {...props}>    
-            <Grid item sm={6}>
+            <Grid item sm={12}>
                 <Container style={{ marginTop: "50px", marginLeft: "150px", width: "800px" }}>
                     <Typography
                         type="body"
@@ -28,10 +30,11 @@ const GeneAssociations: React.FC<GridProps> = props => {
                     <Button bvariant={table===2 ? "filled" : "outlined"} btheme="light"  onClick={()=>{ setTable(2)}} >Table 2</Button>&nbsp;&nbsp;&nbsp;
                     <br/>
                     <br/>
-                        <CustomizedTable style={{ width: "100%" }} tabledata={GENE_ASSOCIATION_DATA}/>     
+                    <CustomizedTable style={{ width: "100%" }} tabledata={GENE_ASSOCIATION_DATA}/>     
                 </Container>
             </Grid>
         </Grid>
+        
     );
 };
 export default GeneAssociations;

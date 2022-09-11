@@ -45,7 +45,7 @@ const MainPanel: React.FC<GridProps> = props => {
                         <AccessibilityNewIcon style={{ marginRight: "9px" }} /> Accessible to all
                     </Typography>
                     <SearchBoxWithSelect
-                        reactiveThreshold={600}
+                        reactiveThreshold={500}
                         reactiveWidth={width * 0.8}
                         containerWidth={width}
                         selectOptions={PORTAL_SELECT_OPTIONS}

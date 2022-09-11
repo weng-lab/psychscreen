@@ -6,7 +6,7 @@ const AboutUsPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
         <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
         <Grid item sm={0}  md={0} lg={11} xl={10}>
-            <Container style={{ marginLeft: "160px", width: "741px" }}>
+            <Container style={{ marginLeft: "10px", width: "741px" }}>
                 <Typography
                     type="body"
                     size="medium"
@@ -18,7 +18,7 @@ const AboutUsPanel: React.FC<GridProps> = props => (
         </Grid>
         <Grid item sm={0}  md={0} lg={1} xl={2}></Grid>
         <Grid item  sm={6} md={8} lg={6} xl={5}>
-            <Container style={{ marginLeft: "200px", marginTop: "100px" }}>
+            <Container style={{ marginLeft: "10px", marginTop: "100px" }}>
                 <Typography
                     type="body"
                     size="medium"
