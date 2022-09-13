@@ -8,6 +8,7 @@ import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
 import { PORTALS } from '../../App';
 import MainPanel from './MainPanel';
 import { Typography } from '@zscreen/psychscreen-ui-components';
+import PortalsPanel from '../../web/HomePage/PortalsPanel';
 
 export const Logo: React.FC = () => {
     const navigate = useNavigate();
@@ -37,6 +38,7 @@ const HomePage: React.FC = () => {
                 title={<Logo /> as any}
             />
             <MainPanel />
+            <PortalsPanel style={{ marginTop: "160px" }} />
         </>
     );
 };

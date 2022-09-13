@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate  } from 'react-router-dom';
 import '@zscreen/psychscreen-ui-components/src/App.css';
 
 import './App.css';
@@ -11,6 +11,7 @@ import { useViewportSize } from './hooks/useViewportSize';
 import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTrailDetails';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 
+
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
     [ "/gene", GenePortal ],
@@ -19,7 +20,7 @@ export const PORTALS: [ string, React.FC ][] = [
 ];
 
 const App: React.FC = () => {
-
+   
     const { width, height } = useViewportSize();
     const theme = useTheme();
     //useMediaQuery(theme.breakpoints.down('sm'))   
@@ -28,15 +29,15 @@ const App: React.FC = () => {
     const HomePage =  useMediaQuery(theme.breakpoints.down('sm'))    ? TabletHomePage : WebHomePage;
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Navigate replace to="/psychscreen" />} />
-                <Route path="/psychscreen" element={<HomePage />} />
-                <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
-                <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
-                { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
-            </Routes>
-        </Router>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Navigate replace to="/psychscreen" />} />
+                    <Route path="/psychscreen" element={<HomePage />} />
+                    <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
+                    <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
+                    { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
+                </Routes>
+            </Router>
     );
 
 };

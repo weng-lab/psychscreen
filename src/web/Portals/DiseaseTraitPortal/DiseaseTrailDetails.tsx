@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import Box from '@mui/material/Box';
-import ArrowBack from '@mui/icons-material/ArrowBack'
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import React, { useState } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -25,8 +25,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 onHomepageClicked={() => navigate("/")}
             />
             <Grid container {...props}>  
-                <Grid item sm={1}  md={1} lg={2} xl={3}></Grid>
-                <Grid item sm={10}  md={10} lg={7} xl={6}>
+                <Grid item sm={1} md={1} lg={2} xl={2.5}></Grid>
+                <Grid item sm={10} md={10} lg={7} xl={6}>
                     <Container style={{marginTop: "50px", marginLeft: "100px", width: "841px" }}>
                         <ArrowBack onClick={()=>{                            
                             navigate("/psychscreen/traits", { state: { searchvalue: searchvalue } } )
@@ -34,7 +34,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                     </Container>
                 </Grid>  
                 <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
-                <Grid item sm={1}  md={1} lg={2} xl={3}></Grid>
+                <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                 <Grid item  sm={10}  md={10} lg={7} xl={6}>
                     <Container style={{ marginTop: "80px", marginLeft: "100px", width: "841px" }}>
                         
@@ -63,7 +63,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
                 { page === 0 && (
                     <>
-                        <Grid item sm={1}  md={1} lg={2} xl={3}></Grid>
+                        <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid item sm={10}  md={10} lg={7} xl={6}>
                             <Container style={{ marginTop: "50px", marginLeft: "150px" }}>
                                 <Typography
@@ -116,7 +116,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 )}
                 { page === 1 && (
                     <>
-                        <Grid item sm={1}  md={1} lg={2} xl={3}></Grid>
+                        <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid sm={10}  md={10} lg={7} xl={6}>
                             <GeneAssociations/>
                         </Grid>
@@ -126,7 +126,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 )}
                 { page === 2 && (
                     <>
-                        <Grid item sm={1}  md={1} lg={2} xl={3}></Grid>
+                        <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid item sm={10}  md={10} lg={7} xl={6}>
                             <AssociatedSnpQtl/>
                         </Grid>
