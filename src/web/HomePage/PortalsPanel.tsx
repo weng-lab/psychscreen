@@ -43,7 +43,7 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
         <Grid item xs={0} sm={0}  md={0} lg={1} xl={2}></Grid>
         <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
             <Container style={{ marginTop: "111px", width: "508px" }}>
-                <img alt="Disease/Trait Portal" src={DiseaseTrait} style={{ width: "100%" }} />
+                <img alt="Disease/Trait Portal" src={DiseaseTrait} style={{ width: "90%" }} />
             </Container>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
@@ -94,11 +94,11 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
             <>
                 <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
                     <Container style={{ width: "508px" }}>
-                        <img alt="Gene bCRE portal" src={GeneBCRE} style={{ width: "100%" }} />
-                    </Container>
+                        <img alt="Gene bCRE portal" src={GeneBCRE} style={{ width: "80%" }} />
+                    </Container><br/><br/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={8} lg={5} xl={5}>
-                    <Container style={{ marginLeft: "70px",  width: "508px" }}>
+                    <Container style={{ marginLeft: "110px",  width: "508px" }}>
                         <Typography
                             type="body"
                             size="medium"
@@ -183,7 +183,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
                     <Container style={{ width: "508px" }}>
-                        <img alt="Gene bCRE portal" src={GeneBCRE} style={{ width: "100%" }} />
+                        <img alt="Gene bCRE portal" src={GeneBCRE} style={{ width: "90%" }} />
                     </Container>
                 </Grid>
             </>
@@ -198,7 +198,7 @@ const SNPQTLPortalPanel: React.FC<GridProps> = props => (
         <Grid item xs={0} sm={0}  md={0} lg={1} xl={2}></Grid>
         <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
             <Container style={{ marginTop: "111px", width: "508px"}}>
-                <img alt="SNP/QTL Portal" src={SNPQTL} style={{ width: "100%" }} />
+                <img alt="SNP/QTL Portal" src={SNPQTL} style={{ width: "80%" }} />
             </Container>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
@@ -255,12 +255,12 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => {
         { useMediaQuery(theme.breakpoints.down('sm')) ? 
             <>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-                    <Container style={{ width: "508px",  marginLeft: "40px" }}>
-                        <img alt="single cell portal" src={SingleCell} style={{ width: "80%" }} />
-                    </Container>
+                    <Container style={{ width: "408px" }}>
+                        <img alt="single cell portal" src={SingleCell} style={{ width: "100%" }} />
+                    </Container><br/><br/>
                 </Grid>
                 <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
-                    <Container style={{ marginLeft: "70px",  width: "508px" }}>
+                    <Container style={{ marginLeft: "120px",  width: "508px" }}>
                         <Typography
                             type="body"
                             size="medium"
