@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/psychscreen/static/css/main.d5d7f057.css",
-    "main.js": "/psychscreen/static/js/main.c59ae7d3.js",
+    "main.js": "/psychscreen/static/js/main.cbf92f8e.js",
     "static/js/787.16f2806f.chunk.js": "/psychscreen/static/js/787.16f2806f.chunk.js",
     "static/media/snp-qtl.png": "/psychscreen/static/media/snp-qtl.532ae3314f47a2396710.png",
     "static/media/disease-trait.png": "/psychscreen/static/media/disease-trait.604481d8b4a8332f67bd.png",
@@ -10,11 +10,11 @@
     "static/media/brain.png": "/psychscreen/static/media/brain.a1faa9329e7362f50913.png",
     "index.html": "/psychscreen/index.html",
     "main.d5d7f057.css.map": "/psychscreen/static/css/main.d5d7f057.css.map",
-    "main.c59ae7d3.js.map": "/psychscreen/static/js/main.c59ae7d3.js.map",
+    "main.cbf92f8e.js.map": "/psychscreen/static/js/main.cbf92f8e.js.map",
     "787.16f2806f.chunk.js.map": "/psychscreen/static/js/787.16f2806f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d5d7f057.css",
-    "static/js/main.c59ae7d3.js"
+    "static/js/main.cbf92f8e.js"
   ]
 }
