@@ -9,6 +9,7 @@ import { Grid, Container, GridProps } from '@mui/material';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl from "./AssociatedSnpQtl";
+import { DISEASE_CARDS } from "./DiseaseTraitPortal";
 
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const { disease } = useParams();
@@ -16,6 +17,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const [page, setPage] = useState<number>(0);
     const { state }: any = useLocation();
     const { searchvalue } = state ? state : { searchvalue: ''} 
+    const diseaseLabel = disease && DISEASE_CARDS.find(d=>d.val===disease)?.cardLabel
 
     return (
         <>
@@ -43,7 +45,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             size="medium"
                             style={{ fontWeight: 700, fontSize: "48px", lineHeight: "57.6px", letterSpacing: "0.5px", marginBottom: "16px"  }}
                         >
-                            {disease}
+                            {diseaseLabel}
                         </Typography>
                         <br/>
                         <Typography
@@ -128,7 +130,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                     <>
                         <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid item sm={10}  md={10} lg={7} xl={6}>
-                            <AssociatedSnpQtl/>
+                            <AssociatedSnpQtl disease={disease || ''}/>
                         </Grid>
                         <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
                     </>

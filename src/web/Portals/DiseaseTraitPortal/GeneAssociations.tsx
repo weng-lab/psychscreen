@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Grid, Container } from '@mui/material';
 import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
-
-
 export type GeneAssociationsProps = GridProps;
+
+
+
 const GENE_ASSOCIATION_DATA = Array(10).fill({
     Symbol: 'DRD2',
     'Overall Association Score': 0.60,
@@ -15,6 +16,7 @@ const GENE_ASSOCIATION_DATA = Array(10).fill({
 
 const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
     const [ table, setTable ] = useState(1);
+   
     return (        
         <Grid container {...props}>    
             <Grid item sm={12}>
