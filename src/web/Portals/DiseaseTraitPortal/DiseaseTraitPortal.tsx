@@ -31,7 +31,7 @@ export const DISEASE_CARDS = [{val: "ADHD_Demontis2018", cardLabel: "Attention d
 {val: "Insomnia_Jansen2019", cardLabel: "Insomnia", cardDesc: "Description"},
 {val: "Intelligence_SavageJansen2018", cardLabel: "Intelligence", cardDesc: "Description"},
 {val: "NumberChildrenEverBorn", cardLabel: "Number of children", cardDesc: "Description"},
-{val: "ReactionTime_Davies201", cardLabel: "Reaction Time", cardDesc: "Description"},
+{val: "ReactionTime_Davies2018", cardLabel: "Reaction Time", cardDesc: "Description"},
 {val: "SleepDuration_Dashti2019", cardLabel: "Sleep Duration", cardDesc: "Description"},
 {val: "Years_of_Education1", cardLabel: "Years of Education", cardDesc: "Description"},
 ]
@@ -41,7 +41,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     const { searchvalue } = state ? state : { searchvalue: ''} 
     const navigate = useNavigate(); 
     const [ val, setVal ] = useState<string>(searchvalue)         
-    const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(searchvalue!=='' ? DISEASE_CARDS:  undefined)    
+    const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(searchvalue!=='' ? DISEASE_CARDS.filter(d=>d.cardLabel.toLowerCase().includes(val.toLowerCase())):  undefined)    
     const theme = useTheme();
   
     return (

@@ -17,6 +17,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const [page, setPage] = useState<number>(0);
     const { state }: any = useLocation();
     const { searchvalue } = state ? state : { searchvalue: ''} 
+    
     const diseaseLabel = disease && DISEASE_CARDS.find(d=>d.val===disease)?.cardLabel
 
     return (
