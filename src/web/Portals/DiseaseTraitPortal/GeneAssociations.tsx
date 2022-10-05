@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
-import { Grid, Container } from '@mui/material';
+import { Grid, Container, CircularProgress } from '@mui/material';
 import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
-export type GeneAssociationsProps = GridProps;
 
+type GeneAssociation = {
+    hsq: number,
+    twas_p: number,
+    twas_bonferroni: number,
+    dge_log2fc: number,
+    gene_id: string,
+    gene_name: string,        
+    dge_fdr: number
+}
 
+export type GeneAssociationsProps =  GridProps & {
+    disease: string,
+    data: GeneAssociation[]
+};
 
-const GENE_ASSOCIATION_DATA = Array(10).fill({
+/*const GENE_ASSOCIATION_DATA = Array(10).fill({
     Symbol: 'DRD2',
     'Overall Association Score': 0.60,
     'Genetic Associations': 'No Data',
     'Text Mining': 0.08,
     'RNA Expression': 'No data'
-});
+});*/
 
 const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
     const [ table, setTable ] = useState(1);
@@ -32,7 +44,17 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
                     <Button bvariant={table===2 ? "filled" : "outlined"} btheme="light"  onClick={()=>{ setTable(2)}} >Table 2</Button>&nbsp;&nbsp;&nbsp;
                     <br/>
                     <br/>
-                    <CustomizedTable style={{ width: "100%" }} tabledata={GENE_ASSOCIATION_DATA}/>     
+                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={props.data.map((d: GeneAssociation)=>{
+                        return {
+                            'Gene Id': d.gene_id,
+                            'Gene Name': d.gene_name,
+                            'Hsq': d.hsq,
+                            'Twas P Value': d.twas_p,                            
+                            'Twas Bonferroni': d.twas_bonferroni,
+                            'Dge Fdr': d.dge_fdr,                           
+                            'Dge Log2Fc': d.dge_log2fc                         
+                        }
+                    })}/>: <CircularProgress color='inherit'/>}
                 </Container>
             </Grid>
         </Grid>

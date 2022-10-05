@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
-import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
-import { gql,useQuery } from '@apollo/client';
+import { Typography, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import CircularProgress from '@mui/material/CircularProgress';
 /*const SNP_QTL_ASSOCIATION_DATA = Array(10).fill({
     Chromosome: 'chr12',
@@ -10,42 +9,24 @@ import CircularProgress from '@mui/material/CircularProgress';
     'In Regulatory Element?': 'No'
 });*/
 
-const AssociatedSnpQuery = gql`
-query snpAssoQuery(
-    $disease: String!,
-    $snpid: String,
-    $limit: Int,
-    $offset: Int
-) {
-    snpAssociationsQuery(disease: $disease,snpid: $snpid, limit:$limit, offset:$offset) { 
-        n
-        z
-        a1
-        a2        
-        snpid
-        chisq
-        disease
-    }
-}
-`
 
+type SnpAssociation = {
+    snpid: string,
+    n: number,
+    z: number,
+    chisq: number,
+    a1: string,
+    a2: string
+}
 
 
 export type AssociatedSnpQtlProps = GridProps & {
-    disease: string
+    disease: string,
+    data: SnpAssociation[]
 };
 
-const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {
-    const [ table, setTable ] = useState<number>(1);
-    const { data, loading } = useQuery<any>(AssociatedSnpQuery, {
-		
-        variables: {
-                disease: props.disease,limit: 1000
-            }, context: {
-                clientName: 'opentarget'
-            }
-        });
-        console.log(data,loading)
+const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {    
+    
     return (
         <Grid container {...props}>    
             <Grid item sm={6}>
@@ -57,17 +38,14 @@ const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {
                     >
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean cursus turpis a orci volutpat, id congue leo laoreet. Nulla facilisi. Duis sit amet lorem faucibus, venenatis dui a, ultricies mi. In hac habitasse platea dictumst. Vestibulum ac laoreet tortor. 
                     </Typography>                
-                    <Button style={{ marginTop: "30px" }} bvariant={table===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setTable(1)}} >Table 1</Button>&nbsp;&nbsp;&nbsp;
-                    <Button style={{ marginTop: "30px" }} bvariant={table===2 ? "filled" : "outlined"} btheme="light"  onClick={()=>{ setTable(2)}} >Table 2</Button>&nbsp;&nbsp;&nbsp;
-                    <br/>
-                    <br/>
-                    {data ?<CustomizedTable style={{ width: "max-content" }}  tabledata={data.snpAssociationsQuery.map((d: any)=>{
+                    <br/>                    
+                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={props.data.map((d: SnpAssociation)=>{
                         return {
-                            SnpID: d.snpid,
+                            'Snp Id': d.snpid,
                             N: d.n,
                             Z: d.z,
-                            a1: d.a1,
-                            a2: d.a2,
+                            A1: d.a1,
+                            A2: d.a2,
                             CHISQ: d.chisq
                             
                         }

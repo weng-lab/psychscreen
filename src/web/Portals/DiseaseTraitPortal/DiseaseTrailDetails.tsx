@@ -10,7 +10,45 @@ import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl from "./AssociatedSnpQtl";
 import { DISEASE_CARDS } from "./DiseaseTraitPortal";
+import { gql, useQuery } from "@apollo/client";
+const AssociatedSnpQuery = gql`
+query snpAssoQuery(
+    $disease: String!,
+    $snpid: String,
+    $limit: Int,
+    $offset: Int
+) {
+    snpAssociationsQuery(disease: $disease,snpid: $snpid, limit:$limit, offset:$offset) { 
+        n
+        z
+        a1
+        a2        
+        snpid
+        chisq
+        disease
+    }
+}
+`
 
+const AssociatedGenesQuery = gql`
+query genesAssoQuery(
+    $disease: String!,
+    $gene_id: String,
+    $limit: Int,
+    $offset: Int
+) {
+    genesAssociationsQuery(disease: $disease,gene_id: $gene_id, limit:$limit, offset:$offset) { 
+        hsq
+        twas_p
+        twas_bonferroni
+        dge_log2fc
+        gene_id
+        gene_name
+        disease
+        dge_fdr
+    }
+}
+`
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const { disease } = useParams();
     const navigate = useNavigate();  
@@ -19,7 +57,16 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const { searchvalue } = state ? state : { searchvalue: ''} 
     
     const diseaseLabel = disease && DISEASE_CARDS.find(d=>d.val===disease)?.cardLabel
-
+    const { data } = useQuery(AssociatedSnpQuery, {		
+        variables: {
+                disease: (disease || ''),limit: 1000
+            }
+        });
+    const { data: genesdata } = useQuery(AssociatedGenesQuery, {		
+            variables: {
+                    disease: (disease || ''), limit: 1000
+                }
+        });
     return (
         <>
             <AppBar
@@ -58,8 +105,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         </Typography>
                         <br/>
                         <Button bvariant={page===0 ? "filled" : "outlined"} btheme="light" onClick={()=>{ setPage(0);}} >Overview</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1); }} >Gene Associations</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={page===2 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(2)}} >{'Associated SNP & xQTL'}</Button>
+                        {genesdata && genesdata.genesAssociationsQuery.length>0 && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1); }} >Gene Associations</Button>}&nbsp;&nbsp;&nbsp;
+                        {data && data.snpAssociationsQuery.length>0 && <Button bvariant={page===2 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(2)}} >{'Associated SNP & xQTL'}</Button>}
                             
                     </Container>
                 </Grid>
@@ -117,21 +164,21 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
                     </>
                 )}
-                { page === 1 && (
+                { page === 1 && genesdata && genesdata.genesAssociationsQuery.length>0 && (
                     <>
                         <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid sm={10}  md={10} lg={7} xl={6}>
-                            <GeneAssociations/>
+                            <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
                         </Grid>
                         <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
                     </>
 
                 )}
-                { page === 2 && (
+                { page === 2 && data && data.snpAssociationsQuery.length>0 && (
                     <>
                         <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid item sm={10}  md={10} lg={7} xl={6}>
-                            <AssociatedSnpQtl disease={disease || ''}/>
+                            <AssociatedSnpQtl disease={disease || ''} data={data.snpAssociationsQuery}/>
                         </Grid>
                         <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
                     </>

@@ -43,7 +43,6 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     const [ val, setVal ] = useState<string>(searchvalue)         
     const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(searchvalue!=='' ? DISEASE_CARDS.filter(d=>d.cardLabel.toLowerCase().includes(val.toLowerCase())):  undefined)    
     const theme = useTheme();
-  
     return (
         <>
             {  //show vertical app bar only for mobile view 
