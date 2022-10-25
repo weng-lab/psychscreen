@@ -11,6 +11,7 @@ import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl from "./AssociatedSnpQtl";
 import { DISEASE_CARDS } from "./DiseaseTraitPortal";
 import { gql, useQuery } from "@apollo/client";
+import { PORTALS } from "../../../App";
 const AssociatedSnpQuery = gql`
 query snpAssoQuery(
     $disease: String!,
@@ -59,7 +60,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const diseaseLabel = disease && DISEASE_CARDS.find(d=>d.val===disease)?.cardLabel
     const { data } = useQuery(AssociatedSnpQuery, {		
         variables: {
-                disease: (disease || ''),limit: 1000
+                disease: (disease || ''), limit: 1000
             }
         });
     const { data: genesdata } = useQuery(AssociatedGenesQuery, {		
@@ -73,6 +74,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 centered
                 onDownloadsClicked={() => navigate("/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
+                style={{ marginBottom: "63px" }}
             />
             <Grid container {...props}>  
                 <Grid item sm={1} md={1} lg={2} xl={2.5}></Grid>

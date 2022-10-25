@@ -21,13 +21,11 @@ export const DISEASE_CARDS = [{val: "ADHD_Demontis2018", cardLabel: "Attention d
 {val: "Alzheimers_Jansen2019", cardLabel: "Alzheimers", cardDesc: "Description"},
 {val: "Anorexia", cardLabel: "Anorexia", cardDesc: "Description"},
 {val: "Autism", cardLabel: "Autism spectrum disorder", cardDesc: "Description"},
-
 {val: "BDSCZ_Ruderfer2018", cardLabel: "Schizophrenia", cardDesc: "Description"},
 {val: "BMI1", cardLabel: "BMI", cardDesc: "Description"},
 {val: "CigarettesPerDay_Liu2019", cardLabel: "Cigarettes smoked per day", cardDesc: "Description"},
 {val: "Ever_Smoked", cardLabel: "History of smoking", cardDesc: "Description"},
 {val: "GeneralRiskTolerance_KarlssonLinner2019", cardLabel: "General risk tolerance", cardDesc: "Description"},
-
 {val: "Insomnia_Jansen2019", cardLabel: "Insomnia", cardDesc: "Description"},
 {val: "Intelligence_SavageJansen2018", cardLabel: "Intelligence", cardDesc: "Description"},
 {val: "NumberChildrenEverBorn", cardLabel: "Number of children", cardDesc: "Description"},
@@ -113,6 +111,8 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                             }}                
                             helperText={"e.g. schizophrenia, years of education"}                            
                         />
+                        
+
                     </Container>
                     {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && <Slide direction="up" in timeout={1000}>
                             <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
