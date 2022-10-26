@@ -13,6 +13,7 @@ import ViolinPlot from './violin/violin';
 import { gql, useQuery } from '@apollo/client';
 import { groupBy } from 'queryz';
 import { tissueColors } from './consts';
+import OpenTarget from './OpenTarget';
 const marks = [
     {
       value: 0,
@@ -42,10 +43,8 @@ const GeneDetails: React.FC = (props) => {
     const navigate = useNavigate();  
     const [tabIndex, setTabIndex] = useState(0);
     const ref = useRef<SVGSVGElement>(null);
-    const { geneid } = state ? state : { geneid: ''} 
+    const { geneid, geneidversion } = state ? state : { geneid: '', geneidversion: ''} 
 
-
-    console.log(geneid)
     const handleTabChange = (_: any, newTabIndex: number) => {
       setTabIndex(newTabIndex);
     };
@@ -115,7 +114,7 @@ const GeneDetails: React.FC = (props) => {
       const keys = [...toPlot.keys()].length;
       return (54 + (keys < 27 ? 27 : keys)) * 200;
   }, [toPlot]);
-
+ 
     return (
         <>
             <AppBar
@@ -193,28 +192,25 @@ const GeneDetails: React.FC = (props) => {
         {tabIndex === 3 && (
           <Box>
             <Typography  type="body"
-                        size="small">The fourth tab</Typography>
+                        size="small">
+                  <OpenTarget id={geneid}/>
+            </Typography>
           </Box>
         )}
         {tabIndex === 4 && (
           <Box>
-            <Typography  type="body"
-                        size="small">GTex data</Typography>
-                        {toPlot.size > 0 && (
+            {(data &&  data?.gtex_genes.length==0 )  ? <Typography type="body" size="large">
+              No GTex data found for {gene}
+            </Typography> : (
                     <svg viewBox={`0 0 ${width} ${width / 2}`} style={{ width: '100%' }} ref={ref}>
                         <ViolinPlot
                             data={toPlot}
                             title="log10 TPM"
                             width={width}
                             height={width / 2}
-                            colors={tissueColors
-                                //new Map(sortedKeys.map((x, i) => [x, color(i)]))
-                            }
+                            colors={tissueColors}
                             domain={domain}
                             tKeys={54}
-                           // onViolinMousedOut={() => setMousedOver({ inner: null, outer: null })}
-                           // onViolinMousedOver={setMousedOver}
-                           // mousedOver={mousedOver}
                         />
                     </svg>)}
           </Box>

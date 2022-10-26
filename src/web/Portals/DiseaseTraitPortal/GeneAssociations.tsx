@@ -29,6 +29,17 @@ export type GeneAssociationsProps =  GridProps & {
 const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
     const [ table, setTable ] = useState(1);
    
+    const tabledata = props.data.map((d: GeneAssociation)=>{
+        return [{header: 'Gene Id', value: d.gene_id},
+            {header: 'Gene Name', value: d.gene_name},
+            {header: 'Hsq', value: d.hsq},
+            {header:'Twas P Value',value: d.twas_p},                            
+            {header: 'Twas Bonferroni', value: d.twas_bonferroni},
+            {header: 'Dge Fdr', value: d.dge_fdr},                           
+            {header: 'Dge Log2Fc', value: d.dge_log2fc                         
+        }]
+    })
+
     return (        
         <Grid container {...props}>    
             <Grid item sm={12}>
@@ -44,17 +55,7 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
                     <Button bvariant={table===2 ? "filled" : "outlined"} btheme="light"  onClick={()=>{ setTable(2)}} >Table 2</Button>&nbsp;&nbsp;&nbsp;
                     <br/>
                     <br/>
-                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={props.data.map((d: GeneAssociation)=>{
-                        return {
-                            'Gene Id': d.gene_id,
-                            'Gene Name': d.gene_name,
-                            'Hsq': d.hsq,
-                            'Twas P Value': d.twas_p,                            
-                            'Twas Bonferroni': d.twas_bonferroni,
-                            'Dge Fdr': d.dge_fdr,                           
-                            'Dge Log2Fc': d.dge_log2fc                         
-                        }
-                    })}/>: <CircularProgress color='inherit'/>}
+                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={tabledata}/>: <CircularProgress color='inherit'/>}
                 </Container>
             </Grid>
         </Grid>

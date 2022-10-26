@@ -2577,10 +2577,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zscreen/psychscreen-ui-components@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@zscreen/psychscreen-ui-components/-/psychscreen-ui-components-0.6.3.tgz#e9ac6a81cf4fd6509f7589c004fea25951497aed"
-  integrity sha512-/tw61BCjcaghMc0yTo86ApJxLEsdSu+vS8syhRZkSuW5NQKuRKXPX3D+TlY1T6duEn49xNtNC9EpJVdbaep6LQ==
+"@zscreen/psychscreen-ui-components@^0.6.5":
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/@zscreen/psychscreen-ui-components/-/psychscreen-ui-components-0.6.5.tgz#02fa06f5aa148b7ac57de81dfbb476bd4d6a33fa"
+  integrity sha512-HePr3tn2JIuflRNcXHQ4OTRmNpIUqPLGaBXJU2sG+a7A/1Uw8xZH6n5n/P9teod+3G1ohssKbmuUtwuI45kLzA==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"
@@ -9963,15 +9963,10 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-error-overlay@6.0.9:
+react-error-overlay@6.0.9, react-error-overlay@^6.0.9:
   version "6.0.9"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
-
-react-error-overlay@^6.0.9:
-  version "6.0.11"
-  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
-  integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
 react-ga@^3.3.1:
   version "3.3.1"

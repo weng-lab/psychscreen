@@ -70,8 +70,8 @@ const GENE_AUTOCOMPLETE_QUERY = `
             {
                 let r = genesSuggestion.map((g: any)=>{
                     return {
-                        val: g.id.split(".")[0],
-                        cardDesc: g.id.split(".")[0],
+                        val: g.id ,//.split(".")[0],
+                        cardDesc: g.id, //.split(".")[0],
                         cardLabel: g.name
                     }
                 })
@@ -153,15 +153,13 @@ const GENE_AUTOCOMPLETE_QUERY = `
                             e => { 
                                 setVal(e.target.value)       
                             }}
-                            onClick={() => { 
+                            onSearchButtonClick={() => { 
                                 if(val !== ''){
                                     onSearchChange(val)               
                                 }   
                             }}                
                             helperText={"e.g. sox4, gapdh"}                            
                         />
-                        
-                        
 
                     </Container>
                    
@@ -178,7 +176,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
                                     {<HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
                                             let f = geneCards!!.find((g: any)=> g.val===v)
-                                            navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v } })
+                                            navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v!!.split(".")[0], geneidversion: v } })
                                         }}
                                         cardContentText={geneCards!!} 
                                     />  }          

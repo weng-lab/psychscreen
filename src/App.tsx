@@ -25,13 +25,13 @@ const wengLink = new HttpLink({
     uri: "https://ga.staging.wenglab.org/graphql",
     });
     
-    /*const openTargetLink = new HttpLink({
+    const openTargetLink = new HttpLink({
     uri: "https://api.genetics.opentargets.org/graphql",
-    });*/
+    });
 
     const link = ApolloLink.split(
         operation => operation.getContext().clientName === "opentarget",
-        wengLink, // <= apollo will send to this if clientName is "opentarget"
+        openTargetLink, // <= apollo will send to this if clientName is "opentarget"
         wengLink // <= otherwise will send to this
       );
       

@@ -27,6 +27,14 @@ export type AssociatedSnpQtlProps = GridProps & {
 
 const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {    
     
+    const SnpAssociationData = props.data && props.data.map((d: SnpAssociation)=>{
+        return [{header: 'SNP Id', value: d.snpid},
+            {header: 'N', value: d.n},
+            {header: 'Z',value: d.z},
+            {header: 'A1', value: d.a1},
+            {header: 'A2', value: d.a2},
+            {header: 'CHISQ', value: d.chisq}]
+    })
     return (
         <Grid container {...props}>    
             <Grid item sm={6}>
@@ -39,17 +47,7 @@ const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean cursus turpis a orci volutpat, id congue leo laoreet. Nulla facilisi. Duis sit amet lorem faucibus, venenatis dui a, ultricies mi. In hac habitasse platea dictumst. Vestibulum ac laoreet tortor. 
                     </Typography>                
                     <br/>                    
-                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={props.data.map((d: SnpAssociation)=>{
-                        return {
-                            'Snp Id': d.snpid,
-                            N: d.n,
-                            Z: d.z,
-                            A1: d.a1,
-                            A2: d.a2,
-                            CHISQ: d.chisq
-                            
-                        }
-                    })}/>: <CircularProgress color='inherit'/>}
+                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={SnpAssociationData}/>: <CircularProgress color='inherit'/>}
                 </Container>
             </Grid>
         </Grid>
