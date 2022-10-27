@@ -183,7 +183,7 @@ const roundTo = function (num: number, places: number) {
 
 const OpenTarget: React.FC<any> = (props) => { 
     const { data, loading } = useOpenTargetsData(props.id);
-	console.log("openTargetdata:", data);
+	//console.log("openTargetdata:", data);
     const formattedData = useMemo(() => data?.studiesAndLeadVariantsForGeneByL2G?.map(
 		q =>  {
             
@@ -232,8 +232,6 @@ const OpenTarget: React.FC<any> = (props) => {
                         render:  <a  target={'_blank'} rel={'noreferrer noopener'} href={`https://genetics.opentargets.org/study-locus/${q.study.studyId}/${q.variant.id}`}>Gene Prioritisation</a>
             }]}
 	) || [], [data]);
-
-    console.log(formattedData)
 	if (loading) return <> 
      <Typography
                             type="body"

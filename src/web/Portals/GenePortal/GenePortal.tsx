@@ -16,7 +16,7 @@
  import { PORTALS } from '../../../App';
  import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
  import GeneBCRE from '../../../assets/gene-bcre.png';
-
+ import CircularProgress from '@mui/material/CircularProgress';
 
 
 const GENE_AUTOCOMPLETE_QUERY = `
@@ -70,7 +70,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
             {
                 let r = genesSuggestion.map((g: any)=>{
                     return {
-                        val: g.id ,//.split(".")[0],
+                        val: g.id+"/"+g.coordinates.chromosome+"/"+g.coordinates.start+"/"+g.coordinates.end ,//.split(".")[0],
                         cardDesc: g.id, //.split(".")[0],
                         cardLabel: g.name
                     }
@@ -81,7 +81,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
             }
             setFetching(false)
         },
-        []
+        [searchvalue]
     );
     return (
         <>
@@ -169,14 +169,25 @@ const GENE_AUTOCOMPLETE_QUERY = `
                             <Container style={{ marginTop: "170px" }}>
                                 <img alt="gene/bcre portal" src={GeneBCRE} style={{ width: "100%" ,height: "100%" }} />
                             </Container>
-                        ): fetching ? ( <Container style={{ marginLeft: "12px", marginTop: "150px" }}>   Loading... </Container>) :  ( 
+                        ): fetching ? ( <Container style={{ marginLeft: "12px", marginTop: "150px" }}> <> 
+                        <Typography
+                                               type="body"
+                                               size="large"
+                                               style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+                                           >
+                                                   Loading Data...
+                                           </Typography>
+                                           <br/>
+                       <CircularProgress color="inherit"/>
+                       
+                        </>  </Container>) :  ( 
                             <>
                             {geneCards!!.length>0 && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                     {<HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
                                             let f = geneCards!!.find((g: any)=> g.val===v)
-                                            navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v!!.split(".")[0], geneidversion: v } })
+                                            navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v!!.split("/")[0].split(".")[0], chromosome: v!!.split("/")[1] , start:  v!!.split("/")[2] , end: v!!.split("/")[3] } })
                                         }}
                                         cardContentText={geneCards!!} 
                                     />  }          
@@ -191,48 +202,8 @@ const GENE_AUTOCOMPLETE_QUERY = `
                         )}
                 </Grid>}
               
-                {/*useMediaQuery(theme.breakpoints.up('md'))  && <Grid item sm={4} md={4} lg={3} xl={3}>
-                    {!diseaseCards ? ( 
-                            <Container style={{ marginTop: "170px" }}>
-                                <img alt="disease/trait portal" src={DiseaseTrait} style={{ width: "100%" ,height: "100%" }} />
-                            </Container>
-                        ):( 
-                            <Slide direction="up" in timeout={1000}>
-                                <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    <HorizontalCard width={500}
-                                        onCardClick={(v?: string) => {
-                                            navigate(`/psychscreen/traits/${v}`, { state: { searchvalue: val } })
-                                        }}
-                                        cardContentText={diseaseCards} 
-                                    />            
-                                </Container>
-                            </Slide>              
-                        )}
-                                    </Grid>*/}
                 <Grid item sm={0} md={1} lg={2} xl={3} ></Grid>
             </Grid>
-            {/*<Grid>
-                <Grid item sm={12}>
-                {toPlot.size > 0 && (
-                    <svg viewBox={`0 0 ${width} ${width / 2}`} style={{ width: '100%' }} ref={ref}>
-                        <ViolinPlot
-                            data={toPlot}
-                            title="log10 TPM"
-                            width={width}
-                            height={width / 2}
-                            colors={tissueColors
-                                //new Map(sortedKeys.map((x, i) => [x, color(i)]))
-                            }
-                            domain={domain}
-                            tKeys={54}
-                           // onViolinMousedOut={() => setMousedOver({ inner: null, outer: null })}
-                           // onViolinMousedOver={setMousedOver}
-                           // mousedOver={mousedOver}
-                        />
-                    </svg>)}
-                </Grid>
-                </Grid>
-                        */}
          
         </>
     );

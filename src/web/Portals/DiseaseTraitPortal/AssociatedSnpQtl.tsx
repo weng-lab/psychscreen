@@ -19,21 +19,36 @@ type SnpAssociation = {
     a2: string
 }
 
+type GwasSnpAssociation = {    
+    snpid: string,
+    chrom: string,
+    start: number,
+    stop: number,
+    analyses_identifying_snp: number,
+    associated_gene: string,
+    riskallele: string,
+    association_p_val: number[]
+
+}
+
 
 export type AssociatedSnpQtlProps = GridProps & {
     disease: string,
-    data: SnpAssociation[]
+    data: GwasSnpAssociation[]
 };
 
 const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {    
     
-    const SnpAssociationData = props.data && props.data.map((d: SnpAssociation)=>{
+    const SnpAssociationData = props.data && props.data.map((d: GwasSnpAssociation)=>{
         return [{header: 'SNP Id', value: d.snpid},
-            {header: 'N', value: d.n},
-            {header: 'Z',value: d.z},
-            {header: 'A1', value: d.a1},
-            {header: 'A2', value: d.a2},
-            {header: 'CHISQ', value: d.chisq}]
+            {header: 'Chrom', value: d.chrom},
+            {header: 'Start',value: d.start},
+            {header: 'Stop', value: d.stop},
+            {header: 'Analyses identifying SNP', value: d.analyses_identifying_snp},
+            {header: 'Risk Allele', value: d.riskallele},
+            {header: 'Associated Gene', value: d.associated_gene},
+            {header: 'Association P Value', value: d.association_p_val.join(",")}
+        ]
     })
     return (
         <Grid container {...props}>    

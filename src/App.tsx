@@ -28,11 +28,15 @@ const wengLink = new HttpLink({
     const openTargetLink = new HttpLink({
     uri: "https://api.genetics.opentargets.org/graphql",
     });
+const psychscreenLink = new HttpLink({
+    uri: "https://psychscreen.api.wenglab.org/graphql",
+    });
+
 
     const link = ApolloLink.split(
         operation => operation.getContext().clientName === "opentarget",
         openTargetLink, // <= apollo will send to this if clientName is "opentarget"
-        wengLink // <= otherwise will send to this
+        ApolloLink.split(operation => operation.getContext().clientName === "psychscreen", psychscreenLink,wengLink)   // <= otherwise will send to this
       );
       
 const App: React.FC = () => {

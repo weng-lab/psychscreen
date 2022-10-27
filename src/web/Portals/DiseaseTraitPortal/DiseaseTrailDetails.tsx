@@ -13,20 +13,21 @@ import { DISEASE_CARDS } from "./DiseaseTraitPortal";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
 const AssociatedSnpQuery = gql`
-query snpAssoQuery(
+query gwassnpAssoQuery(
     $disease: String!,
     $snpid: String,
     $limit: Int,
     $offset: Int
 ) {
-    snpAssociationsQuery(disease: $disease,snpid: $snpid, limit:$limit, offset:$offset) { 
-        n
-        z
-        a1
-        a2        
+    gwassnpAssociationsQuery(disease: $disease,snpid: $snpid, limit:$limit, offset:$offset) { 
+        chrom
+        stop
         snpid
-        chisq
-        disease
+        start
+        associated_gene
+        association_p_val
+        analyses_identifying_snp
+        riskallele
     }
 }
 `
@@ -109,7 +110,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         <br/>
                         <Button bvariant={page===0 ? "filled" : "outlined"} btheme="light" onClick={()=>{ setPage(0);}} >Overview</Button>&nbsp;&nbsp;&nbsp;
                         {genesdata && genesdata.genesAssociationsQuery.length>0 && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1); }} >Gene Associations</Button>}&nbsp;&nbsp;&nbsp;
-                        {data && data.snpAssociationsQuery.length>0 && <Button bvariant={page===2 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(2)}} >{'Associated SNP & xQTL'}</Button>}
+                        {data && data.gwassnpAssociationsQuery.length>0 && <Button bvariant={page===2 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(2)}} >{'Associated SNP & xQTL'}</Button>}
                             
                     </Container>
                 </Grid>
@@ -177,11 +178,11 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                     </>
 
                 )}
-                { page === 2 && data && data.snpAssociationsQuery.length>0 && (
+                { page === 2 && data && data.gwassnpAssociationsQuery.length>0 && (
                     <>
                         <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
                         <Grid item sm={10}  md={10} lg={7} xl={6}>
-                            <AssociatedSnpQtl disease={disease || ''} data={data.snpAssociationsQuery}/>
+                            <AssociatedSnpQtl disease={disease || ''} data={data.gwassnpAssociationsQuery}/>
                         </Grid>
                         <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
                     </>

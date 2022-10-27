@@ -14,6 +14,14 @@ import { gql, useQuery } from '@apollo/client';
 import { groupBy } from 'queryz';
 import { tissueColors } from './consts';
 import OpenTarget from './OpenTarget';
+import AssociatedxQTL from './AssociatedxQTL';
+import GeneExpressionPage from './GeneExpression';
+import Browser from './Browser/Browser';
+
+export type FacetState = {
+  fdr: [ number, number ];
+  pvalue: [ number, number ];
+};
 const marks = [
     {
       value: 0,
@@ -43,7 +51,7 @@ const GeneDetails: React.FC = (props) => {
     const navigate = useNavigate();  
     const [tabIndex, setTabIndex] = useState(0);
     const ref = useRef<SVGSVGElement>(null);
-    const { geneid, geneidversion } = state ? state : { geneid: '', geneidversion: ''} 
+    const { geneid, chromosome, start, end } = state ? state : { geneid: '', chromosome: '', start: null, end: null } 
 
     const handleTabChange = (_: any, newTabIndex: number) => {
       setTabIndex(newTabIndex);
@@ -52,7 +60,8 @@ const GeneDetails: React.FC = (props) => {
     const { data } = useQuery(GTEX_GENES_QUERY, {		
       variables: {
               gene_id: geneid
-          }
+          },
+          skip: geneid===''
       })
 
   const grouped = useMemo(
@@ -114,6 +123,12 @@ const GeneDetails: React.FC = (props) => {
       const keys = [...toPlot.keys()].length;
       return (54 + (keys < 27 ? 27 : keys)) * 200;
   }, [toPlot]);
+
+  const facetstate: FacetState = {
+    fdr: [ 0.0, 100.0 ] as [ number, number ],
+    pvalue: [ 0.0, 100.0 ] as [ number, number ]
+  };
+  
  
     return (
         <>
@@ -173,20 +188,18 @@ const GeneDetails: React.FC = (props) => {
                 <Box sx={{ padding: 2 }}>
         {tabIndex === 0 && (
           <Box>
-            <Typography  type="body"
-                        size="small">The first tab</Typography>
+            <Browser facetState={facetstate} name={gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}}/>
           </Box>
         )}
         {tabIndex === 1 && (
           <Box>
-            <Typography  type="body"
-                        size="small">The second tab</Typography>
+            <GeneExpressionPage id={geneid}/>
           </Box>
         )}
         {tabIndex === 2 && (
           <Box>
-            <Typography  type="body"
-                        size="small">The third tab</Typography>
+            <AssociatedxQTL facetState={facetstate} name={gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}
+            }/>
           </Box>
         )}
         {tabIndex === 3 && (
