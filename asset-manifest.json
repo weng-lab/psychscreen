@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/psychscreen/static/css/main.106baaae.chunk.css",
-    "main.js": "/psychscreen/static/js/main.8635a370.chunk.js",
-    "main.js.map": "/psychscreen/static/js/main.8635a370.chunk.js.map",
-    "runtime-main.js": "/psychscreen/static/js/runtime-main.40da17a5.js",
-    "runtime-main.js.map": "/psychscreen/static/js/runtime-main.40da17a5.js.map",
+    "main.js": "/psychscreen/static/js/main.b9841fc7.chunk.js",
+    "main.js.map": "/psychscreen/static/js/main.b9841fc7.chunk.js.map",
+    "runtime-main.js": "/psychscreen/static/js/runtime-main.2d424caa.js",
+    "runtime-main.js.map": "/psychscreen/static/js/runtime-main.2d424caa.js.map",
     "static/css/2.4c4080dd.chunk.css": "/psychscreen/static/css/2.4c4080dd.chunk.css",
-    "static/js/2.812c9772.chunk.js": "/psychscreen/static/js/2.812c9772.chunk.js",
-    "static/js/2.812c9772.chunk.js.map": "/psychscreen/static/js/2.812c9772.chunk.js.map",
-    "static/js/3.e09ddd1a.chunk.js": "/psychscreen/static/js/3.e09ddd1a.chunk.js",
-    "static/js/3.e09ddd1a.chunk.js.map": "/psychscreen/static/js/3.e09ddd1a.chunk.js.map",
+    "static/js/2.47ec15b9.chunk.js": "/psychscreen/static/js/2.47ec15b9.chunk.js",
+    "static/js/2.47ec15b9.chunk.js.map": "/psychscreen/static/js/2.47ec15b9.chunk.js.map",
+    "static/js/3.ce93c9a5.chunk.js": "/psychscreen/static/js/3.ce93c9a5.chunk.js",
+    "static/js/3.ce93c9a5.chunk.js.map": "/psychscreen/static/js/3.ce93c9a5.chunk.js.map",
     "index.html": "/psychscreen/index.html",
     "static/css/2.4c4080dd.chunk.css.map": "/psychscreen/static/css/2.4c4080dd.chunk.css.map",
     "static/css/main.106baaae.chunk.css.map": "/psychscreen/static/css/main.106baaae.chunk.css.map",
-    "static/js/2.812c9772.chunk.js.LICENSE.txt": "/psychscreen/static/js/2.812c9772.chunk.js.LICENSE.txt",
+    "static/js/2.47ec15b9.chunk.js.LICENSE.txt": "/psychscreen/static/js/2.47ec15b9.chunk.js.LICENSE.txt",
     "static/media/brain.a1faa932.png": "/psychscreen/static/media/brain.a1faa932.png",
     "static/media/disease-trait.604481d8.png": "/psychscreen/static/media/disease-trait.604481d8.png",
     "static/media/gene-bcre.1e6ddfd8.png": "/psychscreen/static/media/gene-bcre.1e6ddfd8.png",
@@ -21,10 +21,10 @@
     "static/media/snp-qtl.532ae331.png": "/psychscreen/static/media/snp-qtl.532ae331.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.40da17a5.js",
+    "static/js/runtime-main.2d424caa.js",
     "static/css/2.4c4080dd.chunk.css",
-    "static/js/2.812c9772.chunk.js",
+    "static/js/2.47ec15b9.chunk.js",
     "static/css/main.106baaae.chunk.css",
-    "static/js/main.8635a370.chunk.js"
+    "static/js/main.b9841fc7.chunk.js"
   ]
 }
