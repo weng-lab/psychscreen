@@ -9,7 +9,7 @@
  import { Grid, Container, Slide } from '@mui/material';
  
  import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
- import { Typography } from '@zscreen/psychscreen-ui-components';
+ import { Typography, Button } from '@zscreen/psychscreen-ui-components';
  import CheckIcon from '@mui/icons-material/Check';
  import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
  import { useTheme, useMediaQuery } from '@material-ui/core';
@@ -17,6 +17,7 @@
  import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
  import GeneBCRE from '../../../assets/gene-bcre.png';
  import CircularProgress from '@mui/material/CircularProgress';
+ 
 
 
 const GENE_AUTOCOMPLETE_QUERY = `
@@ -203,6 +204,18 @@ const GENE_AUTOCOMPLETE_QUERY = `
                 </Grid>}
               
                 <Grid item sm={0} md={1} lg={2} xl={3} ></Grid>
+            </Grid>
+            <br/>
+            <br/>
+            <br/>
+            <Grid container>
+                <Grid item sm={1}  md={2} lg={3} xl={3}></Grid>
+                <Grid item sm={8} md={6} lg={5} xl={4}>
+                    <Button bvariant={"outlined"}  btheme="light" onClick={()=>{
+                        navigate(`/psychscreen/gene/gtexumap`)
+
+                    }} >{'GTEx Umap Plots'}</Button>
+                </Grid>
             </Grid>
          
         </>

@@ -13,6 +13,7 @@ import { useTheme, useMediaQuery } from '@material-ui/core';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
 import GeneDetails from './web/Portals/GenePortal/GeneDetails';
+import GTexUMAP from './web/Portals/GenePortal/GTexUMAP';
 
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
@@ -62,6 +63,7 @@ const App: React.FC = () => {
                     <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
                     <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
                     <Route path="/psychscreen/gene/:gene" element={<GeneDetails />} />
+                    <Route path="/psychscreen/gene/gtexumap" element={<GTexUMAP/>} />
                     { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
                 </Routes>
             </Router>
