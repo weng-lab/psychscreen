@@ -9,6 +9,7 @@ import { PORTALS } from '../../../App';
 import { AppBar } from '@zscreen/psychscreen-ui-components'; 
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 let legendContent ={}
 tissueTypeColors.forEach((k,v)=>{ legendContent[k]= v })
@@ -50,7 +51,7 @@ const GTexUMAP: React.FC =(props) => {
     const navigate = useNavigate();
 
     useEffect( () => {
-        fetch("https://storage.googleapis.com/data.genomealmanac.org/GTEx_v8_RNAseq_gene_tpm_matrix.txt")
+        fetch("https://downloads.wenglab.org/GTEx_v8_RNAseq_gene_tpm_matrix_pc.txt")
         
            .then(x => x.text())
             .then(x => {
@@ -61,7 +62,6 @@ const GTexUMAP: React.FC =(props) => {
                 let gtexumap: GTexumap[] = []
                 for(let l in lines){
                     let vals = lines[l].split("\t")
-                    //console.log(vals)
                    
                     if(vals.length>1)
                     {
@@ -85,7 +85,7 @@ const GTexUMAP: React.FC =(props) => {
     
 
     useEffect( () => {
-        fetch("https://storage.googleapis.com/data.genomealmanac.org/GTEx_v8_RNAseq_gene_tpm_matrix_pc.txt")
+        fetch("https://downloads.wenglab.org/GTEx_v8_RNAseq_gene_tpm_matrix_pc.txt")
         
            .then(x => x.text())
             .then(x => {
@@ -212,8 +212,21 @@ const GTexUMAP: React.FC =(props) => {
     </Grid>
     </Grid>
     <Grid container>
+        
         <Grid item sm={12} md={12} lg={12} xl={12} >
-        <svg viewBox="0 0 800 800" ref={llegendref}>
+        {(data.length===0 || pcdata.length===0) &&  <> 
+        <Typography
+                               type="body"
+                               size="large"
+                               style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+                           >
+                                   Loading Data...
+                           </Typography>
+                           <br/>
+       <CircularProgress color="inherit"/>
+       
+        </> }
+        {data.length>0 && pcdata.length>0 && <svg viewBox="0 0 800 800" ref={llegendref}>
  <Legend
                 x={350}
                 y={0}
@@ -224,7 +237,7 @@ const GTexUMAP: React.FC =(props) => {
                 fill="#ffffff"
                 stroke="#ffffff"
             />
-                        </svg>
+                        </svg>}
  
                         </Grid>
     </Grid></>)
