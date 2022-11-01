@@ -68,10 +68,6 @@ const GeneExpressionPage: React.FC<GeneExpressionPageProps> = props => {
         });
         return r;
     };
-
-    let r = {};
-    r["#008800"] = "nishi"
-    r["#ff8800"] = "niship"
     return loading ? <>
      <Typography
                             type="body"
@@ -96,7 +92,7 @@ const GeneExpressionPage: React.FC<GeneExpressionPageProps> = props => {
                 height={800}
                 logScale={false}
                 legendTitle={""}
-                legendContent={r}
+                legendContent={legendContent([ "#008800" ], [ "Werling et. al. 2020" ])}
                 normalized={true}
             />
         </svg>

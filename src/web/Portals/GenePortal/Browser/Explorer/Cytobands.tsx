@@ -37,8 +37,7 @@ export type CytobandsProps = {
     position?: GenomicRange;
 };
 
-const CytobandView: React.FC<CytobandsProps> = props => {
-    console.log(props)
+const CytobandView: React.FC<CytobandsProps> = props => {    
     const { loading, data } = useQuery<CytobandQueryResponse>(CYTOBAND_QUERY, {
         variables: {
             assembly: props.assembly,

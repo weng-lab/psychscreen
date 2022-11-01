@@ -307,7 +307,6 @@ const Browser: React.FC<any> = (props) => {
         props.resolvedTranscript
     );
 
-    console.log(groupedTranscripts)
     const l = useCallback(c => (c - expandedCoordinates.start) * 1400 / (expandedCoordinates.end - expandedCoordinates.start), [ expandedCoordinates ]);
     return (<>
         <CytobandView
@@ -337,43 +336,6 @@ const Browser: React.FC<any> = (props) => {
                 genes={groupedTranscripts || []}
                 expandedCoordinates={expandedCoordinates}
             />
-            {/* <g className="manhattan-tracks">
-                <rect y={22} height={170} fill="none" width={1400} pointerEvents="visible" onClick={() => setStudyModalShown(true)} /> 
-            </g>
-            <EmptyTrack
-                height={40}
-                width={1400}
-                text={`Variant Associations with ${STUDIES.filter(x => x.pmid === study)[0].trait}`}
-                transform=""
-                id=""
-            />
-            <ManhattanPlotTrack
-                url={STUDIES.filter(x => x.pmid === study)[0].url}
-                domain={coordinates || expandedCoordinates}
-                onSNPMousedOver={x => snpMouseOver(({ domain: x.data.coordinates, id: x.data.rsId }))}
-                snpProps={snp => ldSet.has(snp.data.rsId) ? { fill: `rgb(255,${gradient(ldSet.get(snp.data.rsId)!)},0)` } : { fill: "#dddddd", fillOpacity: 0.4 }}
-                allQTLs={allQTLs}
-                groupedQTLs={groupedQTLs}
-                facetState={props.facetState}
-                anchor={ld.anchor}
-                ld={ld.ld}
-                sortOrder={(a, b) => (ldSet.has(a.data.rsId) ? a.data.score : -a.data.score) - (ldSet.has(b.data.rsId) ? b.data.score : -b.data.score)}
-                svgRef={svgRef}
-            />
-            <g className="xqtl">
-                <rect y={22} height={65} fill="none" width={1400} /> 
-            </g>
-            <DefaultTracks
-                tracks={dtracks}
-                domain={coordinates || expandedCoordinates}
-                cCREHighlight={props.coordinates}
-                cCREHighlights={new Set(allQTLs.flatMap(x => x.intersecting_ccres.intersecting_ccres.map(x => x.accession)))}
-                svgRef={svgRef}
-                assembly={match?.params.assembly || ""}
-                oncCREClicked={x => history.push(`${troot}/${x}/browser`)}
-                oncCREMousedOver={x => x && setHighlight(x)}
-                oncCREMousedOut={() => setHighlight(null)}
-            />*/}
         </GenomeBrowser>
     </>)
 }

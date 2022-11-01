@@ -54,14 +54,7 @@ const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {
         <Grid container {...props}>    
             <Grid item sm={6}>
                 <Container style={{ marginTop: "30px", marginLeft: "130px", width: "800px" }}>
-                    <Typography
-                        type="body"
-                        size="large"
-                        style={{ fontSize: "16px", lineHeight: "24px", fontWeight: 400, letterSpacing: "0.3%", marginBottom: "16px" }}
-                    >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean cursus turpis a orci volutpat, id congue leo laoreet. Nulla facilisi. Duis sit amet lorem faucibus, venenatis dui a, ultricies mi. In hac habitasse platea dictumst. Vestibulum ac laoreet tortor. 
-                    </Typography>                
-                    <br/>                    
+                                       
                     {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={SnpAssociationData}/>: <CircularProgress color='inherit'/>}
                 </Container>
             </Grid>

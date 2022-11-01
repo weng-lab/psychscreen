@@ -51,7 +51,7 @@ const GTexUMAP: React.FC =(props) => {
     const navigate = useNavigate();
 
     useEffect( () => {
-        fetch("https://downloads.wenglab.org/GTEx_v8_RNAseq_gene_tpm_matrix_pc.txt")
+        fetch("https://downloads.wenglab.org/GTEx_v8_RNAseq_gene_tpm_matrix.txt")
         
            .then(x => x.text())
             .then(x => {
@@ -75,7 +75,6 @@ const GTexUMAP: React.FC =(props) => {
                     }
                     
                 }
-                console.log(gtexumap.length)
                 return gtexumap;
 
             })
@@ -109,7 +108,6 @@ const GTexUMAP: React.FC =(props) => {
                     }
                     
                 }
-                console.log(gtexumap.length)
                 return gtexumap;
 
             })
