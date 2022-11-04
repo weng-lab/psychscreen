@@ -59,7 +59,7 @@ const GeneExpressionPage: React.FC<GeneExpressionPageProps> = props => {
                 }]
             }]
         })
-    ) || [], [ data ]);
+    ) || [], [ data, wBiosamples ]);
 
     const legendContent = ( _: string[], keys: string[] ) => {
         let r: { [key: string]: string } = {};
@@ -69,13 +69,13 @@ const GeneExpressionPage: React.FC<GeneExpressionPageProps> = props => {
         return r;
     };
     return loading ? <>
-     <Typography
-                            type="body"
-                            size="large"
-                            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
-                        >
-                                Loading Data...
-                        </Typography>
+        <Typography
+            type="body"
+            size="large"
+            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+        >
+                Loading Data...
+        </Typography>
                         <br/>
     <CircularProgress color="inherit"/>
     </> : (

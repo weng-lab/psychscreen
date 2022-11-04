@@ -1,6 +1,5 @@
 
 import { useParams } from "react-router-dom";
-import Box from '@mui/material/Box';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import React, { useState } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
@@ -12,6 +11,7 @@ import AssociatedSnpQtl from "./AssociatedSnpQtl";
 import { DISEASE_CARDS } from "./DiseaseTraitPortal";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
+
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
     $disease: String!,

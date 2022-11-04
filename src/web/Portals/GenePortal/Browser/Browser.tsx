@@ -2,10 +2,8 @@
 import { gql, useQuery } from '@apollo/client';
 import React, {useMemo, useRef, useState, useCallback}  from 'react';
 import CytobandView from './Explorer/Cytobands';
-import { EmptyTrack, GenomeBrowser, RulerTrack } from 'umms-gb';
+import { GenomeBrowser, RulerTrack } from 'umms-gb';
 import EGeneTracks from './EGeneTracks';
-
-
 
 export const LD_QUERY = gql`
 query s($id: [String]) {
@@ -297,10 +295,10 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
 const Browser: React.FC<any> = (props) => { 
     const svgRef = useRef<SVGSVGElement>(null);
     const [ coordinates, setCoordinates ] = useState<GenomicRange | null>(null);
-    const [ highlight, setHighlight ] = useState<GenomicRange | null>(null);
+    const [ highlight ] = useState<GenomicRange | null>(null);
     const eexpandedCoordinates = useMemo( () => expandCoordinates(props.coordinates), [ props.coordinates ]);
     
-    const { data, loading, groupedTranscripts, expandedCoordinates, snpCoordinateData } = useGenePageData(
+    const { groupedTranscripts, expandedCoordinates } = useGenePageData(
         eexpandedCoordinates,
         "GRCh38",
         props.name,

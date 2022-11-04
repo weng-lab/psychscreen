@@ -7,7 +7,6 @@ import { HomePage as WebHomePage } from './web/HomePage';
 import { HomePage as TabletHomePage } from './mobile-portrait/HomePage';
 import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
-//import { useViewportSize } from './hooks/useViewportSize';
 import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTrailDetails';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 import { HttpLink } from 'apollo-link-http';
@@ -24,35 +23,36 @@ export const PORTALS: [ string, React.FC ][] = [
 
 const wengLink = new HttpLink({
     uri: "https://ga.staging.wenglab.org/graphql",
-    });
+});
     
-    const openTargetLink = new HttpLink({
+const openTargetLink = new HttpLink({
     uri: "https://api.genetics.opentargets.org/graphql",
-    });
+});
+
 const psychscreenLink = new HttpLink({
     uri: "https://psychscreen.api.wenglab.org/graphql",
-    });
+});
 
 
-    const link = ApolloLink.split(
-        operation => operation.getContext().clientName === "opentarget",
-        openTargetLink, // <= apollo will send to this if clientName is "opentarget"
-        ApolloLink.split(operation => operation.getContext().clientName === "psychscreen", psychscreenLink,wengLink)   // <= otherwise will send to this
-      );
+const LINK = ApolloLink.split(
+    operation => operation.getContext().clientName === "opentarget",
+    openTargetLink, // <= apollo will send to this if clientName is "opentarget"
+    ApolloLink.split(operation => operation.getContext().clientName === "psychscreen", psychscreenLink, wengLink)   // <= otherwise will send to this
+);
       
 const App: React.FC = () => {
    
     const client = useMemo( () => new ApolloClient({
-        link: (link as any),
-           cache: new InMemoryCache()
-       }), [link]);
-   
+        link: (LINK as any),
+        cache: new InMemoryCache()
+    }), []);
+    
     //const { width, height } = useViewportSize();
     const theme = useTheme();
     //useMediaQuery(theme.breakpoints.down('sm'))   
     //const HomePage = useMemo( () => width < 1280 && height > width ? TabletHomePage : WebHomePage, [ width ] );
 
-    const HomePage =  useMediaQuery(theme.breakpoints.down('sm'))  ? TabletHomePage : WebHomePage;
+    const HomePage =  useMediaQuery(theme.breakpoints.down('sm')) ? TabletHomePage : WebHomePage;
 
     return (
         <ApolloProvider client={client}>

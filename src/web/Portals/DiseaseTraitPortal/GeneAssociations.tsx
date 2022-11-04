@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Container, CircularProgress } from '@mui/material';
-import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
 
 type GeneAssociation = {
@@ -27,7 +27,6 @@ export type GeneAssociationsProps =  GridProps & {
 });*/
 
 const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
-    const [ table, setTable ] = useState(1);
    
     const tabledata = props.data.map((d: GeneAssociation)=>{
         return [{header: 'Gene Id', value: d.gene_id},

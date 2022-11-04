@@ -26,8 +26,7 @@ const marks = [
     {
       value: 0,
       label: '0',
-    },
-    {
+    }, {
       value: 100,
       label: '100',
     },
@@ -212,7 +211,7 @@ const GeneDetails: React.FC = (props) => {
         )}
         {tabIndex === 4 && (
           <Box>
-            {(data &&  data?.gtex_genes.length==0 )  ? <Typography type="body" size="large">
+            {(data &&  data?.gtex_genes.length === 0 )  ? <Typography type="body" size="large">
               No GTex data found for {gene}
             </Typography> : (
                     <svg viewBox={`0 0 ${width} ${width / 2}`} style={{ width: '100%' }} ref={ref}>

@@ -3,22 +3,20 @@
  */
 // import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
  //import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
- import React, { useState, useCallback } from 'react';
- import { AppBar } from '@zscreen/psychscreen-ui-components';
- import { useNavigate, useLocation } from 'react-router-dom';
- import { Grid, Container, Slide } from '@mui/material';
- 
- import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
- import { Typography, Button } from '@zscreen/psychscreen-ui-components';
- import CheckIcon from '@mui/icons-material/Check';
- import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
- import { useTheme, useMediaQuery } from '@material-ui/core';
- import { PORTALS } from '../../../App';
- import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
- import GeneBCRE from '../../../assets/gene-bcre.png';
- import CircularProgress from '@mui/material/CircularProgress';
- 
+import React, { useState, useCallback } from 'react';
+import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Grid, Container, Slide } from '@mui/material';
 
+import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button } from '@zscreen/psychscreen-ui-components';
+import CheckIcon from '@mui/icons-material/Check';
+import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
+import { useTheme, useMediaQuery } from '@material-ui/core';
+import { PORTALS } from '../../../App';
+import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
+import GeneBCRE from '../../../assets/gene-bcre.png';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const GENE_AUTOCOMPLETE_QUERY = `
  query suggest($id: String!, $assembly: String!) {
@@ -40,7 +38,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
  }
  `;
 
- const GenePortal: React.FC = (props) => {
+ const GenePortal: React.FC = props => {
     const navigate = useNavigate();
     const theme = useTheme();
     const { state }: any = useLocation();
@@ -51,9 +49,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
    
     const onSearchChange = useCallback(
         async (value: any) => {
-      
-            setFetching(true)
-            
+            setFetching(true);
             const response = await fetch('https://psychscreen.api.wenglab.org/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -65,24 +61,21 @@ const GENE_AUTOCOMPLETE_QUERY = `
                 }),
                 headers: { 'Content-Type': 'application/json' },
             });
-            let genesSuggestion = (await response.json()).data?.suggest
-            
-            if(genesSuggestion && genesSuggestion.length>0)
-            {
-                let r = genesSuggestion.map((g: any)=>{
+            const genesSuggestion = (await response.json()).data?.suggest;            
+            if(genesSuggestion && genesSuggestion.length > 0) {
+                const r = genesSuggestion.map((g: any)=>{
                     return {
-                        val: g.id+"/"+g.coordinates.chromosome+"/"+g.coordinates.start+"/"+g.coordinates.end ,//.split(".")[0],
+                        val: `${g.id}/${g.coordinates.chromosome}/${g.coordinates.start}/${g.coordinates.end}`,
                         cardDesc: g.id, //.split(".")[0],
                         cardLabel: g.name
                     }
-                })
-                setgeneCards(r)
-            }  else if(genesSuggestion && genesSuggestion.length===0){
-                setgeneCards([])
-            }
-            setFetching(false)
+                });
+                setgeneCards(r);
+            } else if (genesSuggestion && genesSuggestion.length === 0)
+                setgeneCards([]);
+            setFetching(false);
         },
-        [searchvalue]
+        []
     );
     return (
         <>
@@ -183,7 +176,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
                        
                         </>  </Container>) :  ( 
                             <>
-                            {geneCards!!.length>0 && <Slide direction="up" in timeout={1000}>
+                            {geneCards!.length > 0 && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                     {<HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
@@ -194,12 +187,12 @@ const GENE_AUTOCOMPLETE_QUERY = `
                                     />  }          
                                 </Container>
                             </Slide> } 
-                            {geneCards!!.length===0 &&
+                            {geneCards!.length === 0 &&
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                     {'Loading...'  }          
                                 </Container>
-                         } 
-                            </>           
+                            }
+                            </>
                         )}
                 </Grid>}
               
