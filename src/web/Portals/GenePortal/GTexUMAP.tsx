@@ -11,12 +11,10 @@ import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 
-function dictionaryInvert<T, U>(x: Map<T, U>): Map<U, T> {
-    return new Map([ ...x.keys() ].map( k => [ x.get(k)!, k ]));
-}
+const dictionaryInvert = obj => Object.fromEntries(Object.entries(obj).map(a => a.reverse()))
 
-const legendContent = dictionaryInvert(tissueTypeColors);
-const tissueCol = dictionaryInvert(tissueTypeColors);
+const legendContent = dictionaryInvert(tissueTypeColors) 
+
 
 export type GTexumap = {
     tissueid: string;
@@ -59,7 +57,7 @@ const GTexUMAP: React.FC = () => {
                     return {
                         tissueid: vals[0],
                         tissuetype: vals[1],
-                        color: tissueCol[vals[2]] as string,
+                        color: tissueTypeColors[vals[2]] as string,
                         tissuedetail: vals[2],
                         coordinates: [+vals[3], +vals[4]] as [ number, number ]
                     };
@@ -83,7 +81,7 @@ const GTexUMAP: React.FC = () => {
                     return {
                         tissueid: vals[0],
                         tissuetype: vals[1],
-                        color: tissueCol[vals[2]] as string,
+                        color: tissueTypeColors[vals[2]] as string,
                         tissuedetail: vals[2],
                         coordinates: [+vals[3], +vals[4]] as [ number, number ]
                     };
@@ -91,6 +89,7 @@ const GTexUMAP: React.FC = () => {
             ))
             .then(x => setPcData(x));
     }, []);
+
     const pcpoints = useMemo( () => pcdata.map(x => ({ x: x.coordinates[0], y: x.coordinates[1], svgProps: { fill: x.color } })), [ pcdata ]);
     const pcdomain = useMemo( () => pcpoints.length === 0 ? { x: { start: 0, end: 1 }, y: { start: 0, end: 1 } } : ({
         x: { start: lower5(Math.min(...pcpoints.map(x => x.x)) * 1.1), end: upper5(Math.max(...pcpoints.map(x => x.x)) * 1.1) },
@@ -100,6 +99,7 @@ const GTexUMAP: React.FC = () => {
     const uref = useRef<SVGSVGElement>(null);
     const pcuref = useRef<SVGSVGElement>(null);
     const llegendref = useRef<SVGSVGElement>(null);
+    console.log(data)
     return (
         <>
             {  //show vertical app bar only for mobile view 
