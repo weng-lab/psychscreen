@@ -283,9 +283,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
 
     const allQTLs = useMemo( () => (
         snpCoordinateData?.snpQuery
-            .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))
-            .filter(x => -Math.log10(x.eQTL.fdr) > props.facetState.fdr[0] && -Math.log10(x.eQTL.fdr) < props.facetState.fdr[1])
-    ) || [], [ snpCoordinateData, groupedQTLs, props ]);
+            .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))            
+    ) || [], [ snpCoordinateData, groupedQTLs ]);
     
     const allQTLsData =allQTLs && allQTLs.map(x=>{
       return [{

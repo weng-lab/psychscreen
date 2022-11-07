@@ -1,15 +1,12 @@
 import { useQuery } from '@apollo/client';
 import React, { useMemo, useState } from 'react';
 import { BIG_QUERY, BigQueryResponse } from './DefaultTracks';
-//import { GenomicRange } from '../../../HomePage/Browser/Explorer/GenomeExplorer';
-//import { Header, Loader } from 'semantic-ui-react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { BigBedData } from 'bigwig-reader';
 import { ManhattanTrack, ManhattanTrackProps, LDTrack, EmptyTrack } from 'umms-gb';
 import { ManhattanSNP } from 'umms-gb/dist/components/tracks/manhattan/types';
-//import { EQTL, LDEntry } from '../GenePage/hooks';
-import { FacetState } from '../GeneDetails';
 import { Typography } from '@zscreen/psychscreen-ui-components';
+
 export type EQTL = {
     snp: string;
     fdr: number;
@@ -41,7 +38,6 @@ type ManhattanPlotTrackProps = {
     ld: LDEntry[];
     groupedQTLs: Map<string, EQTL>;
     allQTLs: any[];
-    facetState: FacetState;
     sortOrder?: (a: ManhattanSNP, b: ManhattanSNP) => number;
     svgRef?: any;
     onSettingsClick?: () => void;
@@ -86,7 +82,6 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
     const allQTLs = useMemo( () => (
         inView?.filter(x => props.groupedQTLs.get(x.rsId))
             .map(x => ({ ...x, eQTL: props.groupedQTLs.get(x.rsId)! }))
-            .filter(x => -Math.log10(x.eQTL.fdr) > (props.facetState?.fdr[0] || 0) && -Math.log10(x.eQTL.fdr) < (props.facetState?.fdr[1] || 300))
     ) || [], [ inView, props ]);
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
     return loading ?  <> 
