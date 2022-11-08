@@ -42,6 +42,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     const [ val, setVal ] = useState<string>(searchvalue)         
     const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(searchvalue!=='' ? DISEASE_CARDS.filter(d=>d.cardLabel.toLowerCase().includes(val.toLowerCase())):  undefined)    
     const theme = useTheme();
+    console.log(diseaseCards,'dc')
     return (
         <>
             {  //show vertical app bar only for mobile view 
@@ -115,16 +116,23 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                         
 
                     </Container>
-                    {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && <Slide direction="up" in timeout={1000}>
+                    {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length>0 && <Slide direction="up" in timeout={1000}>
                             <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                 <HorizontalCard width={500}
                                     onCardClick={(v?: string) => {
-                                        navigate(`/psychscreen/traits/${v}`, { state: { searchvalue: val } })
+                                        let d = DISEASE_CARDS.find(d=>d.val===v)?.diseaseDesc
+                                        navigate(`/psychscreen/traits/${v}`, { state: { searchvalue: val, diseaseDesc: d } })
                                     }}
                                     cardContentText={diseaseCards} 
                                 />            
                             </Container>
                         </Slide> 
+                    }
+                    {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length===0 &&
+                            <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
+                                 No results found             
+                            </Container>
+                         
                     }
                 </Grid>
                 {useMediaQuery(theme.breakpoints.up('md'))  && <Grid item sm={4} md={4} lg={3} xl={3}>
@@ -132,7 +140,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                             <Container style={{ marginTop: "170px" }}>
                                 <img alt="disease/trait portal" src={DiseaseTrait} style={{ width: "100%" ,height: "100%" }} />
                             </Container>
-                        ):( 
+                        ):diseaseCards && diseaseCards.length>0 ? ( 
                             <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                     <HorizontalCard width={500}
@@ -144,7 +152,9 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                                     />            
                                 </Container>
                             </Slide>              
-                        )}
+                        ): (<Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
+                            No results found
+                        </Container>)}
                 </Grid>}
                 <Grid item sm={0} md={1} lg={2} xl={3} ></Grid>
             </Grid>

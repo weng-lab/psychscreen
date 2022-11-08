@@ -37,7 +37,7 @@ const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {
     return (
         <Grid container {...props}>    
             <Grid item sm={6}>
-                <Container style={{ marginTop: "30px", marginLeft: "130px", width: "800px" }}>
+                <Container style={{ marginTop: "30px", marginLeft: "100px", width: "800px" }}>
                                        
                     {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={SnpAssociationData}/>: <CircularProgress color='inherit'/>}
                 </Container>
