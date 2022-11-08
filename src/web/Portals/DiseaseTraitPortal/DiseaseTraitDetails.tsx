@@ -7,6 +7,7 @@ import { Grid, Container, GridProps } from '@mui/material';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
+import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
 import { DISEASE_CARDS } from "./DiseaseTraitPortal";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
@@ -31,7 +32,7 @@ query gwassnpAssoQuery(
         riskallele
     }
 }
-`
+`;
 
 const AssociatedGenesQuery = gql`
 query genesAssoQuery(
@@ -51,7 +52,51 @@ query genesAssoQuery(
         dge_fdr
     }
 }
-`
+`;
+
+const GwasIntersectingSnpswithCcresQuery=gql`
+query gwasintersectingSnpsWithCcre($disease: String!, $snpid: String, $limit: Int) {
+    gwasintersectingSnpsWithCcreQuery(disease: $disease, snpid: $snpid, limit: $limit){
+        disease
+        snpid
+        snp_chrom 
+        snp_start
+        snp_stop
+        riskallele
+        associated_gene
+        association_p_val
+        ccre_chrom
+        ccre_start
+        ccre_stop
+        rdhsid
+        ccreid
+        ccre_class
+
+    }
+}`;
+
+const GwasIntersectingSnpswithBcresQuery = gql`
+query gwasintersectingSnpsWithBcre($disease: String!, $snpid: String, $bcre_group: String, $limit: Int) {
+    gwasintersectingSnpsWithBcreQuery(disease: $disease, snpid: $snpid, bcre_group: $bcre_group,limit: $limit){
+        disease
+        snpid
+        snp_chrom 
+        snp_start
+        snp_stop
+        riskallele
+        associated_gene
+        association_p_val
+        ccre_chrom
+        ccre_start
+        ccre_stop
+        rdhsid
+        ccreid
+        ccre_class
+        bcre_group
+
+    }
+}`;
+
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const { disease } = useParams();
     const navigate = useNavigate();  
@@ -68,9 +113,32 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const loci = useMemo( () => riskLoci(data?.gwassnpAssociationsQuery.map(x => ({ chromosome: x.chrom, start: x.start, end: x.stop, p: Math.min(...x.association_p_val) })) || []), [ data ]);
     const { data: genesdata } = useQuery(AssociatedGenesQuery, {
         variables: {
-            disease: (disease || ''), limit: 1000
+            disease: (disease || ''),
+            limit: 1000,
+            skip: disease === ''
         }
     });
+    const { data: gwasIntersectingSnpWithCcresData } = useQuery(GwasIntersectingSnpswithCcresQuery, {
+        variables: {
+            disease: disease
+        },
+        skip: disease === ''
+    });
+    const { data: adultgwasIntersectingSnpWithBcresData } = useQuery(GwasIntersectingSnpswithBcresQuery, {
+        variables: {
+            disease: disease,
+            bcre_group: 'adult'
+        },
+        skip: disease === ''
+    });
+    const { data: fetalgwasIntersectingSnpWithBcresData } = useQuery(GwasIntersectingSnpswithBcresQuery, {
+        variables: {
+            disease: disease,
+            bcre_group: 'fetal'
+        },
+        skip: disease === ''
+    });
+
     return (
         <>
             <AppBar
@@ -106,20 +174,26 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                     </Container>
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
-                <>
-                    <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-                    <Grid sm={10} md={10} lg={9} xl={9}>
-                        { page === -1 ? (
-                            <RiskLocusView loci={loci} />
-                        ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
-                            <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
-                        ) : page === 1 && data && data.gwassnpAssociationsQuery.length > 0 ? (
-                            <AssociatedSnpQtl disease={disease || ''} data={data.gwassnpAssociationsQuery}/>
-                        ) : null}
-                    </Grid>
-                    <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
-                </>
+                <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+                <Grid sm={10} md={10} lg={9} xl={9}>
+                    { page === -1 ? (
+                        <RiskLocusView loci={loci} />
+                    ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
+                        <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
+                    ) : page === 1 && data && data.gwassnpAssociationsQuery.length > 0 ? (
+                        <AssociatedSnpQtl disease={disease || ''} data={data.gwassnpAssociationsQuery}/>
+                    ) : page === 2 && gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length>0 ? (
+                        <DiseaseIntersectingSnpsWithccres
+                            disease={disease || ''} 
+                            ccredata={gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery} 
+                            adult_bcredata={adultgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery}
+                            fetal_bcredata={fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery}
+                        />
+                    ) : null }
+                </Grid>
+                <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
             </Grid>
+
         </>
     );
 }
