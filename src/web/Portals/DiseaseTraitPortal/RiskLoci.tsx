@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { Container } from '@mui/system';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import { groupBy } from 'queryz';
 import React, { useMemo, useState } from 'react';
 import { Cytobands } from 'umms-gb';
@@ -59,7 +59,9 @@ const RiskLocusView: React.FC<{ loci: { chromosome?: string, start: number, end:
         k, Math.max(...(groupedCytobands.get(k)!.length === 0 ? [1] : groupedCytobands.get(k)!.map(x => x.coordinates.end)))
     ])), [ groupedCytobands ]);
     const [ selected, setSelected ] = useState<[ string, number, number, number ] | null>(null);
-    return (
+    return props.loci.length === 0 ? (
+        <CircularProgress />
+    ) : (
         <Grid container {...props}>    
             <Grid item sm={12}>
                 <Typography type="body" size="medium" style={{ width: "750px", marginLeft: "150px", marginTop: "30px" }}>

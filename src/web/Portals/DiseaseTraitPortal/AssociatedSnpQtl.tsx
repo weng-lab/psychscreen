@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import CircularProgress from '@mui/material/CircularProgress';
+import { GwasIntersectingSnpsWithCcres } from './DiseaseIntersectingSnpsWithccres';
 
 export type GWAS_SNP = {
     snpid: string;
@@ -19,7 +20,7 @@ export type AssociatedSnpQtlProps = GridProps & {
     data: GWAS_SNP[];
 };
 
-function compareByMinimumP(a: GWAS_SNP, b: GWAS_SNP) {
+export function compareByMinimumP(a: GWAS_SNP | GwasIntersectingSnpsWithCcres, b: GWAS_SNP | GwasIntersectingSnpsWithCcres) {
     return Math.min(...a.association_p_val) - Math.min(...b.association_p_val);
 }
 

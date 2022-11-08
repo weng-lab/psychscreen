@@ -169,8 +169,11 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         </Typography>
                         <br/>
                         <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>GWAS Locus Overview</Button>&nbsp;&nbsp;&nbsp;
-                        {genesdata && genesdata.genesAssociationsQuery.length>0 && <Button bvariant={page===0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>}&nbsp;&nbsp;&nbsp;
-                        {data && data.gwassnpAssociationsQuery.length>0 && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>}                            
+                        {genesdata && genesdata.genesAssociationsQuery.length > 0 && <><Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>&nbsp;&nbsp;&nbsp;</>}
+                        {data && data.gwassnpAssociationsQuery.length > 0 && <><Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>&nbsp;&nbsp;&nbsp;</>}
+                        {gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 && (
+                            <><Button bvariant={page === 2 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(2)}>Regulatory SNP Associations</Button>&nbsp;&nbsp;&nbsp;</>
+                        )}
                     </Container>
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
@@ -182,7 +185,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
                     ) : page === 1 && data && data.gwassnpAssociationsQuery.length > 0 ? (
                         <AssociatedSnpQtl disease={disease || ''} data={data.gwassnpAssociationsQuery}/>
-                    ) : page === 2 && gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length>0 ? (
+                    ) : page === 2 && gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 ? (
                         <DiseaseIntersectingSnpsWithccres
                             disease={disease || ''} 
                             ccredata={gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery} 

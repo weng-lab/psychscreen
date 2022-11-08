@@ -4,6 +4,7 @@ import { CustomizedTable, Button } from '@zscreen/psychscreen-ui-components';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { compareByMinimumP } from './AssociatedSnpQtl';
 
 /*const SNP_QTL_ASSOCIATION_DATA = Array(10).fill({
     Chromosome: 'chr12',
@@ -12,7 +13,7 @@ import Tab from '@mui/material/Tab';
     'In Regulatory Element?': 'No'
 });*/
 
-type GwasIntersectingSnpsWithCcres = {    
+export type GwasIntersectingSnpsWithCcres = {    
     snpid: string,
     snp_chrom: string,
     snp_start: number,
@@ -29,12 +30,9 @@ type GwasIntersectingSnpsWithCcres = {
 
 }
 
-
 type GwasIntersectingSnpsWithBcres = GwasIntersectingSnpsWithCcres & {        
     bcre_group: string
 }
-
-
 
 export type DiseaseIntersectingSnpsWithccresProps = GridProps & {
     disease: string,
@@ -51,83 +49,70 @@ const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccre
         setTabIndex(newTabIndex);
     };
 
-    const GWASIntersectingSnpDataWithCcre = props.ccredata && props.ccredata.map((d: GwasIntersectingSnpsWithCcres)=>{
-        return [{header: 'SNP Id', value: d.snpid},
-            {header: 'Chrom', value: d.snp_chrom},
-            {header: 'Start',value: d.snp_start},
-            {header: 'Stop', value: d.snp_stop},            
+    const GWASIntersectingSnpDataWithCcre = props.ccredata && [ ...props.ccredata ].sort(compareByMinimumP).map((d: GwasIntersectingSnpsWithCcres)=>{
+        return [{header: 'SNP ID', value: d.snpid},
+            {header: 'Chromosome', value: d.snp_chrom},
+            {header: 'Position', value: d.snp_stop.toLocaleString()},            
             {header: 'Risk Allele', value: d.riskallele},
             {header: 'Associated Gene', value: d.associated_gene},
-            {header: 'Association P Value', value: d.association_p_val.join(",")},
-            {header: 'cCRE Chrom', value: d.ccre_chrom},
-            {header: 'cCRE Start', value: d.ccre_start},
-            {header: 'cCRE Stop', value: d.ccre_stop},
-            {header: 'cCRE Id', value: d.ccreid},
-            {header: 'RDHS Id', value: d.rdhsid},
-            {header: 'cCRE Class', value: d.ccre_class},
-
+            {header: 'GWAS p-value', value: d.association_p_val.join(",")},
+            {header: 'cCRE chromosome', value: d.ccre_chrom},
+            {header: 'cCRE start', value: d.ccre_start.toLocaleString()},
+            {header: 'cCRE end', value: d.ccre_stop.toLocaleString()},
+            {header: 'cCRE ID', value: d.ccreid},
+            {header: 'cCRE class', value: d.ccre_class},
         ]
-    })
-    const AdultGWASIntersectingSnpDataWithBcre = props.adult_bcredata && props.adult_bcredata.map((d: GwasIntersectingSnpsWithBcres)=>{
-        return [{header: 'SNP Id', value: d.snpid},
-            {header: 'Chrom', value: d.snp_chrom},
-            {header: 'Start',value: d.snp_start},
-            {header: 'Stop', value: d.snp_stop},            
+    });
+    const AdultGWASIntersectingSnpDataWithBcre = props.adult_bcredata && [ ...props.adult_bcredata ].sort(compareByMinimumP).map((d: GwasIntersectingSnpsWithBcres)=>{
+        return [{header: 'SNP ID', value: d.snpid},
+            {header: 'Chromosome', value: d.snp_chrom},
+            {header: 'Position', value: d.snp_stop.toLocaleString()},            
             {header: 'Risk Allele', value: d.riskallele},
-            {header: 'Associated Gene', value: d.associated_gene},
-            {header: 'Association P Value', value: d.association_p_val.join(",")},
-            {header: 'bCRE Chrom', value: d.ccre_chrom},
-            {header: 'bCRE Start', value: d.ccre_start},
-            {header: 'bCRE Stop', value: d.ccre_stop},
-            {header: 'bCRE Id', value: d.ccreid},
-            {header: 'RDHS Id', value: d.rdhsid},
-            {header: 'bCRE Class', value: d.ccre_class},
-            {header: 'bCRE group', value: d.bcre_group}
-
+            {header: 'Nearest Gene', value: d.associated_gene},
+            {header: 'GWAS p-value', value: d.association_p_val.join(",")},
+            {header: 'bCRE chromosome', value: d.ccre_chrom},
+            {header: 'bCRE start', value: d.ccre_start.toLocaleString()},
+            {header: 'bCRE end', value: d.ccre_stop.toLocaleString()},
+            {header: 'bCRE ID', value: d.ccreid},
+            {header: 'bCRE class', value: d.ccre_class}
         ]
-    })
-    const FetalGWASIntersectingSnpDataWithBcre = props.fetal_bcredata && props.fetal_bcredata.map((d: GwasIntersectingSnpsWithBcres)=>{
-        return [{header: 'SNP Id', value: d.snpid},
-            {header: 'Chrom', value: d.snp_chrom},
-            {header: 'Start',value: d.snp_start},
-            {header: 'Stop', value: d.snp_stop},            
+    });
+    const FetalGWASIntersectingSnpDataWithBcre = props.fetal_bcredata && [ ...props.fetal_bcredata ].sort(compareByMinimumP).map((d: GwasIntersectingSnpsWithBcres)=>{
+        return [{header: 'SNP ID', value: d.snpid},
+            {header: 'Chromosome', value: d.snp_chrom},
+            {header: 'Position', value: d.snp_stop.toLocaleString()},            
             {header: 'Risk Allele', value: d.riskallele},
-            {header: 'Associated Gene', value: d.associated_gene},
-            {header: 'Association P Value', value: d.association_p_val.join(",")},
-            {header: 'bCRE Chrom', value: d.ccre_chrom},
-            {header: 'bCRE Start', value: d.ccre_start},
-            {header: 'bCRE Stop', value: d.ccre_stop},
-            {header: 'bCRE Id', value: d.ccreid},
-            {header: 'RDHS Id', value: d.rdhsid},
-            {header: 'bCRE Class', value: d.ccre_class},
-            {header: 'bCRE group', value: d.bcre_group}
-
+            {header: 'Nearest Gene', value: d.associated_gene},
+            {header: 'GWAS p-value', value: d.association_p_val.join(",")},
+            {header: 'bCRE chromosome', value: d.ccre_chrom},
+            {header: 'bCRE start', value: d.ccre_start.toLocaleString()},
+            {header: 'bCRE end', value: d.ccre_stop.toLocaleString()},
+            {header: 'bCRE ID', value: d.ccreid},
+            {header: 'bCRE class', value: d.ccre_class}
         ]
-    })
+    });
+
     return (
         <Grid container {...props}>    
-            <Grid item sm={6}>
-                <Container style={{ marginTop: "30px", marginLeft: "100px", width: "800px" }}>                                       
-                <Box>
-                    <Tabs value={tabIndex} onChange={handleTabChange}>
-                        <Tab label="Intersecting snps with cCREs" ></Tab>
-                        <Tab label="Intersecting snps with bCREs" ></Tab>
-                        
-                    </Tabs>
-                    <Divider/>
-                  </Box>
-                    {props.ccredata  && tabIndex === 0 && <CustomizedTable style={{ width: "max-content" }}  tabledata={GWASIntersectingSnpDataWithCcre}/>}
-                    {props.adult_bcredata && props.fetal_bcredata  && tabIndex === 1 && 
-                    (<>
-                        <br/>
-                        {props.adult_bcredata && <Button bvariant={page===0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0)}} >Adult</Button>}&nbsp;&nbsp;&nbsp;
-                        {props.fetal_bcredata && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1); }} >Fetal</Button>}
-                        {page===0 && <CustomizedTable style={{ width: "max-content" }}  tabledata={AdultGWASIntersectingSnpDataWithBcre}/>}
-                        {page===1 && <CustomizedTable style={{ width: "max-content" }}  tabledata={FetalGWASIntersectingSnpDataWithBcre}/>}
-                    </>)
-                    
-                    
-                    }
+            <Grid item sm={12}>
+                <Container style={{ marginTop: "30px", marginLeft: "100px" }}>
+                    <Box>
+                        <Tabs value={tabIndex} onChange={handleTabChange}>
+                            <Tab label="SNPs Intersecting any cCRE" ></Tab>
+                            <Tab label="SNPs Intersecting brain cCREs (bCREs)" ></Tab>
+                        </Tabs>
+                        <Divider/>
+                    </Box>
+                    { props.ccredata  && tabIndex === 0 && <CustomizedTable style={{ width: "max-content" }} tabledata={GWASIntersectingSnpDataWithCcre} /> }
+                    { props.adult_bcredata && props.fetal_bcredata  && tabIndex === 1 && (
+                        <>
+                            <br/>
+                            { props.adult_bcredata && <Button bvariant={page===0 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(0)}>Adult</Button> }&nbsp;&nbsp;&nbsp;
+                            { props.fetal_bcredata && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(1)}>Fetal</Button> }
+                            { page === 0 && <CustomizedTable style={{ width: "max-content" }}  tabledata={AdultGWASIntersectingSnpDataWithBcre} /> }
+                            { page === 1 && <CustomizedTable style={{ width: "max-content" }}  tabledata={FetalGWASIntersectingSnpDataWithBcre} /> }
+                        </>
+                    )}
                 </Container>
             </Grid>
         </Grid>
