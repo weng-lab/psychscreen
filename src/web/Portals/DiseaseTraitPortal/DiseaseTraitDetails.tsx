@@ -1,16 +1,17 @@
 
 import { useParams } from "react-router-dom";
-import ArrowBack from '@mui/icons-material/ArrowBack';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, GridProps } from '@mui/material';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
-import AssociatedSnpQtl from "./AssociatedSnpQtl";
+import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import { DISEASE_CARDS } from "./DiseaseTraitPortal";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
+import { riskLoci } from "./utils";
+import RiskLocusView from "./RiskLoci";
 
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
@@ -54,21 +55,22 @@ query genesAssoQuery(
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const { disease } = useParams();
     const navigate = useNavigate();  
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(-1);
     const { state }: any = useLocation();
     const { searchvalue, diseaseDesc } = state ? state : { searchvalue: '', diseaseDesc: ''} 
     
-    const diseaseLabel = disease && DISEASE_CARDS.find(d=>d.val===disease)?.cardLabel
-    const { data } = useQuery(AssociatedSnpQuery, {		
+    const diseaseLabel = disease && DISEASE_CARDS.find(d => d.val === disease)?.cardLabel
+    const { data } = useQuery<{ gwassnpAssociationsQuery: GWAS_SNP[] }>(AssociatedSnpQuery, {		
         variables: {
-                disease: (disease || '')
-            }
-        });
-    const { data: genesdata } = useQuery(AssociatedGenesQuery, {		
-            variables: {
-                    disease: (disease || ''), limit: 1000
-                }
-        });
+            disease: (disease || '')
+        }
+    });
+    const loci = useMemo( () => riskLoci(data?.gwassnpAssociationsQuery.map(x => ({ chromosome: x.chrom, start: x.start, end: x.stop, p: Math.min(...x.association_p_val) })) || []), [ data ]);
+    const { data: genesdata } = useQuery(AssociatedGenesQuery, {
+        variables: {
+            disease: (disease || ''), limit: 1000
+        }
+    });
     return (
         <>
             <AppBar
@@ -79,19 +81,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 style={{ marginBottom: "63px" }}
             />
             <Grid container {...props}>  
-                <Grid item sm={1} md={1} lg={2} xl={2.5}></Grid>
-                <Grid item sm={10} md={10} lg={7} xl={6}>
-                    <Container style={{marginTop: "50px", marginLeft: "100px", width: "841px" }}>
-                        <ArrowBack onClick={()=>{                            
-                            navigate("/psychscreen/traits", { state: { searchvalue: searchvalue } } )
-                        }} style={{ width: "70px", height: "70px", color: "#E0E0E0" }}/>
-                    </Container>
-                </Grid>  
-                <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
-                <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
-                <Grid item  sm={10}  md={10} lg={7} xl={6}>
-                    <Container style={{ marginTop: "80px", marginLeft: "100px", width: "841px" }}>
-                        
+                <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
+                <Grid item  sm={10}  md={10} lg={9} xl={9}>
+                    <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
                         <Typography
                             type="display"
                             size="medium"
@@ -108,33 +100,25 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             {diseaseDesc}
                         </Typography>
                         <br/>
-                        
-                        {genesdata && genesdata.genesAssociationsQuery.length>0 && <Button bvariant={page===0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }} >Gene Associations</Button>}&nbsp;&nbsp;&nbsp;
-                        {data && data.gwassnpAssociationsQuery.length>0 && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}} >{'Associated SNP & xQTL'}</Button>}
-                            
+                        <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>GWAS Locus Overview</Button>&nbsp;&nbsp;&nbsp;
+                        {genesdata && genesdata.genesAssociationsQuery.length>0 && <Button bvariant={page===0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>}&nbsp;&nbsp;&nbsp;
+                        {data && data.gwassnpAssociationsQuery.length>0 && <Button bvariant={page===1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>}                            
                     </Container>
                 </Grid>
-                <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
-               
-                { page === 0 && genesdata && genesdata.genesAssociationsQuery.length>0 && (
-                    <>
-                        <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
-                        <Grid sm={10}  md={10} lg={7} xl={6}>
+                <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
+                <>
+                    <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+                    <Grid sm={10} md={10} lg={9} xl={9}>
+                        { page === -1 ? (
+                            <RiskLocusView loci={loci} />
+                        ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
                             <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
-                        </Grid>
-                        <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
-                    </>
-
-                )}
-                { page === 1 && data && data.gwassnpAssociationsQuery.length>0 && (
-                    <>
-                        <Grid item sm={1}  md={1} lg={2} xl={2.5}></Grid>
-                        <Grid item sm={10}  md={10} lg={7} xl={6}>
+                        ) : page === 1 && data && data.gwassnpAssociationsQuery.length > 0 ? (
                             <AssociatedSnpQtl disease={disease || ''} data={data.gwassnpAssociationsQuery}/>
-                        </Grid>
-                        <Grid item sm={1}  md={1} lg={3} xl={3}></Grid>
-                    </>
-                )}
+                        ) : null}
+                    </Grid>
+                    <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
+                </>
             </Grid>
         </>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Grid, Container, CircularProgress } from '@mui/material';
 import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
@@ -28,21 +28,20 @@ export type GeneAssociationsProps =  GridProps & {
 
 const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
    
-    const tabledata = props.data.map((d: GeneAssociation)=>{
-        return [{header: 'Gene Id', value: d.gene_id},
-            {header: 'Gene Name', value: d.gene_name},
-            {header: 'Hsq', value: d.hsq},
-            {header:'Twas P Value',value: d.twas_p},                            
-            {header: 'Twas Bonferroni', value: d.twas_bonferroni},
-            {header: 'Dge Fdr', value: d.dge_fdr},                           
-            {header: 'Dge Log2Fc', value: d.dge_log2fc                         
-        }]
-    })
+    const tabledata = useMemo( () => props.data && [ ...props.data ].sort((a, b) => a.twas_bonferroni - b.twas_bonferroni).map(d => [
+        { header: 'Gene ID', value: d.gene_id },
+        { header: 'Gene Name', value: d.gene_name },
+        { header: 'Hsq', value: d.hsq.toFixed(3) },
+        { header: 'p-value', value: d.twas_p < 0.01 ? d.twas_p.toExponential(3) : d.twas_p.toFixed(3) },
+        { header: 'q-value', value: d.twas_bonferroni < 0.01 ? d.twas_bonferroni.toExponential(3) : d.twas_bonferroni.toFixed(3) },
+        { header: 'FDR', value: d.dge_fdr.toFixed(3) },
+        { header: 'log2 fold change', value: d.dge_log2fc.toFixed(3) }
+    ]), [ props.data ]);
 
     return (        
         <Grid container {...props}>    
             <Grid item sm={12}>
-                <Container style={{ marginTop: "50px", marginLeft: "150px", width: "800px" }}>                   
+                <Container style={{ marginTop: "30px", marginLeft: "150px" }}>                   
                     {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={tabledata}/>: <CircularProgress color='inherit'/>}
                 </Container>
             </Grid>

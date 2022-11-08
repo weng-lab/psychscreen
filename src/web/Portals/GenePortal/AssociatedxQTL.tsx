@@ -2,6 +2,7 @@ import React, {useMemo}  from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { associateBy } from 'queryz';
 import { CustomizedTable, Typography } from '@zscreen/psychscreen-ui-components';
+import { CircularProgress } from '@material-ui/core';
 
 export type GenomicRange = {
     chromosome?: string;
@@ -286,8 +287,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
             .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))            
     ) || [], [ snpCoordinateData, groupedQTLs ]);
     
-    const allQTLsData =allQTLs && allQTLs.map(x=>{
-      return [{
+    const allQTLsData =allQTLs && allQTLs.map(x=> [{
         header: "SNP ID",
         value: x.id
     }, {
@@ -309,17 +309,24 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                 {x.intersecting_ccres.intersecting_ccres[0]?.accession || "--"}
             </span>
         )
-    }]
-    })
-    //allQTLsData
-    if(!loading && allQTLsData && allQTLsData.length===0) return(<Typography type="body" size="large">
-    No fetal xQTLs were identified for this gene..
-        </Typography> )
+    }]);
+    
+    if (!loading && allQTLsData && allQTLsData.length === 0) return (
+        <Typography type="body" size="large">
+            No eQTLs or linked bCREs were identified for this gene.
+        </Typography>
+    );
 
-    return(<>
-    { allQTLsData&& allQTLsData.length>0 &&
-     <CustomizedTable style={{ width: "max-content" }}  tabledata={allQTLsData}/>}
-    </>)
+    return (
+        <>
+            { loading ? (
+                <CircularProgress />
+            ) : allQTLsData && allQTLsData.length > 0 && (
+                <CustomizedTable style={{ width: "max-content" }} tabledata={allQTLsData} />
+            )}
+        </>
+    );
+
 }
 
 

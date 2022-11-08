@@ -15,7 +15,6 @@ const dictionaryInvert = obj => Object.fromEntries(Object.entries(obj).map(a => 
 
 const legendContent = dictionaryInvert(tissueTypeColors) 
 
-
 export type GTexumap = {
     tissueid: string;
     color: string;
@@ -24,11 +23,11 @@ export type GTexumap = {
     coordinates: [ number, number ];
 };
 
-function lower5(x: number): number {
+export function lower5(x: number): number {
     return Math.floor(x / 5) * 5;
 }
 
-function upper5(x: number): number {
+export function upper5(x: number): number {
     return Math.ceil(x / 5) * 5;
 }
 
@@ -99,7 +98,7 @@ const GTexUMAP: React.FC = () => {
     const uref = useRef<SVGSVGElement>(null);
     const pcuref = useRef<SVGSVGElement>(null);
     const llegendref = useRef<SVGSVGElement>(null);
-    console.log(data)
+
     return (
         <>
             {  //show vertical app bar only for mobile view 

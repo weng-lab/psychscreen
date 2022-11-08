@@ -305,7 +305,7 @@ const Browser: React.FC<any> = (props) => {
         props.resolvedTranscript
     );
 
-    const l = useCallback(c => (c - expandedCoordinates.start) * 1400 / (expandedCoordinates.end - expandedCoordinates.start), [ expandedCoordinates ]);
+    const l = useCallback((c: number) => (c - expandedCoordinates.start) * 1400 / (expandedCoordinates.end - expandedCoordinates.start), [ expandedCoordinates ]);
     return (<>
         <CytobandView
             innerWidth={1000}
@@ -332,7 +332,8 @@ const Browser: React.FC<any> = (props) => {
             />
            <EGeneTracks
                 genes={groupedTranscripts || []}
-                expandedCoordinates={expandedCoordinates}
+                expandedCoordinates={coordinates || expandedCoordinates}
+                squish
             />
         </GenomeBrowser>
     </>)

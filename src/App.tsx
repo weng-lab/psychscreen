@@ -7,7 +7,7 @@ import { HomePage as WebHomePage } from './web/HomePage';
 import { HomePage as TabletHomePage } from './mobile-portrait/HomePage';
 import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
-import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTrailDetails';
+import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTraitDetails';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';

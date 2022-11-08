@@ -17,7 +17,11 @@ export type EGeneTrackProps = {
     squish?: boolean;
 };
 
-const EGeneTracks: React.FC<EGeneTrackProps> = props => {
+const TRACKS = [
+    "https://users.wenglab.org/sheddn/psychSCREEN_bws/ATAC/data/VLPFC-NeuN--healthy-ATAC.bigWig"
+];
+
+const RegulatoryLandscape: React.FC<EGeneTrackProps> = props => {
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
     const [ height, setHeight ] = useState(60);
     return (
@@ -25,7 +29,7 @@ const EGeneTracks: React.FC<EGeneTrackProps> = props => {
             <EmptyTrack
                 height={40}
                 width={1400}
-                text="GENCODE genes"
+                text="Brain Regulatory Landscape"
                 transform=""
                 id=""
             />
@@ -79,4 +83,4 @@ const EGeneTracks: React.FC<EGeneTrackProps> = props => {
         </g>
     );
 }
-export default EGeneTracks;
+export default RegulatoryLandscape;
