@@ -56,7 +56,7 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
     const allQTLs = useMemo( () => (
         snpCoordinateData?.snpQuery
             .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))
-    ) || [], [ snpCoordinateData, groupedQTLs, props ]);
+    ) || [], [ snpCoordinateData, groupedQTLs ]);
 
     const [ ld, setLD ] = useState<{ anchor: string; ld: LDEntry[] }>({ anchor: "", ld: [] });
     const ldSet = useMemo( () => new Map([ ...ld.ld.map(x => [ x.id, x.rSquared ]), [ ld.anchor, 1 ] ] as [ string, number ][]), [ ld ]);
@@ -71,7 +71,7 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
     const study = 32747698;
     const svgRef = useRef<SVGSVGElement>(null);
 
-    useEffect( () => { props.onHeightChanged && props.onHeightChanged(300); }, [ props.onHeightChanged ]);
+    useEffect( () => { props.onHeightChanged && props.onHeightChanged(300); }, [ props.onHeightChanged, props ]);
 
     return (
         <>

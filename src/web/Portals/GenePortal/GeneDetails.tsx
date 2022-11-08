@@ -17,7 +17,6 @@ import Browser from './Browser/Browser';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import GeneOverview from './GeneOverview';
-import { Container } from '@mui/system';
   
 type GTExGeneQueryResponse = {
     gtex_genes: {

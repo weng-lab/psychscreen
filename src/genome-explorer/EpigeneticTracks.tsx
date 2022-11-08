@@ -71,7 +71,7 @@ type EpigeneticTrackProps = {
 const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
     const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 350 : 250, [ props.domain ]);
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests: props.tracks }});
-    useEffect( () => { props.onHeightChanged && props.onHeightChanged(height); }, [ props.onHeightChanged, height ]);
+    useEffect( () => { props.onHeightChanged && props.onHeightChanged(height); }, [ props.onHeightChanged, height, props ]);
     const cCRECoordinateMap = useMemo( () => associateBy((data?.bigRequests[0].data || []) as BigBedData[], x => x.name, x => ({ chromosome: x.chr, start: x.start, end: x.end })), [ data ]);
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
     return loading || (data?.bigRequests.length || 0) < 2 ? <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." /> : (

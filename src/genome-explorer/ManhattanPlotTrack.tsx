@@ -60,8 +60,8 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
         variables: { bigRequests: tracks(props.url, props.domain)}
     });
-    const inView = useMemo( () => (
-        ((data?.bigRequests[0]?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
+    const inView = useMemo( () => [
+        ...((data?.bigRequests[0]?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
             rsId: xx.name?.split("_")[0] || "",
             score: +(xx.name?.split("_")[1] || "0"),
             coordinates: {
@@ -69,8 +69,13 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                 end: xx.end,
                 chromosome: xx.chr
             }
-        })
-    )), [ data ]);
+        })),
+        ...props.allQTLs.map(xx => ({
+            rsId: xx.id,
+            score: 1,
+            coordinates: xx.coordinates
+        }))
+    ], [ data, props.allQTLs ]);
     const allQTLs = useMemo( () => (
         inView?.filter(x => props.groupedQTLs.get(x.rsId))
             .map(x => ({ ...x, eQTL: props.groupedQTLs.get(x.rsId)! }))

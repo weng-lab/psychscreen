@@ -96,7 +96,11 @@ const RiskLocusView: React.FC<{ loci: { chromosome?: string, start: number, end:
                                         domain={{ start: 0, end: maxes.get(chromosome!)! }}
                                         onHighlightMouseOver={(_, x, ii) => setSelected([ chromosome!, ii, x + 50, i * 30 ])}
                                         onHighlightMouseOut={() => setSelected(null)}
-                                        onHighlightClick={(_, __, ii) => props.onLocusClick && props.onLocusClick(groupedLoci.get(chromosome!)![ii])}
+                                        onHighlightClick={(_, __, ii) => props.onLocusClick && props.onLocusClick({
+                                            chromosome: groupedLoci.get(chromosome!)![ii].chromosome,
+                                            start: groupedLoci.get(chromosome!)![ii].start + 650000,
+                                            end: groupedLoci.get(chromosome!)![ii].end - 750000,
+                                        })}
                                         opacity={0.4}
                                     />
                                 </>
