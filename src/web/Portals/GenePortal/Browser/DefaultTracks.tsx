@@ -6,7 +6,7 @@ import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
 import { BigRequest, RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 import { ValuedPoint } from 'umms-gb/dist/utils/types';
 //import { GenomicRange } from '../../../HomePage/Browser/Explorer/GenomeExplorer';
-import CCRETooltip from './CCRETooltip';
+import CCRETooltip from '../../../../genome-explorer/CCRETooltip';
 export type GenomicRange = {
     chromosome?: string;
     start: number;

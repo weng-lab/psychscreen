@@ -6,6 +6,7 @@ import React, { useMemo, useState } from 'react';
 import { Cytobands } from 'umms-gb';
 import { linearTransform } from '../GenePortal/violin/utils';
 import { Typography } from '@zscreen/psychscreen-ui-components';
+import { GenomicRange } from '../GenePortal/AssociatedxQTL';
 
 type Cytoband = {
     coordinates: {
@@ -51,7 +52,7 @@ function colorGradient(v: number): string {
     return `rgb(${c.map(x => x(v)).join(",")})`;
 }
 
-const RiskLocusView: React.FC<{ loci: { chromosome?: string, start: number, end: number, count: number, minimump: number }[] }> = props => {
+const RiskLocusView: React.FC<{ loci: { chromosome?: string, start: number, end: number, count: number, minimump: number }[], onLocusClick?: (locus: GenomicRange) => void }> = props => {
     const groupedLoci = useMemo(() => groupBy(props.loci, x => x.chromosome, x => x), [ props.loci ]);
     const { data: cytobands } = useCytobands();
     const groupedCytobands = useMemo( () => groupBy(cytobands?.cytoband || [], x => x.coordinates.chromosome, x => x), [ cytobands ]);
@@ -95,6 +96,7 @@ const RiskLocusView: React.FC<{ loci: { chromosome?: string, start: number, end:
                                         domain={{ start: 0, end: maxes.get(chromosome!)! }}
                                         onHighlightMouseOver={(_, x, ii) => setSelected([ chromosome!, ii, x + 50, i * 30 ])}
                                         onHighlightMouseOut={() => setSelected(null)}
+                                        onHighlightClick={(_, __, ii) => props.onLocusClick && props.onLocusClick(groupedLoci.get(chromosome!)![ii])}
                                         opacity={0.4}
                                     />
                                 </>

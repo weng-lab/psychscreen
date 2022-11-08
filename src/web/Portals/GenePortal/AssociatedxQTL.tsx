@@ -284,7 +284,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
 
     const allQTLs = useMemo( () => (
         snpCoordinateData?.snpQuery
-            .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))            
+            .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))
+            .sort((a, b) => a.eQTL.fdr - b.eQTL.fdr)
     ) || [], [ snpCoordinateData, groupedQTLs ]);
     
     const allQTLsData =allQTLs && allQTLs.map(x=> [{
@@ -322,7 +323,12 @@ const AssociatedxQTL: React.FC<any> = (props) => {
             { loading ? (
                 <CircularProgress />
             ) : allQTLsData && allQTLsData.length > 0 && (
-                <CustomizedTable style={{ width: "max-content" }} tabledata={allQTLsData} />
+                <>
+                    <Typography type="headline" size="small">
+                        {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
+                    </Typography>
+                    <CustomizedTable style={{ width: "max-content" }} tabledata={allQTLsData} />
+                </>
             )}
         </>
     );

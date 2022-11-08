@@ -1,6 +1,6 @@
 
 import { useParams } from "react-router-dom";
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, GridProps } from '@mui/material';
@@ -13,6 +13,8 @@ import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
 import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
+import { GenomicRange } from "../GenePortal/AssociatedxQTL";
+import Browser from "../GenePortal/Browser/Browser";
 
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
@@ -100,9 +102,15 @@ query gwasintersectingSnpsWithBcre($disease: String!, $snpid: String, $bcre_grou
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const { disease } = useParams();
     const navigate = useNavigate();  
-    const [page, setPage] = useState<number>(-1);
+    const [ page, setPage ] = useState<number>(-1);
     const { state }: any = useLocation();
-    const { searchvalue, diseaseDesc } = state ? state : { searchvalue: '', diseaseDesc: ''} 
+    const { searchvalue, diseaseDesc } = state ? state : { searchvalue: '', diseaseDesc: ''};
+    const [ browserCoordinates, setBrowserCoordinates ] = useState<GenomicRange | null>(null);
+    const navigateBrowser = useCallback((coordinates: GenomicRange) => {
+        setBrowserCoordinates(coordinates);
+        setPage(3);
+    }, []);
+    console.log(browserCoordinates);
     
     const diseaseLabel = disease && DISEASE_CARDS.find(d => d.val === disease)?.cardLabel
     const { data } = useQuery<{ gwassnpAssociationsQuery: GWAS_SNP[] }>(AssociatedSnpQuery, {		
@@ -174,13 +182,16 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         {gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 && (
                             <><Button bvariant={page === 2 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(2)}>Regulatory SNP Associations</Button>&nbsp;&nbsp;&nbsp;</>
                         )}
+                        { browserCoordinates && (
+                            <Button bvariant={page === 3 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(3)}>Brain (epi)genome browser</Button>
+                        )}
                     </Container>
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
                 <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
                 <Grid sm={10} md={10} lg={9} xl={9}>
                     { page === -1 ? (
-                        <RiskLocusView loci={loci} />
+                        <RiskLocusView loci={loci} onLocusClick={navigateBrowser} />
                     ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
                         <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
                     ) : page === 1 && data && data.gwassnpAssociationsQuery.length > 0 ? (
@@ -192,6 +203,10 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             adult_bcredata={adultgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery}
                             fetal_bcredata={fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery}
                         />
+                    ) : page === 3 ? (
+                        <div style={{ marginTop: "2em" }}>
+                            <Browser coordinates={browserCoordinates} />
+                        </div>
                     ) : null }
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />

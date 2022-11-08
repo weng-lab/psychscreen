@@ -2,8 +2,9 @@
 import { gql, useQuery } from '@apollo/client';
 import React, {useMemo, useRef, useState, useCallback}  from 'react';
 import CytobandView from './Explorer/Cytobands';
-import { GenomeBrowser, RulerTrack } from 'umms-gb';
+import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from './EGeneTracks';
+import { EpigeneticTracks, tracks, VariantTracks } from '../../../../genome-explorer';
 
 export const LD_QUERY = gql`
 query s($id: [String]) {
@@ -304,6 +305,15 @@ const Browser: React.FC<any> = (props) => {
         props.name,
         props.resolvedTranscript
     );
+    const epigeneticTracks = useMemo( () => tracks("GRCh38", coordinates || expandedCoordinates as { chromosome: string, start: number, end: number }), [ coordinates, expandedCoordinates ]);
+
+    const onDomainChanged = useCallback(
+        (d: GenomicRange) => {
+            const chr = d.chromosome === undefined ? eexpandedCoordinates.chromosome : d.chromosome;
+            setCoordinates({ chromosome: chr, start: Math.round(d.start), end: Math.round(d.end) });
+        },
+        [ eexpandedCoordinates ]
+    );
 
     const l = useCallback((c: number) => (c - expandedCoordinates.start) * 1400 / (expandedCoordinates.end - expandedCoordinates.start), [ expandedCoordinates ]);
     return (<>
@@ -314,6 +324,10 @@ const Browser: React.FC<any> = (props) => {
             assembly={"hg38"}
             position={props.coordinates}
         /><br />
+        <div style={{ textAlign: "center" }}>
+            <UCSCControls onDomainChanged={onDomainChanged} domain={coordinates || eexpandedCoordinates} withInput={false} />
+        </div>
+        <br />
         <GenomeBrowser
             svgRef={svgRef}
             domain={coordinates || expandedCoordinates}
@@ -330,13 +344,22 @@ const Browser: React.FC<any> = (props) => {
                 height={30}
                 width={1400}
             />
-           <EGeneTracks
+            <EGeneTracks
                 genes={groupedTranscripts || []}
                 expandedCoordinates={coordinates || expandedCoordinates}
                 squish
             />
+            <EpigeneticTracks
+                assembly="GRCh38"
+                tracks={epigeneticTracks}
+                domain={coordinates || expandedCoordinates}
+            />
+            <VariantTracks
+                coordinates={coordinates || expandedCoordinates}
+                resolvedTranscript={props.resolvedTranscript}
+                name={props.name}
+            />
         </GenomeBrowser>
     </>)
 }
-
 export default Browser;

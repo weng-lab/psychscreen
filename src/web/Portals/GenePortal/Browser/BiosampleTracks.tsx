@@ -4,7 +4,7 @@ import React, { RefObject, useEffect, useMemo } from 'react';
 import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
 import { RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 import { ValuedPoint } from 'umms-gb/dist/utils/types';
-import CCRETooltip from './CCRETooltip';
+import CCRETooltip from '../../../../genome-explorer/CCRETooltip';
 
 export type BiosampleEntry = {
     name: string;

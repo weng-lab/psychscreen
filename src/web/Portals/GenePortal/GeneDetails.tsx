@@ -115,15 +115,17 @@ const GeneDetails: React.FC = (props) => {
               onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
               style={{ marginBottom: "63px" }}
           />
-          <Container>
             <Grid container {...props}> 
-                <Grid item sm={12}>
+                <Grid item sm={1} lg={1.5} />
+                <Grid item sm={9}>
                     <Typography type="headline" size="large" style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}>
                         <img alt="DNA" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png" width="1.7%" />
                         &nbsp;Gene Details: {gene}
                     </Typography>
-                </Grid>               
-                <Grid item sm={12}>
+                </Grid>
+                <Grid item sm={1} lg={1.5} />
+                <Grid item sm={1} lg={1.5} />  
+                <Grid item sm={9}>
                   <Box>
                     <Tabs value={tabIndex} onChange={handleTabChange}>
                         <Tab label="Brain Specificity" />
@@ -131,6 +133,7 @@ const GeneDetails: React.FC = (props) => {
                         <Tab label="Brain (Epi)genome Browser" />
                         <Tab label="Brain Expression by Age" />
                         <Tab label="Brain eQTLs and bCREs" />
+                        <Tab label="Brain Single Cell Expression" />
                         { null && <Tab label="Open Target" /> }
                     </Tabs>
                     <Divider/>
@@ -153,11 +156,18 @@ const GeneDetails: React.FC = (props) => {
                         <AssociatedxQTL name={gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}
                         }/>
                       </Box>
-                    ) : tabIndex === 5 ? (
+                    ) : tabIndex === 6 ? (
                       <Box>
                         <Typography  type="body"
                                     size="small">
                               <OpenTarget id={geneid}/>
+                        </Typography>
+                      </Box>
+                    ) : tabIndex === 5 ? (
+                      <Box>
+                        <Typography  type="body"
+                                    size="large">
+                              Under Development.
                         </Typography>
                       </Box>
                     ) : tabIndex === 1 ? (
@@ -193,7 +203,6 @@ const GeneDetails: React.FC = (props) => {
                   </Box>
                 </Grid>
             </Grid>
-          </Container>
       </>
   );
 };

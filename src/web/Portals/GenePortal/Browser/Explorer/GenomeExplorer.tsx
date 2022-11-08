@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useReducer, useRef } from 'react';
 import { GenomeBrowser, GraphQLTrackSet, GraphQLTranscriptTrack, WrappedDenseBigBed, WrappedFullBigWig, WrappedPackTranscriptTrack, WrappedRulerTrack, WrappedSquishTranscriptTrack } from 'umms-gb';
-import CCRETooltip from '../CCRETooltip';
+import CCRETooltip from '../../../../../genome-explorer/CCRETooltip';
 import { COLOR_MAP, DEFAULT_TRACKS, TRACK_ORDER } from './constants';
 import CytobandView from './Cytobands';
 import { GenomeExplorerActions, genomeExplorerReducer } from './reducer';

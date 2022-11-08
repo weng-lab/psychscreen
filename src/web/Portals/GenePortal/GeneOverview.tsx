@@ -41,7 +41,7 @@ const BRAIN_COLORS = {
 function useSpecificities(gene: string) {
     const [ specificities, setSpecificities ] = useState<{ [ key: string]: { [key: string]: number } }>({});
     useEffect( () => {
-        fetch("https://storage.googleapis.com/gcp.wenglab.org/GTEx-psychscreen/specificities.json")
+        fetch("https://downloads.wenglab.org/GTEx-psychscreen/specificities.json")
             .then(x => x.json())
             .then(setSpecificities)
     }, []);
@@ -275,9 +275,9 @@ const GeneOverview: React.FC <{ gene?: string | undefined }> = ({ gene }) => {
                         xOffset={0.3}
                         fontSize={0.6}
                         title="Tissue Cluster Identity:"
-                        url="https://storage.googleapis.com/gcp.wenglab.org/GTEx-psychscreen/all-samples.coordinates.json"
+                        url="https://downloads.wenglab.org/GTEx-psychscreen/all-samples.coordinates.json"
                         colors={TISSUE_TYPE_COLORS}
-                        geneUrl="https://storage.googleapis.com/gcp.wenglab.org/GTEx-psychscreen/all-genes.coordinates.json"
+                        geneUrl="https://downloads.wenglab.org/GTEx-psychscreen/all-genes.coordinates.json"
                         titleCoordinates={[ 10, 18.5 ]}
                         titleSize={1}
                     />
@@ -289,9 +289,9 @@ const GeneOverview: React.FC <{ gene?: string | undefined }> = ({ gene }) => {
                         xOffset={0.15}
                         fontSize={0.5}
                         title="Brain Region Cluster Identity:"
-                        url="https://storage.googleapis.com/gcp.wenglab.org/GTEx-psychscreen/all-samples.brain-coordinates.json"
+                        url="https://downloads.wenglab.org/GTEx-psychscreen/all-samples.brain-coordinates.json"
                         colors={BRAIN_COLORS}
-                        geneUrl="https://storage.googleapis.com/gcp.wenglab.org/GTEx-psychscreen/all-genes.brain-coordinates.json"
+                        geneUrl="https://downloads.wenglab.org/GTEx-psychscreen/all-genes.brain-coordinates.json"
                         titleCoordinates={[ 10, 9.5 ]}
                         titleSize={0.55}
                     />
