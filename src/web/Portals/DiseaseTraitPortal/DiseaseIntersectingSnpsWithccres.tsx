@@ -99,12 +99,12 @@ const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccre
                     <Box>
                         <Tabs value={tabIndex} onChange={handleTabChange}>
                             <Tab label="SNPs Intersecting any cCRE" ></Tab>
-                            <Tab label="SNPs Intersecting brain cCREs (bCREs)" ></Tab>
+                            {props.adult_bcredata && props.fetal_bcredata && (props.adult_bcredata.length>0 || props.fetal_bcredata.length>0 ) &&<Tab label="SNPs Intersecting brain cCREs (bCREs)" ></Tab>}
                         </Tabs>
                         <Divider/>
                     </Box>
                     { props.ccredata  && tabIndex === 0 && <CustomizedTable style={{ width: "max-content" }} tabledata={GWASIntersectingSnpDataWithCcre} /> }
-                    { props.adult_bcredata && props.fetal_bcredata  && tabIndex === 1 && (
+                    { props.adult_bcredata && props.fetal_bcredata && (props.adult_bcredata.length>0 || props.fetal_bcredata.length>0 ) && tabIndex === 1 && (
                         <>
                             <br/>
                             { props.adult_bcredata && <Button bvariant={page===0 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(0)}>Adult</Button> }&nbsp;&nbsp;&nbsp;
