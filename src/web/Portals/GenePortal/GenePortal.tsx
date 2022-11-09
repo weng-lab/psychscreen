@@ -189,7 +189,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
                             </Slide> } 
                             {geneCards!.length === 0 &&
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    {'Loading...'  }          
+                                    {'No Results Found'  }          
                                 </Container>
                             }
                             </>

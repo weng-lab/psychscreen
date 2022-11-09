@@ -189,7 +189,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                             </Slide> } 
                             {snpCards!.length === 0 &&
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    {'Loading...'  }          
+                                    {'No Results found'  }          
                                 </Container>
                             }
                             </>

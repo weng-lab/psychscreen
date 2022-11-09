@@ -14,6 +14,7 @@ import { HttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
 import GeneDetails from './web/Portals/GenePortal/GeneDetails';
 import GTexUMAP from './web/Portals/GenePortal/GTexUMAP';
+import SNPDetails from './web/Portals/SnpPortal/SNPDetails';
 
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
@@ -66,6 +67,7 @@ const App: React.FC = () => {
                     <Route path="/psychscreen/single-cell/:disease" element={<SingleCellDetails />} />
                     <Route path="/psychscreen/gene/:gene" element={<GeneDetails />} />
                     <Route path="/psychscreen/gene/gtexumap" element={<GTexUMAP/>} />
+                    <Route path="/psychscreen/snp/:snpid" element={<SNPDetails/>} />
                     { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
                 </Routes>
             </Router>

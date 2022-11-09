@@ -58,6 +58,8 @@ const MainPanel: React.FC<GridProps> = props => {
                                 navigate("/psychscreen/traits", { state: { searchvalue: searchVal } })
                             } else if(selectedPortal==='Gene/bCRE') {
                                 navigate("/psychscreen/gene", { state: { searchvalue: searchVal } })
+                            } else if(selectedPortal==='SNP/QTL') {
+                                navigate("/psychscreen/snp", { state: { searchvalue: searchVal } })
                             }
                             
                          }
