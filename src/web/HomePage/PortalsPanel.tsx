@@ -294,7 +294,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility for 1,009,942 single cells
                         </Typography>
-                        <Button bvariant="filled" btheme="light">Explore Single Cells</Button>
+                        <Button bvariant="filled" btheme="light"  onClick={()=>{ navigate("/psychscreen/single-cell")}}>Explore Single Cells</Button>
                     </Container>
                 </Grid>
             </> : 
