@@ -86,6 +86,7 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
 
 const GeneBCREPortalPanel: React.FC<GridProps> = props => {
     const theme = useTheme();
+    const navigate = useNavigate();      
     return(
     <Grid container {...props}>
         <Grid item  xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
@@ -135,7 +136,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain regulatory elements
                         </Typography>
-                        <Button bvariant="filled" btheme="light">Explore Genes/bCREs</Button>
+                        <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/gene")}}>Explore Genes/bCREs</Button>
                     </Container>
                 </Grid> 
             </>: 
@@ -178,7 +179,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain regulatory elements
                         </Typography>
-                        <Button bvariant="filled" btheme="light">Explore Genes/bCREs</Button>
+                        <Button bvariant="filled" btheme="light"   onClick={()=>{ navigate("/psychscreen/gene")}}>Explore Genes/bCREs</Button>
                     </Container>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
@@ -193,7 +194,9 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
     </Grid>
 )};
 
-const SNPQTLPortalPanel: React.FC<GridProps> = props => (
+const SNPQTLPortalPanel: React.FC<GridProps> = props => {
+    const navigate = useNavigate();      
+    return(
     <Grid container {...props}>
         <Grid item xs={0} sm={0}  md={0} lg={1} xl={2}></Grid>
         <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
@@ -240,15 +243,16 @@ const SNPQTLPortalPanel: React.FC<GridProps> = props => (
                 >
                     <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in bCREs
                 </Typography>
-                <Button bvariant="filled" btheme="light">Explore SNPs/QTLs</Button>
+                <Button bvariant="filled" btheme="light"   onClick={()=>{ navigate("/psychscreen/snp")}}>Explore SNPs/QTLs</Button>
             </Container>
         </Grid>
         <Grid item xs={0} sm={0} md={0} lg={1} xl={2} ></Grid>
     </Grid>
-);
+)};
 
 const SingleCellPortalPanel: React.FC<GridProps> = props => {
    const theme = useTheme();
+   const navigate = useNavigate();      
    return (
     <Grid container {...props}>
         <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
@@ -326,7 +330,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility for 1,009,942 single cells
                         </Typography>
-                        <Button bvariant="filled" btheme="light">Explore Single Cells</Button>
+                        <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/single-cell")}}>Explore Single Cells</Button>
                     </Container>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>

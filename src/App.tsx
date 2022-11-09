@@ -8,6 +8,7 @@ import { HomePage as TabletHomePage } from './mobile-portrait/HomePage';
 import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
 import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTraitDetails';
+import  SingleCellDetails from './web/Portals/SingleCellPortal/SingleCellDetails';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
@@ -62,6 +63,7 @@ const App: React.FC = () => {
                     <Route path="/psychscreen" element={<HomePage />} />
                     <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
                     <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
+                    <Route path="/psychscreen/single-cell/:disease" element={<SingleCellDetails />} />
                     <Route path="/psychscreen/gene/:gene" element={<GeneDetails />} />
                     <Route path="/psychscreen/gene/gtexumap" element={<GTexUMAP/>} />
                     { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
