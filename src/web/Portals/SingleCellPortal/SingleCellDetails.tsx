@@ -36,7 +36,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
     const onSearchChange = useCallback(
         async (value: any) => {
             setFetching(true);
-            const response = await fetch('https://psychscreen.api.wenglab.org/graphql', {
+            const response = await fetch('https://ga.staging.wenglab.org/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
                     query: GENE_AUTOCOMPLETE_QUERY,

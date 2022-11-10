@@ -51,7 +51,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
     const onSearchChange = useCallback(
         async (value: any) => {
             setFetching(true);
-            const response = await fetch('https://psychscreen.api.wenglab.org/graphql', {
+            const response = await fetch('https://ga.staging.wenglab.org/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
                     query: SNP_AUTOCOMPLETE_QUERY,
