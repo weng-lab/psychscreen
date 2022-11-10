@@ -1,9 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
-import { CircularProgress, Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { CircularProgress, Grid, Tabs, Tab, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
 import { groupBy } from 'queryz';
 import React, { useMemo, useState } from 'react';
+import DotPlot from './DotPlot';
 import { lower5, range, upper5 } from './GTexUMAP';
 
 export type SingleCellGeneQueryItem = {
@@ -155,9 +156,13 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         x: { start: lower5(Math.min(...points.map(x => x.x)) * 1.1), end: upper5(Math.max(...points.map(x => x.x))) },
         y: { start: lower5(Math.min(...points.map(x => x.y)) * 1.1), end: upper5(Math.max(...points.map(x => x.y))) }
     }), [ points ]);
+    const [ tabIndex, setTabIndex ] = useState(0);
+    const handleTabChange = (_: any, newTabIndex: number) => {
+        setTabIndex(newTabIndex);
+    };
     return (
         <Grid container>
-            <Grid item sm={12} md={12} lg={12} xl={12}>
+            <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
                 <Typography type="headline" size="small" style={{ marginBottom: "0.55em" }}>Select a Single Cell Dataset:</Typography>
                 { DATASETS.map( d => (
                     <>
@@ -167,114 +172,133 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                     </>
                 ))}
             </Grid>
-            <Grid item sm={6} md={6} lg={6} xl={6}>
-                { groupedVals.length > 0 && (
-                    <CustomizedTable
-                        style={{ width: "max-content" }}
-                        tabledata={groupedVals}
-                        onRowMouseOver={row => setHighlighted(row[0].value)}
-                        onRowMouseOut={() => setHighlighted("")}
-                    />
-                )}
+            <Grid item sm={12}>
+                <Tabs value={tabIndex} onChange={handleTabChange}>
+                    <Tab label="Expression Summary" />
+                    <Tab label="Detailed Expression Profile" />
+                </Tabs>
             </Grid>
-            <Grid item sm={6} md={6} lg={6} xl={6}>
-                <div style={{ marginLeft: "8em" }}>
-                    <Typography style={{ marginLeft: "2em", marginBottom: "0.5em" }} type="body" size="large">Color Scheme:</Typography>
-                    <ToggleButtonGroup style={{ marginLeft: "2em" }} size={"small"} value={colorScheme} exclusive onChange={(_, x) => setColorScheme(x)}>
-                        <ToggleButton value="expression">
-                            {gene} Expression
-                        </ToggleButton>
-                        <ToggleButton value="cluster">
-                            Cell Type Cluster
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                </div>
-                <div style={{ marginLeft: "-2em", marginTop: "-3em" }}>
+            { tabIndex === 0 ? (
+                <Grid item sm={12}>
                     { loading ? <CircularProgress /> : (
-                        <Chart
-                            key={dataset}
-                            marginFraction={0.28}
-                            innerSize={{ width: 2100, height: 2000 }}
-                            domain={domain}
-                            xAxisProps={{ ticks: range(domain.x.start, domain.x.end + 1, 5), title: 'UMAP-1' }}
-                            yAxisProps={{ ticks: range(domain.y.start, domain.y.end + 1, 5), title: 'UMAP-2' }}
-                            scatterData={[ points ]}
-                        >
-                            <Scatter
-                                data={points}
-                                onPointMouseOver={(i: number) => { setTooltip(i); setHighlighted(points[i]?.data); }}
-                                onPointMouseOut={() => { setTooltip(-1); setHighlighted(""); }}
-                            />
-                            <defs>
-                                <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stop-color="red" />
-                                    <stop offset="100%" stop-color="#ffcd00" />
-                                </linearGradient>
-                            </defs>
-                            { tooltip > -1 && (
-                                <rect
-                                    x={points[tooltip].x - points[tooltip].data.replace(/_/g, " ").length * 1}
-                                    y={points[tooltip].y - 3 + 0.7}
-                                    width={points[tooltip].data.replace(/_/g, " ").length * 1 * 2}
-                                    height={3}
-                                    stroke="#000000"
-                                    strokeWidth={0.05}
-                                    fill="#ffffff"
-                                    fillOpacity={0.9}
-                                />
-                            )}
-                            { tooltip > -1 && (
-                                <text
-                                    x={points[tooltip].x}
-                                    y={points[tooltip].y - 4.2 - 0.1}
-                                    fontSize={2}
-                                    textAnchor="middle"
-                                >
-                                    {points[tooltip].data.replace(/_/g, " ")}
-                                </text>
-                            )}
-                            { colorScheme === "expression" && (
-                                <rect
-                                    x={upper5(Math.max(...points.map(x => x.x))) + 2}
-                                    y={upper5(Math.max(...points.map(x => x.y))) - 2}
-                                    width={1}
-                                    height={upper5(Math.max(...points.map(x => x.y))) - lower5(Math.min(...points.map(x => x.y))) - 5}
-                                    fill="url(#scale)"
-                                />
-                            )}
-                            { colorScheme === "expression" && (
-                                <text
-                                    x={upper5(Math.max(...points.map(x => x.x))) + 1}
-                                    y={(lower5(Math.min(...points.map(x => x.y))) + upper5(Math.max(...points.map(x => x.y)))) / 2 + 0.5}
-                                    transform="rotate(-90)"
-                                    fontSize={1.5}
-                                    textAnchor="middle"
-                                >
-                                    {gene} Expression
-                                </text>
-                            )}
-                            { colorScheme === "expression" && (
-                                <text
-                                    x={upper5(Math.max(...points.map(x => x.x))) + 4}
-                                    y={upper5(Math.max(...points.map(x => x.y))) - 2.5}
-                                    fontSize={1.2}
-                                >
-                                    {maximumValue.toFixed(1)}
-                                </text>
-                            )}
-                            { colorScheme === "expression" && (
-                                <text
-                                    x={upper5(Math.max(...points.map(x => x.x))) + 4}
-                                    y={lower5(Math.min(...points.map(x => x.y))) + 2.5}
-                                    fontSize={1.2}
-                                >
-                                    0.0
-                                </text>
-                            )}
-                        </Chart>
+                        <DotPlot
+                            disease={dataset}
+                            gene={gene}
+                        />
                     )}
-                </div>
-            </Grid>
+                </Grid>
+            ) : (
+                <>
+                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                        { groupedVals.length > 0 && (
+                            <CustomizedTable
+                                style={{ width: "max-content" }}
+                                tabledata={groupedVals}
+                                onRowMouseOver={row => setHighlighted(row[0].value)}
+                                onRowMouseOut={() => setHighlighted("")}
+                            />
+                        )}
+                    </Grid>
+                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                        <div style={{ marginLeft: "8em" }}>
+                            <Typography style={{ marginLeft: "2em", marginBottom: "0.5em" }} type="body" size="large">Color Scheme:</Typography>
+                            <ToggleButtonGroup style={{ marginLeft: "2em" }} size={"small"} value={colorScheme} exclusive onChange={(_, x) => setColorScheme(x)}>
+                                <ToggleButton value="expression">
+                                    {gene} Expression
+                                </ToggleButton>
+                                <ToggleButton value="cluster">
+                                    Cell Type Cluster
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
+                        <div style={{ marginLeft: "-2em", marginTop: "-3em" }}>
+                            { loading ? <CircularProgress /> : (
+                                <Chart
+                                    key={dataset}
+                                    marginFraction={0.28}
+                                    innerSize={{ width: 2100, height: 2000 }}
+                                    domain={domain}
+                                    xAxisProps={{ ticks: range(domain.x.start, domain.x.end + 1, 5), title: 'UMAP-1' }}
+                                    yAxisProps={{ ticks: range(domain.y.start, domain.y.end + 1, 5), title: 'UMAP-2' }}
+                                    scatterData={[ points ]}
+                                >
+                                    <Scatter
+                                        data={points}
+                                        onPointMouseOver={(i: number) => { setTooltip(i); setHighlighted(points[i]?.data); }}
+                                        onPointMouseOut={() => { setTooltip(-1); setHighlighted(""); }}
+                                    />
+                                    <defs>
+                                        <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
+                                            <stop offset="0%" stop-color="red" />
+                                            <stop offset="100%" stop-color="#ffcd00" />
+                                        </linearGradient>
+                                    </defs>
+                                    { tooltip > -1 && (
+                                        <rect
+                                            x={points[tooltip].x - points[tooltip].data.replace(/_/g, " ").length * 1}
+                                            y={points[tooltip].y - 3 + 0.7}
+                                            width={points[tooltip].data.replace(/_/g, " ").length * 1 * 2}
+                                            height={3}
+                                            stroke="#000000"
+                                            strokeWidth={0.05}
+                                            fill="#ffffff"
+                                            fillOpacity={0.9}
+                                        />
+                                    )}
+                                    { tooltip > -1 && (
+                                        <text
+                                            x={points[tooltip].x}
+                                            y={points[tooltip].y - 4.2 - 0.1}
+                                            fontSize={2}
+                                            textAnchor="middle"
+                                        >
+                                            {points[tooltip].data.replace(/_/g, " ")}
+                                        </text>
+                                    )}
+                                    { colorScheme === "expression" && (
+                                        <rect
+                                            x={upper5(Math.max(...points.map(x => x.x))) + 2}
+                                            y={upper5(Math.max(...points.map(x => x.y))) - 2}
+                                            width={1}
+                                            height={upper5(Math.max(...points.map(x => x.y))) - lower5(Math.min(...points.map(x => x.y))) - 5}
+                                            fill="url(#scale)"
+                                        />
+                                    )}
+                                    { colorScheme === "expression" && (
+                                        <text
+                                            x={upper5(Math.max(...points.map(x => x.x))) + 1}
+                                            y={(lower5(Math.min(...points.map(x => x.y))) + upper5(Math.max(...points.map(x => x.y)))) / 2 + 0.5}
+                                            transform="rotate(-90)"
+                                            fontSize={1.5}
+                                            textAnchor="middle"
+                                        >
+                                            {gene} Expression
+                                        </text>
+                                    )}
+                                    { colorScheme === "expression" && (
+                                        <text
+                                            x={upper5(Math.max(...points.map(x => x.x))) + 4}
+                                            y={upper5(Math.max(...points.map(x => x.y))) - 2.5}
+                                            fontSize={1.2}
+                                        >
+                                            {maximumValue.toFixed(1)}
+                                        </text>
+                                    )}
+                                    { colorScheme === "expression" && (
+                                        <text
+                                            x={upper5(Math.max(...points.map(x => x.x))) + 4}
+                                            y={lower5(Math.min(...points.map(x => x.y))) + 2.5}
+                                            fontSize={1.2}
+                                        >
+                                            0.0
+                                        </text>
+                                    )}
+                                </Chart>
+                            )}
+                        </div>
+                    </Grid>
+                </>
+            )}
         </Grid>
     );
 };
