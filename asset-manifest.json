@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/psychscreen/static/css/main.106baaae.chunk.css",
-    "main.js": "/psychscreen/static/js/main.db6800cc.chunk.js",
-    "main.js.map": "/psychscreen/static/js/main.db6800cc.chunk.js.map",
+    "main.js": "/psychscreen/static/js/main.c659a9fc.chunk.js",
+    "main.js.map": "/psychscreen/static/js/main.c659a9fc.chunk.js.map",
     "runtime-main.js": "/psychscreen/static/js/runtime-main.4dd5575c.js",
     "runtime-main.js.map": "/psychscreen/static/js/runtime-main.4dd5575c.js.map",
     "static/css/2.4c4080dd.chunk.css": "/psychscreen/static/css/2.4c4080dd.chunk.css",
@@ -25,6 +25,6 @@
     "static/css/2.4c4080dd.chunk.css",
     "static/js/2.79987210.chunk.js",
     "static/css/main.106baaae.chunk.css",
-    "static/js/main.db6800cc.chunk.js"
+    "static/js/main.c659a9fc.chunk.js"
   ]
 }
