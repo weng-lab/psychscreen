@@ -359,7 +359,7 @@ const Browser: React.FC<any> = (props) => {
                 coordinates={coordinates || expandedCoordinates}
                 resolvedTranscript={props.resolvedTranscript}
                 name={props.name}
-                url={`https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP["ASD"]}`}
+                url={`https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP["ASD"]}.bigBed`}
                 trait="Autism Spectrum Disorder"
             />
         </GenomeBrowser>
