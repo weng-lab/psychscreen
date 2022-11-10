@@ -17,6 +17,7 @@ import Browser from './Browser/Browser';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import GeneOverview from './GeneOverview';
+import SingleCell from './SingleCell';
   
 type GTExGeneQueryResponse = {
     gtex_genes: {
@@ -107,13 +108,13 @@ const GeneDetails: React.FC = (props) => {
  
   return (
       <>
-          <AppBar
+            <AppBar
               centered
               onDownloadsClicked={() => navigate("/downloads")}
               onHomepageClicked={() => navigate("/")}
               onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
               style={{ marginBottom: "63px" }}
-          />
+            />
             <Grid container {...props}> 
                 <Grid item sm={1} lg={1.5} />
                 <Grid item sm={9}>
@@ -164,10 +165,7 @@ const GeneDetails: React.FC = (props) => {
                       </Box>
                     ) : tabIndex === 5 ? (
                       <Box>
-                        <Typography  type="body"
-                                    size="large">
-                              Under Development.
-                        </Typography>
+                            <SingleCell gene={gene || "APOE"} />
                       </Box>
                     ) : tabIndex === 1 ? (
                       <Box>
