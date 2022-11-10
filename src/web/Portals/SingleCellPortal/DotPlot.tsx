@@ -34,8 +34,7 @@ const DotPlot: React.FC<{ disease: string, gene: string}> = props => {
         }
 
     })    
-  const results: any = 
-        new Map(
+  const results: any = React.useMemo( () => new Map(
             data?.singleCellBoxPlotQuery
                 .map(
                     (x: any) => {
@@ -47,7 +46,7 @@ const DotPlot: React.FC<{ disease: string, gene: string}> = props => {
                             },
                         ] as [string, { radius: number, colorpercent: number }]}
                 )
-        )
+        ), [ data ]);
     
     const width = 15000
     const height = width / 3
@@ -61,7 +60,7 @@ const DotPlot: React.FC<{ disease: string, gene: string}> = props => {
          
          })
         return [Math.min(...radius), Math.max(...radius)];
-    }, [results]);
+    }, [results, keys]);
     
     const radiusTransform = linearTransform( radiusDomain,[20,60]);
     

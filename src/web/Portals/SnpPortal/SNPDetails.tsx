@@ -129,8 +129,7 @@ const SNPDetails: React.FC<GridProps> = (props) => {
     const [ tabIndex, setTabIndex] = useState(0);
     const { state }: any = useLocation();
     const { chromosome, start, end } = state ? state : { chromosome: '', start: null, end: null } 
-    const coordinates = {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}
-    //11500798 12000799
+    const coordinates = useMemo( () => ({chromosome: chromosome,start: parseInt(start),end: parseInt(end)}), [ chromosome, start, end ]);
     const expandedCoordinates = useMemo( () => expandCoordinates(coordinates, 25000), [ coordinates ]);
 
     const handleTabChange = (_: any, newTabIndex: number) => {

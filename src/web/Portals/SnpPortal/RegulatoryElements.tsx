@@ -95,8 +95,7 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = props => {
         ...(data?.cCREQuery || []),
         ...(data?.rDHSQuery || []).filter(x => !ur.has(x.accession))
     ], [ data, ur ]);
-    const baseResults = useMemo( () => new Set(allResults.map(x => x.accession)), [ allResults ]);
-    const combinedResults = useMemo( () => [ ...allResults ], [ allResults, props, baseResults ]);
+    const combinedResults = useMemo( () => [ ...allResults ], [ allResults ]);
 
     const tableData = combinedResults.map(d=>{
         return [{header: 'Accession', value: d.accession},

@@ -4,7 +4,7 @@ import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-com
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
 import { groupBy } from 'queryz';
 import React, { useMemo, useState } from 'react';
-import DotPlot from './DotPlot';
+import DotPlot from '../SingleCellPortal/DotPlot';
 import { lower5, range, upper5 } from './GTexUMAP';
 
 export type SingleCellGeneQueryItem = {
@@ -136,7 +136,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         strokeWidth: x.subclass === highlighted ? 4 : 0,
         stroke: "#000000",
         strokeOpacity: 0.4
-    } })), [ data, highlighted, colorScheme ]);
+    } })), [ data, highlighted, colorScheme, colors ]);
     const groupedVals = useMemo( () => {
         const groups = groupBy(points, x => x.data, x => x.val);
         return [ ...groups.keys() ].sort().map(x => [{
