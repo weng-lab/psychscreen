@@ -7,18 +7,6 @@ import { SNP } from 'umms-gb/dist/components/tracks/ld/types';
 import { expandCoordinates, GenomicRange, useGenePageData } from '../web/Portals/GenePortal/AssociatedxQTL';
 import ManhattanPlotTrack, { LDEntry } from './ManhattanPlotTrack';
 
-export const STUDIES = [{
-    url: "gs://gcp.wenglab.org/GCST010763_buildGRCh37.hg38.sorted.bigBed",
-    trait: "Schizophrenia (age at diagnosis)",
-    author: "Bi W",
-    pmid: 32589924
-}, {
-    url: "gs://gcp.wenglab.org/ASD_SPARK_iPSYCH_PGC.bigBed",
-    trait: "Autism Spectrum Disorder",
-    author: "Matoba N",
-    pmid: 32747698
-}];
-
 export const LD_QUERY = gql`
 query s($id: [String]) {
   snp: snpQuery(assembly: "hg38", snpids: $id) {
@@ -41,7 +29,7 @@ export type LDQueryResponse = {
     }[];
 };
 
-const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: boolean, name: string, onHeightChanged?: (x: number) => void }> = (props) => {
+const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: boolean, name: string, onHeightChanged?: (x: number) => void, url: string, trait: string }> = (props) => {
     
     const client = useApolloClient();
     
@@ -78,12 +66,12 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
             <EmptyTrack
                 height={40}
                 width={1400}
-                text={`Variant Associations with ${STUDIES.filter(x => x.pmid === study)[0].trait}`}
+                text={`GWAS summary statistics for ${props.trait}`}
                 transform=""
                 id=""
             />
             <ManhattanPlotTrack
-                url={STUDIES.filter(x => x.pmid === study)[0].url}
+                url={props.url}
                 domain={props.coordinates || expandedCoordinates}
                 onSNPMousedOver={x => snpMouseOver(({ domain: x.data.coordinates, id: x.data.rsId }))}
                 snpProps={snp => ldSet.has(snp.data.rsId) ? { fill: `rgb(255,${gradient(ldSet.get(snp.data.rsId)!)},0)` } : { fill: "#dddddd", fillOpacity: 0.4 }}

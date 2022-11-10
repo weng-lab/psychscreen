@@ -8,13 +8,13 @@ import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import { DISEASE_CARDS } from "./DiseaseTraitPortal";
+import { DISEASE_CARDS, URL_MAP } from "./DiseaseTraitPortal";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
 import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
-import Browser from "../GenePortal/Browser/Browser";
+import Browser from "./Browser";
 
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
@@ -95,7 +95,6 @@ query gwasintersectingSnpsWithBcre($disease: String!, $snpid: String, $bcre_grou
         ccreid
         ccre_class
         bcre_group
-
     }
 }`;
 
@@ -105,14 +104,14 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const [ page, setPage ] = useState<number>(-1);
     const { state }: any = useLocation();
     const { searchvalue, diseaseDesc } = state ? state : { searchvalue: '', diseaseDesc: ''};
-    const [ browserCoordinates, setBrowserCoordinates ] = useState<GenomicRange | null>(null);
+    const [ browserCoordinates, setBrowserCoordinates ] = useState<GenomicRange>({ chromosome: "chr1", start: 1000000, end: 2000000 });
     const navigateBrowser = useCallback((coordinates: GenomicRange) => {
         setBrowserCoordinates(coordinates);
         setPage(3);
     }, []);
-    console.log(browserCoordinates);
     
-    const diseaseLabel = disease && DISEASE_CARDS.find(d => d.val === disease)?.cardLabel
+    const diseaseLabel = disease && DISEASE_CARDS.find(d => d.val === disease)?.cardLabel;
+    const summaryStatisticsURL = disease ? `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed` : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
     const { data } = useQuery<{ gwassnpAssociationsQuery: GWAS_SNP[] }>(AssociatedSnpQuery, {		
         variables: {
             disease: (disease || '')
@@ -205,7 +204,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         />
                     ) : page === 3 ? (
                         <div style={{ marginTop: "2em" }}>
-                            <Browser coordinates={browserCoordinates} />
+                            <Browser coordinates={browserCoordinates} url={summaryStatisticsURL} trait={diseaseLabel || "Autism Spectrum Disorder"} />
                         </div>
                     ) : null }
                 </Grid>

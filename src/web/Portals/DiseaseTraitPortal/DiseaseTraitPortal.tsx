@@ -37,7 +37,28 @@ export const DISEASE_CARDS = [
 {val: "SleepDuration", cardLabel: "Sleep Duration", cardDesc: "", diseaseDesc: "The number of hours of sleep per day a person gets. On average, people sleep a little more than 7 hours a day, with most people sleeping between 6 to 8 hours on average."},
 {val: "YearsEducation", cardLabel: "Years of Education", cardDesc: "", diseaseDesc: "The level of education of people in the United Kingdom, ranging from little or no formal education to advanced professional degrees. "},
 {aliases:["Major Depressive Disorder", "Depression","MDD"],val: "Depression", cardLabel: "Major Depressive Disorder", cardDesc: "", diseaseDesc: "Major depressive disorder (commonly: clinical depression) is a mood disorder characterized by periods of low mood, low self-esteem, and disinterest or loss of pleasure in normally enjoyable activities. Depression causes the second most years lived with disability, after back pain. The disease has a genetic basis that accounts for about 40% of disease risk with other environmental factors including some major life changes, medications, and other health conditions contributing additional risk. Depression can be treated with psychotherapy and medications (often SSRIs)."},
-]
+];
+
+export const URL_MAP = {
+    "ADHD": "ADHD",
+    "AgeFirstBirth": "age-first-birth",
+    "Alzheimers": "Alzheimer",
+    "Anorexia": "Anorexia",
+    "ASD": "autism",
+    "BipolarDisorder": "bipolar",
+    "BMI": "BMI",
+    "CigsPerDay": "cigarettes-per-day",
+    "MDD": "depression",
+    "Dyslexia": "dyslexia",
+    "EverSmoked": "ever-smoked",
+    "Insomnia": "insomnia",
+    "Intelligence": "intelligence",
+    "Parkinsons": "parkinsons",
+    "ReactionTime": "reaction-time",
+    "Schizophrenia": "schizophrenia",
+    "SleepDuration": "sleep-duration",
+    "YearsEducation": "years-of-education"
+};
 
 const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     const { state }: any = useLocation();
@@ -45,16 +66,11 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     const navigate = useNavigate(); 
     const [ val, setVal ] = useState<string>(searchvalue)         
     const [diseaseCards, setdiseaseCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(searchvalue!=='' ? 
-    DISEASE_CARDS.filter(d=> 
-        {
-            return (d.cardLabel.toLowerCase().includes(val.toLowerCase()) || (d.aliases && d.aliases.find(el=>{
-                return el.toLowerCase().includes(val.toLowerCase())
-                    
-                
-            }) ) )
-        }
-    )
-    :  undefined)    
+    DISEASE_CARDS.filter(d => (
+        d.cardLabel.toLowerCase().includes(val.toLowerCase()) || (d.aliases && d.aliases.find(el=>(
+            el.toLowerCase().includes(val.toLowerCase())
+        )) )
+    )) : undefined);
     const theme = useTheme();
     return (
         <>
@@ -135,8 +151,6 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                             }}                
                             helperText={"e.g. schizophrenia, years of education"}                            
                         />
-                        
-
                     </Container>
                     {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length>0 && <Slide direction="up" in timeout={1000}>
                             <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            

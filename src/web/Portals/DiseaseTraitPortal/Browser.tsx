@@ -3,10 +3,15 @@ import CytobandView from '../GenePortal/Browser/Explorer/Cytobands';
 import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from '../GenePortal/Browser/EGeneTracks';
 import { EpigeneticTracks, tracks, VariantTracks } from '../../../genome-explorer';
-import { GenomicRange } from '../GenePortal/Browser/Browser';
 import { useGenePageData } from '../GenePortal/AssociatedxQTL';
 
-const Browser: React.FC<{ coordinates: GenomicRange }> = (props) => { 
+type GenomicRange = {
+    chromosome?: string;
+    start: number;
+    end: number;
+};
+
+const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string }> = (props) => { 
     const svgRef = useRef<SVGSVGElement>(null);
     const [ coordinates, setCoordinates ] = useState<GenomicRange>(props.coordinates);
     const [ highlight ] = useState<GenomicRange | null>(null);
@@ -34,7 +39,7 @@ const Browser: React.FC<{ coordinates: GenomicRange }> = (props) => {
             innerWidth={1000}
             height={15}
             chromosome={coordinates.chromosome!}
-            assembly={"hg38"}
+            assembly="hg38"
             position={coordinates}
         /><br />
         <div style={{ textAlign: "center" }}>
@@ -70,7 +75,9 @@ const Browser: React.FC<{ coordinates: GenomicRange }> = (props) => {
             <VariantTracks
                 coordinates={coordinates}
                 resolvedTranscript={false}
-                name={""}
+                url={props.url}
+                name=""
+                trait={props.trait}
             />
         </GenomeBrowser>
     </>)

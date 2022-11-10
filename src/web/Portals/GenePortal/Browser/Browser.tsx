@@ -5,6 +5,7 @@ import CytobandView from './Explorer/Cytobands';
 import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from './EGeneTracks';
 import { EpigeneticTracks, tracks, VariantTracks } from '../../../../genome-explorer';
+import { URL_MAP } from '../../DiseaseTraitPortal/DiseaseTraitPortal';
 
 export const LD_QUERY = gql`
 query s($id: [String]) {
@@ -358,6 +359,8 @@ const Browser: React.FC<any> = (props) => {
                 coordinates={coordinates || expandedCoordinates}
                 resolvedTranscript={props.resolvedTranscript}
                 name={props.name}
+                url={`https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP["ASD"]}`}
+                trait="Autism Spectrum Disorder"
             />
         </GenomeBrowser>
     </>)

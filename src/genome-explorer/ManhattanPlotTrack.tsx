@@ -77,12 +77,12 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
         }))
     ], [ data, props.allQTLs ]);
     const allQTLs = useMemo( () => (
-        inView?.filter(x => props.groupedQTLs.get(x.rsId))
+        inView?.filter(x => props.groupedQTLs.get(x.rsId) && x.score > 0)
             .map(x => ({ ...x, eQTL: props.groupedQTLs.get(x.rsId)! }))
     ) || [], [ inView, props ]);
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
     return loading ? <Loader active>Loading...</Loader> : (
-        <g>
+        <g transform="translate(0,30)">
             <ManhattanTrack
                 height={150}
                 data={inView}
@@ -120,16 +120,16 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                 transform="translate(0,190)"
             />
             { settingsMousedOver && (
-                <rect width={1400} height={300} transform="translate(0,0)" fill="#24529c" fillOpacity={0.1} />
+                <rect width={1400} height={330} transform="translate(0,-30)" fill="#24529c" fillOpacity={0.1} />
             )}
             <rect
-                transform="translate(0,0)"
-                height={300}
+                transform="translate(0,-30)"
+                height={330}
                 width={40}
                 fill="#ffffff"
             />
             <rect
-                height={300}
+                height={330}
                 width={15}
                 fill="#24529c"
                 stroke="#000000"
@@ -137,10 +137,10 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                 onMouseOver={() => setSettingsMousedOver(true)}
                 onMouseOut={() => setSettingsMousedOver(false)}
                 strokeWidth={1}
-                transform="translate(20,0)"
+                transform="translate(20,-30)"
                 onClick={props.onSettingsClick}
             />
-            <text transform="rotate(270) translate(-220,12)" fill="#24529c">
+            <text transform="rotate(270) translate(-210,12)" fill="#24529c">
                 Variants and GWAS
             </text>
         </g>
