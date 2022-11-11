@@ -2,10 +2,10 @@ import { gql, useApolloClient } from '@apollo/client';
 import { linearTransform } from 'jubilant-carnival';
 import { associateBy } from 'queryz';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { EmptyTrack } from 'umms-gb';
 import { SNP } from 'umms-gb/dist/components/tracks/ld/types';
 import { expandCoordinates, GenomicRange, useGenePageData } from '../web/Portals/GenePortal/AssociatedxQTL';
 import ManhattanPlotTrack, { LDEntry } from './ManhattanPlotTrack';
+import VariantTrackModal from './SettingsModals/VariantTracks';
 
 export const LD_QUERY = gql`
 query s($id: [String]) {
@@ -45,6 +45,7 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
         snpCoordinateData?.snpQuery
             .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))
     ) || [], [ snpCoordinateData, groupedQTLs ]);
+    console.log(allQTLs);
 
     const [ ld, setLD ] = useState<{ anchor: string; ld: LDEntry[] }>({ anchor: "", ld: [] });
     const ldSet = useMemo( () => new Map([ ...ld.ld.map(x => [ x.id, x.rSquared ]), [ ld.anchor, 1 ] ] as [ string, number ][]), [ ld ]);
@@ -56,22 +57,23 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
     }, [ setLD, client ]);
     const gradient = useCallback(linearTransform({ start: 0.1, end: 1 }, { start: 215, end: 0 }), []);
 
-    const study = 32747698;
     const svgRef = useRef<SVGSVGElement>(null);
 
-    useEffect( () => { props.onHeightChanged && props.onHeightChanged(300); }, [ props.onHeightChanged, props ]);
+    const [ urls, setURLs ] = useState([ props.url ]);
+    const [ titles, setTitles ] = useState([ props.trait ]);
+    const [ settingsModalShown, setSettingsModalShown ] = useState(false);
 
     return (
         <>
-            <EmptyTrack
-                height={40}
-                width={1400}
-                text={`GWAS summary statistics for ${props.trait}`}
-                transform=""
-                id=""
+            <VariantTrackModal
+                onCancel={() => setSettingsModalShown(false)}
+                onAccept={x => { setURLs(x.map(xx => xx[1])); setTitles(x.map(xx => xx[0])); setSettingsModalShown(false); }}
+                initialSelection={titles.map((x, i) => [ x, urls[i] ])}
+                open={settingsModalShown}
             />
             <ManhattanPlotTrack
-                url={props.url}
+                urls={urls}
+                titles={titles}
                 domain={props.coordinates || expandedCoordinates}
                 onSNPMousedOver={x => snpMouseOver(({ domain: x.data.coordinates, id: x.data.rsId }))}
                 snpProps={snp => ldSet.has(snp.data.rsId) ? { fill: `rgb(255,${gradient(ldSet.get(snp.data.rsId)!)},0)` } : { fill: "#dddddd", fillOpacity: 0.4 }}
@@ -82,6 +84,8 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
                 sortOrder={(a, b) => (ldSet.has(a.data.rsId) ? a.data.score : -a.data.score) - (ldSet.has(b.data.rsId) ? b.data.score : -b.data.score)}
                 svgRef={svgRef}
                 gene={props.name}
+                onSettingsClick={() => setSettingsModalShown(true)}
+                onHeightChanged={(height: number) => props.onHeightChanged && props.onHeightChanged(height)}
             />
             <g className="xqtl">
                 <rect y={22} height={65} fill="none" width={1400} /> 

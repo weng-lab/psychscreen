@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { RefObject, useMemo, useState } from 'react';
+import React, { RefObject, useEffect, useMemo, useState } from 'react';
 import { BIG_QUERY, BigQueryResponse } from './EpigeneticTracks';
 import { Header, Loader } from 'semantic-ui-react';
 import { BigBedData } from 'bigwig-reader';
@@ -26,7 +26,8 @@ type GenomicRange = {
 }
 
 type ManhattanPlotTrackProps = {
-    url: string;
+    urls: string[];
+    titles: string[];
     domain: GenomicRange;
     onHeightChanged?: (height: number) => void;
     onSNPMousedOver?: (snp: ManhattanSNP) => void;
@@ -42,12 +43,12 @@ type ManhattanPlotTrackProps = {
     gene: string;
 };
 
-const tracks = (url: string, pos: GenomicRange) => ({
+const tracks = (urls: string[], pos: GenomicRange) => urls.map(url => ({
     chr1: pos.chromosome!,
     start: pos.start,
     end: pos.end,
     url
-});
+}));
 
 const Tooltip: React.FC<ManhattanSNP> = snp => (
     <div style={{ marginTop: "-5em", marginLeft: "-4em", background: "#ffffff" }}>
@@ -58,18 +59,20 @@ const Tooltip: React.FC<ManhattanSNP> = snp => (
 
 const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
-        variables: { bigRequests: tracks(props.url, props.domain)}
+        variables: { bigRequests: tracks(props.urls, props.domain)}
     });
     const inView = useMemo( () => [
-        ...((data?.bigRequests[0]?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
-            rsId: xx.name?.split("_")[0] || "",
-            score: +(xx.name?.split("_")[1] || "0"),
-            coordinates: {
-                start: xx.start,
-                end: xx.end,
-                chromosome: xx.chr
-            }
-        })),
+        ...((data?.bigRequests || []).flatMap((x, i) => (
+            ((x?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
+                rsId: xx.name?.split("_")[0] || "",
+                [i]: +(xx.name?.split("_")[1] || "0"),
+                coordinates: {
+                    start: xx.start,
+                    end: xx.end,
+                    chromosome: xx.chr
+                }
+            }))
+        ))),
         ...props.allQTLs.map(xx => ({
             rsId: xx.id,
             score: 1,
@@ -77,30 +80,43 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
         }))
     ], [ data, props.allQTLs ]);
     const allQTLs = useMemo( () => (
-        inView?.filter(x => props.groupedQTLs.get(x.rsId) && x.score > 0)
+        inView?.filter(x => props.groupedQTLs.get(x.rsId))
             .map(x => ({ ...x, eQTL: props.groupedQTLs.get(x.rsId)! }))
     ) || [], [ inView, props ]);
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
+    const height = useMemo( () => 220 * props.titles.length + 100, [ props.titles ]);
+    useEffect( () => props.onHeightChanged && props.onHeightChanged(height), [ height, props.onHeightChanged ]);
     return loading ? <Loader active>Loading...</Loader> : (
-        <g transform="translate(0,30)">
-            <ManhattanTrack
-                height={150}
-                data={inView}
-                width={1400}
-                domain={props.domain}
-                tooltipContent={Tooltip}
-                onHeightChanged={height => props.onHeightChanged && props.onHeightChanged(height + 120)}
-                onSNPMousedOver={props.onSNPMousedOver}
-                snpProps={props.snpProps}
-                className={props.className}
-                sortOrder={props.sortOrder}
-                svgRef={props.svgRef}
-            />
+        <g transform="translate(0,25)">
+            { props.titles.map((title, i) => (
+                <g transform={`translate(0,${200 * i})`}>
+                    <EmptyTrack
+                        height={40}
+                        width={1400}
+                        text={`GWAS summary statistics for ${title}`}
+                        transform=""
+                        id=""
+                    />
+                    <ManhattanTrack
+                        height={150}
+                        data={inView.map(v => ({ coordinates: v.coordinates, rsId: v.rsId, score: v[i] || 1 }))}
+                        width={1400}
+                        domain={props.domain}
+                        tooltipContent={Tooltip}
+                        onSNPMousedOver={props.onSNPMousedOver}
+                        snpProps={props.snpProps}
+                        className={props.className}
+                        sortOrder={props.sortOrder}
+                        svgRef={props.svgRef}
+                        transform="translate(0,40)"
+                    />
+                </g>
+            ))}
             <EmptyTrack
                 height={25}
                 text={props.gene ? `Brain eQTLs for ${props.gene} (red) and other SNPs (black)` : "SNPs"}
                 width={1400}
-                transform="translate(0,170)"
+                transform={`translate(0,${200 * props.urls.length + 30})`}
                 id=""
             />
             <LDTrack
@@ -117,19 +133,19 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                 ldThreshold={0.1}
                 highlighted={new Set(allQTLs.map(x => x.rsId))}
                 highlightColor="#ff0000"
-                transform="translate(0,190)"
+                transform={`translate(0,${200 * props.urls.length + 40})`}
             />
             { settingsMousedOver && (
-                <rect width={1400} height={330} transform="translate(0,-30)" fill="#24529c" fillOpacity={0.1} />
+                <rect width={1400} height={height} transform="translate(0,-30)" fill="#24529c" fillOpacity={0.1} />
             )}
             <rect
                 transform="translate(0,-30)"
-                height={330}
+                height={height}
                 width={40}
                 fill="#ffffff"
             />
             <rect
-                height={330}
+                height={height}
                 width={15}
                 fill="#24529c"
                 stroke="#000000"
@@ -140,7 +156,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                 transform="translate(20,-30)"
                 onClick={props.onSettingsClick}
             />
-            <text transform="rotate(270) translate(-210,12)" fill="#24529c">
+            <text transform={`rotate(270) translate(-${height / 2},12)`} textAnchor="middle" fill="#24529c">
                 Variants and GWAS
             </text>
         </g>

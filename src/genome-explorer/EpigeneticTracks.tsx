@@ -1,11 +1,12 @@
 import { gql, useQuery } from '@apollo/client';
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import { GraphQLImportanceTrack } from 'bpnet-ui';
-import { associateBy } from 'queryz';
+// import { associateBy } from 'queryz';
 import React, { RefObject, useEffect, useMemo, useState } from 'react';
 import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
 import { BigRequest, RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 import { ValuedPoint } from 'umms-gb/dist/utils/types';
+import { EpigeneticTracksModal } from './SettingsModals';
 
 export const DEFAULT_TRACKS = (assembly: string): Map<string, { url: string }> => new Map([
     [ "adult bCREs", { url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed" } ],
@@ -68,70 +69,88 @@ type EpigeneticTrackProps = {
     onSettingsClick?: () => void;
 };
 
+const TitledTrack: React.FC<{ data: BigResponseData, url: string, title: string, color?: string, height: number, transform?: string, onHeightChanged?: (height: number) => void, domain: GenomicRange, svgRef?: React.RefObject<SVGSVGElement> }>
+    = ({ data, url, title, height, domain, transform, onHeightChanged, svgRef, color }) => {
+    useEffect( () => onHeightChanged && onHeightChanged(height + 40), [ height, onHeightChanged ]);
+    return (
+        <g transform={transform}>
+            <EmptyTrack
+                height={40}
+                width={1400}
+                transform="translate(0,8)"
+                id=""
+                text={title}
+            />
+            { url.endsWith(".bigBed") ? (
+                <DenseBigBed
+                    width={1400}
+                    height={height}
+                    domain={domain}
+                    id="adult-bCREs"
+                    transform="translate(0,40)"
+                    data={(data as BigBedData[])}
+                    svgRef={svgRef}
+                />
+            ) : (
+                <FullBigWig
+                    transform="translate(0,40)"
+                    width={1400}
+                    height={height}
+                    domain={domain}
+                    id="NeuN+"
+                    color={color}
+                    data={data as BigWigData[]}
+                    noTransparency
+                />
+            )}
+        </g>
+    );
+};
+
 const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
-    const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 350 : 250, [ props.domain ]);
-    const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests: props.tracks }});
+    
+    const [ cTracks, setTracks ] = useState<[ string, string ][]>([
+        [ "Adult brain bCREs", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed" ],
+        [ "all brain regions, aggregated NeuN+", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
+        [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
+    ]);
+    const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 120 + cTracks.length * 70 : 20 + cTracks.length * 70, [ cTracks, props.domain ]);
+    const bigRequests = useMemo( () => cTracks.map(x => ({
+        chr1: props.domain.chromosome!,
+        start: props.domain.start,
+        end: props.domain.end,
+        preRenderedWidth: 1400,
+        url: x[1]
+    })), [ cTracks, props ]);
+    const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }});
     useEffect( () => { props.onHeightChanged && props.onHeightChanged(height); }, [ props.onHeightChanged, height, props ]);
-    const cCRECoordinateMap = useMemo( () => associateBy((data?.bigRequests[0].data || []) as BigBedData[], x => x.name, x => ({ chromosome: x.chr, start: x.start, end: x.end })), [ data ]);
+    // const cCRECoordinateMap = useMemo( () => associateBy((data?.bigRequests[0].data || []) as BigBedData[], x => x.name, x => ({ chromosome: x.chr, start: x.start, end: x.end })), [ data ]);
+
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
+    const [ settingsModalShown, setSettingsModalShown ] = useState(false);
+
     return loading || (data?.bigRequests.length || 0) < 2 ? <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." /> : (
         <>
+            <EpigeneticTracksModal
+                open={settingsModalShown}
+                onCancel={() => setSettingsModalShown(false)}
+                onAccept={x => { setTracks(x); setSettingsModalShown(false); }}
+                initialSelection={cTracks}
+            />
             <g className="encode-fetal-brain">
                 <rect y={10} height={55} fill="none" width={1400} /> 
             </g>
-            <EmptyTrack
-                height={40}
-                width={1400}
-                transform=""
-                id=""
-                text="Adult brain cCREs (bCREs)"
-            />
-            <DenseBigBed
-                width={1400}
-                height={30}
-                domain={props.domain}
-                id="adult-bCREs"
-                transform="translate(0,40)"
-                data={(data!.bigRequests[0].data as BigBedData[]).map(x => ({ ...x, color: props.cCREHighlights?.has(x.name || "") ? "#0000ff" : x.color }))}
-                svgRef={props.svgRef}
-                onClick={x => props.oncCREClicked && x.name && props.oncCREClicked(x.name)}
-                onMouseOver={x => props.oncCREMousedOver && x.name && props.oncCREMousedOver(cCRECoordinateMap.get(x.name))}
-                onMouseOut={props.oncCREMousedOut}
-            />
-            <EmptyTrack
-                height={40}
-                width={1400}
-                transform="translate(0, 75)"
-                id=""
-                text="PsychSCREEN aggregated NeuN+ ATAC-seq"
-            />
-            <FullBigWig
-                transform="translate(0,115)"
-                width={1400}
-                height={30}
-                domain={props.domain}
-                id="NeuN+"
-                color={COLOR_MAP.get("PsychSCREEN aggregated NeuN+ ATAC-seq")}
-                data={data!.bigRequests[1].data as BigWigData[]}
-                noTransparency
-            />
-            <EmptyTrack
-                height={40}
-                width={1400}
-                transform="translate(0,150)"
-                id=""
-                text="PsychSCREEN aggregated NeuN- ATAC-seq"
-            />
-            <FullBigWig
-                transform="translate(0,190)"
-                width={1400}
-                height={30}
-                domain={props.domain}
-                id="NeuN+"
-                color={COLOR_MAP.get("PsychSCREEN aggregated NeuN- ATAC-seq")}
-                data={data!.bigRequests[2].data as BigWigData[]}
-                noTransparency
-            />
+            { (data?.bigRequests || []).map( (data, i) => (
+                <TitledTrack
+                    height={40}
+                    url={cTracks[i][1]}
+                    domain={props.domain}
+                    title={cTracks[i][0]}
+                    svgRef={props.svgRef}
+                    data={data.data}
+                    transform={`translate(0,${i * 70})`}
+                />
+            ))}
             <g className="tf-motifs">
                 <rect y={110} height={55} fill="none" width={1400} /> 
             </g>
@@ -175,9 +194,9 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
                 onMouseOut={() => setSettingsMousedOver(false)}
                 strokeWidth={1}
                 transform="translate(20,0)"
-                onClick={props.onSettingsClick}
+                onClick={() => {props.onSettingsClick && props.onSettingsClick(); setSettingsModalShown(true); }}
             />
-            <text transform={`rotate(270) translate(-${height === 350 ? 250 : 190},12)`} fill="#4c1f8f">
+            <text transform={`rotate(270) translate(-${height / 2},12)`} textAnchor="middle" fill="#4c1f8f">
                 Regulatory Features
             </text>
         </>
