@@ -19,6 +19,7 @@ type TitledImportanceTrackHighlight = {
     coordinates: [ number, number ];
     sequence: string;
     motif: MotifMatch;
+    reverseComplement?: boolean;
 };
 
 type MotifMatch = {
@@ -35,6 +36,7 @@ type MotifResponse = {
         meme_motif_search: {
             results: [{
                 motif: MotifMatch;
+                reverseComplement: boolean;
             }];
         }[];
     };
@@ -52,6 +54,7 @@ query MemeMotifSearch($pwms: [[[Float!]]]!) {
             e_value
           }
         }
+        reverseComplement
       }
     }
   }  
@@ -61,6 +64,11 @@ function seqToPWM(sequence: string[]): number[][] {
     const M = { 'A': [ 1, 0, 0, 0 ], 'C': [ 0, 1, 0, 0 ], 'G': [ 0, 0, 1, 0], 'T': [ 0, 0, 0, 1 ] };
     return sequence.map(x => M[x]);
 }
+
+export const reverseComplement = (ppm: number[][]): number[][] =>
+    ppm && ppm[0] && ppm[0].length === 4
+        ? ppm.map(inner => inner.slice().reverse()).reverse()
+        : ppm.map(entry => [entry[3], entry[2], entry[1], entry[0], entry[5], entry[4]]).reverse();
 
 export const logLikelihood = (backgroundFrequencies: any) => (r: any) => {
     let sum = 0.0;
@@ -98,7 +106,8 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             .then(data => setHighlights([ ...highlights, {
                 sequence: sequence.join(""),
                 coordinates,
-                motif: (data as MotifResponse).data.meme_motif_search[0].results[0].motif
+                motif: (data as MotifResponse).data.meme_motif_search[0].results[0].motif,
+                reverseComplement: (data as MotifResponse).data.meme_motif_search[0].results[0].reverseComplement
             }]))
             .catch(error => console.error(error));
     }, [ highlights ]);
@@ -148,7 +157,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                     <g transform="translate(10,60)">
                         <RawLogo
                             alphabet={DNAAlphabet}
-                            values={highlights[selectedHighlight].motif.pwm.map(logLikelihood([ 0.25, 0.25, 0.25, 0.25 ]))}
+                            values={(highlights[selectedHighlight].reverseComplement ? reverseComplement(highlights[selectedHighlight].motif.pwm) : highlights[selectedHighlight].motif.pwm).map(logLikelihood([ 0.25, 0.25, 0.25, 0.25 ]))}
                             glyphWidth={10}
                             stackHeight={50}
                             x={0}
