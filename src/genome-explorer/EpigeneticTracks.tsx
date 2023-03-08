@@ -7,6 +7,7 @@ import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
 import { BigRequest, RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 import { ValuedPoint } from 'umms-gb/dist/utils/types';
 import { EpigeneticTracksModal } from './SettingsModals';
+import TitledImportanceTrack from './TitledImportanceTrack';
 
 export const DEFAULT_TRACKS = (assembly: string): Map<string, { url: string }> => new Map([
     [ "adult bCREs", { url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed" } ],
@@ -114,7 +115,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
         [ "all brain regions, aggregated NeuN+", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
         [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
     ]);
-    const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 120 + cTracks.length * 70 : 20 + cTracks.length * 70, [ cTracks, props.domain ]);
+    const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 400 + cTracks.length * 70 : 20 + cTracks.length * 70, [ cTracks, props.domain ]);
     const bigRequests = useMemo( () => cTracks.map(x => ({
         chr1: props.domain.chromosome!,
         start: props.domain.start,
@@ -155,25 +156,34 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
                 <rect y={110} height={55} fill="none" width={1400} /> 
             </g>
             { props.domain.end - props.domain.start <= 10000 && (
-                <EmptyTrack
-                    transform="translate(0,220)"
-                    text="Sequence Scaled by PhyloP 100-way"
-                    height={30}
+                <TitledImportanceTrack
+                    transform="translate(0,230)"
+                    title="VLPFC neuron profile importance scores"
+                    height={130}
                     width={1400}
-                    id=""
+                    signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.profile_scores.bw"
+                    domain={props.domain}
                 />
             )}
             { props.domain.end - props.domain.start <= 10000 && (
-                <g transform="translate(0,250)">
-                    <GraphQLImportanceTrack
-                        width={1400}
-                        height={100}
-                        endpoint="https://ga.staging.wenglab.org"
-                        signalURL="gs://gcp.wenglab.org/hg38.phyloP100way.bigWig"
-                        sequenceURL="gs://gcp.wenglab.org/hg38.2bit"
-                        coordinates={props.domain as any}
-                    />
-                </g>
+                <TitledImportanceTrack
+                    transform="translate(0,360)"
+                    title="VLPFC glia profile importance scores"
+                    height={130}
+                    width={1400}
+                    signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.profile_scores.bw"
+                    domain={props.domain}
+                />
+            )}
+            { props.domain.end - props.domain.start <= 10000 && (
+                <TitledImportanceTrack
+                    transform="translate(0,490)"
+                    title="Mammalian 241-way PhyloP from Zoonomia"
+                    height={130}
+                    width={1400}
+                    signalURL="gs://gcp.wenglab.org/hg38.phyloP100way.bigWig"
+                    domain={props.domain}
+                />
             )}
             { settingsMousedOver && (
                 <rect width={1400} height={height} transform="translate(0,-0)" fill="#4c1f8f" fillOpacity={0.1} />
