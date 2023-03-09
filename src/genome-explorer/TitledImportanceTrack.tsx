@@ -1,9 +1,12 @@
 import { GraphQLImportanceTrack } from 'bpnet-ui';
 import { ImportanceTrackDataPoint } from 'bpnet-ui/dist/components/ImportanceTrack/ImportanceTrack';
-import React, { useCallback, useEffect, useState } from 'react';
-import { EmptyTrack } from 'umms-gb';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { EmptyTrack, FullBigWig } from 'umms-gb';
 import { RawLogo, DNAAlphabet } from 'logojs-react';
 import { GenomicRange } from '../web/Portals/GenePortal/AssociatedxQTL';
+import { useQuery } from '@apollo/client';
+import { BigQueryResponse, BIG_QUERY } from '../web/Portals/GenePortal/Browser/DefaultTracks';
+import { BigWigData } from 'bigwig-reader';
 
 type TitledImportanceTrackProps = {
     onHeightChanged?: (height: number) => void;
@@ -12,7 +15,9 @@ type TitledImportanceTrackProps = {
     transform?: string;
     domain: GenomicRange;
     signalURL: string;
+    imputedSignalURL?: string;
     width: number;
+    color?: string;
 };
 
 type TitledImportanceTrackHighlight = {
@@ -84,7 +89,7 @@ function last<T>(x: T[]): T {
 }
 
 const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
-    const { height, transform, signalURL, width, title, domain } = props;
+    const { height, transform, signalURL, width, title, domain, imputedSignalURL, color } = props;
     useEffect( () => props.onHeightChanged && props.onHeightChanged(height), [ height, props.onHeightChanged ]);
 
     const coordinateMap = useCallback((coordinate: number) => (
@@ -112,8 +117,14 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             .catch(error => console.error(error));
     }, [ highlights ]);
 
-    console.log(highlights.map(x => coordinateMap(x.coordinates[0])))
-    console.log(selectedHighlight, selectedHighlight !== null && `translate(${coordinateMap(highlights[selectedHighlight].coordinates[0])},30)`);
+    const bigRequests = useMemo( () => [{
+        chr1: domain.chromosome!,
+        start: domain.start,
+        end: domain.end,
+        preRenderedWidth: width,
+        url: imputedSignalURL
+    }], [ domain ]);
+    const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }, skip: imputedSignalURL === undefined });
 
     return (
         <g transform={transform}>
@@ -124,10 +135,22 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                 width={1400}
                 id=""
             />
-            <g transform="translate(0,30)">
+            { !loading && imputedSignalURL !== undefined && (
+                <FullBigWig
+                    transform="translate(0,30)"
+                    width={1400}
+                    height={height - 80}
+                    domain={domain}
+                    id="NeuN+"
+                    color={color}
+                    data={data?.bigRequests[0].data as BigWigData[]}
+                    noTransparency
+                />
+            ) }
+            <g transform={`translate(0,${loading || imputedSignalURL === undefined ? 30 : 80}`}>
                 <GraphQLImportanceTrack
                     width={width}
-                    height={height - 30}
+                    height={height - (loading || imputedSignalURL === undefined ? 30 : 80)}
                     endpoint="https://ga.staging.wenglab.org"
                     signalURL={signalURL}
                     sequenceURL="gs://gcp.wenglab.org/hg38.2bit"
@@ -148,7 +171,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                     onMouseOut={() => setSelectedHighlight(null)}
                 />
             ))}
-            { selectedHighlight !== null && (
+            { selectedHighlight !== null && highlights[selectedHighlight] && highlights[selectedHighlight].motif && (
                 <g
                     transform={`translate(${coordinateMap(highlights[selectedHighlight].coordinates[0]) - 120},-150)`}
                 >

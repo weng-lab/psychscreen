@@ -162,6 +162,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
                     height={130}
                     width={1400}
                     signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.profile_scores.bw"
+                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.imputed_scores.bw"
                     domain={props.domain}
                 />
             )}
@@ -172,6 +173,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
                     height={130}
                     width={1400}
                     signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.profile_scores.bw"
+                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.imputed_scores.bw"
                     domain={props.domain}
                 />
             )}
