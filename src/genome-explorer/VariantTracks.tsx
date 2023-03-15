@@ -45,7 +45,6 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
         snpCoordinateData?.snpQuery
             .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))
     ) || [], [ snpCoordinateData, groupedQTLs ]);
-    console.log(allQTLs);
 
     const [ ld, setLD ] = useState<{ anchor: string; ld: LDEntry[] }>({ anchor: "", ld: [] });
     const ldSet = useMemo( () => new Map([ ...ld.ld.map(x => [ x.id, x.rSquared ]), [ ld.anchor, 1 ] ] as [ string, number ][]), [ ld ]);

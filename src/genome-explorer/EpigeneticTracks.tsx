@@ -6,6 +6,7 @@ import React, { RefObject, useEffect, useMemo, useState } from 'react';
 import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
 import { BigRequest, RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 import { ValuedPoint } from 'umms-gb/dist/utils/types';
+import CCRETooltip from '../web/cCREDetails/CCRETooltip';
 import { EpigeneticTracksModal } from './SettingsModals';
 import TitledImportanceTrack from './TitledImportanceTrack';
 
@@ -89,8 +90,9 @@ const TitledTrack: React.FC<{ data: BigResponseData, url: string, title: string,
                     domain={domain}
                     id="adult-bCREs"
                     transform="translate(0,40)"
-                    data={(data as BigBedData[])}
+                    data={data as BigBedData[]}
                     svgRef={svgRef}
+                    tooltipContent={rect => <CCRETooltip { ...rect} assembly="grch38" />}
                 />
             ) : (
                 <FullBigWig
@@ -99,7 +101,7 @@ const TitledTrack: React.FC<{ data: BigResponseData, url: string, title: string,
                     height={height}
                     domain={domain}
                     id="NeuN+"
-                    color={color}
+                    color={color}   
                     data={data as BigWigData[]}
                     noTransparency
                 />
@@ -112,8 +114,10 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
     
     const [ cTracks, setTracks ] = useState<[ string, string ][]>([
         [ "Adult brain bCREs", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed" ],
+        // [ "PSC patient ATAC-seq", "gs://gcp.wenglab.org/psychencode-analysis/chrombpnet/VLPFC/VLPFC_glia_.interpreted_regions.bigBed" ],
         [ "all brain regions, aggregated NeuN+", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
-        [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
+        [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ],
+        // [ "PSC patient ATAC-seq", "gs://gcp.wenglab.org/psychencode-analysis/chrombpnet/VLPFC/VLPFC_glia_.profile_scores.bw" ]
     ]);
     const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 400 + cTracks.length * 70 : 20 + cTracks.length * 70, [ cTracks, props.domain ]);
     const bigRequests = useMemo( () => cTracks.map(x => ({
@@ -162,7 +166,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
                     height={130}
                     width={1400}
                     signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.profile_scores.bw"
-                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.imputed_scores.bw"
+                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-neurons_chrombpnet_nobias.bw"
                     domain={props.domain}
                 />
             )}
@@ -173,7 +177,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
                     height={130}
                     width={1400}
                     signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.profile_scores.bw"
-                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.imputed_scores.bw"
+                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC-glia_chrombpnet_nobias.bw"
                     domain={props.domain}
                 />
             )}

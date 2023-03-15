@@ -137,7 +137,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             />
             { !loading && imputedSignalURL !== undefined && (
                 <FullBigWig
-                    transform="translate(0,30)"
+                    transform="translate(0,20)"
                     width={1400}
                     height={height - 80}
                     domain={domain}
@@ -147,7 +147,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                     noTransparency
                 />
             ) }
-            <g transform={`translate(0,${loading || imputedSignalURL === undefined ? 30 : 80}`}>
+            <g transform={`translate(0,${loading || imputedSignalURL === undefined ? 30 : 80})`}>
                 <GraphQLImportanceTrack
                     width={width}
                     height={height - (loading || imputedSignalURL === undefined ? 30 : 80)}
@@ -186,11 +186,13 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                             x={0}
                             y={0}
                         />
-                        <text x={0} y={80} fontWeight="bold">
-                            {last(highlights[selectedHighlight].motif.tomtom_matches).target_id.startsWith("MA")
-                                ? last(highlights[selectedHighlight].motif.tomtom_matches).jaspar_name
-                                : last(highlights[selectedHighlight].motif.tomtom_matches).target_id}
-                        </text>
+                        { highlights[selectedHighlight].motif.tomtom_matches && highlights[selectedHighlight].motif.tomtom_matches.length > 0 && (
+                            <text x={0} y={80} fontWeight="bold">
+                                {last(highlights[selectedHighlight].motif.tomtom_matches).target_id.startsWith("MA")
+                                    ? last(highlights[selectedHighlight].motif.tomtom_matches).jaspar_name
+                                    : last(highlights[selectedHighlight].motif.tomtom_matches).target_id}
+                            </text>
+                        )}
                     </g>
                 </g>
             )}

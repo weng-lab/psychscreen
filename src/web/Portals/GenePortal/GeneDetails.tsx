@@ -47,7 +47,7 @@ const GeneDetails: React.FC = (props) => {
     const [ tabIndex, setTabIndex ] = useState(0);
     const ref = useRef<SVGSVGElement>(null);
     const [ tissueCategory, setTissueCategory] = React.useState<string | null>('granular');
-    const { geneid, chromosome, start, end } = state ? state : { geneid: '', chromosome: '', start: null, end: null } 
+    const { geneid, chromosome, start, end } = state ? state : { geneid: '', chromosome: '', start: null, end: null };
     
     const handleTissueCategory = (
         _: any,

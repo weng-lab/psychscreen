@@ -109,6 +109,8 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                         sortOrder={props.sortOrder}
                         svgRef={props.svgRef}
                         transform="translate(0,40)"
+                        threshold={4}
+                        max={12}
                     />
                 </g>
             ))}

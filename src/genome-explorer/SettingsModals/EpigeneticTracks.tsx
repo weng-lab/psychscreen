@@ -53,7 +53,7 @@ const TRACKS = {
         [ "bipolar donors", "DLPFC-mixed-BD-ATAC.bigWig" ],
         [ "schizophrenia donors", "DLPFC-mixed-SCZ-ATAC.bigWig" ]
     ],
-    "PsychENCODE single cell ATAC-seq pseudobulk": [
+    "Single cell ATAC-seq pseudobulk": [
         [ "child/adult layer 4 neuron, RORβ+", "C1_ChildAdult_Neuron_L4-RORB.bigWig" ],
         [ "infant (1 month old) astrocyte", "C2_Infant-1Month_Astrocyte_Astrocyte.bigWig" ],
         [ "infant (6 month old) astrocyte", "C3_Infant-6Month_Astrocyte_Astrocyte.bigWig" ],
@@ -102,7 +102,7 @@ const EpigeneticTrackModal: React.FC<EpigeneticTrackModalProps> = props => {
         ...TRACKS["PsychENCODE SCZ/BP/healthy DLPFC ATAC-seq"]
             .filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0)
             .map(track => [ track[0], `gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/${track[1]}` ]),
-        ...TRACKS["PsychENCODE single cell ATAC-seq pseudobulk"]
+        ...TRACKS["Single cell ATAC-seq pseudobulk"]
             .filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0)
             .map(track => [ track[0], `gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/${track[1]}` ])
     ] as [ string, string ][]), [ selectedTracks ]);
@@ -198,18 +198,18 @@ const EpigeneticTrackModal: React.FC<EpigeneticTrackModalProps> = props => {
                         </FormGroup>
                     </AccordionDetails>
                 </Accordion>
-                <Accordion expanded={expanded.get("PsychENCODE single cell ATAC-seq pseudobulk")}>
+                <Accordion expanded={expanded.get("Single cell ATAC-seq pseudobulk")}>
                     <AccordionSummary
-                        onClick={() => expand("PsychENCODE single cell ATAC-seq pseudobulk")}
+                        onClick={() => expand("Single cell ATAC-seq pseudobulk")}
                         expandIcon={!expanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography type="title" size="medium">PsychENCODE single cell ATAC-seq pseudobulk</Typography>
+                        <Typography type="title" size="medium">Single cell ATAC-seq pseudobulk</Typography>
                     </AccordionSummary>
                     <AccordionDetails style={{ overflowY: "scroll", maxHeight: "200px" }}>
                         <FormGroup style={{ marginLeft: "3em" }}>
-                            { TRACKS["PsychENCODE single cell ATAC-seq pseudobulk"].map(track => (
+                            { TRACKS["Single cell ATAC-seq pseudobulk"].map(track => (
                                 <FormControlLabel
                                     key={track[0]}
                                     control={<Checkbox checked={(selectedTracks.find(x => x === track[0])?.length || 0) > 0} />}
