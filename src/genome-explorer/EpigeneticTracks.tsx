@@ -119,7 +119,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
         [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ],
         // [ "PSC patient ATAC-seq", "gs://gcp.wenglab.org/psychencode-analysis/chrombpnet/VLPFC/VLPFC_glia_.profile_scores.bw" ]
     ]);
-    const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 400 + cTracks.length * 70 : 20 + cTracks.length * 70, [ cTracks, props.domain ]);
+    const height = useMemo( () => props.domain.end - props.domain.start <= 10000 ? 660 + cTracks.length * 70 : 530 + cTracks.length * 70, [ cTracks, props.domain ]);
     const bigRequests = useMemo( () => cTracks.map(x => ({
         chr1: props.domain.chromosome!,
         start: props.domain.start,
@@ -159,31 +159,51 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
             <g className="tf-motifs">
                 <rect y={110} height={55} fill="none" width={1400} /> 
             </g>
+            <TitledImportanceTrack
+                transform="translate(0,230)"
+                title="VLPFC neuron profile importance scores"
+                height={130}
+                width={1400}
+                signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.profile_scores.bw"
+                imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-neurons_chrombpnet_nobias.bw"
+                domain={props.domain}
+            />
+            <TitledImportanceTrack
+                transform="translate(0,360)"
+                title="VLPFC glia profile importance scores"
+                height={130}
+                width={1400}
+                signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.profile_scores.bw"
+                imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC-glia_chrombpnet_nobias.bw"
+                domain={props.domain}
+            />
+            <TitledImportanceTrack
+                transform="translate(0,490)"
+                title="PTM neuron profile importance scores"
+                height={130}
+                width={1400}
+                positiveRegionURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons/NeuN+.profile_scores.bw.pos.bb"
+                negativeRegionURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons/NeuN+.profile_scores.bw.neg.bb"
+                neutralRegions={(data?.bigRequests[0]?.data || []) as BigBedData[]}
+                signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons/NeuN+.profile_scores.bw"
+                imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons/NeuN+.predictions_chrombpnet_nobias.bw"
+                domain={props.domain}
+            />
+            <TitledImportanceTrack
+                transform="translate(0,620)"
+                title="PTM glia profile importance scores"
+                height={130}
+                width={1400}
+                positiveRegionURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia/NeuN-.profile_scores.bw.pos.bb"
+                negativeRegionURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia/NeuN-.profile_scores.bw.neg.bb"
+                neutralRegions={(data?.bigRequests[0]?.data || []) as BigBedData[]}
+                signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia/NeuN-.profile_scores.bw"
+                imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/workflows/PTM-glia/outputs/predictions_PTM-glia-smalltest_chrombpnet_nobias.bw"
+                domain={props.domain}
+            />
             { props.domain.end - props.domain.start <= 10000 && (
                 <TitledImportanceTrack
-                    transform="translate(0,230)"
-                    title="VLPFC neuron profile importance scores"
-                    height={130}
-                    width={1400}
-                    signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-f_.profile_scores.bw"
-                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons/VLPFC-neurons_chrombpnet_nobias.bw"
-                    domain={props.domain}
-                />
-            )}
-            { props.domain.end - props.domain.start <= 10000 && (
-                <TitledImportanceTrack
-                    transform="translate(0,360)"
-                    title="VLPFC glia profile importance scores"
-                    height={130}
-                    width={1400}
-                    signalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC_glia_.profile_scores.bw"
-                    imputedSignalURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia/VLPFC-glia_chrombpnet_nobias.bw"
-                    domain={props.domain}
-                />
-            )}
-            { props.domain.end - props.domain.start <= 10000 && (
-                <TitledImportanceTrack
-                    transform="translate(0,490)"
+                    transform="translate(0,750)"
                     title="Mammalian 241-way PhyloP from Zoonomia"
                     height={130}
                     width={1400}

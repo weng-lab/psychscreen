@@ -6,7 +6,8 @@ import { RawLogo, DNAAlphabet } from 'logojs-react';
 import { GenomicRange } from '../web/Portals/GenePortal/AssociatedxQTL';
 import { useQuery } from '@apollo/client';
 import { BigQueryResponse, BIG_QUERY } from '../web/Portals/GenePortal/Browser/DefaultTracks';
-import { BigWigData } from 'bigwig-reader';
+import { BigBedData, BigWigData } from "bigwig-reader";
+import { linearTransform } from '../web/Portals/GenePortal/violin/utils';
 
 type TitledImportanceTrackProps = {
     onHeightChanged?: (height: number) => void;
@@ -16,6 +17,9 @@ type TitledImportanceTrackProps = {
     domain: GenomicRange;
     signalURL: string;
     imputedSignalURL?: string;
+    positiveRegionURL?: string;
+    negativeRegionURL?: string;
+    neutralRegions?: BigBedData[];
     width: number;
     color?: string;
 };
@@ -88,8 +92,55 @@ function last<T>(x: T[]): T {
     return x[x.length - 1];
 }
 
+type ImportantRegionTrackProps = {
+    positiveRegions: BigBedData[];
+    negativeRegions: BigBedData[];
+    neutralRegions: BigBedData[];
+    domain: GenomicRange;
+    width: number
+};
+
+const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
+    const transform = linearTransform([ props.domain.start, props.domain.end ], [ 0, props.width ]);
+    return (
+        <g transform="translate(0,63)">
+            { props.neutralRegions.map((r, i) => (
+                <rect
+                    key={`neutral_${i}`}
+                    y={4}
+                    height={3}
+                    x={transform(r.start)}
+                    width={transform(r.end) - transform(r.start)}
+                    fill="#000000"
+                />
+            ))}
+            { props.positiveRegions.map((r, i) => (
+                <rect
+                    key={`important_${i}`}
+                    y={0}
+                    height={12}
+                    x={transform(r.start - 0.5)}
+                    width={transform(r.end - 0.5) - transform(r.start - 0.5)}
+                    fill="#2d4f25"
+                />
+            ))}
+            { props.negativeRegions.map((r, i) => (
+                <rect
+                    key={`important_${i}`}
+                    y={0}
+                    height={12}
+                    x={transform(r.start)}
+                    width={transform(r.end - 0.5) - transform(r.start + 0.5)}
+                    fill="#361c1c"
+                    fillOpacity={0.2}
+                />
+            ))}
+        </g>
+    );
+};
+
 const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
-    const { height, transform, signalURL, width, title, domain, imputedSignalURL, color } = props;
+    const { height, transform, signalURL, width, title, domain, imputedSignalURL, color, negativeRegionURL, positiveRegionURL } = props;
     useEffect( () => props.onHeightChanged && props.onHeightChanged(height), [ height, props.onHeightChanged ]);
 
     const coordinateMap = useCallback((coordinate: number) => (
@@ -117,13 +168,32 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             .catch(error => console.error(error));
     }, [ highlights ]);
 
-    const bigRequests = useMemo( () => [{
-        chr1: domain.chromosome!,
-        start: domain.start,
-        end: domain.end,
-        preRenderedWidth: width,
-        url: imputedSignalURL
-    }], [ domain ]);
+    const bigRequests = useMemo( () => {
+        const bw = [{
+            chr1: domain.chromosome!,
+            start: domain.start,
+            end: domain.end,
+            preRenderedWidth: width,
+            url: imputedSignalURL
+        }];
+        if (negativeRegionURL === undefined || positiveRegionURL === undefined) return bw;
+        return [
+            ...bw,
+            {
+                chr1: domain.chromosome!,
+                start: domain.start,
+                end: domain.end,
+                preRenderedWidth: width,
+                url: negativeRegionURL
+            }, {
+                chr1: domain.chromosome!,
+                start: domain.start,
+                end: domain.end,
+                preRenderedWidth: width,
+                url: positiveRegionURL
+            }
+        ];
+    }, [ domain, negativeRegionURL, positiveRegionURL, imputedSignalURL ]);
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }, skip: imputedSignalURL === undefined });
 
     return (
@@ -135,11 +205,20 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                 width={1400}
                 id=""
             />
+            { !loading && positiveRegionURL !== undefined && (
+                <ImportantRegions
+                    neutralRegions={props.neutralRegions || []}
+                    negativeRegions={data?.bigRequests[1].data as BigWigData[]}
+                    positiveRegions={data?.bigRequests[2].data as BigWigData[]}
+                    width={width}
+                    domain={domain}
+                />
+            )}
             { !loading && imputedSignalURL !== undefined && (
                 <FullBigWig
-                    transform="translate(0,20)"
+                    transform="translate(0,15)"
                     width={1400}
-                    height={height - 80}
+                    height={height - (props.domain.end - props.domain.start <= 10000 ? 85 : 30)}
                     domain={domain}
                     id="NeuN+"
                     color={color}
@@ -147,18 +226,20 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                     noTransparency
                 />
             ) }
-            <g transform={`translate(0,${loading || imputedSignalURL === undefined ? 30 : 80})`}>
-                <GraphQLImportanceTrack
-                    width={width}
-                    height={height - (loading || imputedSignalURL === undefined ? 30 : 80)}
-                    endpoint="https://ga.staging.wenglab.org"
-                    signalURL={signalURL}
-                    sequenceURL="gs://gcp.wenglab.org/hg38.2bit"
-                    coordinates={props.domain as any}
-                    allowSelection
-                    onSelectionEnd={onSelectionEnd}
-                />
-            </g>
+            {(props.domain.end - props.domain.start <= 10000) && (
+                <g transform={`translate(0,${loading || imputedSignalURL === undefined ? 30 : 80})`}>
+                    <GraphQLImportanceTrack
+                        width={width}
+                        height={height - (loading || imputedSignalURL === undefined ? 30 : 80)}
+                        endpoint="https://ga.staging.wenglab.org"
+                        signalURL={signalURL}
+                        sequenceURL="gs://gcp.wenglab.org/hg38.2bit"
+                        coordinates={props.domain as any}
+                        allowSelection
+                        onSelectionEnd={onSelectionEnd}
+                    />
+                </g>
+            )}
             { highlights.map((highlight, i) => (
                 <rect
                     key={`highlight_${i}`}
