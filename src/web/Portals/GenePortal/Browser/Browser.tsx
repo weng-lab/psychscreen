@@ -6,6 +6,7 @@ import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from './EGeneTracks';
 import { EpigeneticTracks, tracks, VariantTracks } from '../../../../genome-explorer';
 import { URL_MAP } from '../../DiseaseTraitPortal/DiseaseTraitPortal';
+import { DeepLearnedModelTracks } from '../../../../genome-explorer/DeepLearnedModels';
 
 export const LD_QUERY = gql`
 query s($id: [String]) {
@@ -301,7 +302,7 @@ const Browser: React.FC<any> = (props) => {
     const eexpandedCoordinates = useMemo( () => expandCoordinates(props.coordinates), [ props.coordinates ]);
     
     const { groupedTranscripts, expandedCoordinates } = useGenePageData(
-        eexpandedCoordinates,
+        coordinates || eexpandedCoordinates,
         "GRCh38",
         props.name,
         props.resolvedTranscript
@@ -353,6 +354,9 @@ const Browser: React.FC<any> = (props) => {
             <EpigeneticTracks
                 assembly="GRCh38"
                 tracks={epigeneticTracks}
+                domain={coordinates || expandedCoordinates}
+            />
+            <DeepLearnedModelTracks
                 domain={coordinates || expandedCoordinates}
             />
             <VariantTracks

@@ -51,6 +51,14 @@ type MotifResponse = {
     };
 };
 
+type SequenceResponse = {
+    data: {
+        bigRequests: {
+            data: string;
+        }[];
+    };
+};
+
 const MOTIF_QUERY = `
 query MemeMotifSearch($pwms: [[[Float!]]]!) {
     meme_motif_search(pwms: $pwms, assembly: "GRCh38", limit: 1, offset: 1) {
@@ -67,6 +75,14 @@ query MemeMotifSearch($pwms: [[[Float!]]]!) {
       }
     }
   }  
+`;
+
+const SEQUENCE_QUERY = `
+query($requests: [BigRequest!]!) {
+    bigRequests(requests: $requests) {
+        data
+    }
+}
 `;
 
 function seqToPWM(sequence: string[]): number[][] {
@@ -88,8 +104,14 @@ export const logLikelihood = (backgroundFrequencies: any) => (r: any) => {
     });
 };
 
-function last<T>(x: T[]): T {
-    return x[x.length - 1];
+type TOMTOMMatch = {
+    e_value: number;
+    jaspar_name?: string | null;
+    target_id: string;
+};
+
+function best(x: TOMTOMMatch[]): TOMTOMMatch {
+    return x.sort((a, b) => a.e_value - b.e_value)[0];
 }
 
 type ImportantRegionTrackProps = {
@@ -97,7 +119,8 @@ type ImportantRegionTrackProps = {
     negativeRegions: BigBedData[];
     neutralRegions: BigBedData[];
     domain: GenomicRange;
-    width: number
+    width: number;
+    onRegionClick?: (coordinates: [number, number]) => void;
 };
 
 const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
@@ -114,7 +137,7 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
                     fill="#000000"
                 />
             ))}
-            { props.positiveRegions.map((r, i) => (
+            { props.positiveRegions.filter(r => r.end - r.start > 3).map((r, i) => (
                 <rect
                     key={`important_${i}`}
                     y={0}
@@ -122,9 +145,10 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
                     x={transform(r.start - 0.5)}
                     width={transform(r.end - 0.5) - transform(r.start - 0.5)}
                     fill="#2d4f25"
+                    onClick={() => props.onRegionClick && props.onRegionClick([ r.start, r.end ])}
                 />
             ))}
-            { props.negativeRegions.map((r, i) => (
+            { props.negativeRegions.filter(r => r.end - r.start > 3).map((r, i) => (
                 <rect
                     key={`important_${i}`}
                     y={0}
@@ -133,6 +157,7 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
                     width={transform(r.end - 0.5) - transform(r.start + 0.5)}
                     fill="#361c1c"
                     fillOpacity={0.2}
+                    onClick={() => props.onRegionClick && props.onRegionClick([ r.start, r.end ])}
                 />
             ))}
         </g>
@@ -156,7 +181,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query: MOTIF_QUERY, variables: { "pwms": [ seqToPWM(sequence) ] } })
+            body: JSON.stringify({ query: MOTIF_QUERY, variables: { pwms: [ seqToPWM(sequence) ] } })
         })
             .then(response => response.json())
             .then(data => setHighlights([ ...highlights, {
@@ -167,6 +192,31 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             }]))
             .catch(error => console.error(error));
     }, [ highlights ]);
+    const onImportantRegionClick = useCallback((coordinates: [ number, number ]) => {
+        fetch("https://ga.staging.wenglab.org/graphql", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: SEQUENCE_QUERY,
+                variables: {
+                    requests: {
+                        url: "gs://gcp.wenglab.org/hg38.2bit",
+                        chr1: domain.chromosome,
+                        chr2: domain.chromosome,
+                        start: coordinates[0],
+                        end: coordinates[1] + 1
+                    }
+                }
+            })
+        })
+            .then(response => response.json())
+            .then(data => onSelectionEnd(
+                coordinates.map(x => x - domain.start) as [ number, number ],
+                (data as SequenceResponse).data.bigRequests[0].data[0].split("").map(x => ({ base: x, importance: 0 }))
+            ));
+    }, [ onSelectionEnd, domain ]);
 
     const bigRequests = useMemo( () => {
         const bw = [{
@@ -195,7 +245,6 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
         ];
     }, [ domain, negativeRegionURL, positiveRegionURL, imputedSignalURL ]);
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }, skip: imputedSignalURL === undefined });
-
     return (
         <g transform={transform}>
             <EmptyTrack
@@ -208,10 +257,11 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             { !loading && positiveRegionURL !== undefined && (
                 <ImportantRegions
                     neutralRegions={props.neutralRegions || []}
-                    negativeRegions={data?.bigRequests[1].data as BigWigData[]}
-                    positiveRegions={data?.bigRequests[2].data as BigWigData[]}
+                    negativeRegions={(data?.bigRequests[1].data as BigWigData[]) || []}
+                    positiveRegions={(data?.bigRequests[2].data as BigWigData[]) || []}
                     width={width}
                     domain={domain}
+                    onRegionClick={onImportantRegionClick}
                 />
             )}
             { !loading && imputedSignalURL !== undefined && (
@@ -234,7 +284,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                         endpoint="https://ga.staging.wenglab.org"
                         signalURL={signalURL}
                         sequenceURL="gs://gcp.wenglab.org/hg38.2bit"
-                        coordinates={props.domain as any}
+                        coordinates={domain as any}
                         allowSelection
                         onSelectionEnd={onSelectionEnd}
                     />
@@ -269,9 +319,9 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                         />
                         { highlights[selectedHighlight].motif.tomtom_matches && highlights[selectedHighlight].motif.tomtom_matches.length > 0 && (
                             <text x={0} y={80} fontWeight="bold">
-                                {last(highlights[selectedHighlight].motif.tomtom_matches).target_id.startsWith("MA")
-                                    ? last(highlights[selectedHighlight].motif.tomtom_matches).jaspar_name
-                                    : last(highlights[selectedHighlight].motif.tomtom_matches).target_id}
+                                {best(highlights[selectedHighlight].motif.tomtom_matches).target_id.startsWith("MA")
+                                    ? best(highlights[selectedHighlight].motif.tomtom_matches).jaspar_name
+                                    : best(highlights[selectedHighlight].motif.tomtom_matches).target_id}
                             </text>
                         )}
                     </g>
