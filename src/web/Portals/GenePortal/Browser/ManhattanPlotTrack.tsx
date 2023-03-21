@@ -52,14 +52,13 @@ const tracks = (url: string, pos: GenomicRange) => ({
 
 const Tooltip: React.FC<ManhattanSNP> = snp => (
     <div style={{ marginTop: "-5em", marginLeft: "-4em", background: "#ffffff" }}>
-        
         <Typography
-                           type="body"
-                           size="small"
-                           style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
-                       >
-                             {snp.data.rsId}
-                       </Typography>
+            type="body"
+            size="small"
+            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+        >
+                {snp.data.rsId}
+        </Typography>
         {snp.data.score.toExponential(3)}
     </div>
 );
@@ -84,18 +83,19 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
             .map(x => ({ ...x, eQTL: props.groupedQTLs.get(x.rsId)! }))
     ) || [], [ inView, props ]);
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
-    return loading ?  <> 
-    <Typography
-                           type="body"
-                           size="large"
-                           style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
-                       >
-                               Loading...
-                       </Typography>
-                       <br/>
-   <CircularProgress color="inherit"/>
-   
-    </> : (
+    return loading ? (
+        <> 
+            <Typography
+                type="body"
+                size="large"
+                style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+            >
+                Loading...
+            </Typography>
+            <br/>
+            <CircularProgress color="inherit"/>
+        </>
+    ) : (
         <g>
             <ManhattanTrack
                 height={150}

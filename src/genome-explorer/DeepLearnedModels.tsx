@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { RefObject, useEffect, useMemo, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { GenomicRange } from '../web/Portals/GenePortal/AssociatedxQTL';
 import { BigQueryResponse, BIG_QUERY } from './EpigeneticTracks';
 import DeepLearnedTrackModal from './SettingsModals/DeepLearnedTracks';
@@ -24,12 +24,11 @@ type DeepLearnedModelTrackProps = {
     onHeightChanged?: (i: number) => void;
     svgRef?: RefObject<SVGSVGElement>;
     onSettingsClicked?: () => void;
+    onImportantRegionsLoaded?: (regions: BigBedData[]) => void;
 };
 
-
-
 export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
-    = ({ domain, onHeightChanged, onSettingsClicked }) => {
+    = ({ domain, onHeightChanged, onSettingsClicked, onImportantRegionsLoaded }) => {
 
         // manage displayed tracks, compute height, and pass height back to parent
         const [ displayedTracks, setDisplayedTracks ] = useState<[ string, string ][]>([
@@ -59,6 +58,17 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
             url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed"
         }], [ domain ]);
         const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }});
+
+        // merge important regions from all tracks as they load and pass up to parent
+        const [ importantRegions, setImportantRegions ] = useState<{ [key: string]: BigBedData[] }>({});
+        const importantRegionsLoaded = useCallback((regions: BigBedData[], i: number) => {
+            setImportantRegions({ ...importantRegions, [i]: regions });
+        }, [ importantRegions ]);
+        useEffect(() => {
+            if (!onImportantRegionsLoaded) return;
+            if (Object.keys(importantRegions).length < displayedTracks.filter(x => x[0] !== "241-way mammalian phylo-P").length) return;
+            onImportantRegionsLoaded(Object.keys(importantRegions).map(k => importantRegions[k]).reduce((acc, val) => acc.concat(val), []));
+        }, [ importantRegions, displayedTracks, onImportantRegionsLoaded ]);
 
         return (
             <>
@@ -93,6 +103,7 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
                         negativeRegionURL={`${x[1]}/${CELL_TYPES.get(x[0])!}.profile_scores.bw.neg.bb`}
                         neutralRegions={loading || !data?.bigRequests[0].data ? [] : (data.bigRequests[0].data as BigBedData[])}
                         domain={domain}
+                        onImportantRegionsLoaded={regions => onImportantRegionsLoaded && importantRegionsLoaded(regions, i)}
                     />
                 ))}
                 { settingsMousedOver && (

@@ -4,12 +4,29 @@ import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from '../GenePortal/Browser/EGeneTracks';
 import { EpigeneticTracks, tracks, VariantTracks } from '../../../genome-explorer';
 import { useGenePageData } from '../GenePortal/AssociatedxQTL';
+import { DeepLearnedModelTracks } from '../../../genome-explorer/DeepLearnedModels';
 
 type GenomicRange = {
     chromosome?: string;
     start: number;
     end: number;
 };
+
+function mergeRegions(regions: GenomicRange[]): GenomicRange[] {
+    const mergedRegions: GenomicRange[] = [];
+    let currentRegion = { ...regions[0] };
+    for (let i = 1; i < regions.length; ++i) {
+        const region = regions[i];
+        if (currentRegion.end >= region.start)
+            currentRegion.end = Math.max(currentRegion.end, region.end);
+        else {
+            mergedRegions.push(currentRegion);
+            currentRegion = { ...region };
+        }
+    }
+    mergedRegions.push(currentRegion);
+    return mergedRegions;
+}
 
 const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string }> = (props) => { 
     const svgRef = useRef<SVGSVGElement>(null);
@@ -32,6 +49,15 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
         "APOE",
         false
     );
+
+    const [ importantRegions, setImportantRegions ] = useState<GenomicRange[]>([]);
+    const onImportantRegionsLoaded = useCallback((regions: GenomicRange[]) => {
+        setImportantRegions(
+            mergeRegions(
+                regions.sort((a, b) => a.start - b.start).filter(x => x.end - x.start >= 4)
+            )
+        );
+    }, []);
 
     const l = useCallback((c: number) => (c - coordinates.start) * 1400 / (coordinates.end - coordinates.start), [ coordinates ]);
     return (<>
@@ -72,12 +98,17 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
                 tracks={epigeneticTracks}
                 domain={coordinates}
             />
+            <DeepLearnedModelTracks
+                domain={coordinates}
+                onImportantRegionsLoaded={onImportantRegionsLoaded}
+            />
             <VariantTracks
                 coordinates={coordinates}
                 resolvedTranscript={false}
                 url={props.url}
                 name=""
                 trait={props.trait}
+                importantRegions={importantRegions}
             />
         </GenomeBrowser>
     </>)

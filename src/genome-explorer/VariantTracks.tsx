@@ -1,7 +1,7 @@
 import { gql, useApolloClient } from '@apollo/client';
 import { linearTransform } from 'jubilant-carnival';
 import { associateBy } from 'queryz';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { SNP } from 'umms-gb/dist/components/tracks/ld/types';
 import { expandCoordinates, GenomicRange, useGenePageData } from '../web/Portals/GenePortal/AssociatedxQTL';
 import ManhattanPlotTrack, { LDEntry } from './ManhattanPlotTrack';
@@ -29,7 +29,17 @@ export type LDQueryResponse = {
     }[];
 };
 
-const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: boolean, name: string, onHeightChanged?: (x: number) => void, url: string, trait: string }> = (props) => {
+type VariantTrackProps = {
+    coordinates: GenomicRange;
+    resolvedTranscript?: boolean;
+    name: string;
+    onHeightChanged?: (x: number) => void;
+    url: string;
+    trait: string;
+    importantRegions?: GenomicRange[];
+};
+
+const VariantTracks: React.FC<VariantTrackProps> = (props) => {
     
     const client = useApolloClient();
     
@@ -85,6 +95,7 @@ const VariantTracks: React.FC<{ coordinates: GenomicRange, resolvedTranscript?: 
                 gene={props.name}
                 onSettingsClick={() => setSettingsModalShown(true)}
                 onHeightChanged={(height: number) => props.onHeightChanged && props.onHeightChanged(height)}
+                importantRegions={props.importantRegions}
             />
             <g className="xqtl">
                 <rect y={22} height={65} fill="none" width={1400} /> 

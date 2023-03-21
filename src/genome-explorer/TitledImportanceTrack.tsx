@@ -11,6 +11,7 @@ import { linearTransform } from '../web/Portals/GenePortal/violin/utils';
 
 type TitledImportanceTrackProps = {
     onHeightChanged?: (height: number) => void;
+    onImportantRegionsLoaded?: (regions: BigBedData[]) => void;
     height: number;
     title: string;
     transform?: string;
@@ -165,7 +166,7 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
 };
 
 const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
-    const { height, transform, signalURL, width, title, domain, imputedSignalURL, color, negativeRegionURL, positiveRegionURL } = props;
+    const { height, transform, signalURL, width, title, domain, imputedSignalURL, color, negativeRegionURL, positiveRegionURL, onImportantRegionsLoaded } = props;
     useEffect( () => props.onHeightChanged && props.onHeightChanged(height), [ height, props.onHeightChanged ]);
 
     const coordinateMap = useCallback((coordinate: number) => (
@@ -245,6 +246,17 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
         ];
     }, [ domain, negativeRegionURL, positiveRegionURL, imputedSignalURL ]);
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }, skip: imputedSignalURL === undefined });
+
+    useEffect(() => {
+        if (loading || !data || !onImportantRegionsLoaded || positiveRegionURL === undefined || negativeRegionURL === undefined) return;
+        const p = data.bigRequests.length - 2;
+        const n = data.bigRequests.length - 1;
+        onImportantRegionsLoaded([
+            ...data.bigRequests[p].data,
+            ...data.bigRequests[n].data
+        ] as BigBedData[]);
+    }, [ data, loading ]);
+
     return (
         <g transform={transform}>
             <EmptyTrack
