@@ -48,7 +48,7 @@ export const URL_MAP = {
     "BipolarDisorder": "bipolar",
     "BMI": "BMI",
     "CigsPerDay": "cigarettes-per-day",
-    "MDD": "depression",
+    "Depression": "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/MDD.2021.gz.bb",
     "Dyslexia": "dyslexia",
     "EverSmoked": "ever-smoked",
     "Insomnia": "insomnia",

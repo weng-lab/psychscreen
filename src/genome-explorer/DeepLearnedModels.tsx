@@ -5,6 +5,7 @@ import { BigQueryResponse, BIG_QUERY } from './EpigeneticTracks';
 import DeepLearnedTrackModal from './SettingsModals/DeepLearnedTracks';
 import TitledImportanceTrack from './TitledImportanceTrack';
 import { BigBedData } from 'bigwig-reader';
+import GWASPredictionTrack from './GWASPredictions/GWASPredictionTrack';
 
 const CELL_TYPES = new Map([
     [ "astrocytes", "Astrocyte_1" ],
@@ -36,9 +37,9 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
             [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
         ]);
         const height = useMemo(
-            () => domain.end - domain.start <= 10000 && displayedTracks.find(x => x[0] === "241-way mammalian phylo-P")?.length
+            () => 130 + (domain.end - domain.start <= 10000 && displayedTracks.find(x => x[0] === "241-way mammalian phylo-P")?.length
                 ? 130 + displayedTracks.length * 130
-                : displayedTracks.length * 130,
+                : displayedTracks.length * 130),
             [ displayedTracks, domain ]
         );
         useEffect( () => {
@@ -106,6 +107,16 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
                         onImportantRegionsLoaded={regions => onImportantRegionsLoaded && importantRegionsLoaded(regions, i)}
                     />
                 ))}
+                <GWASPredictionTrack
+                    width={1400}
+                    height={130}
+                    domain={domain}
+                    riskBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/MDD.2021.gz.chrombpnet.risk.bb"
+                    protectiveBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/MDD.2021.gz.chrombpnet.protective.bb"
+                    riskPredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_MDD.2021.gz.PTM_glia.risk_chrombpnet_nobias.bw"
+                    protectivePredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_MDD.2021.gz.PTM_glia.protective_chrombpnet_nobias.bw"
+                    transform={`translate(0,${130 * displayedTracks.length})`}
+                />
                 { settingsMousedOver && (
                     <rect width={1400} height={height} transform="translate(0,-0)" fill="#194023" fillOpacity={0.1} />
                 )}

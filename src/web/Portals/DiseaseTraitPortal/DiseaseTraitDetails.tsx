@@ -111,7 +111,15 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     }, []);
     
     const diseaseLabel = disease && DISEASE_CARDS.find(d => d.val === disease)?.cardLabel;
-    const summaryStatisticsURL = disease ? `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed` : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
+    const summaryStatisticsURL = (
+        disease
+            ? (
+                URL_MAP[disease].startsWith("gs")
+                    ? URL_MAP[disease]
+                    : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
+            )
+            : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed"
+    );
     const { data } = useQuery<{ gwassnpAssociationsQuery: GWAS_SNP[] }>(AssociatedSnpQuery, {		
         variables: {
             disease: (disease || '')
