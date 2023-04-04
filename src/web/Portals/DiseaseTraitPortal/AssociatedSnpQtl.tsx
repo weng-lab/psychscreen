@@ -24,23 +24,25 @@ export function compareByMinimumP(a: GWAS_SNP | GwasIntersectingSnpsWithCcres, b
     return Math.min(...a.association_p_val) - Math.min(...b.association_p_val);
 }
 
-const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = props => {    
+const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = ({ data, ...props }) => {    
     
-    const SnpAssociationData = useMemo( () => props.data && [ ...props.data ].sort(compareByMinimumP).map( (d: GWAS_SNP) => [
-        { header: 'SNP ID', value: d.snpid },
-        { header: 'Chromosome', value: d.chrom },
-        { header: 'Position', value: d.stop.toLocaleString() },
-        { header: 'Number of Supporting GWAS', value: d.analyses_identifying_snp },
-        { header: 'Risk Allele', value: d.riskallele },
-        { header: 'Nearest Gene', value: d.associated_gene },
-        { header: 'GWAS p-value', value: d.association_p_val.join(",") }
-    ]), [ props.data ]);
+    const SnpAssociationData = useMemo( () => (
+        data && [ ...data ].sort(compareByMinimumP).map( (d: GWAS_SNP) => [
+            { header: 'SNP ID', value: d.snpid },
+            { header: 'Chromosome', value: d.chrom },
+            { header: 'Position', value: d.stop.toLocaleString() },
+            { header: 'Number of Supporting GWAS', value: d.analyses_identifying_snp },
+            { header: 'Risk Allele', value: d.riskallele },
+            { header: 'Nearest Gene', value: d.associated_gene },
+            { header: 'GWAS p-value', value: d.association_p_val.join(",") }
+        ])
+    ), [ data ]);
 
     return (
         <Grid container {...props}>    
             <Grid item sm={12}>
                 <Container style={{ marginTop: "30px", marginLeft: "130px" }}>
-                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={SnpAssociationData}/>: <CircularProgress color='inherit'/>}
+                    { data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={SnpAssociationData}/>: <CircularProgress color='inherit'/> }
                 </Container>
             </Grid>
         </Grid>

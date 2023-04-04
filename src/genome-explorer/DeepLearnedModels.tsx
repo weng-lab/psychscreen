@@ -17,7 +17,9 @@ const CELL_TYPES = new Map([
     [ "oligodendrocytes", "Oligodendrocyte" ],
     [ "oligodendrocyte precursors", "Oligodendrocyte_Precursor" ],
     [ "putamen glia", "NeuN-" ],
-    [ "putamen neurons", "NeuN+" ]
+    [ "putamen neurons", "NeuN+" ],
+    [ "VLPFC glia", "VLPFC_glia" ],
+    [ "VLPFC neurons", "VLPFC_neurons" ]
 ]);
 
 type DeepLearnedModelTrackProps = {
@@ -111,10 +113,10 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
                     width={1400}
                     height={130}
                     domain={domain}
-                    riskBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/MDD.2021.gz.chrombpnet.risk.bb"
-                    protectiveBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/MDD.2021.gz.chrombpnet.protective.bb"
-                    riskPredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_MDD.2021.gz.PTM_glia.risk_chrombpnet_nobias.bw"
-                    protectivePredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_MDD.2021.gz.PTM_glia.protective_chrombpnet_nobias.bw"
+                    riskBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.risk.bb"
+                    protectiveBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.protective.bb"
+                    riskPredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_bipolar-II.gz.PTM_neurons.risk_chrombpnet_nobias.bw"
+                    protectivePredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_bipolar-II.gz.PTM_neurons.protective_chrombpnet_nobias.bw"
                     transform={`translate(0,${130 * displayedTracks.length})`}
                 />
                 { settingsMousedOver && (

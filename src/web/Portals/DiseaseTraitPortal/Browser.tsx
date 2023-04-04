@@ -39,8 +39,7 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
         (d: GenomicRange) => {
             const chr = d.chromosome === undefined ? props.coordinates.chromosome : d.chromosome;
             setCoordinates({ chromosome: chr, start: Math.round(d.start), end: Math.round(d.end) });
-        },
-        [ props.coordinates ]
+        }, [ props.coordinates ]
     );
 
     const { groupedTranscripts } = useGenePageData(
@@ -60,57 +59,60 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
     }, []);
 
     const l = useCallback((c: number) => (c - coordinates.start) * 1400 / (coordinates.end - coordinates.start), [ coordinates ]);
-    return (<>
-        <CytobandView
-            innerWidth={1000}
-            height={15}
-            chromosome={coordinates.chromosome!}
-            assembly="hg38"
-            position={coordinates}
-        /><br />
-        <div style={{ textAlign: "center" }}>
-            <UCSCControls onDomainChanged={onDomainChanged} domain={coordinates} withInput={false} />
-        </div>
-        <br />
-        <GenomeBrowser
-            svgRef={svgRef}
-            domain={coordinates}
-            innerWidth={1400}
-            width="100%"
-            noMargin
-            onDomainChanged={x => setCoordinates({ chromosome: coordinates.chromosome, start: Math.floor(x.start), end: Math.ceil(x.end) })}
-        >
-            { highlight && (
-                <rect fill="#8ec7d1" fillOpacity={0.5} height={1000} x={l(highlight.start)} width={l(highlight.end) - l(highlight.start)} />
-            )}
-            <RulerTrack
+    return (
+        <>
+            <CytobandView
+                innerWidth={1000}
+                height={15}
+                chromosome={coordinates.chromosome!}
+                assembly="hg38"
+                position={coordinates}
+            /><br />
+            <div style={{ textAlign: "center" }}>
+                <UCSCControls onDomainChanged={onDomainChanged} domain={coordinates} withInput={false} />
+            </div>
+            <br />
+            <GenomeBrowser
+                svgRef={svgRef}
                 domain={coordinates}
-                height={30}
-                width={1400}
-            />
-            <EGeneTracks
-                genes={groupedTranscripts || []}
-                expandedCoordinates={coordinates}
-                squish
-            />
-            <EpigeneticTracks
-                assembly="GRCh38"
-                tracks={epigeneticTracks}
-                domain={coordinates}
-            />
-            <DeepLearnedModelTracks
-                domain={coordinates}
-                onImportantRegionsLoaded={onImportantRegionsLoaded}
-            />
-            <VariantTracks
-                coordinates={coordinates}
-                resolvedTranscript={false}
-                url={props.url}
-                name=""
-                trait={props.trait}
-                importantRegions={importantRegions}
-            />
-        </GenomeBrowser>
-    </>)
+                innerWidth={1400}
+                width="100%"
+                noMargin
+                onDomainChanged={x => setCoordinates({ chromosome: coordinates.chromosome, start: Math.floor(x.start), end: Math.ceil(x.end) })}
+            >
+                { highlight && (
+                    <rect fill="#8ec7d1" fillOpacity={0.5} height={1000} x={l(highlight.start)} width={l(highlight.end) - l(highlight.start)} />
+                )}
+                <RulerTrack
+                    domain={coordinates}
+                    height={30}
+                    width={1400}
+                />
+                <EGeneTracks
+                    genes={groupedTranscripts || []}
+                    expandedCoordinates={coordinates}
+                    squish
+                />
+                <EpigeneticTracks
+                    assembly="GRCh38"
+                    tracks={epigeneticTracks}
+                    domain={coordinates}
+                />
+                <DeepLearnedModelTracks
+                    domain={coordinates}
+                    onImportantRegionsLoaded={onImportantRegionsLoaded}
+                />
+                <VariantTracks
+                    coordinates={coordinates}
+                    resolvedTranscript={false}
+                    url={props.url}
+                    name=""
+                    trait={props.trait}
+                    importantRegions={importantRegions}
+                />
+            </GenomeBrowser>
+        </>
+    );
+
 }
 export default Browser;
