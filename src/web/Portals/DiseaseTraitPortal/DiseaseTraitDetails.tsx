@@ -15,6 +15,7 @@ import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
+import SignifcantSNPs from "./SignificantSNPs";
 
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
@@ -192,6 +193,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         { browserCoordinates && (
                             <Button bvariant={page === 3 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(3)}>Brain (epi)genome browser</Button>
                         )}
+                        <Button bvariant={page === 4 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(4)}>Prioritized risk variants</Button>
                     </Container>
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
@@ -214,6 +216,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         <div style={{ marginTop: "2em" }}>
                             <Browser coordinates={browserCoordinates} url={summaryStatisticsURL} trait={diseaseLabel || "Autism Spectrum Disorder"} />
                         </div>
+                    ) : page === 4 ? (
+                        <SignifcantSNPs trait={disease ? URL_MAP[disease] : ""} />
                     ) : null }
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />

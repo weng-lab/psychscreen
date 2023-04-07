@@ -42,7 +42,7 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = props => {
         <Grid container {...props}>    
             <Grid item sm={12}>
                 <Container style={{ marginTop: "30px", marginLeft: "150px" }}>                   
-                    {props.data ? <CustomizedTable style={{ width: "max-content" }}  tabledata={tabledata}/>: <CircularProgress color='inherit'/>}
+                    {props.data ? <CustomizedTable style={{ width: "max-content" }} tabledata={tabledata} /> : <CircularProgress color='inherit' />}
                 </Container>
             </Grid>
         </Grid>
