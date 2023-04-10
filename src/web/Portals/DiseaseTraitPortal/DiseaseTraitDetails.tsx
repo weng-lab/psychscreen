@@ -217,12 +217,11 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                             <Browser coordinates={browserCoordinates} url={summaryStatisticsURL} trait={diseaseLabel || "Autism Spectrum Disorder"} />
                         </div>
                     ) : page === 4 ? (
-                        <SignifcantSNPs trait={disease ? URL_MAP[disease] : ""} />
+                        <SignifcantSNPs trait={disease ? URL_MAP[disease] : ""} onSNPClick={navigateBrowser} />
                     ) : null }
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
             </Grid>
-
         </>
     );
 }

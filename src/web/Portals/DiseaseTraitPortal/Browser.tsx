@@ -101,6 +101,7 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
                 <DeepLearnedModelTracks
                     domain={coordinates}
                     onImportantRegionsLoaded={onImportantRegionsLoaded}
+                    trait={props.trait}
                 />
                 <VariantTracks
                     coordinates={coordinates}

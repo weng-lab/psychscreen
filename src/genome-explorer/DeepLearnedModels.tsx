@@ -6,6 +6,7 @@ import DeepLearnedTrackModal from './SettingsModals/DeepLearnedTracks';
 import TitledImportanceTrack from './TitledImportanceTrack';
 import { BigBedData } from 'bigwig-reader';
 import GWASPredictionTrack from './GWASPredictions/GWASPredictionTrack';
+import { URL_MAP } from '../web/Portals/DiseaseTraitPortal/DiseaseTraitPortal';
 
 const CELL_TYPES = new Map([
     [ "astrocytes", "Astrocyte_1" ],
@@ -23,6 +24,7 @@ const CELL_TYPES = new Map([
 ]);
 
 type DeepLearnedModelTrackProps = {
+    trait: string;
     domain: GenomicRange;
     onHeightChanged?: (i: number) => void;
     svgRef?: RefObject<SVGSVGElement>;
@@ -31,7 +33,9 @@ type DeepLearnedModelTrackProps = {
 };
 
 export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
-    = ({ domain, onHeightChanged, onSettingsClicked, onImportantRegionsLoaded }) => {
+    = ({ domain, trait, onHeightChanged, onSettingsClicked, onImportantRegionsLoaded }) => {
+
+        const u = trait.includes("Anorexia") ? "anorexia.2019" : URL_MAP[trait];
 
         // manage displayed tracks, compute height, and pass height back to parent
         const [ displayedTracks, setDisplayedTracks ] = useState<[ string, string ][]>([
@@ -115,8 +119,8 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
                     domain={domain}
                     riskBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.risk.bb"
                     protectiveBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.protective.bb"
-                    riskPredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_bipolar-II.gz.PTM_neurons.risk_chrombpnet_nobias.bw"
-                    protectivePredictionBigWigURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_bipolar-II.gz.PTM_neurons.protective_chrombpnet_nobias.bw"
+                    riskPredictionBigWigURL={`gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_${u}.gz.PTM_neurons.risk_chrombpnet_nobias.bw`}
+                    protectivePredictionBigWigURL={`gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_${u}.gz.PTM_neurons.protective_chrombpnet_nobias.bw`}
                     transform={`translate(0,${130 * displayedTracks.length})`}
                 />
                 { settingsMousedOver && (

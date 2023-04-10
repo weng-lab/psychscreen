@@ -55,7 +55,7 @@ const SubtractedBigWigTrack: React.FC<SubtractedBigWigProps>
             <>
                 <FullBigWig
                     data={negatives}
-                    color="#880000"
+                    color="#9e2911"
                     width={width}
                     height={height}
                     domain={domain}
@@ -65,7 +65,7 @@ const SubtractedBigWigTrack: React.FC<SubtractedBigWigProps>
                 />
                 <FullBigWig
                     data={positives}
-                    color="#008800"
+                    color="#3c8c5f"
                     width={width}
                     height={height}
                     domain={domain}

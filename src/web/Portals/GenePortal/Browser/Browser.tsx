@@ -358,6 +358,7 @@ const Browser: React.FC<any> = (props) => {
             />
             <DeepLearnedModelTracks
                 domain={coordinates || expandedCoordinates}
+                trait="MDD"
             />
             <VariantTracks
                 coordinates={coordinates || expandedCoordinates}

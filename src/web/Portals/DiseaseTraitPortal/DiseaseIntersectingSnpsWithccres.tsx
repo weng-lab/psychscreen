@@ -94,8 +94,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccre
                                 <br/>
                                 { adult_bcredata && <Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(0)}>Adult</Button> }&nbsp;&nbsp;&nbsp;
                                 { fetal_bcredata && <Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(1)}>Fetal</Button> }
-                                { page === 0 && <CustomizedTable style={{ width: "max-content" }}  tabledata={AdultGWASIntersectingSnpDataWithBcre} /> }
-                                { page === 1 && <CustomizedTable style={{ width: "max-content" }}  tabledata={FetalGWASIntersectingSnpDataWithBcre} /> }
+                                { page === 0 && <CustomizedTable style={{ width: "max-content" }} tabledata={AdultGWASIntersectingSnpDataWithBcre} /> }
+                                { page === 1 && <CustomizedTable style={{ width: "max-content" }} tabledata={FetalGWASIntersectingSnpDataWithBcre} /> }
                             </>
                         )}
                     </Container>

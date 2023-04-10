@@ -66,7 +66,7 @@ const GWASPredictionTrack: React.FC<GWASPredictionTrackProps>
                 <FullBigWig
                     transform={`translate(0,${height * 0.25})`}
                     data={(data?.bigRequests[2].data || []) as BigWigData[]}
-                    color="#88000088"
+                    color="#a6754e88"
                     domain={domain}
                     width={width}
                     height={height * 0.3}
@@ -76,7 +76,7 @@ const GWASPredictionTrack: React.FC<GWASPredictionTrackProps>
                 <FullBigWig
                     transform={`translate(0,${height * 0.25})`}
                     data={(data?.bigRequests[3].data || []) as BigWigData[]}
-                    color="#00880088"
+                    color="#6246a388"
                     domain={domain}
                     width={width}
                     height={height * 0.3}
@@ -91,15 +91,15 @@ const GWASPredictionTrack: React.FC<GWASPredictionTrackProps>
                     id=""
                 />
                 <SubtractedBigWigTrack
-                    dataA={(data?.bigRequests[2].data || []) as BigWigDataPoint[]}
-                    dataB={(data?.bigRequests[3].data || []) as BigWigDataPoint[]}
+                    dataB={(data?.bigRequests[2].data || []) as BigWigDataPoint[]}
+                    dataA={(data?.bigRequests[3].data || []) as BigWigDataPoint[]}
                     width={width}
                     height={height * 0.25}
                     domain={domain}
                     transform={`translate(0,${height * 0.7})`}
                 />
             </g>
-        )
+        );
 
     };
 export default GWASPredictionTrack;

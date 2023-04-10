@@ -48,6 +48,8 @@ export const URL_MAP = {
     "BipolarDisorder": "bipolar",
     "BMI": "BMI",
     "CigsPerDay": "cigarettes-per-day",
+    "Major Depressive Disorder": "MDD.2018",
+    "Attention deficit hyperactive disorder": "ADHD_male.005362",
     "Depression": "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/MDD.2021.gz.bb",
     "Dyslexia": "dyslexia",
     "EverSmoked": "ever-smoked",
