@@ -1,11 +1,8 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, Button } from '@zscreen/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
-import { Divider, Grid } from '@mui/material';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import { Divider, Grid, TextField, Box, Tabs, Tab } from '@mui/material';
 import ViolinPlot from './violin/violin';
 import { gql, useQuery } from '@apollo/client';
 import { groupBy } from 'queryz';
@@ -43,12 +40,16 @@ const GTEX_GENES_QUERY= gql`
 const GeneDetails: React.FC = (props) => {
     const { gene } = useParams();
     const { state }: any = useLocation();
+    console.log(useLocation())
     const navigate = useNavigate();  
     const [ tabIndex, setTabIndex ] = useState(0);
     const ref = useRef<SVGSVGElement>(null);
     const [ tissueCategory, setTissueCategory] = React.useState<string | null>('granular');
-    const { geneid, chromosome, start, end } = state ? state : { geneid: '', chromosome: '', start: null, end: null };
-    
+    let { geneid, chromosome, start, end } = state ? state : { geneid: '', chromosome: '', start: null, end: null };
+    const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
+    const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
+    if (trueGeneId) geneid = trueGeneId;
+
     const handleTissueCategory = (
         _: any,
         newTissueCategory: string | null,
@@ -120,10 +121,16 @@ const GeneDetails: React.FC = (props) => {
                 <Grid item sm={9}>
                     <Typography type="headline" size="large" style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}>
                         <img alt="DNA" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png" width="1.7%" />
-                        &nbsp;Gene Details: {gene}
+                        &nbsp;Gene Details: {trueGeneId || gene}
                     </Typography>
+                    <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
+                        <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
+                        <TextField variant="standard" onChange={(e) => setPartialGeneId(e.target.value)} />
+                        <Button onClick={() => setTrueGeneId(partialGeneId)} variant="outlined" bvariant="filled" btheme="light">Go</Button>
+                    </div>
                 </Grid>
                 <Grid item sm={1} lg={1.5} />
+                <Grid item sm={12} style={{ marginBottom: "10px" }} />
                 <Grid item sm={1} lg={1.5} />  
                 <Grid item sm={9}>
                   <Box>
@@ -145,7 +152,10 @@ const GeneDetails: React.FC = (props) => {
                       </Box>
                     ) : tabIndex === 2 ? (
                       <Box>
-                        <Browser name={gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}}/>
+                        <Browser
+                          name={trueGeneId || gene}
+                          coordinates={{ chromosome, start: +start, end: +end }}
+                        />
                       </Box>
                     ) : tabIndex === 3 ? (
                       <Box>
@@ -165,7 +175,7 @@ const GeneDetails: React.FC = (props) => {
                       </Box>
                     ) : tabIndex === 5 ? (
                       <Box>
-                            <SingleCell gene={gene || "APOE"} />
+                          <SingleCell gene={trueGeneId || gene || "APOE"} />
                       </Box>
                     ) : tabIndex === 1 ? (
                       <Box>

@@ -204,10 +204,13 @@ const GENE_AUTOCOMPLETE_QUERY = `
             <Grid container>
                 <Grid item sm={1}  md={2} lg={3} xl={3}></Grid>
                 <Grid item sm={8} md={6} lg={5} xl={4}>
-                    <Button bvariant={"outlined"}  btheme="light" onClick={()=>{
-                        navigate(`/psychscreen/gene/gtexumap`)
-
-                    }} >{'GTEx Umap Plots'}</Button>
+                    <Button
+                        bvariant="outlined"
+                        btheme="light"
+                        onClick={() => { navigate(`/psychscreen/gene/gtexumap`) }}
+                    >
+                        GTEx Umap Plots
+                    </Button>
                 </Grid>
             </Grid>
          

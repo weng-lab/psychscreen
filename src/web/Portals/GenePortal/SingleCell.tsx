@@ -3,9 +3,11 @@ import { CircularProgress, Grid, Tabs, Tab, ToggleButton, ToggleButtonGroup } fr
 import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
 import { groupBy } from 'queryz';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import DotPlot from '../SingleCellPortal/DotPlot';
 import { lower5, range, upper5 } from './GTexUMAP';
+import { downloadSVGAsPNG } from '../../svgToPng';
+import { downloadSVG } from './violin/utils';
 
 export type SingleCellGeneQueryItem = {
     sampleid: string;
@@ -160,6 +162,8 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const handleTabChange = (_: any, newTabIndex: number) => {
         setTabIndex(newTabIndex);
     };
+    const chartRef = useRef<SVGSVGElement>(null);
+    const dotPlotRef = useRef<SVGSVGElement>(null);
     return (
         <Grid container>
             <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
@@ -181,10 +185,20 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             { tabIndex === 0 ? (
                 <Grid item sm={12}>
                     { loading ? <CircularProgress /> : (
-                        <DotPlot
-                            disease={dataset}
-                            gene={gene}
-                        />
+                        <>
+                            <DotPlot
+                                disease={dataset}
+                                gene={gene}
+                                ref={dotPlotRef}
+                            />
+                            <Button
+                                onClick={() => dotPlotRef?.current && downloadSVG(dotPlotRef, `${gene}-${dataset}-single-cell-dot-plot.svg`)}
+                                btheme="dark"
+                                bvariant='outlined'
+                            >
+                                Download
+                            </Button>
+                        </>
                     )}
                 </Grid>
             ) : (
@@ -213,87 +227,98 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                         </div>
                         <div style={{ marginLeft: "-2em", marginTop: "-3em" }}>
                             { loading ? <CircularProgress /> : (
-                                <Chart
-                                    key={dataset}
-                                    marginFraction={0.28}
-                                    innerSize={{ width: 2100, height: 2000 }}
-                                    domain={domain}
-                                    xAxisProps={{ ticks: range(domain.x.start, domain.x.end + 1, 5), title: 'UMAP-1' }}
-                                    yAxisProps={{ ticks: range(domain.y.start, domain.y.end + 1, 5), title: 'UMAP-2' }}
-                                    scatterData={[ points ]}
-                                >
-                                    <Scatter
-                                        data={points}
-                                        onPointMouseOver={(i: number) => { setTooltip(i); setHighlighted(points[i]?.data); }}
-                                        onPointMouseOut={() => { setTooltip(-1); setHighlighted(""); }}
-                                    />
-                                    <defs>
-                                        <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
-                                            <stop offset="0%" stop-color="red" />
-                                            <stop offset="100%" stop-color="#ffcd00" />
-                                        </linearGradient>
-                                    </defs>
-                                    { tooltip > -1 && (
-                                        <rect
-                                            x={points[tooltip].x - points[tooltip].data.replace(/_/g, " ").length * 1}
-                                            y={points[tooltip].y - 3 + 0.7}
-                                            width={points[tooltip].data.replace(/_/g, " ").length * 1 * 2}
-                                            height={3}
-                                            stroke="#000000"
-                                            strokeWidth={0.05}
-                                            fill="#ffffff"
-                                            fillOpacity={0.9}
+                                <>
+                                    <Chart
+                                        key={dataset}
+                                        marginFraction={0.28}
+                                        innerSize={{ width: 2100, height: 2000 }}
+                                        domain={domain}
+                                        xAxisProps={{ ticks: range(domain.x.start, domain.x.end + 1, 5), title: 'UMAP-1' }}
+                                        yAxisProps={{ ticks: range(domain.y.start, domain.y.end + 1, 5), title: 'UMAP-2' }}
+                                        scatterData={[ points ]}
+                                        ref={chartRef}
+                                    >
+                                        <Scatter
+                                            data={points}
+                                            onPointMouseOver={(i: number) => { setTooltip(i); setHighlighted(points[i]?.data); }}
+                                            onPointMouseOut={() => { setTooltip(-1); setHighlighted(""); }}
                                         />
-                                    )}
-                                    { tooltip > -1 && (
-                                        <text
-                                            x={points[tooltip].x}
-                                            y={points[tooltip].y - 4.2 - 0.1}
-                                            fontSize={2}
-                                            textAnchor="middle"
-                                        >
-                                            {points[tooltip].data.replace(/_/g, " ")}
-                                        </text>
-                                    )}
-                                    { colorScheme === "expression" && (
-                                        <rect
-                                            x={upper5(Math.max(...points.map(x => x.x))) + 2}
-                                            y={upper5(Math.max(...points.map(x => x.y))) - 2}
-                                            width={1}
-                                            height={upper5(Math.max(...points.map(x => x.y))) - lower5(Math.min(...points.map(x => x.y))) - 5}
-                                            fill="url(#scale)"
-                                        />
-                                    )}
-                                    { colorScheme === "expression" && (
-                                        <text
-                                            x={upper5(Math.max(...points.map(x => x.x))) + 1}
-                                            y={(lower5(Math.min(...points.map(x => x.y))) + upper5(Math.max(...points.map(x => x.y)))) / 2 + 0.5}
-                                            transform="rotate(-90)"
-                                            fontSize={1.5}
-                                            textAnchor="middle"
-                                        >
-                                            {gene} Expression
-                                        </text>
-                                    )}
-                                    { colorScheme === "expression" && (
-                                        <text
-                                            x={upper5(Math.max(...points.map(x => x.x))) + 4}
-                                            y={upper5(Math.max(...points.map(x => x.y))) - 2.5}
-                                            fontSize={1.2}
-                                        >
-                                            {maximumValue.toFixed(1)}
-                                        </text>
-                                    )}
-                                    { colorScheme === "expression" && (
-                                        <text
-                                            x={upper5(Math.max(...points.map(x => x.x))) + 4}
-                                            y={lower5(Math.min(...points.map(x => x.y))) + 2.5}
-                                            fontSize={1.2}
-                                        >
-                                            0.0
-                                        </text>
-                                    )}
-                                </Chart>
+                                        <defs>
+                                            <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
+                                                <stop offset="0%" stop-color="red" />
+                                                <stop offset="100%" stop-color="#ffcd00" />
+                                            </linearGradient>
+                                        </defs>
+                                        { tooltip > -1 && (
+                                            <rect
+                                                x={points[tooltip].x - points[tooltip].data.replace(/_/g, " ").length * 1}
+                                                y={points[tooltip].y - 3 + 0.7}
+                                                width={points[tooltip].data.replace(/_/g, " ").length * 1 * 2}
+                                                height={3}
+                                                stroke="#000000"
+                                                strokeWidth={0.05}
+                                                fill="#ffffff"
+                                                fillOpacity={0.9}
+                                            />
+                                        )}
+                                        { tooltip > -1 && (
+                                            <text
+                                                x={points[tooltip].x}
+                                                y={points[tooltip].y - 4.2 - 0.1}
+                                                fontSize={2}
+                                                textAnchor="middle"
+                                            >
+                                                {points[tooltip].data.replace(/_/g, " ")}
+                                            </text>
+                                        )}
+                                        { colorScheme === "expression" && (
+                                            <rect
+                                                x={upper5(Math.max(...points.map(x => x.x))) + 2}
+                                                y={upper5(Math.max(...points.map(x => x.y))) - 2}
+                                                width={1}
+                                                height={upper5(Math.max(...points.map(x => x.y))) - lower5(Math.min(...points.map(x => x.y))) - 5}
+                                                fill="url(#scale)"
+                                            />
+                                        )}
+                                        { colorScheme === "expression" && (
+                                            <text
+                                                x={upper5(Math.max(...points.map(x => x.x))) + 1}
+                                                y={(lower5(Math.min(...points.map(x => x.y))) + upper5(Math.max(...points.map(x => x.y)))) / 2 + 0.5}
+                                                transform="rotate(-90)"
+                                                fontSize={1.5}
+                                                textAnchor="middle"
+                                            >
+                                                {gene} Expression
+                                            </text>
+                                        )}
+                                        { colorScheme === "expression" && (
+                                            <text
+                                                x={upper5(Math.max(...points.map(x => x.x))) + 4}
+                                                y={upper5(Math.max(...points.map(x => x.y))) - 2.5}
+                                                fontSize={1.2}
+                                            >
+                                                {maximumValue.toFixed(1)}
+                                            </text>
+                                        )}
+                                        { colorScheme === "expression" && (
+                                            <text
+                                                x={upper5(Math.max(...points.map(x => x.x))) + 4}
+                                                y={lower5(Math.min(...points.map(x => x.y))) + 2.5}
+                                                fontSize={1.2}
+                                            >
+                                                0.0
+                                            </text>
+                                        )}
+                                    </Chart>
+                                    <Button
+                                        onClick={() => chartRef?.current && downloadSVGAsPNG(chartRef.current, `${gene}-${dataset}-single-cell-UMAP.png`)}
+                                        btheme='dark'
+                                        bvariant='filled'
+                                        style={{ marginLeft: "150px", marginTop: "-100px" }}
+                                    >
+                                        Download
+                                    </Button>
+                                </>
                             )}
                         </div>
                     </Grid>

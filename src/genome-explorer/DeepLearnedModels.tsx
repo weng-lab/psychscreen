@@ -44,8 +44,8 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
         ]);
         const height = useMemo(
             () => 130 + (domain.end - domain.start <= 10000 && displayedTracks.find(x => x[0] === "241-way mammalian phylo-P")?.length
-                ? 130 + displayedTracks.length * 130
-                : displayedTracks.length * 130),
+                ? 130 + displayedTracks.length * 130 - (u ? 0 : 130)
+                : displayedTracks.length * 130) - (u ? 0 : 130),
             [ displayedTracks, domain ]
         );
         useEffect( () => {
@@ -113,16 +113,18 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
                         onImportantRegionsLoaded={regions => onImportantRegionsLoaded && importantRegionsLoaded(regions, i)}
                     />
                 ))}
-                <GWASPredictionTrack
-                    width={1400}
-                    height={130}
-                    domain={domain}
-                    riskBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.risk.bb"
-                    protectiveBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.protective.bb"
-                    riskPredictionBigWigURL={`gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_${u}.gz.PTM_neurons.risk_chrombpnet_nobias.bw`}
-                    protectivePredictionBigWigURL={`gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_${u}.gz.PTM_neurons.protective_chrombpnet_nobias.bw`}
-                    transform={`translate(0,${130 * displayedTracks.length})`}
-                />
+                { u && (
+                    <GWASPredictionTrack
+                        width={1400}
+                        height={130}
+                        domain={domain}
+                        riskBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.risk.bb"
+                        protectiveBigBedURL="gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/input/bipolar-II.gz.chrombpnet.protective.bb"
+                        riskPredictionBigWigURL={`gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_${u}.gz.PTM_neurons.risk_chrombpnet_nobias.bw`}
+                        protectivePredictionBigWigURL={`gs://gcp.wenglab.org/projects/chrombpnet/psychencode/GWAS/outputs/predictions_${u}.gz.PTM_neurons.protective_chrombpnet_nobias.bw`}
+                        transform={`translate(0,${130 * displayedTracks.length})`}
+                    />
+                )}
                 { settingsMousedOver && (
                     <rect width={1400} height={height} transform="translate(0,-0)" fill="#194023" fillOpacity={0.1} />
                 )}
