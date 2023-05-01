@@ -16,6 +16,12 @@
  import SingleCell from '../../../assets/single-cell.png';
 
 export const DISEASE_CARDS = [
+{val: "Dataset:scATAC-Seq-peaks", cardLabel: "scATAC-Seq peaks", cardDesc: ""},
+{val: "Dataset:Gene-regulatory-networks", cardLabel: "Gene regulatory networks", cardDesc: ""},
+{val: "Dataset:Integrated-Expression-data", cardLabel: "Integrated Expression data", cardDesc: ""},
+{val: "Dataset:Diff-expressed-genes", cardLabel: "Diff. expressed genes", cardDesc: ""},
+{val: "Dataset:Cell-type-specific-eQTLs", cardLabel: "Cell type specific eQTLs", cardDesc: ""},
+{val: "Dataset:Indiv-cohort-expression-data", cardLabel: "Indiv. cohort expression data", cardDesc: ""},
 {val: "DevBrain", cardLabel: "DevBrain", cardDesc: ""},
 {val: "IsoHuB", cardLabel: "IsoHuB", cardDesc: ""},
 {val: "SZBDMulti-Seq", cardLabel: "SZBDMulti-Seq", cardDesc: ""},
@@ -88,7 +94,7 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
                             <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                 <HorizontalCard width={500}
                                     onCardClick={(v?: string) => {
-                                        navigate(`/psychscreen/single-cell/${v}`, { state: { searchvalue: v } })
+                                        v!!.includes("Dataset")  ?   navigate(`/psychscreen/single-cell/datasets/${v?.replace("Dataset:","")}`, { state: { searchvalue: v?.replace("Dataset:","") } }) :  navigate(`/psychscreen/single-cell/${v}`, { state: { searchvalue: v } })
                                     }}
                                     cardContentText={DISEASE_CARDS} 
                                 />            

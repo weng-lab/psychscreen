@@ -9,6 +9,7 @@ import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
 import  DiseaseTraitDetails from './web/Portals/DiseaseTraitPortal/DiseaseTraitDetails';
 import  SingleCellDetails from './web/Portals/SingleCellPortal/SingleCellDetails';
+import SingleCellDatasets from './web/Portals/SingleCellPortal/SingleCellDatasets';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloLink } from 'apollo-link';
@@ -16,7 +17,7 @@ import GeneDetails from './web/Portals/GenePortal/GeneDetails';
 import GTexUMAP from './web/Portals/GenePortal/GTexUMAP';
 import SNPDetails from './web/Portals/SnpPortal/SNPDetails';
 import SingleCellDotPlot from './web/Portals/SingleCellPortal/SingleCellDotPlot';
-
+import SingleCellGeneRegulatoryDatasets from './web/Portals/SingleCellPortal/SingleCellGeneRegulatoryDatasets'
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
     [ "/gene", GenePortal ],
@@ -65,8 +66,10 @@ const App: React.FC = () => {
                     <Route path="/psychscreen" element={<HomePage />} />
                     <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
                     <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
+                    <Route path="/psychscreen/single-cell/datasets/Gene-regulatory-networks/:celltype" element={<SingleCellGeneRegulatoryDatasets/>}/>
                     <Route path="/psychscreen/single-cell/:disease/:gene" element={<SingleCellDotPlot />} />
                     <Route path="/psychscreen/single-cell/:disease" element={<SingleCellDetails />} />
+                    <Route path="/psychscreen/single-cell/datasets/:disease" element={<SingleCellDatasets />} />
                     <Route path="/psychscreen/gene/:gene" element={<GeneDetails />} />
                     <Route path="/psychscreen/gene/gtexumap" element={<GTexUMAP/>} />
                     <Route path="/psychscreen/snp/:snpid" element={<SNPDetails/>} />
