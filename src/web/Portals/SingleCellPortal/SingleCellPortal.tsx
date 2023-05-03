@@ -21,13 +21,8 @@ export const DISEASE_CARDS = [
 {val: "Dataset:Integrated-Expression-data", cardLabel: "Integrated Expression data", cardDesc: ""},
 {val: "Dataset:Diff-expressed-genes", cardLabel: "Diff. expressed genes", cardDesc: ""},
 {val: "Dataset:Cell-type-specific-eQTLs", cardLabel: "Cell type specific eQTLs", cardDesc: ""},
-{val: "Dataset:Indiv-cohort-expression-data", cardLabel: "Indiv. cohort expression data", cardDesc: ""},
-{val: "DevBrain", cardLabel: "DevBrain", cardDesc: ""},
-{val: "IsoHuB", cardLabel: "IsoHuB", cardDesc: ""},
-{val: "SZBDMulti-Seq", cardLabel: "SZBDMulti-Seq", cardDesc: ""},
-{val: "Urban-DLPFC", cardLabel: "Urban-DLPFC", cardDesc: ""},
-{val: "CMC-CellHashing", cardLabel: "CMC-CellHashingr", cardDesc: ""},
-{val: "UCLA-ASD", cardLabel: "UCLA-ASD", cardDesc: ""},
+{val: "Dataset:Indiv-cohort-expression-data", cardLabel: "Indiv. cohort expression data", cardDesc: ""}
+
 ]
  
 const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {

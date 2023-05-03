@@ -1,31 +1,42 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import { GridProps } from '@mui/material';
 import { AppBar, Typography, SearchBox, HorizontalCard, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
+import  {DataTable} from "@weng-lab/ts-ztable";
 
 
-const celltypedata = [[{header:'TF', value: "RXRG" },{header:'enhancer', value:'chr1:1019276-1019776'},
-{header:'promoter', value: "chr1:958584-960584" },{header:'TG', value:'KLHL17'},
-{header:'CRE', value: "proximal" }],
-[{header:'TF', value: "NR4A2" },{header:'enhancer', value:'chr1:1019276-1019776'},
-{header:'promoter', value: "chr1:958584-960584" },{header:'TG', value:'KLHL17'},
-{header:'CRE', value: "proximal" }],
-
-[{header:'TF', value: "THRB" },{header:'enhancer', value:'chr1:1019276-1019776'},
-{header:'promoter', value: "chr1:958584-960584" },{header:'TG', value:'KLHL17'},
-{header:'CRE', value: "proximal" }],
-
-[{header:'TF', value: "IRF1" },{header:'enhancer', value:'chr1:925367-925867'},
-{header:'promoter', value: "chr1:1000172-1002172" },{header:'TG', value:'HES4'},
-{header:'CRE', value: "proximal" }]]
+const COLUMNS = [{
+    header: "TF",
+    value: row => row.TF
+},{
+    header: "Enhancer",
+    value: row => row.enhancer
+}, {
+    header: "Promoter",
+    value: row => row.promoter
+},
+{
+    header: "TG",
+    value: row => row.TG
+  },
+{
+  header: "CRE",
+  value: row => row.CRE
+}];
 
 
 const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
     const navigate = useNavigate(); 
     const { celltype } = useParams();
+    const [ grn, setGrn ] = useState<any>([]);
+    
+    useEffect( () => {
+        fetch(`https://downloads.wenglab.org/${celltype}.json`)
+            .then(x => x.json())
+            .then(setGrn)
+    }, [celltype]);
   
     return (<>
     <AppBar
@@ -47,11 +58,20 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
                             {celltype}
                         </Typography>
                         <br/>
+                        { grn.length==0 && <Grid sm={10} md={10} lg={9} xl={9}>
+                        <Typography
+                            type="body"
+                            size="large"
+                            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+                        >
+                                Loading Gene Regulatory Networks data for {celltype}...
+                        </Typography>
                         
-                        <Grid sm={10} md={10} lg={9} xl={9}>
-                        <CustomizedTable tabledata={celltypedata}/>
+                        </Grid>}
+                        {grn && grn.length>0 &&  <Grid sm={10} md={10} lg={9} xl={9}>
+                        <DataTable columns={COLUMNS} rows={grn}  itemsPerPage={20} searchable/>
                         
-                        </Grid>
+                        </Grid>}
                     </Container>
                 </Grid>}
                 </Grid>
