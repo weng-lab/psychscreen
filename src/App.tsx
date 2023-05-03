@@ -18,6 +18,9 @@ import GTexUMAP from './web/Portals/GenePortal/GTexUMAP';
 import SNPDetails from './web/Portals/SnpPortal/SNPDetails';
 import SingleCellDotPlot from './web/Portals/SingleCellPortal/SingleCellDotPlot';
 import SingleCellGeneRegulatoryDatasets from './web/Portals/SingleCellPortal/SingleCellGeneRegulatoryDatasets'
+import SingleCellCelltypeQTL from './web/Portals/SingleCellPortal/SingleCellCelltypeQTL'
+import SingleCelldegdisease from './web/Portals/SingleCellPortal/SingleCelldegdisease'
+import SingleCelldegdiseasect from './web/Portals/SingleCellPortal/SingleCelldegdiseasect'
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
     [ "/gene", GenePortal ],
@@ -66,7 +69,11 @@ const App: React.FC = () => {
                     <Route path="/psychscreen" element={<HomePage />} />
                     <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
                     <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
+                    <Route path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease" element={<SingleCelldegdisease/>}/>
+                    <Route path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease/:celltype" element={<SingleCelldegdiseasect/>}/>
+                    
                     <Route path="/psychscreen/single-cell/datasets/Gene-regulatory-networks/:celltype" element={<SingleCellGeneRegulatoryDatasets/>}/>
+                    <Route path="/psychscreen/single-cell/datasets/Cell-type-specific-eQTLs/:celltype" element={<SingleCellCelltypeQTL/>}/>
                     <Route path="/psychscreen/single-cell/:disease/:gene" element={<SingleCellDotPlot />} />
                     <Route path="/psychscreen/single-cell/:disease" element={<SingleCellDetails />} />
                     <Route path="/psychscreen/single-cell/datasets/:disease" element={<SingleCellDatasets />} />

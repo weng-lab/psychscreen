@@ -8,35 +8,54 @@ import  {DataTable} from "@weng-lab/ts-ztable";
 
 
 const COLUMNS = [{
-    header: "TF",
-    value: row => row.TF
+    header: "Gene",
+    value: row => row.gene
 },{
-    header: "Enhancer",
-    value: row => row.enhancer
+    header: "Base mean",
+    value: row => row.baseMean
 }, {
-    header: "Promoter",
-    value: row => row.promoter
+    header: "LfcSE",
+    value: row => row.lfcSE
 },
 {
-    header: "TG",
-    value: row => row.TG
+    header: "Stat",
+    value: row => row.stat
   },
 {
-  header: "CRE",
-  value: row => row.CRE
-}];
+  header: "Pvalue",
+  value: row => row.pvalue
+},
+{
+    header: "Padj",
+    value: row => row.padj
+  }];
 
 
-const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
+const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
     const navigate = useNavigate(); 
+    const { disease } = useParams();
     const { celltype } = useParams();
-    const [ grn, setGrn ] = useState<any>([]);
+    const [ deg, setDeg ] = useState<any>([]);
     
     useEffect( () => {
-        fetch(`https://downloads.wenglab.org/${celltype}.json`)
-            .then(x => x.json())
-            .then(setGrn)
-    }, [celltype]);
+        fetch(`https://downloads.wenglab.org/${celltype}_${disease}_table.csv`)
+            .then(x => x.text())
+            .then((d)=>{
+                
+                let r =d.split("\n").filter(x=>!x.includes("pvalue")).filter(x=>x!="").map(s=>{
+                    let val = s.split(",")
+                    return {
+                        gene: val[0].replace(/['"]+/g, ''),
+                        baseMean: +val[1],
+                        lfcSE: +val[2],
+                        stat: +val[3],
+                        pvalue: +val[4],
+                        padj: +val[5],
+                    }
+                })
+                setDeg(r)
+            })
+    }, [disease,celltype]);
   
     return (<>
     <AppBar
@@ -58,20 +77,20 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
                             {celltype}
                         </Typography>
                         <br/>
-                        { grn.length==0 && <Grid sm={10} md={10} lg={9} xl={9}>
+                        { deg.length==0 && <Grid sm={10} md={10} lg={9} xl={9}>
                         <Typography
                             type="body"
                             size="large"
                             style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
                         >
-                                Loading Gene Regulatory Networks data for {celltype}...
+                                Loading Diff. Expressed genes for {celltype}...
                         </Typography>
                         
                         </Grid>}
-                        {grn && grn.length>0 &&  <Grid sm={10} md={10} lg={9} xl={9}>
-                        <DataTable columns={COLUMNS} rows={grn} itemsPerPage={20} searchable/>
+                        {deg && deg.length>0 &&  <Grid sm={10} md={10} lg={9} xl={9}>
+                        <DataTable columns={COLUMNS} rows={deg} itemsPerPage={20} searchable/>
                         
-                        </Grid>}
+    </Grid>}
                     </Container>
                 </Grid>}
                 </Grid>
@@ -80,4 +99,4 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
     </>)
 }
 
-export default SingleCellGeneRegulatoryDatasets;
+export default SingleCelldegdiseasect

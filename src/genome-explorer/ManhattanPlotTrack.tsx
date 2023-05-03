@@ -99,6 +99,8 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
             coordinates: xx.coordinates
         }))
     ], [ data, props.allQTLs ]);
+
+    console.log(inView,"inView")
     const allQTLs = useMemo( () => (
         inView?.filter(x => props.groupedQTLs.get(x.rsId))
             .map(x => ({ ...x, eQTL: props.groupedQTLs.get(x.rsId)! }))
