@@ -1,30 +1,30 @@
 {
   "files": {
-    "main.css": "/psychscreen/static/css/main.106baaae.chunk.css",
-    "main.js": "/psychscreen/static/js/main.ad78763c.chunk.js",
-    "main.js.map": "/psychscreen/static/js/main.ad78763c.chunk.js.map",
-    "runtime-main.js": "/psychscreen/static/js/runtime-main.c58e4265.js",
-    "runtime-main.js.map": "/psychscreen/static/js/runtime-main.c58e4265.js.map",
-    "static/css/2.4c4080dd.chunk.css": "/psychscreen/static/css/2.4c4080dd.chunk.css",
-    "static/js/2.ac748d17.chunk.js": "/psychscreen/static/js/2.ac748d17.chunk.js",
-    "static/js/2.ac748d17.chunk.js.map": "/psychscreen/static/js/2.ac748d17.chunk.js.map",
-    "static/js/3.25df5de6.chunk.js": "/psychscreen/static/js/3.25df5de6.chunk.js",
-    "static/js/3.25df5de6.chunk.js.map": "/psychscreen/static/js/3.25df5de6.chunk.js.map",
-    "index.html": "/psychscreen/index.html",
-    "static/css/2.4c4080dd.chunk.css.map": "/psychscreen/static/css/2.4c4080dd.chunk.css.map",
-    "static/css/main.106baaae.chunk.css.map": "/psychscreen/static/css/main.106baaae.chunk.css.map",
-    "static/js/2.ac748d17.chunk.js.LICENSE.txt": "/psychscreen/static/js/2.ac748d17.chunk.js.LICENSE.txt",
-    "static/media/brain.a1faa932.png": "/psychscreen/static/media/brain.a1faa932.png",
-    "static/media/disease-trait.604481d8.png": "/psychscreen/static/media/disease-trait.604481d8.png",
-    "static/media/gene-bcre.1e6ddfd8.png": "/psychscreen/static/media/gene-bcre.1e6ddfd8.png",
-    "static/media/single-cell.c1020702.png": "/psychscreen/static/media/single-cell.c1020702.png",
-    "static/media/snp-qtl.532ae331.png": "/psychscreen/static/media/snp-qtl.532ae331.png"
+    "main.css": "/static/css/main.106baaae.chunk.css",
+    "main.js": "/static/js/main.58a3c061.chunk.js",
+    "main.js.map": "/static/js/main.58a3c061.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c7012ce6.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c7012ce6.js.map",
+    "static/css/2.4c4080dd.chunk.css": "/static/css/2.4c4080dd.chunk.css",
+    "static/js/2.2896b706.chunk.js": "/static/js/2.2896b706.chunk.js",
+    "static/js/2.2896b706.chunk.js.map": "/static/js/2.2896b706.chunk.js.map",
+    "static/js/3.25df5de6.chunk.js": "/static/js/3.25df5de6.chunk.js",
+    "static/js/3.25df5de6.chunk.js.map": "/static/js/3.25df5de6.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.4c4080dd.chunk.css.map": "/static/css/2.4c4080dd.chunk.css.map",
+    "static/css/main.106baaae.chunk.css.map": "/static/css/main.106baaae.chunk.css.map",
+    "static/js/2.2896b706.chunk.js.LICENSE.txt": "/static/js/2.2896b706.chunk.js.LICENSE.txt",
+    "static/media/brain.a1faa932.png": "/static/media/brain.a1faa932.png",
+    "static/media/disease-trait.604481d8.png": "/static/media/disease-trait.604481d8.png",
+    "static/media/gene-bcre.1e6ddfd8.png": "/static/media/gene-bcre.1e6ddfd8.png",
+    "static/media/single-cell.c1020702.png": "/static/media/single-cell.c1020702.png",
+    "static/media/snp-qtl.532ae331.png": "/static/media/snp-qtl.532ae331.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.c58e4265.js",
+    "static/js/runtime-main.c7012ce6.js",
     "static/css/2.4c4080dd.chunk.css",
-    "static/js/2.ac748d17.chunk.js",
+    "static/js/2.2896b706.chunk.js",
     "static/css/main.106baaae.chunk.css",
-    "static/js/main.ad78763c.chunk.js"
+    "static/js/main.58a3c061.chunk.js"
   ]
 }
