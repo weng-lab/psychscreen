@@ -132,12 +132,11 @@ const COLUMNS  = [{
 },{
     header: "Download",
     value: row => row.url,
-    render: row => <Button bvariant='outlined' btheme="light" endIcon={<DownloadIcon/>}>
-                            
-    <a href={row.url} download>
-         Download
-    </a>
-</Button>
+    render: row => <a href={row.url} download style={{ textDecoration: "none" }}>
+    <Button bvariant="filled" btheme="light">
+        <DownloadIcon/> 
+    </Button>
+</a>
 }];
 
 
