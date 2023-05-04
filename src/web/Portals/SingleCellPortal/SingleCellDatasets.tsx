@@ -55,7 +55,7 @@ export const qtlcellTypeCards = [
     //{val: "Endo__VLMC", cardLabel: "Endothelial cells", cardDesc: ""},
    // {val: "Immune", cardLabel: "Immune Cells", cardDesc: ""},
   //  { val: "SMC", cardLabel: "Smooth Muscle Cells", cardDesc: ""},
-    {val: "Sncg", cardLabel: "Sncg", cardDesc: ""},
+    //{val: "Sncg", cardLabel: "Sncg", cardDesc: ""},
     {val: "Vip", cardLabel: "Vip", cardDesc: ""},
     {val: "Sst__Sst.Chodl", cardLabel: "Sst", cardDesc: ""},
     {val: "PC", cardLabel: "Pericytes", cardDesc: ""},
