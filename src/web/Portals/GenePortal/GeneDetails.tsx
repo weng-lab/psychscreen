@@ -165,29 +165,29 @@ const GeneDetails: React.FC = (props) => {
                 <Grid item sm={9}>
                   <Box>
                     <Tabs value={tabIndex} onChange={handleTabChange}>
-                        <Tab label="Brain Specificity" />
-                        <Tab label="Tissue Expression (GTEx)" />
                         <Tab label="Brain (Epi)genome Browser" />
-                        <Tab label="Brain Expression by Age" />
-                        <Tab label="Brain eQTLs and bCREs" />
                         <Tab label="Brain Single Cell Expression" />
+                        <Tab label="Tissue Expression (GTEx)" /> 
+                        <Tab label="Brain Specificity" />                        
+                        <Tab label="Brain eQTLs and bCREs" />
+                        
                         { null && <Tab label="Open Target" /> }
                     </Tabs>
                     <Divider/>
                   </Box>
                   <Box sx={{ padding: 2 }}>
-                    { tabIndex === 0 ? (
+                    { tabIndex === 3 ? (
                       <Box>
                         <GeneOverview gene={trueGeneName || gene} />
                       </Box>
-                    ) : tabIndex === 2 ? (
+                    ) : tabIndex === 0 ? (
                       <Box>
                         <Browser
                           name={trueGeneName?.toUpperCase() || gene}
                           coordinates={{ chromosome, start: +start, end: +end }}
                         />
                       </Box>
-                    ) : tabIndex === 3 ? (
+                    ) : tabIndex === 3 && 0>1 ? (
                       <Box>
                         <GeneExpressionPage id={trueGeneId || geneid}/>
                       </Box>
@@ -196,18 +196,18 @@ const GeneDetails: React.FC = (props) => {
                         <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}
                         }/>
                       </Box>
-                    ) : tabIndex === 6 ? (
+                    ) : tabIndex === 5 ? (
                       <Box>
                         <Typography  type="body"
                                     size="small">
                               <OpenTarget id={trueGeneId || geneid}/>
                         </Typography>
                       </Box>
-                    ) : tabIndex === 5 ? (
+                    ) : tabIndex === 1 ? (
                       <Box>
                           <SingleCell gene={trueGeneName?.toUpperCase() || gene || "APOE"} />
                       </Box>
-                    ) : tabIndex === 1 ? (
+                    ) : tabIndex === 2 ? (
                       <Box>
                         {(data &&  data?.gtex_genes.length === 0 )  ? <Typography type="body" size="large">
                           No GTex data found for {trueGeneName?.toUpperCase() || gene}

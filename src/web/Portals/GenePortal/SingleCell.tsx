@@ -178,11 +178,12 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             </Grid>
             <Grid item sm={12}>
                 <Tabs value={tabIndex} onChange={handleTabChange}>
+                <Tab label="Detailed Expression Profile" />
                     <Tab label="Expression Summary" />
-                    <Tab label="Detailed Expression Profile" />
+                    
                 </Tabs>
             </Grid>
-            { tabIndex === 0 ? (
+            { tabIndex === 1 ? (
                 <Grid item sm={12}>
                     { loading ? <CircularProgress /> : (
                         <>
