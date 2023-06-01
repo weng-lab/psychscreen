@@ -19,23 +19,19 @@ import GeneBCRE from '../../../assets/gene-bcre.png';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const GENE_AUTOCOMPLETE_QUERY = `
- query suggest($id: String!, $assembly: String!) {
-     suggest(id: $id, assembly: $assembly, limit: 5) {
-         id
-         coordinates {
-             chromosome
-             start
-             end
-         }
-         ...on Gene {
-             name
-         }
-         ...on Transcript {
-             name
-         }
-         __typename
-     }
- }
+query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
+      name
+      id
+      coordinates {
+        start
+        chromosome
+        end
+      }
+      __typename
+    }
+  }
+  
  `;
 
  const GenePortal: React.FC = props => {
@@ -56,12 +52,13 @@ const GENE_AUTOCOMPLETE_QUERY = `
                     query: GENE_AUTOCOMPLETE_QUERY,
                     variables: {
                         assembly: "GRCh38",
-                        id: value,
+                        name_prefix: value,
+                        limit: 5
                     },
                 }),
                 headers: { 'Content-Type': 'application/json' },
             });
-            const genesSuggestion = (await response.json()).data?.suggest;            
+            const genesSuggestion = (await response.json()).data?.gene;            
             if(genesSuggestion && genesSuggestion.length > 0) {
                 const r = genesSuggestion.map((g: any)=>{
                     return {
@@ -154,7 +151,17 @@ const GENE_AUTOCOMPLETE_QUERY = `
                             }}                
                             helperText={"e.g. sox4, gapdh"}                            
                         />
-
+                    <br/>
+                    <br/>
+                    <br/>
+                    <Button
+                        bvariant="outlined"
+                        btheme="light"
+                        style={{ marginLeft: "100px" }}
+                        onClick={() => { navigate(`/psychscreen/gene/gtexumap`) }}
+                    >
+                        GTEx Umap Plots
+                    </Button>
                     </Container>
                    
                 </Grid>
@@ -201,18 +208,7 @@ const GENE_AUTOCOMPLETE_QUERY = `
             <br/>
             <br/>
             <br/>
-            <Grid container>
-                <Grid item sm={1}  md={2} lg={3} xl={3}></Grid>
-                <Grid item sm={8} md={6} lg={5} xl={4}>
-                    <Button
-                        bvariant="outlined"
-                        btheme="light"
-                        onClick={() => { navigate(`/psychscreen/gene/gtexumap`) }}
-                    >
-                        GTEx Umap Plots
-                    </Button>
-                </Grid>
-            </Grid>
+           
          
         </>
     );
