@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { Modal, Accordion, Box } from '@material-ui/core';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
-import { AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, Grid } from '@mui/material';
+import { AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { URL_MAP } from '../../web/Portals/DiseaseTraitPortal/DiseaseTraitPortal';
+import { URL_MAP } from '../../web/Portals/DiseaseTraitPortal/config/constants';
 
 type EpigeneticTrackModalProps = {
     open?: boolean;

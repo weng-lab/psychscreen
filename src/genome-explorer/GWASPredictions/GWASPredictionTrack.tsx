@@ -33,7 +33,7 @@ const GWASPredictionTrack: React.FC<GWASPredictionTrackProps>
                 preRenderedWidth: width,
                 url
             }))
-        ), [ domain, riskBigBedURL, protectiveBigBedURL, riskPredictionBigWigURL, protectivePredictionBigWigURL ]);
+        ), [ domain, riskBigBedURL, protectiveBigBedURL, riskPredictionBigWigURL, protectivePredictionBigWigURL, width ]);
         const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }});
 
         // make sure bigBed regions are at least 2 pixels wide for visibility
@@ -44,7 +44,7 @@ const GWASPredictionTrack: React.FC<GWASPredictionTrackProps>
                 ...x,
                 end: xtransform(x.end) - xtransform(x.start) < 2 ? rtransform(xtransform(x.start) + 2) : x.end
             }))
-        ), [ data, xtransform ]);
+        ), [ data, xtransform, rtransform ]);
 
         // display the tracks
         return loading ? null : (

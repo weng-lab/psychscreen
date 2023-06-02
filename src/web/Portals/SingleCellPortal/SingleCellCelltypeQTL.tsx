@@ -4,8 +4,7 @@ import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container } from '@mui/material';
-import  {DataTable} from "@weng-lab/ts-ztable";
-
+import { DataTable } from "@weng-lab/ts-ztable";
 
 const COLUMNS = [{
     header: "Gene",
@@ -57,7 +56,7 @@ const COLUMNS = [{
   }];
 
 
-const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
+const SingleCellCelltypeQTL: React.FC<GridProps> = props => {
     const navigate = useNavigate(); 
     const { celltype } = useParams();
     const [ qtl, setQtl ] = useState<any>([]);
@@ -65,11 +64,10 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
     useEffect( () => {
         fetch(`https://downloads.wenglab.org/${celltype}_sig_QTLs.dat`)
             .then(x => x.text())
-            .then((x: any)=>{
-                console.log(x,'dat')
-                let q = x.split("\n")
-                let r = q.filter(x=>x!="").map((d)=>{
-                    let val = d.split(" ")
+            .then((x: string) => {
+                const q = x.split("\n");
+                const r = q.filter(x => x !== "").map(d => {
+                    const val = d.split(" ");
                     return {
                         gene: val[0],
                         genechrom: val[1],                    
@@ -84,52 +82,54 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
                         r2: val[12],
                         slope: val[13],
                         besthit: val[14]
-                      }
-                })
-                setQtl(r)
-            })
-    }, [celltype]);
+                    };
+                });
+                setQtl(r);
+            });
+    }, [ celltype ]);
   
-    return (<>
-    <AppBar
+    return (
+        <>
+            <AppBar
                 centered
                 onDownloadsClicked={() => navigate("/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />
-            <Grid>
-           <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
-                { <Grid item  sm={10}  md={10} lg={9} xl={9}>
+            <Grid {...props}>
+                <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+                <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
                         <Typography
                             type="display"
                             size="medium"
-                            style={{ fontWeight: 700, fontSize: "36px", lineHeight: "57.6px", letterSpacing: "0.5px", marginBottom: "16px"  }}
+                            style={{ fontWeight: 700, fontSize: "36px", lineHeight: "57.6px", letterSpacing: "0.5px", marginBottom: "16px" }}
                         >
                             {celltype}
                         </Typography>
                         <br/>
-                        { qtl.length==0 && <Grid sm={10} md={10} lg={9} xl={9}>
-                        <Typography
-                            type="body"
-                            size="large"
-                            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
-                        >
-                                Loading Gene Regulatory Networks data for {celltype}...
-                        </Typography>
-                        
-                        </Grid>}
-                        {qtl && qtl.length>0 &&  <Grid sm={14} md={14} lg={14} xl={14}>
-                        <DataTable columns={COLUMNS} rows={qtl} itemsPerPage={20} searchable/>
-                        
-    </Grid>}
+                        { qtl.length === 0 && (
+                            <Grid sm={10} md={10} lg={9} xl={9}>
+                                <Typography
+                                    type="body"
+                                    size="large"
+                                    style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+                                >
+                                        Loading Gene Regulatory Networks data for {celltype}...
+                                </Typography>
+                            </Grid>
+                        )}
+                        { qtl && qtl.length > 0 && (
+                            <Grid sm={14} md={14} lg={14} xl={14}>
+                                <DataTable columns={COLUMNS} rows={qtl} itemsPerPage={20} searchable/>
+                            </Grid>
+                        )}
                     </Container>
-                </Grid>}
                 </Grid>
-                
-
-    </>)
+            </Grid>
+        </>
+    );
 }
 
 export default SingleCellCelltypeQTL;

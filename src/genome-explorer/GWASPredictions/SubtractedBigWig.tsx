@@ -44,7 +44,7 @@ const SubtractedBigWigTrack: React.FC<SubtractedBigWigProps>
                 x: width + 1,
                 value: 0
             }
-        ]), [ singleValuesA, singleValuesB, range ]);
+        ]), [ singleValuesA, singleValuesB, range, width ]);
         const [ negatives, positives ] = useMemo( () => [
             difference.map(x => ({ ...x, min: x.min < 0 ? x.min : 0, max: x.max < 0 ? x.max : 0 })),
             difference.map(x => ({ ...x, min: x.min > 0 ? x.min : 0, max: x.max > 0 ? x.max : 0 })),

@@ -105,7 +105,7 @@ const EpigeneticTrackModal: React.FC<EpigeneticTrackModalProps> = props => {
         ...TRACKS["Single cell ATAC-seq pseudobulk"]
             .filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0)
             .map(track => [ track[0], `gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/${track[1]}` ])
-    ] as [ string, string ][]), [ selectedTracks ]);
+    ] as [ string, string ][]), [ selectedTracks, props ]);
 
     return (
         <Modal

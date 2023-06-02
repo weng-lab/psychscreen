@@ -21,6 +21,7 @@ import SingleCellGeneRegulatoryDatasets from './web/Portals/SingleCellPortal/Sin
 import SingleCellCelltypeQTL from './web/Portals/SingleCellPortal/SingleCellCelltypeQTL'
 import SingleCelldegdisease from './web/Portals/SingleCellPortal/SingleCelldegdisease'
 import SingleCelldegdiseasect from './web/Portals/SingleCellPortal/SingleCelldegdiseasect'
+import GenomeExplorerPage from './web/Portals/GenomeExplorer/GenomeExplorerPage';
 export const PORTALS: [ string, React.FC ][] = [
     [ "/traits", DiseaseTraitPortal ],
     [ "/gene", GenePortal ],
@@ -80,6 +81,7 @@ const App: React.FC = () => {
                     <Route path="/psychscreen/gene/:gene" element={<GeneDetails />} />
                     <Route path="/psychscreen/gene/gtexumap" element={<GTexUMAP/>} />
                     <Route path="/psychscreen/snp/:snpid" element={<SNPDetails/>} />
+                    <Route path="/psychscreen/genomebrowser/:chromosome/:start/:end" element={<GenomeExplorerPage />} />
                     { PORTALS.map( portal => <Route path={`/psychscreen${portal[0] as string}`} element={React.createElement(portal[1], {})} /> )}
                 </Routes>
             </Router>

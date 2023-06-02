@@ -5,7 +5,7 @@ import CytobandView from './Explorer/Cytobands';
 import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from './EGeneTracks';
 import { EpigeneticTracks, tracks, VariantTracks } from '../../../../genome-explorer';
-import { URL_MAP } from '../../DiseaseTraitPortal/DiseaseTraitPortal';
+import { URL_MAP } from '../../DiseaseTraitPortal/config/constants';
 import { DeepLearnedModelTracks } from '../../../../genome-explorer/DeepLearnedModels';
 
 export const LD_QUERY = gql`

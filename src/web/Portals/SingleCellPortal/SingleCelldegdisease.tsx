@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { GridProps } from '@mui/material';
 import { AppBar, HorizontalCard, Typography } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
@@ -88,51 +88,50 @@ const diseaseCT = {
     {val: "L5.6.NP", cardLabel: "Layer 5/6 Near projecting", cardDesc: ""},
     {val: "L4.IT", cardLabel: "Layer 4 Intratelencephalic projecting", cardDesc: ""},
     {val: "L2.3.IT", cardLabel: "Layer 2/3 Intratelencephalic projecting", cardDesc: ""}]
-
 }
 
-const SingleCelldegdisease: React.FC<GridProps> = (props) => {
-    const navigate = useNavigate(); 
+const SingleCelldegdisease: React.FC<GridProps> = props => {
+    const navigate = useNavigate();
     const { disease } = useParams();
    
-    return (<>
-    <AppBar
+    return (
+        <>
+            <AppBar
                 centered
                 onDownloadsClicked={() => navigate("/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />
-            <Grid>
-           <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
-                { <Grid item  sm={10}  md={10} lg={9} xl={9}>
+            <Grid {...props}>
+                <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+                <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
                         <Typography
                             type="display"
                             size="medium"
-                            style={{ fontWeight: 700, fontSize: "36px", lineHeight: "57.6px", letterSpacing: "0.5px", marginBottom: "16px"  }}
+                            style={{ fontWeight: 700, fontSize: "36px", lineHeight: "57.6px", letterSpacing: "0.5px", marginBottom: "16px" }}
                         >
                             {disease}
                         </Typography>
                         <br/>
-                        {  <Grid sm={10} md={10} lg={9} xl={9}>
-                        <Slide direction="up" in timeout={1000}>
+                        <Grid sm={10} md={10} lg={9} xl={9}>
+                            <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "30px", marginTop: "10px" }}>            
                                     <HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
                                             navigate(`/psychscreen/single-cell/datasets/Diff-expressed-genes/${disease}/${v}`, { state: { searchvalue: v } })
                                         }}
-                                        cardContentText={diseaseCT[disease!!]} 
+                                        cardContentText={diseaseCT[disease!]} 
                                     />            
                                 </Container>
                             </Slide>
-                        </Grid>}
+                        </Grid>
                     </Container>
-                </Grid>}
                 </Grid>
-                
-
-    </>)
+            </Grid>
+        </>
+    );
 }
 
 export default SingleCelldegdisease;

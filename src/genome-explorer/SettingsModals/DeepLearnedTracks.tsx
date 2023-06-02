@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Modal, Accordion, Box } from '@material-ui/core';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
-import { AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, Grid } from '@mui/material';
+import { AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
@@ -43,6 +43,11 @@ const TRACKS = {
         [ "oligodendrocytes", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/adult-cerebrum-single-cell" ],
         [ "oligodendrocyte precursors", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/adult-cerebrum-single-cell" ],
     ],
+    "Fetal brain DNase-seq": [
+        [ "fetal-50-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-50-days" ],
+        [ "fetal-80-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-80-days" ],
+        [ "fetal-105-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-105-days" ]
+    ],
     "Evolutionary conservation": [
         [ "241-way mammalian phylo-P", "gs://gcp.wenglab.org/241-mammalian-2020v2.bigWig" ]
     ]
@@ -72,8 +77,9 @@ const DeepLearnedTrackModal: React.FC<DeepLearnedTrackModalProps> = props => {
     const onAccept = useCallback( () => props.onAccept && props.onAccept([
         ...TRACKS["Adult brain bulk ATAC-seq"].filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0),
         ...TRACKS["Adult cerebrum single cell ATAC-seq"].filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0),
+        ...TRACKS["Fetal brain DNase-seq"].filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0),
         ...TRACKS["Evolutionary conservation"].filter(track => (selectedTracks.find(x => x === track[0])?.length || 0) > 0)
-    ] as [ string, string ][]), [ selectedTracks ]);
+    ] as [ string, string ][]), [ selectedTracks, props ]);
 
     return (
         <Modal
@@ -120,6 +126,28 @@ const DeepLearnedTrackModal: React.FC<DeepLearnedTrackModalProps> = props => {
                     <AccordionDetails>
                         <FormGroup style={{ marginLeft: "3em" }}>
                             { TRACKS["Adult cerebrum single cell ATAC-seq"].map(track => (
+                                <FormControlLabel
+                                    key={track[0]}
+                                    control={<Checkbox checked={(selectedTracks.find(x => x === track[0])?.length || 0) > 0} />}
+                                    label={track[0]}
+                                    onChange={() => toggleTrack(track)}
+                                />
+                            ))}
+                        </FormGroup>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion expanded={expanded.get("Fetal brain DNase-seq")}>
+                    <AccordionSummary
+                        onClick={() => expand("Fetal brain DNase-seq")}
+                        expandIcon={!expanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography type="title" size="medium">Fetal brain DNase-seq</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <FormGroup style={{ marginLeft: "3em" }}>
+                            { TRACKS["Fetal brain DNase-seq"].map(track => (
                                 <FormControlLabel
                                     key={track[0]}
                                     control={<Checkbox checked={(selectedTracks.find(x => x === track[0])?.length || 0) > 0} />}

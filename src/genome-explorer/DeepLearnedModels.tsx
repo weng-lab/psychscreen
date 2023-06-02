@@ -6,7 +6,7 @@ import DeepLearnedTrackModal from './SettingsModals/DeepLearnedTracks';
 import TitledImportanceTrack from './TitledImportanceTrack';
 import { BigBedData } from 'bigwig-reader';
 import GWASPredictionTrack from './GWASPredictions/GWASPredictionTrack';
-import { URL_MAP } from '../web/Portals/DiseaseTraitPortal/DiseaseTraitPortal';
+import { URL_MAP } from '../web/Portals/DiseaseTraitPortal/config/constants';
 
 const CELL_TYPES = new Map([
     [ "astrocytes", "Astrocyte_1" ],
@@ -20,7 +20,10 @@ const CELL_TYPES = new Map([
     [ "putamen glia", "NeuN-" ],
     [ "putamen neurons", "NeuN+" ],
     [ "VLPFC glia", "VLPFC_glia" ],
-    [ "VLPFC neurons", "VLPFC_neurons" ]
+    [ "VLPFC neurons", "VLPFC_neurons" ],
+    [ "fetal-50-days", "fetal-50-days" ],
+    [ "fetal-80-days", "fetal-80-days" ],
+    [ "fetal-105-days", "fetal-105-days" ]
 ]);
 
 type DeepLearnedModelTrackProps = {
@@ -46,7 +49,7 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
             () => 130 + (domain.end - domain.start <= 10000 && displayedTracks.find(x => x[0] === "241-way mammalian phylo-P")?.length
                 ? 130 + displayedTracks.length * 130 - (u ? 0 : 130)
                 : displayedTracks.length * 130) - (u ? 0 : 130),
-            [ displayedTracks, domain ]
+            [ displayedTracks, domain, u ]
         );
         useEffect( () => {
             onHeightChanged && onHeightChanged(height);

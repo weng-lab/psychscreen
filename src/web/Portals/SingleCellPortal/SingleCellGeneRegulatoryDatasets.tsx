@@ -4,8 +4,7 @@ import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container } from '@mui/material';
-import  {DataTable} from "@weng-lab/ts-ztable";
-
+import { DataTable } from "@weng-lab/ts-ztable";
 
 const COLUMNS = [{
     header: "TF",
@@ -27,7 +26,7 @@ const COLUMNS = [{
 }];
 
 
-const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
+const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = props => {
     const navigate = useNavigate(); 
     const { celltype } = useParams();
     const [ grn, setGrn ] = useState<any>([]);
@@ -38,17 +37,18 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
             .then(setGrn)
     }, [celltype]);
   
-    return (<>
-    <AppBar
+    return (
+        <>
+            <AppBar
                 centered
                 onDownloadsClicked={() => navigate("/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />
-            <Grid>
-           <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
-                { <Grid item  sm={10}  md={10} lg={9} xl={9}>
+            <Grid {...props}>
+                <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+                <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
                         <Typography
                             type="display"
@@ -58,26 +58,27 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
                             {celltype}
                         </Typography>
                         <br/>
-                        { grn.length==0 && <Grid sm={10} md={10} lg={9} xl={9}>
-                        <Typography
-                            type="body"
-                            size="large"
-                            style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
-                        >
-                                Loading Gene Regulatory Networks data for {celltype}...
-                        </Typography>
-                        
-                        </Grid>}
-                        {grn && grn.length>0 &&  <Grid sm={10} md={10} lg={9} xl={9}>
-                        <DataTable columns={COLUMNS} rows={grn} itemsPerPage={20} searchable/>
-                        
-                        </Grid>}
+                        { grn.length === 0 && (
+                            <Grid sm={10} md={10} lg={9} xl={9}>
+                                <Typography
+                                    type="body"
+                                    size="large"
+                                    style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', fontSize: "16px", fontWeight: 400, lineHeight: "19px" }}
+                                >
+                                        Loading Gene Regulatory Networks data for {celltype}...
+                                </Typography>
+                            </Grid>
+                        )}
+                        { grn && grn.length > 0 && (
+                            <Grid sm={10} md={10} lg={9} xl={9}>
+                                <DataTable columns={COLUMNS} rows={grn} itemsPerPage={20} searchable/>
+                            </Grid>
+                        )}
                     </Container>
-                </Grid>}
                 </Grid>
-                
-
-    </>)
+            </Grid>
+        </>
+    );
 }
 
 export default SingleCellGeneRegulatoryDatasets;

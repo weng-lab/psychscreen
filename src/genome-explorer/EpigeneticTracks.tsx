@@ -114,7 +114,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
         [ "all brain regions, aggregated NeuN+", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
         [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
     ]);
-    const height = useMemo( () => cTracks.length * 80, [ cTracks, props.domain ]);
+    const height = useMemo( () => cTracks.length * 80, [ cTracks ]);
     const bigRequests = useMemo( () => cTracks.map(x => ({
         chr1: props.domain.chromosome!,
         start: props.domain.start,

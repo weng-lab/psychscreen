@@ -8,7 +8,7 @@ import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import { DISEASE_CARDS, URL_MAP } from "./DiseaseTraitPortal";
+import { DISEASE_CARDS, URL_MAP } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
 import { riskLoci } from "./utils";

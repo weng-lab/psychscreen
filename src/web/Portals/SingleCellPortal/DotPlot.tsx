@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { Typography } from '@zscreen/psychscreen-ui-components';
-import React, { useRef }  from 'react';
+import React from 'react';
 import { YAxis } from '../GenePortal/axis';
 import { linearTransform } from '../GenePortal/violin/utils';
 
@@ -32,7 +32,7 @@ type DotPlotQueryResponse = {
         gene: string;
         celltype: string;
     }[];
-}
+};
 
 type DotPlotProps = {
     disease: string;
