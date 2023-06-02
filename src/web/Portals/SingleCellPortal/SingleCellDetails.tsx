@@ -8,23 +8,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 
 const GENE_AUTOCOMPLETE_QUERY = `
- query suggest($id: String!, $assembly: String!) {
-     suggest(id: $id, assembly: $assembly, limit: 5) {
-         id
-         coordinates {
-             chromosome
-             start
-             end
-         }
-         ...on Gene {
-             name
-         }
-         ...on Transcript {
-             name
-         }
-         __typename
-     }
- }
+query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
+      name
+      id
+      coordinates {
+        start
+        chromosome
+        end
+      }
+      __typename
+    }
+  }
  `;
 
 const SingleCellDetails: React.FC<GridProps> = (props) => {
@@ -42,12 +37,13 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                     query: GENE_AUTOCOMPLETE_QUERY,
                     variables: {
                         assembly: "GRCh38",
-                        id: value,
+                        name_prefix: value,
+                        limit: 5
                     },
                 }),
                 headers: { 'Content-Type': 'application/json' },
             });
-            const genesSuggestion = (await response.json()).data?.suggest;            
+            const genesSuggestion = (await response.json()).data?.gene;            
             if(genesSuggestion && genesSuggestion.length > 0) {
                 const r = genesSuggestion.map((g: any)=>{
                     return {
