@@ -44,10 +44,11 @@ type BEDFileDownloadTableProps = {
     extraRows: DataRow[];
     colorGroups: { [group: string]: string };
     title: string;
+    elementText?: string;
 };
 
 const BEDFileDownloadTable: React.FC<BEDFileDownloadTableProps>
-    = ({ defaultRows, extraRows, colorGroups, title }) => {
+    = ({ defaultRows, extraRows, colorGroups, title, elementText }) => {
 
         // Whether or not bCRE subset rows are displayed
         // Default is hidden; a "show more subsets" row toggles them on
@@ -75,7 +76,7 @@ const BEDFileDownloadTable: React.FC<BEDFileDownloadTableProps>
                                     <strong>{row.name}</strong>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    {row.elements.toLocaleString()} elements
+                                    {row.elements.toLocaleString()} {elementText || "elements"}
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     {(row.fileSize / 1e6).toFixed(0)} MB

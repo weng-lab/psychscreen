@@ -19,12 +19,17 @@ import SignifcantSNPs from "./SignificantSNPs";
 
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
-    $disease: String!,
-    $snpid: String,
-    $limit: Int,
+    $disease: String!
+    $snpid: String
+    $limit: Int
     $offset: Int
 ) {
-    gwassnpAssociationsQuery(disease: $disease,snpid: $snpid, limit:$limit, offset:$offset) { 
+    gwassnpAssociationsQuery(
+        disease: $disease
+        snpid: $snpid
+        limit: $limit
+        offset: $offset
+    ) {
         chrom
         stop
         snpid
@@ -39,12 +44,17 @@ query gwassnpAssoQuery(
 
 const AssociatedGenesQuery = gql`
 query genesAssoQuery(
-    $disease: String!,
-    $gene_id: String,
-    $limit: Int,
+    $disease: String!
+    $gene_id: String
+    $limit: Int
     $offset: Int
 ) {
-    genesAssociationsQuery(disease: $disease,gene_id: $gene_id, limit:$limit, offset:$offset) { 
+    genesAssociationsQuery(
+        disease: $disease
+        gene_id: $gene_id
+        limit: $limit
+        offset: $offset
+    ) { 
         hsq
         twas_p
         twas_bonferroni
@@ -58,8 +68,16 @@ query genesAssoQuery(
 `;
 
 const GwasIntersectingSnpswithCcresQuery=gql`
-query gwasintersectingSnpsWithCcre($disease: String!, $snpid: String, $limit: Int) {
-    gwasintersectingSnpsWithCcreQuery(disease: $disease, snpid: $snpid, limit: $limit){
+query gwasintersectingSnpsWithCcre(
+    $disease: String!
+    $snpid: String
+    $limit: Int
+) {
+    gwasintersectingSnpsWithCcreQuery(
+        disease: $disease
+        snpid: $snpid
+        limit: $limit
+    ) {
         disease
         snpid
         snp_chrom 
@@ -79,8 +97,18 @@ query gwasintersectingSnpsWithCcre($disease: String!, $snpid: String, $limit: In
 }`;
 
 const GwasIntersectingSnpswithBcresQuery = gql`
-query gwasintersectingSnpsWithBcre($disease: String!, $snpid: String, $bcre_group: String, $limit: Int) {
-    gwasintersectingSnpsWithBcreQuery(disease: $disease, snpid: $snpid, bcre_group: $bcre_group,limit: $limit){
+query gwasintersectingSnpsWithBcre(
+    $disease: String!
+    $snpid: String
+    $bcre_group: String
+    $limit: Int
+) {
+    gwasintersectingSnpsWithBcreQuery(
+        disease: $disease
+        snpid: $snpid
+        bcre_group: $bcre_group
+        limit: $limit
+    ) {
         disease
         snpid
         snp_chrom 
@@ -99,7 +127,58 @@ query gwasintersectingSnpsWithBcre($disease: String!, $snpid: String, $bcre_grou
     }
 }`;
 
-const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
+const locusQuery = gql`
+query q(
+  $url: String!
+) {
+  bigRequests(requests: { url: $url, chr1: "chr1", chr2: "chr22", start: 0, end: 300000000 }) {
+    data
+    error {
+        message
+    }
+  }
+}
+`;
+
+function useLoci(trait: string) {
+    const { data, loading }
+        = useQuery<{ gwassnpAssociationsQuery: GWAS_SNP[] } | { bigRequests: [{ data: (GenomicRange & { name: string })[] }] }>(
+            !URL_MAP[trait].startsWith("https") ? AssociatedSnpQuery : locusQuery, {
+            variables: {
+                disease: (trait || ''),
+                url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb"
+            }
+        });
+    console.log(data, loading);
+    const loci = useMemo( () => {
+        if (!data) return undefined;
+        if (!URL_MAP[trait].startsWith("https"))
+            return riskLoci(
+                (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery
+                    ?.map(x => ({
+                        chromosome: x.chrom,
+                        start: x.start,
+                        end: x.stop,
+                        p: Math.min(...x.association_p_val)
+                    }))
+                    || []
+            );
+        const d = data as { bigRequests: [{ data: (GenomicRange & { name: string, chr: string })[] }] };
+        return riskLoci(
+            d.bigRequests[0].data
+                ?.map((x: GenomicRange & { name: string, chr: string }) => ({
+                    chromosome: x.chr,
+                    start: x.start,
+                    end: x.end,
+                    p: Math.exp(-(+x.name.split("_")[1]))
+                }))
+                || []
+        );
+    }, [ data ]);
+    return { loci, loading, data };
+}
+
+const DiseaseTraitDetails: React.FC<GridProps> = props => {
     const { disease } = useParams();
     const navigate = useNavigate();  
     const [ page, setPage ] = useState<number>(-1);
@@ -115,18 +194,14 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     const summaryStatisticsURL = (
         disease
             ? (
-                URL_MAP[disease].startsWith("gs")
+                URL_MAP[disease].startsWith("gs") || URL_MAP[disease].startsWith("https")
                     ? URL_MAP[disease]
                     : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
             )
             : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed"
     );
-    const { data } = useQuery<{ gwassnpAssociationsQuery: GWAS_SNP[] }>(AssociatedSnpQuery, {		
-        variables: {
-            disease: (disease || '')
-        }
-    });
-    const loci = useMemo( () => riskLoci(data?.gwassnpAssociationsQuery.map(x => ({ chromosome: x.chrom, start: x.start, end: x.stop, p: Math.min(...x.association_p_val) })) || []), [ data ]);
+    const { loci, data } = useLoci(disease || "");
+    console.log(summaryStatisticsURL);
     const { data: genesdata } = useQuery(AssociatedGenesQuery, {
         variables: {
             disease: (disease || ''),
@@ -186,7 +261,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                         <br/>
                         <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>GWAS Locus Overview</Button>&nbsp;&nbsp;&nbsp;
                         {genesdata && genesdata.genesAssociationsQuery.length > 0 && <><Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>&nbsp;&nbsp;&nbsp;</>}
-                        {data && data.gwassnpAssociationsQuery.length > 0 && <><Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>&nbsp;&nbsp;&nbsp;</>}
+                        {data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 && <><Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>&nbsp;&nbsp;&nbsp;</>}
                         {gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 && (
                             <><Button bvariant={page === 2 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(2)}>Regulatory SNP Associations</Button>&nbsp;&nbsp;&nbsp;</>
                         )}
@@ -200,11 +275,11 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
                 <Grid sm={10} md={10} lg={9} xl={9}>
                     { page === -1 ? (
-                        <RiskLocusView loci={loci} onLocusClick={navigateBrowser} />
+                        <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
                     ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
                         <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
-                    ) : page === 1 && data && data.gwassnpAssociationsQuery.length > 0 ? (
-                        <AssociatedSnpQtl disease={disease || ''} data={data.gwassnpAssociationsQuery}/>
+                    ) : page === 1 && data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 ? (
+                        <AssociatedSnpQtl disease={disease || ''} data={(data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery}/>
                     ) : page === 2 && gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 ? (
                         <DiseaseIntersectingSnpsWithccres
                             disease={disease || ''} 

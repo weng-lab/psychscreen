@@ -85,7 +85,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
         ...((data?.bigRequests || []).flatMap((x, i) => (
             ((x?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
                 rsId: xx.name?.split("_")[0] || "",
-                [i]: +(xx.name?.split("_")[1] || "0"),
+                [i]: Math.exp(-(+(xx.name?.split("_")[1] || "0"))),
                 coordinates: {
                     start: xx.start,
                     end: xx.end,

@@ -31,27 +31,29 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     return (
         <>
             {  //show vertical app bar only for mobile view 
-                useMediaQuery(theme.breakpoints.down('xs')) ? 
-                    <TabletAppBar
+                useMediaQuery(theme.breakpoints.down('xs'))
+                    ? <TabletAppBar
                         onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                         style={{ marginBottom: "63px" }}
                         title={<Logo /> as any}
                     />
-                    :<AppBar
+                    : <AppBar
                         centered={true}
                         onDownloadsClicked={() => navigate("/downloads")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
-                    /> 
-            }           
+                    />
+            }
             <Grid container {...props}> 
-                <Grid item sm={0}  md={1} lg={2} xl={2}></Grid>
+                <Grid item sm={0}  md={1} lg={2} xl={2} />
                 <Grid item sm={8} md={6} lg={5} xl={4}>
-                    {useMediaQuery(theme.breakpoints.down('sm')) && <Container style={{ marginTop: "130px" }}>
+                    { useMediaQuery(theme.breakpoints.down('sm')) && (
+                        <Container style={{ marginTop: "130px" }}>
                             <img alt="disease/trait portal" src={DiseaseTrait} style={{ width: "70%" ,height: "100%" }} />
-                    </Container>}
+                        </Container>
+                    )}
                     <Container  style={{ width:"741px", marginTop: "147px" }} fixed>
                         <Typography
                             type="display"
@@ -92,23 +94,22 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                                 setVal(e.target.value)        
                             }}
                             onClick={() => {                             
-                                if(val !== ''){                                    
-                                    setdiseaseCards(
-                                        DISEASE_CARDS.filter(d=> 
-                                            {
-                                                return (d.cardLabel.toLowerCase().includes(val.toLowerCase()) || (d.aliases && d.aliases.find(el=>{
-                                                    return el.toLowerCase().includes(val.toLowerCase())
-                                                }) ) )
-                                            }
+                                if (val === '') return;
+                                setdiseaseCards(
+                                    DISEASE_CARDS.filter(d => (
+                                        d.cardLabel.toLowerCase().includes(val.toLowerCase())
+                                            || (d.aliases && d.aliases.find(el => (
+                                                el.toLowerCase().includes(val.toLowerCase())
+                                            )))
                                         )
-
                                     )
-                                }
+                                );
                             }}                
-                            helperText={"e.g. schizophrenia, years of education"}                            
+                            helperText="e.g. schizophrenia, years of education"
                         />
                     </Container>
-                    {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length>0 && <Slide direction="up" in timeout={1000}>
+                    { useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length > 0 && (
+                        <Slide direction="up" in timeout={1000}>
                             <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                 <HorizontalCard width={500}
                                     onCardClick={(v?: string) => {
@@ -119,36 +120,40 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                                 />            
                             </Container>
                         </Slide> 
-                    }
-                    {useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length===0 &&
-                            <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                 No results found             
-                            </Container>
-                         
-                    }
+                    )}
+                    { useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length === 0 && (
+                        <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
+                            No results found
+                        </Container>                         
+                    )}
                 </Grid>
-                {useMediaQuery(theme.breakpoints.up('md'))  && <Grid item sm={4} md={4} lg={3} xl={3}>
-                    {!diseaseCards ? ( 
+                { useMediaQuery(theme.breakpoints.up('md')) && (
+                    <Grid item sm={4} md={4} lg={3} xl={3}>
+                        { !diseaseCards ? ( 
                             <Container style={{ marginTop: "170px" }}>
                                 <img alt="disease/trait portal" src={DiseaseTrait} style={{ width: "100%" ,height: "100%" }} />
                             </Container>
-                        ):diseaseCards && diseaseCards.length>0 ? ( 
+                        ) : diseaseCards && diseaseCards.length > 0 ? ( 
                             <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    <HorizontalCard width={500}
+                                    <HorizontalCard
+                                        width={500}
                                         onCardClick={(v?: string) => {
-                                            let d = DISEASE_CARDS.find(d=>d.val===v)?.diseaseDesc
-                                            navigate(`/psychscreen/traits/${v}`, { state: { searchvalue: val, diseaseDesc: d } })
+                                            const d = DISEASE_CARDS.find(d => d.val === v)?.diseaseDesc;
+                                            navigate(`/psychscreen/traits/${v}`, { state: { searchvalue: val, diseaseDesc: d } });
                                         }}
                                         cardContentText={diseaseCards} 
                                     />            
                                 </Container>
                             </Slide>              
-                        ): (<Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                            No results found
-                        </Container>)}
-                </Grid>}
-                <Grid item sm={0} md={1} lg={2} xl={3} ></Grid>
+                        ) : (
+                            <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
+                                No results found
+                            </Container>
+                        )}
+                    </Grid>
+                )}
+                <Grid item sm={0} md={1} lg={2} xl={3} />
             </Grid>
         </>
     );

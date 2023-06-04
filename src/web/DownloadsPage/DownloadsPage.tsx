@@ -85,9 +85,42 @@ const singleCellImportantRegionDownloads = {
     }
 };
 
+const gwasMetaDownloads = {
+    defaultRows: [
+        createData('ADHD (5 studies)', "brain", 7997741, 430168632, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/ADHD1.tsv.snps.bed.bb.bed"),
+        createData('alcohol use (2 studies)', "brain", 15342055, 836612757, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/AlcoholUse1.tsv.snps.bed.bb.bed"),
+        createData('Alzheimers (5 studies)', "brain", 1185515, 63141184, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Alzheimers1.tsv.snps.bed.bb.bed"),
+        createData('anorexia nervosa (4 studies)', "brain", 8170867, 441227579, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Anorexia1.tsv.snps.bed.bb.bed"),
+        createData('anxiety (2 studies)', "brain", 6286233, 337425172, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Anxiety1.tsv.snps.bed.bb.bed"),
+        createData('autism spectrum disorder (4 studies)', "brain", 9616178, 519317164, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Autism1.tsv.snps.bed.bb.bed")
+    ],
+    extraRows: [
+        createData('bipolar disorder (8 studies)', "brain", 12316354, 667694563, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Bipolar1.tsv.snps.bed.bb.bed"),
+        createData('BMI (3 studies)', "brain", 1187064, 63273621, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/BMI1.tsv.snps.bed.bb.bed"),
+        createData('cigarette use (2 studies)', "brain", 1187090, 63471107, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/CigaretteUse1.tsv.snps.bed.bb.bed"),
+        createData('circadian rhythm (3 studies)', "brain", 1187000, 63448685, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Circadian1.tsv.snps.bed.bb.bed"),
+        createData('intelligence (5 studies)', "brain", 1187178, 63063383, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Intelligence1.tsv.snps.bed.bb.bed"),
+        createData('major depressive disorder (7 studies)', "brain", 13631590, 739615394, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Depression1.tsv.snps.bed.bb.bed"),
+        createData('neuroticism (3 studies)', "brain", 1187150, 63157541, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Neuroticism1.tsv.snps.bed.bb.bed"),
+        createData('number of children (4 studies)', "brain", 1186976, 63303784, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Children1.tsv.snps.bed.bb.bed"),
+        createData('schizophrenia (9 studies)', "brain", 9538405, 513791524, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Schizophrenia1.tsv.snps.bed.bb.bed"),
+        createData('allergies/asthma (4 studies)', "non-brain", 1187049, 63394018, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/AllergyAsthma1.tsv.snps.bed.bb.bed"),
+        createData('cancer (7 studies)', "non-brain", 1187263, 63405162, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Cancer1.tsv.snps.bed.bb.bed"),
+        createData('inflammatory bowel disease (6 studies)', "non-brain", 1181256, 62886677, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/IBD1.tsv.snps.bed.bb.bed"),
+        createData('myocardial traits (4 studies)', "non-brain", 1187261, 63298941, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Myocardial1.tsv.snps.bed.bb.bed"),
+        createData('type 2 diabetes (3 studies)', "non-brain", 1187048, 63268462, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Type2Diabetes1.tsv.snps.bed.bb.bed"),
+        createData('vascular disease (3 studies)', "non-brain", 1172234, 62735623, "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/VascularDisease1.tsv.snps.bed.bb.bed")
+    ],
+    colorGroups: {
+        brain: "#fafafa",
+        "non-brain": "#eeeeee"
+    }
+};
+
 const pages = [
     "Regulatory Elements",
-    "TF Binding Sites"
+    "TF Binding Sites",
+    "GWAS meta analysis"
 ];
 
 const DownloadsPage: React.FC
@@ -147,6 +180,15 @@ const DownloadsPage: React.FC
                                     <BEDFileDownloadTable
                                         title="Single Cell ATAC-seq TFBSs from ChromBPNet"
                                         {...singleCellImportantRegionDownloads}
+                                    />
+                                </>
+                            )}
+                            { page === 2 && (
+                                <>
+                                    <BEDFileDownloadTable
+                                        title="GWAS meta analysis"
+                                        elementText="SNPs"
+                                        {...gwasMetaDownloads}
                                     />
                                 </>
                             )}
