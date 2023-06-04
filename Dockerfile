@@ -4,6 +4,10 @@ FROM node:14-alpine AS build
 RUN mkdir -p /app
 WORKDIR /app
 
+# Set a default value for PUBLIC_URL
+ARG PUBLIC_URL="/"
+ENV PUBLIC_URL=$PUBLIC_URL
+
 # Install app dependencies
 COPY package.json /app
 COPY yarn.lock /app

@@ -2,6 +2,7 @@
  * HomePage.tsx: the app home page.
  */
 
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
 

@@ -2,6 +2,7 @@
   "name": "psychscreen",
   "version": "0.4.3",
   "private": true,
+  "homepage": "%PUBLIC_URL%",
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@emotion/react": "^11.10.0",
@@ -43,7 +44,7 @@
   },
   "scripts": {
     "predeploy": "react-scripts build",
-    "deploy": "gh-pages -d build",
+    "deploy": "env-cmd -f .env.github yarn build && gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

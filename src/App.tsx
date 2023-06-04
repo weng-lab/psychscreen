@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate  } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, Navigate  } from 'react-router-dom';
 import '@zscreen/psychscreen-ui-components/src/App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import './App.css';
