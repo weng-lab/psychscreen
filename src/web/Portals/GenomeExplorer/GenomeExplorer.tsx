@@ -6,6 +6,9 @@ import GeneTrack from './GeneTrack';
 import { EpigeneticTracks, tracks, VariantTracks } from '../../../genome-explorer';
 import { DeepLearnedModelTracks } from '../../../genome-explorer/DeepLearnedModels';
 import { URL_MAP } from '../DiseaseTraitPortal/config/constants';
+import { Button } from '@zscreen/psychscreen-ui-components';
+import { downloadSVG } from '../GenePortal/violin/utils';
+import { downloadSVGAsPNG } from '../../svgToPng';
 
 type GenomeExplorerProps = {
     coordinates: GenomicRange;
@@ -70,7 +73,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps>
                         width={1400}
                     />
                     <GeneTrack
-                        assembly="hg38"
+                        assembly="GRCh38"
                         position={coordinates}
                     />
                     <EpigeneticTracks
@@ -82,13 +85,21 @@ const GenomeExplorer: React.FC<GenomeExplorerProps>
                         domain={coordinates}
                         trait="MDD"
                     />
-                    <VariantTracks
-                        coordinates={coordinates}
-                        name=""
-                        url={`https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP["ASD"]}.bigBed`}
-                        trait="Autism Spectrum Disorder"
-                    />
                 </GenomeBrowser>
+                <Button
+                    onClick={() => { downloadSVG(svgRef, "browser-view.svg") }}
+                    btheme='light'
+                    bvariant='filled'
+                >
+                    Download SVG
+                </Button>&nbsp;
+                <Button
+                    onClick={() => { svgRef.current && downloadSVGAsPNG(svgRef.current, "browser-view.png") }}
+                    btheme='light'
+                    bvariant='filled'
+                >
+                    Download PNG
+                </Button>
             </>
         )
 

@@ -72,7 +72,6 @@ const App: React.FC = () => {
                     <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
                     <Route path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease" element={<SingleCelldegdisease/>}/>
                     <Route path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease/:celltype" element={<SingleCelldegdiseasect/>}/>
-                    
                     <Route path="/psychscreen/single-cell/datasets/Gene-regulatory-networks/:celltype" element={<SingleCellGeneRegulatoryDatasets/>}/>
                     <Route path="/psychscreen/single-cell/datasets/Cell-type-specific-eQTLs/:celltype" element={<SingleCellCelltypeQTL/>}/>
                     <Route path="/psychscreen/single-cell/:disease/:gene" element={<SingleCellDotPlot />} />
