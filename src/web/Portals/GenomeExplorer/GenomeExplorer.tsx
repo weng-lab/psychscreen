@@ -3,9 +3,8 @@ import { GenomicRange } from '../GenePortal/AssociatedxQTL';
 import CytobandView from '../GenePortal/Browser/Explorer/Cytobands';
 import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import GeneTrack from './GeneTrack';
-import { EpigeneticTracks, tracks, VariantTracks } from '../../../genome-explorer';
+import { EpigeneticTracks, tracks } from '../../../genome-explorer';
 import { DeepLearnedModelTracks } from '../../../genome-explorer/DeepLearnedModels';
-import { URL_MAP } from '../DiseaseTraitPortal/config/constants';
 import { Button } from '@zscreen/psychscreen-ui-components';
 import { downloadSVG } from '../GenePortal/violin/utils';
 import { downloadSVGAsPNG } from '../../svgToPng';
@@ -13,10 +12,11 @@ import { downloadSVGAsPNG } from '../../svgToPng';
 type GenomeExplorerProps = {
     coordinates: GenomicRange;
     onDomainChanged: (coordinates: GenomicRange) => void;
+    defaultTrackset?: string;
 };
 
 const GenomeExplorer: React.FC<GenomeExplorerProps>
-    = ({ coordinates, onDomainChanged }) => {
+    = ({ coordinates, onDomainChanged, defaultTrackset }) => {
 
         /* SVG-related refs and coordinate conversion */
         const svgRef = useRef<SVGSVGElement>(null);
@@ -84,6 +84,8 @@ const GenomeExplorer: React.FC<GenomeExplorerProps>
                     <DeepLearnedModelTracks
                         domain={coordinates}
                         trait="MDD"
+                        defaultTrackset={defaultTrackset}
+                        key={defaultTrackset}
                     />
                 </GenomeBrowser>
                 <Button

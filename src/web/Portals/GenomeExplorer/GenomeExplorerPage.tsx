@@ -10,14 +10,16 @@ type GenomicRangeParams = {
     chromosome: string;
     start: string;
     end: string;
+    trackset?: string;
 };
 
 function useCoordinates() {
-    const { chromosome, start, end } = useParams<GenomicRangeParams>();
+    const { chromosome, start, end, trackset } = useParams<GenomicRangeParams>();
     return {
         chromosome,
         start: +start!,
-        end: +end!
+        end: +end!,
+        trackset
     };
 }
 
@@ -27,9 +29,9 @@ const GenomeExplorerPage: React.FC = () => {
     const navigate = useNavigate();
     
     /* genome browser coordinates */
-    const { chromosome, start, end } = useCoordinates();
+    const { chromosome, start, end, trackset } = useCoordinates();
     const onDomainChanged = useCallback((coordinates: GenomicRange) => {
-        navigate(`/psychscreen/genomebrowser/${coordinates.chromosome}/${coordinates.start}/${coordinates.end}`);
+        navigate(`/psychscreen/genomebrowser/${coordinates.chromosome}/${coordinates.start}/${coordinates.end}/${trackset}`);
     }, [ navigate ]);
 
     return (
@@ -44,6 +46,7 @@ const GenomeExplorerPage: React.FC = () => {
                 <GenomeExplorer
                     coordinates={{ chromosome, start, end }}
                     onDomainChanged={onDomainChanged}
+                    defaultTrackset={trackset}
                 />
             </Container>
         </>

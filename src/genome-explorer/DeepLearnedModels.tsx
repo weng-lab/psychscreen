@@ -33,18 +33,33 @@ type DeepLearnedModelTrackProps = {
     svgRef?: RefObject<SVGSVGElement>;
     onSettingsClicked?: () => void;
     onImportantRegionsLoaded?: (regions: BigBedData[]) => void;
+    defaultTrackset?: string;
+};
+
+const TRACKSETS = {
+    "bulk": [
+        [ "VLPFC glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
+        [ "VLPFC neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons" ],
+        [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
+        [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
+    ],
+    "fetal": [
+        [ "fetal-50-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-50-days" ],
+        [ "fetal-80-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-80-days" ],
+        [ "fetal-105-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-105-days" ]
+    ],
+    "glia": [
+        [ "VLPFC glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
+        [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
+        [ "microglia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/adult-cerebrum-single-cell" ]
+    ]
 };
 
 export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps>
-    = ({ domain, onHeightChanged, onSettingsClicked, onImportantRegionsLoaded }) => {
+    = ({ domain, onHeightChanged, onSettingsClicked, onImportantRegionsLoaded, defaultTrackset }) => {
 
         // manage displayed tracks, compute height, and pass height back to parent
-        const [ displayedTracks, setDisplayedTracks ] = useState<[ string, string ][]>([
-            [ "VLPFC glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
-            [ "VLPFC neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons" ],
-            [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
-            [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
-        ]);
+        const [ displayedTracks, setDisplayedTracks ] = useState<[ string, string ][]>(TRACKSETS[defaultTrackset || "bulk"] || TRACKSETS["bulk"]);
         const height = useMemo(
             () => 130 + (domain.end - domain.start <= 10000 && displayedTracks.find(x => x[0] === "241-way mammalian phylo-P")?.length
                 ? 130 + displayedTracks.length * 130 - 130
