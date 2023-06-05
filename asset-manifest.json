@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "https://weng-lab.github.io/psychscreen/static/css/main.106baaae.chunk.css",
-    "main.js": "https://weng-lab.github.io/psychscreen/static/js/main.987eece1.chunk.js",
-    "main.js.map": "https://weng-lab.github.io/psychscreen/static/js/main.987eece1.chunk.js.map",
+    "main.js": "https://weng-lab.github.io/psychscreen/static/js/main.f8424340.chunk.js",
+    "main.js.map": "https://weng-lab.github.io/psychscreen/static/js/main.f8424340.chunk.js.map",
     "runtime-main.js": "https://weng-lab.github.io/psychscreen/static/js/runtime-main.c7cd7c04.js",
     "runtime-main.js.map": "https://weng-lab.github.io/psychscreen/static/js/runtime-main.c7cd7c04.js.map",
     "static/css/2.4c4080dd.chunk.css": "https://weng-lab.github.io/psychscreen/static/css/2.4c4080dd.chunk.css",
@@ -25,6 +25,6 @@
     "static/css/2.4c4080dd.chunk.css",
     "static/js/2.2a681da9.chunk.js",
     "static/css/main.106baaae.chunk.css",
-    "static/js/main.987eece1.chunk.js"
+    "static/js/main.f8424340.chunk.js"
   ]
 }
