@@ -2,7 +2,7 @@ import React, {useState, useCallback, useMemo, useEffect} from 'react';
 import { ValuedPoint } from 'umms-gb/dist/utils/types';
 import { RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 import { GridProps } from '@mui/material';
-import { GenomeBrowser, RulerTrack, UCSCControls, EmptyTrack, DenseBigBed } from 'umms-gb';
+import { GenomeBrowser, RulerTrack, UCSCControls, EmptyTrack, DenseBigBed, LinkTrack } from 'umms-gb';
 import CytobandView from '../GenePortal/Browser/Explorer/Cytobands';
 import { gql, useQuery } from "@apollo/client"
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";

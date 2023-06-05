@@ -104,33 +104,7 @@ const FooterPanel: React.FC<GridProps> = props => (
                 </div>
             </Container>
         </Grid>
-        <Grid style={{ backgroundColor: "#000000", color: "#ffffff" }} item sm={1}>
-            <Container style={{ marginTop: "116px", marginLeft: "-60px" }}>
-                <Typography
-                    type="body"
-                    size="medium"
-                    style={{ fontSize: "16px", lineHeight: "24px", fontWeight: 700, letterSpacing: "0.5px", marginBottom: "21.5px" }}
-                >
-                    Resources
-                </Typography>
-                <div style={{ marginLeft: "10px" }}>
-                    <Typography
-                        type="body"
-                        size="medium"
-                        style={{ fontSize: "14px", lineHeight: "20px", fontWeight: 400, letterSpacing: "0.1px", marginBottom: "10px" }}
-                    >
-                        Tutorials
-                    </Typography>
-                    <Typography
-                        type="body"
-                        size="medium"
-                        style={{ fontSize: "14px", lineHeight: "20px", fontWeight: 400, letterSpacing: "0.1px", marginBottom: "10px" }}
-                    >
-                        Tools
-                    </Typography>
-                </div>
-            </Container>
-        </Grid>
+    
         <Grid style={{ backgroundColor: "#000000", color: "#ffffff" }} item sm={2}>
             <Container style={{ marginTop: "116px" }}>
                 <Typography
@@ -145,7 +119,7 @@ const FooterPanel: React.FC<GridProps> = props => (
         <Grid style={{ backgroundColor: "#000000", color: "#ffffff" }} item sm={1} />
         <Grid style={{ backgroundColor: "#000000", color: "#ffffff", paddingLeft: "160px", paddingRight: "205px", paddingBottom: "60px", paddingTop: "107px" }} item sm={12}>
             <hr />
-            Copyright &copy; 2022 Weng Lab
+            Copyright &copy; 2023 Weng Lab
         </Grid>
     </Grid>
 );

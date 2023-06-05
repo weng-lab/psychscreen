@@ -43,6 +43,11 @@ query ($assembly: String!,  $name_prefix: [String!]) {
   gene(assembly: $assembly, name_prefix: $name_prefix) {
     name
     id
+    coordinates {
+      start
+      chromosome
+      end
+    } 
   }
 }
 `
@@ -59,6 +64,8 @@ const GeneDetails: React.FC = (props) => {
     const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
     const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
     const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
+
+    const [region, setRegion] = useState({chromosome: chromosome, start: start, end: end}) 
     if (trueGeneId) geneid = trueGeneId;
 
     const handleTissueCategory = (
@@ -89,6 +96,7 @@ const GeneDetails: React.FC = (props) => {
           const geneID = (await response.json()).data?.gene;          
           setTrueGeneName(value)
           setTrueGeneId(geneID[0].id.split(".")[0])
+          setRegion({chromosome: geneID[0].coordinates.chromosome,start: geneID[0].coordinates.start,end: geneID[0].coordinates.end})
       },
       []
   );
@@ -167,8 +175,7 @@ const GeneDetails: React.FC = (props) => {
                     <Tabs value={tabIndex} onChange={handleTabChange}>
                         <Tab label="Brain (Epi)genome Browser" />
                         <Tab label="Brain Single Cell Expression" />
-                        <Tab label="Tissue Expression (GTEx)" /> 
-                        <Tab label="Brain Specificity" />                        
+                        <Tab label="Tissue Expression (GTEx)" />                
                         <Tab label="Brain eQTLs and bCREs" />
                         
                         { null && <Tab label="Open Target" /> }
@@ -176,7 +183,7 @@ const GeneDetails: React.FC = (props) => {
                     <Divider/>
                   </Box>
                   <Box sx={{ padding: 2 }}>
-                    { tabIndex === 3 ? (
+                    { tabIndex === 3  && 0>1 ? (
                       <Box>
                         <GeneOverview gene={trueGeneName || gene} />
                       </Box>
@@ -184,16 +191,16 @@ const GeneDetails: React.FC = (props) => {
                       <Box>
                         <Browser
                           name={trueGeneName?.toUpperCase() || gene}
-                          coordinates={{ chromosome, start: +start, end: +end }}
+                          coordinates={{ chromosome: region.chromosome, start: +region.start, end: +region.end }}
                         />
                       </Box>
                     ) : tabIndex === 3 && 0>1 ? (
                       <Box>
                         <GeneExpressionPage id={trueGeneId || geneid}/>
                       </Box>
-                    ) : tabIndex === 4 ? (
+                    ) : tabIndex === 3 ? (
                       <Box>
-                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}
+                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene} coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}
                         }/>
                       </Box>
                     ) : tabIndex === 5 ? (

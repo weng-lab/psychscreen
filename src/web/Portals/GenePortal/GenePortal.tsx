@@ -3,7 +3,7 @@
  */
 // import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
  //import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, Slide } from '@mui/material';
@@ -12,11 +12,12 @@ import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
 import { Typography, Button } from '@zscreen/psychscreen-ui-components';
 import CheckIcon from '@mui/icons-material/Check';
 import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
-import { useTheme, useMediaQuery } from '@material-ui/core';
+import { useTheme, useMediaQuery, Paper } from '@material-ui/core';
 import { PORTALS } from '../../../App';
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import GeneBCRE from '../../../assets/gene-bcre.png';
 import CircularProgress from '@mui/material/CircularProgress';
+import { QueryResponse, useGeneDescription } from './GeneOverview';
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
@@ -42,7 +43,8 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
     const [ val, setVal ] = useState<string>(searchvalue)         
     const [ fetching, setFetching ] = useState<boolean>(false)         
     const [ geneCards, setgeneCards] = useState<{cardLabel: string, val: string, cardDesc: string}[] | undefined>(undefined)
-   
+    const [ geneDesc, setgeneDesc] = useState<{name: string, desc: string}[]>()
+    
     const onSearchChange = useCallback(
         async (value: any) => {
             setFetching(true);
@@ -53,14 +55,16 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                     variables: {
                         assembly: "GRCh38",
                         name_prefix: value,
-                        limit: 5
+                      //  limit: 5
                     },
                 }),
                 headers: { 'Content-Type': 'application/json' },
             });
             const genesSuggestion = (await response.json()).data?.gene;            
+            
             if(genesSuggestion && genesSuggestion.length > 0) {
-                const r = genesSuggestion.map((g: any)=>{
+                const r =  genesSuggestion.map( (g: any)=>{
+
                     return {
                         val: `${g.id}/${g.coordinates.chromosome}/${g.coordinates.start}/${g.coordinates.end}`,
                         cardDesc: g.id, //.split(".")[0],
@@ -74,6 +78,26 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
         },
         []
     );
+  let r = useEffect(()=>{ 
+    
+    const fetchDAta =  async ()=>{
+        let f = await Promise.all(geneCards!!.map(f=>f.cardLabel!!).map(gene =>
+            // do something with this response like parsing to JSON
+            fetch("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" + gene.toUpperCase())
+            .then(x => x.json())
+            .then(x => {
+                const matches = (x as QueryResponse)[3] && (x as QueryResponse)[3].filter(x => x[3] === gene.toUpperCase());
+                return  {desc: (matches && matches.length >= 1 ? matches[0][4] : "(no description available)"), name: gene }
+            })
+            .catch()
+         ))
+         console.log("names",f)
+         setgeneDesc(f)
+       }
+    
+       geneCards && fetchDAta()
+     } ,[geneCards])
+     console.log("names",geneDesc)
     return (
         <>
             {  //show vertical app bar only for mobile view 
@@ -183,15 +207,22 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                        
                         </>  </Container>) :  ( 
                             <>
-                            {geneCards!.length > 0 && <Slide direction="up" in timeout={1000}>
+                            {geneCards!.length > 0 && geneDesc && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    {<HorizontalCard width={500}
+                                    {<Paper elevation={0} style={{  maxHeight: 500, width: 350, overflow: 'auto'}}>
+                                        <HorizontalCard width={300} 
                                         onCardClick={(v?: string) => {
                                             let f = geneCards!!.find((g: any)=> g.val===v)
                                             navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v!!.split("/")[0].split(".")[0], chromosome: v!!.split("/")[1] , start:  v!!.split("/")[2] , end: v!!.split("/")[3] } })
                                         }}
-                                        cardContentText={geneCards!!} 
-                                    />  }          
+                                        cardContentText={geneCards!!.map(d=>{
+                                            
+                                            return {
+                                                ...d,
+                                                cardDesc: geneDesc!!.find(h=>h.name===d.cardLabel) ? geneDesc!!.find(h=>h.name===d.cardLabel)!!.desc : "(no description available)"
+                                            }
+                                        })} 
+                                    /> </Paper> }          
                                 </Container>
                             </Slide> } 
                             {geneCards!.length === 0 &&

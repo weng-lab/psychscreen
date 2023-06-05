@@ -124,7 +124,7 @@ const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
 const BBTrack: React.FC<{ data: BigResponseData, url: string, title: string, color?: string, height: number, transform?: string, onHeightChanged?: (height: number) => void, domain: GenomicRange, svgRef?: React.RefObject<SVGSVGElement> }>
     = ({ data, url, title, height, domain, transform, onHeightChanged, svgRef, color }) => {        
         useEffect( () => onHeightChanged && onHeightChanged(height + 40), [ height, onHeightChanged ]);
-       
+       console.log("qtl", data)
         return (
             <g transform={transform}>
                 <EmptyTrack

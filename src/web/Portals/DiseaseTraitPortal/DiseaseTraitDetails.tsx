@@ -15,7 +15,7 @@ import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
-import SignifcantSNPs from "./SignificantSNPs";
+import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
@@ -201,11 +201,11 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
             : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed"
     );
     const { loci, data } = useLoci(disease || "");
-    console.log(summaryStatisticsURL);
+    //console.log(summaryStatisticsURL);
     const { data: genesdata } = useQuery(AssociatedGenesQuery, {
         variables: {
             disease: (disease || ''),
-            limit: 1000,
+          //  limit: 1000,
             skip: disease === ''
         }
     });
@@ -214,6 +214,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
             disease: disease
         },
         skip: disease === ''
+
     });
     const { data: adultgwasIntersectingSnpWithBcresData } = useQuery(GwasIntersectingSnpswithBcresQuery, {
         variables: {
@@ -229,7 +230,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
         },
         skip: disease === ''
     });
-
+    const trait = disease ? URL_MAP[disease] : ""
+    const significantSNPs = useSNPs(traitKey(trait));
+    const gassoc = genesdata && genesdata.genesAssociationsQuery.filter(g=>g.dge_fdr<=0.05)
     return (
         <>
             <AppBar
@@ -260,7 +263,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                         </Typography>
                         <br/>
                         <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>GWAS Locus Overview</Button>&nbsp;&nbsp;&nbsp;
-                        {genesdata && genesdata.genesAssociationsQuery.length > 0 && <><Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>&nbsp;&nbsp;&nbsp;</>}
+                        {gassoc && gassoc.length > 0 && <><Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>&nbsp;&nbsp;&nbsp;</>}
                         {data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 && <><Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>&nbsp;&nbsp;&nbsp;</>}
                         {gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 && (
                             <><Button bvariant={page === 2 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(2)}>Regulatory SNP Associations</Button>&nbsp;&nbsp;&nbsp;</>
@@ -268,7 +271,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                         { browserCoordinates && (
                             <Button bvariant={page === 3 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(3)}>Brain (epi)genome browser</Button>
                         )}
-                        <Button bvariant={page === 4 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(4)}>Prioritized risk variants</Button>
+                        {significantSNPs && significantSNPs.length>0 && <Button bvariant={page === 4 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(4)}>Prioritized risk variants</Button>}
                     </Container>
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
@@ -276,8 +279,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                 <Grid sm={10} md={10} lg={9} xl={9}>
                     { page === -1 ? (
                         <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
-                    ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
-                        <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
+                    ) : page === 0 && gassoc && gassoc.length > 0 ? (
+                        <GeneAssociations disease={disease || ''} data={gassoc} />
                     ) : page === 1 && data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 ? (
                         <AssociatedSnpQtl disease={disease || ''} data={(data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery}/>
                     ) : page === 2 && gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 ? (
@@ -291,8 +294,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                         <div style={{ marginTop: "2em" }}>
                             <Browser coordinates={browserCoordinates} url={summaryStatisticsURL} trait={diseaseLabel || "Autism Spectrum Disorder"} />
                         </div>
-                    ) : page === 4 ? (
-                        <SignifcantSNPs trait={disease ? URL_MAP[disease] : ""} onSNPClick={navigateBrowser} />
+                    ) : page === 4 && significantSNPs && significantSNPs.length>0  ? (
+                        <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
                     ) : null }
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />

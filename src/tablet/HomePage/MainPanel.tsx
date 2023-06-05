@@ -33,7 +33,7 @@ const MainPanel: React.FC<GridProps> = () => {
                 size="medium"
                 style={{ fontWeight: 400, fontSize: "14px", lineHeight: "24px", marginBottom: "29px", color: "#BDBDBD", letterSpacing: "0.3px" }}
             >
-                Copyright &copy; 2022 Weng Lab
+                Copyright &copy; 2023 Weng Lab
             </Typography>
         </Container>
     );
