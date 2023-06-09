@@ -22,6 +22,7 @@ const HomePage: React.FC = () => {
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
                 centered={true}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
             <MainPanel />
             <PortalsPanel style={{ marginTop: "160px" }} />

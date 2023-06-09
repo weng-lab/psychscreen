@@ -149,7 +149,6 @@ function useLoci(trait: string) {
                 url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb"
             }
         });
-    console.log(data, loading);
     const loci = useMemo( () => {
         if (!data) return undefined;
         if (!URL_MAP[trait].startsWith("https"))
@@ -201,7 +200,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
             : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed"
     );
     const { loci, data } = useLoci(disease || "");
-    //console.log(summaryStatisticsURL);
+    
     const { data: genesdata } = useQuery(AssociatedGenesQuery, {
         variables: {
             disease: (disease || ''),
@@ -237,9 +236,10 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 style={{ marginBottom: "63px" }}
             />
             <Grid container {...props}>  

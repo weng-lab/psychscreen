@@ -150,8 +150,9 @@ const SNPDetails: React.FC<GridProps> = (props) => {
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />

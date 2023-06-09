@@ -171,10 +171,11 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
     return (<>
     <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
             <Grid>
            <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />

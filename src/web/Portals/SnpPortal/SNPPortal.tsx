@@ -91,7 +91,8 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                     />
                     :<AppBar
                         centered={true}
-                        onDownloadsClicked={() => navigate("/downloads")}
+                        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                     /> 

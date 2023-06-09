@@ -34,6 +34,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                 useMediaQuery(theme.breakpoints.down('xs'))
                     ? <TabletAppBar
                         onDownloadsClicked={() => navigate("/psychscreen/downloads")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                         style={{ marginBottom: "63px" }}
@@ -41,7 +42,8 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                     />
                     : <AppBar
                         centered={true}
-                        onDownloadsClicked={() => navigate("/downloads")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
+                        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                     />

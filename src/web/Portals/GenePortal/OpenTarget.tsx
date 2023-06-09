@@ -183,7 +183,7 @@ const roundTo = function (num: number, places: number) {
 
 const OpenTarget: React.FC<any> = (props) => { 
     const { data, loading } = useOpenTargetsData(props.id);
-	//console.log("openTargetdata:", data);
+	
     const formattedData = useMemo(() => data?.studiesAndLeadVariantsForGeneByL2G?.map(
 		q =>  {
             

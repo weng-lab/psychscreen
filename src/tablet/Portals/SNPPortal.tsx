@@ -11,8 +11,9 @@ const SNPPortal: React.FC = () => {
     return (
         <>
             <AppBar
-                onDownloadsClicked={() => navigate("/downloads")}
-                onHomepageClicked={() => navigate("/")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
+                onHomepageClicked={() => navigate("/")}                
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
         </>
     );

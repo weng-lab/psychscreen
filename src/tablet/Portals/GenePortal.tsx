@@ -11,8 +11,9 @@ const GenePortal: React.FC = () => {
     return (
         <>
             <AppBar
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
         </>
     );

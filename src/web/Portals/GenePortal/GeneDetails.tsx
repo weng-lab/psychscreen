@@ -55,7 +55,7 @@ query ($assembly: String!,  $name_prefix: [String!]) {
 const GeneDetails: React.FC = (props) => {
     const { gene } = useParams();
     const { state }: any = useLocation();
-    console.log(useLocation())
+    
     const navigate = useNavigate();  
     const [ tabIndex, setTabIndex ] = useState(0);
     const ref = useRef<SVGSVGElement>(null);
@@ -149,8 +149,9 @@ const GeneDetails: React.FC = (props) => {
       <>
             <AppBar
               centered
-              onDownloadsClicked={() => navigate("/downloads")}
+              onDownloadsClicked={() => navigate("/psychscreen/downloads")}
               onHomepageClicked={() => navigate("/")}
+              onAboutClicked={() => navigate("/psychscreen/aboutus")}
               onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
               style={{ marginBottom: "63px" }}
             />

@@ -31,18 +31,21 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = props => {
     const { celltype } = useParams();
     const [ grn, setGrn ] = useState<any>([]);
     
+    
     useEffect( () => {
         fetch(`https://downloads.wenglab.org/${celltype}.json`)
             .then(x => x.json())
             .then(setGrn)
     }, [celltype]);
+
   
     return (
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />

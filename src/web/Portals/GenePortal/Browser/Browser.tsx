@@ -296,7 +296,7 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
 
 
 const Browser: React.FC<any> = (props) => { 
-    console.log("gene", props.name)
+    
     const svgRef = useRef<SVGSVGElement>(null);
     const [ coordinates, setCoordinates ] = useState<GenomicRange | null>(null);
     const [ highlight ] = useState<GenomicRange | null>(null);

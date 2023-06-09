@@ -107,6 +107,7 @@ const GTexUMAP: React.FC = () => {
                         <TabletAppBar
                             onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                             onHomepageClicked={() => navigate("/")}
+                            onAboutClicked={() => navigate("/psychscreen/aboutus")}
                             onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                             style={{ marginBottom: "63px" }}
                             title={<Logo /> as any}
@@ -115,8 +116,9 @@ const GTexUMAP: React.FC = () => {
                     : (
                         <AppBar
                             centered={true}
-                            onDownloadsClicked={() => navigate("/downloads")}
+                            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                             onHomepageClicked={() => navigate("/")}
+                            onAboutClicked={() => navigate("/psychscreen/aboutus")}
                             onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                         /> 
                     )

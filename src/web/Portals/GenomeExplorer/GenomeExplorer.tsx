@@ -26,8 +26,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps>
 
         /* drawing rectangular highlight at a given range */
         const [ highlight, setHighlight ] = useState<GenomicRange | null>(null);
-        console.log(setHighlight);
-
+        
         /* tracks and coordinates */
         const epigeneticTracks = useMemo( () => tracks("GRCh38", coordinates), [ coordinates ]);
         const navigateCoordinates = useCallback(({ start, end }) => {

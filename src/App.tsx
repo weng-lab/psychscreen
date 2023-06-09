@@ -3,7 +3,7 @@ import { HashRouter as Router, Route, Routes, Navigate  } from 'react-router-dom
 import '@zscreen/psychscreen-ui-components/src/App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import './App.css';
-import { HomePage as WebHomePage } from './web/HomePage';
+import { AboutUsPage, HomePage as WebHomePage } from './web/HomePage';
 import { HomePage as TabletHomePage } from './mobile-portrait/HomePage';
 import { DownloadsPage } from './web/DownloadsPage';
 import { DiseaseTraitPortal, GenePortal, SNPPortal, SingleCellPortal } from './web/Portals';
@@ -69,6 +69,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<Navigate replace to="/psychscreen" />} />
                     <Route path="/psychscreen" element={<HomePage />} />
                     <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
+                    <Route path="/psychscreen/aboutus" element={<AboutUsPage />} />
                     <Route path="/psychscreen/traits/:disease" element={<DiseaseTraitDetails />} />
                     <Route path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease" element={<SingleCelldegdisease/>}/>
                     <Route path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease/:celltype" element={<SingleCelldegdiseasect/>}/>

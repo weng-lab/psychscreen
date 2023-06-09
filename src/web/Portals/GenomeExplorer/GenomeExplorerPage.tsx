@@ -38,8 +38,9 @@ const GenomeExplorerPage: React.FC = () => {
         <>
             <AppBar
                 centered={true}
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
             />
             <Container style={{ width: "70%", marginLeft: "15%", marginTop: "2em" }}>

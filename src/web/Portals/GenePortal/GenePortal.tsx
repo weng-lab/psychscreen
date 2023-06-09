@@ -90,14 +90,13 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                 return  {desc: (matches && matches.length >= 1 ? matches[0][4] : "(no description available)"), name: gene }
             })
             .catch()
-         ))
-         console.log("names",f)
+         ))         
          setgeneDesc(f)
        }
     
        geneCards && fetchDAta()
      } ,[geneCards])
-     console.log("names",geneDesc)
+     
     return (
         <>
             {  //show vertical app bar only for mobile view 
@@ -105,15 +104,17 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                     <TabletAppBar
                         onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                         onHomepageClicked={() => navigate("/")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                         style={{ marginBottom: "63px" }}
                         title={<Logo /> as any}
                     />
                     :<AppBar
                         centered={true}
-                        onDownloadsClicked={() => navigate("/downloads")}
+                        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
                     /> 
             }   
             <Grid container {...props}> 

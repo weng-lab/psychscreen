@@ -3,7 +3,7 @@ import { GridProps } from '@mui/material';
 import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
-import DotPlot from './DotPlot'
+//import DotPlot from './DotPlot'
 
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {
     const navigate = useNavigate(); 
@@ -11,8 +11,9 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
     return(<>
      <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />
@@ -22,7 +23,11 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
                           Disease: {disease} &nbsp; &nbsp; &nbsp; &nbsp; Gene: {gene}
             </Typography>
             <br/>
-            <DotPlot disease={disease} gene={gene}/></>}
+            {
+                //<DotPlot disease={disease} gene={gene}/>
+            }
+            </>
+            }
 
     </>)
 }

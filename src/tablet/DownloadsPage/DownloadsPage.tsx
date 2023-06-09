@@ -15,9 +15,10 @@ const DownloadsPage: React.FC = () => {
     return (
         <>
             <AppBar
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(PORTALS[index][0])}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
             <Container style={{ marginTop: "5em", marginLeft: "6em", width: "40%" }}>
                 <Typography

@@ -37,17 +37,18 @@ type DotPlotQueryResponse = {
 type DotPlotProps = {
     disease: string;
     gene: string;
+    dotplotData: any;
 };
 
-function useGeneData(disease: string, gene: string) {
+function useGeneData(disease: string, gene: string, dotplotData: any) {
 
     // fetch results from API
-    const { data } = useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
+    const data  = dotplotData /*useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
         variables: {
             disease,
             gene
         }
-    });
+    });*/
 
     // map cell types to radii and color shadings
     const results = React.useMemo(() => new Map(
@@ -60,7 +61,7 @@ function useGeneData(disease: string, gene: string) {
     // get sorted cell types as keys
     const keys = React.useMemo( () => (
         [ ...results.keys() ]
-            .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+            .sort((a: any, b: any) => a.toLowerCase().localeCompare(b.toLowerCase()))
     ), [ results ]);
 
     return [ data, results, keys ] as [
@@ -72,15 +73,16 @@ function useGeneData(disease: string, gene: string) {
 }
 
 const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
-    = ({ disease, gene }, ref) => {
+    = ({ disease, gene, dotplotData }, ref) => {
 
         // SVG-related parameters
         const width = 15000;
         const height = width / 3;
 
         // Fetch and format expression data
-        const [ data, results, keys ] = useGeneData(disease, gene);
+        const [ data, results, keys ] = useGeneData(disease, gene, dotplotData);
   
+        
         // Compute dimension factors
         const radiusDomain: [ number, number ] = React.useMemo(() => {
             const radii = keys.map(k => results.get(k)!.radius);
@@ -90,7 +92,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
         const verticalTransform = React.useCallback(linearTransform([ 0, 1 ], [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
 
         // Compute radius and color scaling factors
-        const length = keys.length + 4;
+        const length = keys.length+20;
         const radiusRange = React.useMemo( () => {
             const diff = +((+radiusDomain[1] - +radiusDomain[0]) / 4);
             return [ 0, 1, 2, 3 ].map(x => radiusDomain[0] + diff * x);
@@ -98,12 +100,12 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
         const colorPercent = [ 0, 0.25, 0.5, 0.75, 1 ];
         
         // No data message if this gene is not recognized
-        if (data?.singleCellBoxPlotQuery.length === 0)
+       /* if (data?.singleCellBoxPlotQuery.length === 0)
             return (
                 <Typography type="body" size="large">
                     No data found for {gene}
                 </Typography>
-            );
+            );*/
         
         // Dot plot for recognized genes
         return (
@@ -153,8 +155,8 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                 <text
                     fontSize="140px"
                     fill="#000000"
-                    x={25.3 * width / length}
-                    y={height * 0.75}
+                    x={(keys.length*0.75) * (width / length)}
+                    y={height * 0.78}
                 >
                     Mean Count
                 </text>
@@ -162,14 +164,14 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                     <>
                         <circle
                             r={radiusTransform(r)} 
-                            cx={26.3 * width / length}
-                            cy={i * 150 + height * 0.8}
+                            cx={(keys.length*0.76) * width / length}
+                            cy={i * 150 + height * 0.81}
                             fill="#000000"
                         />
                         <text
                             fontSize="140px"
-                            x={26.6 * width / length}
-                            y={i * 150 + height * 0.81}
+                            x={(keys.length*0.78)* width / length}
+                            y={i * 150 + height * 0.82}
                             fill="#000000"
                         >
                             {r.toFixed(2)}
@@ -179,8 +181,8 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                 <text
                     fontSize="140px"
                     fill="#000000"
-                    x={17.3 * width / length}
-                    y={height * 0.75}
+                    x={(keys.length*0.4) * (width / length)}
+                    y={height * 0.78}
                 >
                     Fraction Expressed
                 </text>
@@ -189,13 +191,13 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                         <rect
                             width={100} 
                             height={100} 
-                            x={18.3 * width / length}
+                            x={(keys.length*0.4) * width / length}
                             y={i * 150 + height * 0.8}
                             fill={`rgb(${pickHex([20,20,255],[235,235,255], r).join(",")})`}
                         />
                         <text
                             fontSize="140px"
-                            x={18.8 * width / length}
+                            x={((keys.length*0.44)) * width / length}
                             y={i * 150 + height * 0.82}
                             fill="#000000"
                         >

@@ -6,7 +6,7 @@ import { GenomeBrowser, RulerTrack, UCSCControls, EmptyTrack, DenseBigBed, LinkT
 import CytobandView from '../GenePortal/Browser/Explorer/Cytobands';
 import { gql, useQuery } from "@apollo/client"
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
-
+import { Arcs } from './Arcs';
 
 type GenomicRange = {
     chromosome?: string;
@@ -38,88 +38,75 @@ export type BigQueryResponse = {
 };
 
 const grns = [
-    [ "Astrocytes Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Ast_enhancer.bigbed" ],
-    [ "Astrocytes Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Ast_promoter.bigbed" ],
+    [ "Astrocytes Enhancer and Promoter and Promoter", "https://downloads.wenglab.org/Ast.bb" ],
+    [ "Endothelial cells Enhancer and Promoter", "https://downloads.wenglab.org/End.bb" ],
+    [ "Vip  Enhancer and Promoter", "https://downloads.wenglab.org/Vip.bb" ],
+    [ "Oligodendrocytes Enhancer and Promoter", "https://downloads.wenglab.org/Oli.bb" ],
+    [ "Chandelier Enhancer and Promoter", "https://downloads.wenglab.org/Chandelier.bb" ],
+    [ "Immune Cells  Enhancer and Promoter", "https://downloads.wenglab.org/Immune.bb" ],
     
-    [ "Chandelier Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Chandelier_enhancer.bigbed" ],
-    [ "Chandelier Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Chandelier_promoter.bigbed" ],
+    [ "Vascular Leptomeningeal Cells Enhancer and Promoter", "https://downloads.wenglab.org/VLMC.bb" ],
+    [ "Sncg Enhancer and Promoter", "https://downloads.wenglab.org/Sncg.bb" ],
+    [ "Sst  Enhancer and Promoter", "https://downloads.wenglab.org/Sst.bb" ],
+    [ "Pvalb  Enhancer and Promoter", "https://downloads.wenglab.org/Pvalb.bb" ],
+    [ "Pax6  Enhancer and Promoter", "https://downloads.wenglab.org/Pax6.bb" ],
+    [ "Oligodendrocyte Precursor Cells  Enhancer and Promoter", "https://downloads.wenglab.org/OPC.bb" ],
+    [ "Microglia Enhancer and Promoter", "https://downloads.wenglab.org/Mic.bb" ],
+    [ "Lamp5.Lhx6  Enhancer and Promoter", "https://downloads.wenglab.org/Lamp5.Lhx6.bb" ],
+    [ "Lamp5 Enhancer and Promoter", "https://downloads.wenglab.org/Lamp5.bb" ],
+    [ "L6b  Enhancer and Promoter", "https://downloads.wenglab.org/L6b.bb" ],
+    [ "Layer 6 Intratelencephalic projecting  Enhancer and Promoter", "https://downloads.wenglab.org/L6.IT.bb" ],
+    [ "Layer 5 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L5.IT.bb" ],
+    [ "Layer 4 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L4.IT.bb" ],
+    [ "Layer 2/3 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L2.3.IT.bb" ],
+    [ "Layer 5 Extratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L5.ET.bb" ],
+    [ "Layer 5/6 Near projecting Enhancer and Promoter", "https://downloads.wenglab.org/L5.6.NP.bb" ],
+    [ "Layer 6 Intratelencephalic projecting Car3 Enhancer and Promoter", "https://downloads.wenglab.org/L6.IT.Car3.bb" ],
+    [ "Layer 6 Corticothalamic projecting  Enhancer and Promoter", "https://downloads.wenglab.org/L6.CT.bb" ]
+    /*
     
-    [ "Endothelial cells Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/End_enhancer.bigbed" ],
-    [ "Endothelial cells Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/End_promoter.bigbed" ],
+    [ "Lamp5 Enhancer and Promoter", "https://downloads.wenglab.org/Lamp5.bb" ],
+    [ "Lamp5 Promoter", "https://downloads.wenglab.org/Lamp5.bb" ],
     
-    [ "Immune Cells Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Immune_enhancer.bigbed" ],
-    [ "Immune Cells Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Immune_promoter.bigbed" ],
+    [ "L6b Enhancer and Promoter", "https://downloads.wenglab.org/L6b.bb" ],
+    [ "L6b Promoter", "https://downloads.wenglab.org/L6b.bb" ],
     
-    [ "Vascular Leptomeningeal Cells Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/VLMC_enhancer.bigbed" ],
-    [ "Vascular Leptomeningeal Cells Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/VLMC_promoter.bigbed" ],
+    [ "Layer 6 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L6.IT.bb" ],
+    [ "Layer 6 Intratelencephalic projecting Promoter", "https://downloads.wenglab.org/L6.IT.bb" ],
     
-    [ "Sncg Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Sncg_enhancer.bigbed" ],
-    [ "Sncg Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Sncg_promoter.bigbed" ],
+    [ "Layer 5 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L5.IT.bb" ],
+    [ "Layer 5 Intratelencephalic projecting Promoter", "https://downloads.wenglab.org/L5.IT.bb" ],
     
-    [ "Vip Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Vip_enhancer.bigbed" ],
-    [ "Vip Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Vip_promoter.bigbed" ],
+    [ "Layer 4 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L4.IT.bb" ],
+    [ "Layer 4 Intratelencephalic projecting Promoter", "https://downloads.wenglab.org/L4.IT.bb" ],
     
-    [ "Sst Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Sst_enhancer.bigbed" ],
-    [ "Sst Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Sst_promoter.bigbed" ],
+    [ "Layer 2/3 Intratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L2.3.IT.bb" ],
+    [ "Layer 2/3 Intratelencephalic projecting Promoter", "https://downloads.wenglab.org/L2.3.IT.bb" ],
     
-    [ "Pvalb Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Pvalb_enhancer.bigbed" ],
-    [ "Pvalb Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Pvalb_promoter.bigbed" ],
+    [ "Layer 5 Extratelencephalic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L5.ET.bb" ],
+    [ "Layer 5 Extratelencephalic projecting Promoter", "https://downloads.wenglab.org/L5.ET.bb" ],
     
-    [ "Pax6 Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Pax6_enhancer.bigbed" ],
-    [ "Pax6 Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Pax6_promoter.bigbed" ],
+    [ "Layer 5/6 Near projecting Enhancer and Promoter", "https://downloads.wenglab.org/L5.6.NP.bb" ],
+    [ "Layer 5/6 Near projecting Promoter", "https://downloads.wenglab.org/L5.6.NP.bb" ],
     
-    [ "Oligodendrocytes Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Oli_enhancer.bigbed" ],
-    [ "Oligodendrocytes Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Oli_promoter.bigbed" ],
+    [ "Layer 6 Intratelencephalic projecting Car3 Enhancer and Promoter", "https://downloads.wenglab.org/L6.IT.Car3.bb" ],
+    [ "Layer 6 Intratelencephalic projecting Car3 Promoter", "https://downloads.wenglab.org/L6.IT.Car3.bb" ],
     
-    [ "Oligodendrocyte Precursor Cells Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/OPC_enhancer.bigbed" ],
-    [ "Oligodendrocyte Precursor Cells Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/OPC_promoter.bigbed" ],
-    
-    [ "Microglia Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Mic_enhancer.bigbed" ],
-    [ "Microglia Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Mic_promoter.bigbed" ],
-    
-    [ "Lamp5.Lhx6 Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Lamp5.Lhx6_enhancer.bigbed" ],
-    [ "Lamp5.Lhx6 Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Lamp5.Lhx6_promoter.bigbed" ],
-    
-    [ "Lamp5 Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Lamp5_enhancer.bigbed" ],
-    [ "Lamp5 Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/Lamp5_promoter.bigbed" ],
-    
-    [ "L6b Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6b_enhancer.bigbed" ],
-    [ "L6b Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6b_promoter.bigbed" ],
-    
-    [ "Layer 6 Intratelencephalic projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6.IT_enhancer.bigbed" ],
-    [ "Layer 6 Intratelencephalic projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6.IT_promoter.bigbed" ],
-    
-    [ "Layer 5 Intratelencephalic projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L5.IT_enhancer.bigbed" ],
-    [ "Layer 5 Intratelencephalic projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L5.IT_promoter.bigbed" ],
-    
-    [ "Layer 4 Intratelencephalic projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L4.IT_enhancer.bigbed" ],
-    [ "Layer 4 Intratelencephalic projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L4.IT_promoter.bigbed" ],
-    
-    [ "Layer 2/3 Intratelencephalic projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L2.3.IT_enhancer.bigbed" ],
-    [ "Layer 2/3 Intratelencephalic projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L2.3.IT_promoter.bigbed" ],
-    
-    [ "Layer 5 Extratelencephalic projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L5.ET_enhancer.bigbed" ],
-    [ "Layer 5 Extratelencephalic projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L5.ET_promoter.bigbed" ],
-    
-    [ "Layer 5/6 Near projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L5.6.NP_enhancer.bigbed" ],
-    [ "Layer 5/6 Near projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L5.6.NP_promoter.bigbed" ],
-    
-    [ "Layer 6 Intratelencephalic projecting Car3 Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6.IT.Car3_enhancer.bigbed" ],
-    [ "Layer 6 Intratelencephalic projecting Car3 Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6.IT.Car3_promoter.bigbed" ],
-    
-    [ "Layer 6 Corticothalamic projecting Enhancer", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6.CT_enhancer.bigbed" ],
-    [ "Layer 6 Corticothalamic projecting Promoter", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/GRNs/L6.CT_promoter.bigbed" ],
+    [ "Layer 6 Corticothalamic projecting Enhancer and Promoter", "https://downloads.wenglab.org/L6.CT.bb" ],
+    [ "Layer 6 Corticothalamic projecting Promoter", "https://downloads.wenglab.org/L6.CT.bb" ],*/
 ]
     
 
 const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
     const svgRef = React.useRef<SVGSVGElement>(null);
+    //chr11:6920218-6930665
     const [ coordinates, setCoordinates ] = useState<GenomicRange>({chromosome:"chr11", start: 6080547, end: 6680547});
   
     const onDomainChanged = useCallback(
         (d: GenomicRange) => {
             const chr = d.chromosome === undefined ? coordinates.chromosome : d.chromosome;
-            setCoordinates({ chromosome: chr, start: Math.round(d.start), end: Math.round(d.end) });
+            let st= d.start<0 ? 1: d.start;
+            setCoordinates({ chromosome: chr, start: Math.round(st), end: Math.round(d.end) });
         }, [ ]
     );
     return(
@@ -162,6 +149,24 @@ const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
 const BBTrack: React.FC<{ data: BigResponseData, url: string, title: string, color?: string, height: number, transform?: string, onHeightChanged?: (height: number) => void, domain: GenomicRange, svgRef?: React.RefObject<SVGSVGElement> }>
     = ({ data, url, title, height, domain, transform, onHeightChanged, svgRef, color }) => {        
         useEffect( () => onHeightChanged && onHeightChanged(height + 40), [ height, onHeightChanged ]);
+        
+        const re = data as BigBedData[]
+        let linkdata  = re.map((r)=>{
+            if(r.name?.includes("NA:")){
+              return  {
+                    regionA: { chromosome: r.chr, start: r.start, end: r.end },
+                    regionB: { chromosome: r.chr, start: +r.start, end: +r.end },
+                    score: 30
+                }
+            } else {
+                return {
+                    regionA: { chromosome: r.chr, start: +r.start, end: +r.end},
+                    regionB: { chromosome: r.name?.split(":")[0]!!, start:  +r.name?.split(":")[1].split("-")[0]!!, end:   +r.name?.split(":")[1].split("-")[1]!!},
+                    score: 30
+                }
+            }
+        })
+      
         return (
             <g transform={transform}>
                 <EmptyTrack
@@ -171,24 +176,17 @@ const BBTrack: React.FC<{ data: BigResponseData, url: string, title: string, col
                     id=""
                     text={title}
                 />
-                    <DenseBigBed
+                    <Arcs
                         width={1400}
                         height={height}
                         domain={domain}
                         id="atc"
+                        arcOpacity={1}
                         transform="translate(0,40)"
-                        data={data as BigBedData[]}
+                        data={linkdata}
+                        color="black"                       
                         svgRef={svgRef}
-                        tooltipContent={rect => { 
-                            console.log(rect)
-                            return (
-                                <div style={{ border: "1px solid", borderColor: "#000000", backgroundColor: "#ffffff", padding: "5px" }}>
-                                  {`TF:${rect.name!!.split("_")[0]}`}
-                                  <br/>
-                                  {`TG:${rect.name!!.split("_")[1]}`}
-                                </div>
-                              )
-                        }}
+                        
                     />
                 
             </g>
@@ -213,7 +211,7 @@ const Trackset: React.FC<any> = props => {
    useEffect( () => { props.onHeightChanged && props.onHeightChanged(height); }, [ props.onHeightChanged, height, props ]);
    const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, { variables: { bigRequests }});
   
-    return loading || (data?.bigRequests.length || 0) < 2 ? <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." /> : (
+    return loading  ? <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." /> : (
         <>
             { (data?.bigRequests || []).map( (data, i) => (
                 <BBTrack
