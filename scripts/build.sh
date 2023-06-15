@@ -14,4 +14,4 @@ cd "$(dirname "$(dirname "$0")")"
 source scripts/lib/common.sh
 
 # build the image and tag it with the project version
-docker build -t --build-arg PUBLIC_URL=https://psychscreen.wenglab.org/psychscreen gcr.io/${GCR_PROJECT_ID}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
+docker build -t gcr.io/${GCR_PROJECT_ID}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .

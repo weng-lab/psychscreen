@@ -4,7 +4,7 @@ import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-com
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
 import { groupBy } from 'queryz';
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import DotPlot from '../SingleCellPortal/DotPlot';
+import DotPlot, { DotPlotQueryResponse, DOT_PLOT_QUERY } from '../SingleCellPortal/DotPlot';
 import { lower5, range, upper5 } from './GTexUMAP';
 import { downloadSVGAsPNG } from '../../svgToPng';
 import { downloadSVG } from './violin/utils';
@@ -170,7 +170,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
 }
 
 const DATASETS = [
-    "SZBDMulti-Seq"
+    "SZBDMulti-Seq","UCLA-ASD"
 ];
 const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const [ dataset, setDataset ] = useState("SZBDMulti-Seq");
@@ -334,10 +334,14 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                         render: (avgexp[0][k]).toFixed(3)
                       }]
     }):[];
-
-    const dotplotData  = pct && avgexp && pct.length>0 && avgexp.length>0 ? { singleCellBoxPlotQuery : 
+    const ddata = useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
+        variables: {
+            disease: dataset,
+            gene
+        }
+    });
+    const dotplotData  = dataset==="SZBDMulti-Seq" && pct && avgexp && pct.length>0 && avgexp.length>0 ? { singleCellBoxPlotQuery : 
         Object.keys(pct[0]).filter(k=>k!=="featurekey").map(k=>{
-
             return {
                 expr_frac: pct[0][k],
                 mean_count: avgexp[0][k],
@@ -358,7 +362,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         stroke: "#000000",
         strokeOpacity: 0.4
     } })), [ data, highlighted, colorScheme, colors, ctClass ]);
-    /*const groupedVals = useMemo( () => {
+    const groupedVals = useMemo( () => {
         const groups = groupBy(points, x => x.data, x => x.val);
         return [ ...groups.keys() ].sort().map(x => [{
             header: "Cell Type",
@@ -372,7 +376,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             value: groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length,
             render: (groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length).toFixed(3)
         }]).sort((a, b) => -(+a[2].value - +b[2].value));
-    }, [ points ]);*/
+    }, [ points ]);
     const domain = useMemo( () => points.length === 0 ? { x: { start: 0, end: 1 }, y: { start: 0, end: 1 } } : ({
         x: { start: lower5(Math.min(...points.map(x => x.x)) * 1.1), end: upper5(Math.max(...points.map(x => x.x))) },
         y: { start: lower5(Math.min(...points.map(x => x.y)) * 1.1), end: upper5(Math.max(...points.map(x => x.y))) }
@@ -405,21 +409,21 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             { tabIndex === 1 ? (
                 <Grid item sm={12}>
 
-                    { !dotplotData ? <CircularProgress /> : (
+                    { (dataset==="UCLA-ASD" && ddata.loading) || (dataset==="SZBDMulti-Seq" &&  !dotplotData) ? <CircularProgress /> : (
                         <>
                         <br/>
                         <Button btheme="light" bvariant={ctClass === "By SubClass" ? "filled": "outlined"} key={"By SubClass"} onClick={() => setCtClass("By SubClass")}>
                         By SubClass
                         </Button>&nbsp;
-                        <Button btheme="light" bvariant={ctClass === "By Celltype" ? "filled": "outlined"} key={"By Celltype"} onClick={() => setCtClass("By Celltype")}>
+                        {dataset==="SZBDMulti-Seq" && <Button btheme="light" bvariant={ctClass === "By Celltype" ? "filled": "outlined"} key={"By Celltype"} onClick={() => setCtClass("By Celltype")}>
                         By Celltype
-                        </Button>
+                        </Button>}
                         <br/>
                         <br/>
                             <DotPlot
                                 disease={dataset}
                                 gene={gene}
-                                dotplotData={dotplotData}
+                                dotplotData={dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData : ddata.data}
                                 ref={dotPlotRef}
                             />
                             <Button
@@ -441,12 +445,22 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                         <Button btheme="light" bvariant={ctClass === "By SubClass" ? "filled": "outlined"} key={"By SubClass"} onClick={() => setCtClass("By SubClass")}>
                         By SubClass
                         </Button>&nbsp;
-                        <Button btheme="light" bvariant={ctClass === "By Celltype" ? "filled": "outlined"} key={"By Celltype"} onClick={() => setCtClass("By Celltype")}>
+                        {dataset==="SZBDMulti-Seq" && <Button btheme="light" bvariant={ctClass === "By Celltype" ? "filled": "outlined"} key={"By Celltype"} onClick={() => setCtClass("By Celltype")}>
                         By Celltype
-                        </Button>
+                        </Button>}
                         <br/>
                         <br/>
-                        { pct && avgexp && pct.length>0 && avgexp.length>0 && (
+                        {
+                          dataset==="UCLA-ASD" && groupedVals.length>0 &&(
+                            <CustomizedTable
+                                style={{ width: "max-content" }}
+                                tabledata={groupedVals}
+                                onRowMouseOver={row => setHighlighted(row[0].value)}
+                                onRowMouseOut={() => setHighlighted("")}
+                            />
+                          )
+                        }
+                        { dataset==="SZBDMulti-Seq" && pct && avgexp && pct.length>0 && avgexp.length>0 && (
                             <CustomizedTable
                                 style={{ width: "max-content" }}
                                 tabledata={rows}

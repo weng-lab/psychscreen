@@ -13,7 +13,7 @@ function pickHex(color1: number[], color2: number[], w1: number) {
     ];
 }
 
-const DOT_PLOT_QUERY = gql`
+export const DOT_PLOT_QUERY = gql`
 query singleCellBoxPlot($disease: String!, $gene:[String]) {
     singleCellBoxPlotQuery(disease: $disease, gene: $gene) {
         expr_frac
@@ -24,7 +24,7 @@ query singleCellBoxPlot($disease: String!, $gene:[String]) {
     }
 }`;
 
-type DotPlotQueryResponse = {
+export type DotPlotQueryResponse = {
     singleCellBoxPlotQuery: {
         expr_frac: number;
         mean_count: number;
@@ -37,19 +37,16 @@ type DotPlotQueryResponse = {
 type DotPlotProps = {
     disease: string;
     gene: string;
-    dotplotData: any;
+    dotplotData?: any;
 };
 
-function useGeneData(disease: string, gene: string, dotplotData: any) {
+function useGeneData(disease: string, gene: string, dotplotData?: any) {
 
     // fetch results from API
-    const data  = dotplotData /*useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
-        variables: {
-            disease,
-            gene
-        }
-    });*/
+   console.log("use gene data",dotplotData)
+   let data: any  =  dotplotData
 
+   // data = dotplotData && dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData: data
     // map cell types to radii and color shadings
     const results = React.useMemo(() => new Map(
         data?.singleCellBoxPlotQuery.map(x => [
@@ -79,6 +76,8 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
         const width = 15000;
         const height = width / 3;
 
+       
+        //console.log(dotplotData,ddata,dotplotData ? dotplotData: ddata,"dotplot data")
         // Fetch and format expression data
         const [ data, results, keys ] = useGeneData(disease, gene, dotplotData);
   
