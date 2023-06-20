@@ -135,16 +135,16 @@ const SNPDetails: React.FC<GridProps> = (props) => {
     const handleTabChange = (_: any, newTabIndex: number) => {
         setTabIndex(newTabIndex);
     };
-    const { data  } = useQuery<QueryResponse>(QUERY, {
-        variables: {
-            coordinates: expandedCoordinates,
-            population:  "AFRICAN",
-            rSquaredThreshold: 0.7,
-            id: snpid,
-            ...expandedCoordinates
-        }, context: {
-			clientName: 'psychscreen'
-		}
+      const { data  } = useQuery<QueryResponse>(QUERY, {
+          variables: {
+              coordinates: expandedCoordinates,
+              population:  "AFRICAN",
+              rSquaredThreshold: 0.7,
+              id: snpid,
+              ...expandedCoordinates
+          }, context: {
+        clientName: 'psychscreen'
+      }
     });
     return(
         <>

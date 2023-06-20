@@ -3,6 +3,7 @@
  */
 // import { DenseBigBed, EmptyTrack, FullBigWig } from 'umms-gb';
  //import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { AppBar } from '@zscreen/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -36,7 +37,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
  `;
 
  const GenePortal: React.FC = props => {
-    const navigate = useNavigate();
+   const navigate = useNavigate();
     const theme = useTheme();
     const { state }: any = useLocation();
     const { searchvalue } = state ? state : { searchvalue: ''}     
@@ -176,6 +177,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                             }}                
                             helperText={"e.g. sox4, gapdh"}                            
                         />
+                         
                     <br/>
                     <br/>
                     <br/>

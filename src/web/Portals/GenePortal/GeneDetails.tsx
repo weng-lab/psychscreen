@@ -52,6 +52,20 @@ query ($assembly: String!,  $name_prefix: [String!]) {
 }
 `
 
+const GENE_COORDS_QUERY = gql`
+query ($assembly: String!,  $name_prefix: [String!]) {
+  gene(assembly: $assembly, name_prefix: $name_prefix) {
+    name
+    id
+    coordinates {
+      start
+      chromosome
+      end
+    } 
+  }
+}
+`
+
 const GeneDetails: React.FC = (props) => {
     const { gene } = useParams();
     const { state }: any = useLocation();
@@ -66,8 +80,9 @@ const GeneDetails: React.FC = (props) => {
     const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
 
     const [region, setRegion] = useState({chromosome: chromosome, start: start, end: end}) 
-    if (trueGeneId) geneid = trueGeneId;
 
+    if (trueGeneId) geneid = trueGeneId;
+    const params = useParams();
     const handleTissueCategory = (
         _: any,
         newTissueCategory: string | null,
@@ -79,8 +94,15 @@ const GeneDetails: React.FC = (props) => {
         setTabIndex(newTabIndex);
     };
 
+    const {data: geneCoords} = useQuery(GENE_COORDS_QUERY,{ variables: {
+      name_prefix: [params.gene],
+      assembly: "GRCh38"
+    },skip: params.gene==''})
+
+    console.log("geneCoords",geneCoords)
     const onGeneChange = React.useCallback(
       async (value: any) => {
+        console.log('called gene change')
           
           const response = await fetch('https://ga.staging.wenglab.org/graphql', {
               method: 'POST',
@@ -100,6 +122,8 @@ const GeneDetails: React.FC = (props) => {
       },
       []
   );
+
+  console.log('reg',region)
     const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {		
         variables: {
             gene_id: geneid
@@ -188,11 +212,11 @@ const GeneDetails: React.FC = (props) => {
                       <Box>
                         <GeneOverview gene={trueGeneName || gene} />
                       </Box>
-                    ) : tabIndex === 0 ? (
+                    ) : tabIndex === 0 && geneCoords? (
                       <Box>
                         <Browser
                           name={trueGeneName?.toUpperCase() || gene}
-                          coordinates={{ chromosome: region.chromosome, start: +region.start, end: +region.end }}
+                          coordinates={{ chromosome:  region.chromosome==='' ?  geneCoords.gene[0].coordinates.chromosome : region.chromosome, start:  region.start===null ?  +geneCoords.gene[0].coordinates.start : +region.start, end:  region.end===null ?  +geneCoords.gene[0].coordinates.end : +region.end }}
                         />
                       </Box>
                     ) : tabIndex === 3 && 0>1 ? (

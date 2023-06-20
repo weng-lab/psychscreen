@@ -20,7 +20,7 @@ export const DISEASE_CARDS = [
 {val: "Dataset:Gene-regulatory-networks", cardLabel: "Gene regulatory networks", cardDesc: ""},
 {val: "Dataset:Diff-expressed-genes", cardLabel: "Diff. expressed genes", cardDesc: ""},
 {val: "Dataset:Cell-type-specific-eQTLs", cardLabel: "Cell type specific eQTLs", cardDesc: ""},
-//{val: "Dataset:Indiv-cohort-expression-data", cardLabel: "Indiv. cohort expression data", cardDesc: ""}
+{val: "Dataset:Indiv-cohort-expression-data", cardLabel: "Indiv. cohort expression data", cardDesc: ""}
 
 ]
  

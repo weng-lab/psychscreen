@@ -3,11 +3,19 @@ import { GridProps } from '@mui/material';
 import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
-//import DotPlot from './DotPlot'
+import { useQuery } from '@apollo/client';
+import { DOT_PLOT_QUERY } from './DotPlot';
+import DotPlot from './DotPlot'
 
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {
     const navigate = useNavigate(); 
     const { disease, gene } = useParams();
+    const ddata = useQuery<any>(DOT_PLOT_QUERY, {
+        variables: {
+            disease,
+            gene
+        }
+    });
     return(<>
      <AppBar
                 centered
@@ -24,7 +32,7 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
             </Typography>
             <br/>
             {
-                //<DotPlot disease={disease} gene={gene}/>
+                <DotPlot disease={disease} gene={gene} dotplotData={ddata.data}/>
             }
             </>
             }

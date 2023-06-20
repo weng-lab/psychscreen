@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import { GridProps } from '@mui/material';
+import { GridProps, Paper } from '@mui/material';
 import { AppBar, Typography, SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
@@ -121,14 +121,16 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                             <>
                             {geneCards && geneCards!.length > 0 && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    {<HorizontalCard width={500}
+                                    {<Paper elevation={0} style={{  maxHeight: 500, width: 350, overflow: 'auto'}}>
+                                        <HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
                                             let f = geneCards!!.find((g: any)=> g.val===v)
                                             
                                    navigate(`/psychscreen/single-cell/${disease}/${f?.cardLabel}`)
                                         }}
                                         cardContentText={geneCards!!} 
-                                    />  }          
+                                    />
+                                    </Paper>  }          
                                 </Container>
                             </Slide> } 
                             {geneCards && geneCards!.length === 0 &&

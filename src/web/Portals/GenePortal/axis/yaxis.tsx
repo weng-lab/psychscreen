@@ -10,8 +10,8 @@ const YAxis: React.FC<AxisProps> = props => {
             <text
                 transform="rotate(-90)"
                 textAnchor="middle"
-                x={-props.height / 2}
-                y={props.width * 0.2}
+                x={(-props.height / 2)}
+                y={props.width * 0.2 +100}
                 dominantBaseline="center"
                 fontSize="150px"
             >

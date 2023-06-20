@@ -182,8 +182,10 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const [ highlighted, setHighlighted ] = useState("");
     const [ colorScheme, setColorScheme ] = React.useState<string | null>('expression');
 
+    console.log(avgexp,"avgexp")
     useEffect(()=>{
-        const categoryAvgexp  = ctClass==="By SubClass" ? "https://downloads.wenglab.org/avgexpression_bysubclass.txt" : "https://downloads.wenglab.org/avgexpression_bycelltype.txt"
+        const categoryAvgexp  = ctClass==="By SubClass" ? "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_avgexpression_bysubclass.txt"
+         : "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_avgexpression_bycelltype.txt"
          setAvgexp([])
         fetch(categoryAvgexp)
         .then(x => x.text())
@@ -203,45 +205,47 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                     //Sncg,L6 IT,L2/3 IT,L6 CT,SMC,Sst Chodl,Astro,Oligo,Pax6,VLMC,Endo,Vip,OPC,L6b
                     e.push({
                         featurekey: y[0],
-                        Pvalb: +y[1],
-                        Micro: +y[2],
-                        Lamp5: +y[3] ,
-                        ["L5/6 NP"]: +y[4],
-                        Immune: +y[5],
-                        Sst: +y[6],
-                        ["L5 ET"]: +y[7],
-                        Chandelier: +y[8],
-                        ["L6 IT Car3"]: +y[9],
-                        ["L4 IT"]: +y[10],
-                        ["Lamp5 Lhx6"]: +y[11],
-                        ["PC"]: +y[12],  
-                        ["Sncg"]: +y[13],
-                        ["L6 IT"]: +y[14],  
-                        ["L2/3 IT"]: +y[15],
-                        ["L6 CT"]: +y[16],  
-                        ["SMC"]: +y[17],
-                        ["Sst Chodl"]: +y[18],  
+                        ["L2/3 IT"]: +y[1],
+                        ["L4 IT"]: +y[2],
+                        ["L5 IT"]: +y[3],
+                        ["L6 IT"]: +y[4],
+                        ["L6 IT Car3"]: +y[5],
+                        ["L5 ET"]: +y[6],
+                        ["L5/6 NP"]: +y[7],
+                        ["L6b"]: +y[8],
+                        ["L6 CT"]: +y[9],  
+                        Sst: +y[10],
+                        ["Sst Chodl"]: +y[11],  
+                        Pvalb: +y[12],
+                        Chandelier: +y[13],
+                        ["Lamp5 Lhx6"]: +y[14],
+                        Lamp5: +y[15] ,
+                        ["Sncg"]: +y[16],
+                        ["Vip"]: +y[17], 
+                        ["Pax6"]: +y[18],   
                         ["Astro"]: +y[19],
                         ["Oligo"]: +y[20],
-                        ["Pax6"]: +y[21],  
-                        ["VLMC"]: +y[22],
+                        ["OPC"]: +y[21],
+                        Micro: +y[22],
                         ["Endo"]: +y[23],
-                        ["Vip"]: +y[24],  
-                        ["OPC"]: +y[26],
-                        ["L6b"]: +y[27]
+                        ["VLMC"]: +y[24],                        
+                        ["PC"]: +y[25],  
+                        ["SMC"]: +y[26],
+                        Immune: +y[27],
+                        RB: +y[28],
                     })
 
                 } else {
                     e.push({
                         // ExcitatoryNeurons,OPCs,Astrocytes,Misc,Oligodendrocytes,Microglia,InhibitoryNeurons
-                        featurekey: y[0],
+                        featurekey: y[0],                        
                         ExcitatoryNeurons: +y[1],
-                        OPCs: +y[2],
+                        InhibitoryNeurons: +y[2] ,
                         Astrocytes: +y[3] ,
-                        Misc: +y[4],
-                        Oligodendrocytes: +y[5],
+                        Oligodendrocytes: +y[4],
+                        OPCs: +y[5],
                         Microglia: +y[6],
-                        InhibitoryNeurons: +y[7] 
+                        Misc: +y[7]
                     })
                 }
                 
@@ -251,7 +255,9 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
            
     },[ctClass,gene])
     useEffect( () => {
-        const categoryPct  = ctClass==="By SubClass" ? "https://downloads.wenglab.org/percentexpressed_bysubclass.txt" : "https://downloads.wenglab.org/percentexpressed_bycelltype.txt"        
+        const categoryPct  = ctClass==="By SubClass" ? 
+        "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_percentexpressed_bysubclass.txt" : 
+        "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_percentexpressed_bycelltype.txt"        
         setPct([])        
         fetch(categoryPct)
         .then(x => x.text())
@@ -271,45 +277,48 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                     //Sncg,L6 IT,L2/3 IT,L6 CT,SMC,Sst Chodl,Astro,Oligo,Pax6,VLMC,Endo,Vip,OPC,L6b
                     e.push({
                         featurekey: y[0],
-                        Pvalb: +y[1],
-                        Micro: +y[2],
-                        Lamp5: +y[3] ,
-                        ["L5/6 NP"]: +y[4],
-                        Immune: +y[5],
-                        Sst: +y[6],
-                        ["L5 ET"]: +y[7],
-                        Chandelier: +y[8],
-                        ["L6 IT Car3"]: +y[9],
-                        ["L4 IT"]: +y[10],
-                        ["Lamp5 Lhx6"]: +y[11],
-                        ["PC"]: +y[12],  
-                        ["Sncg"]: +y[13],
-                        ["L6 IT"]: +y[14],  
-                        ["L2/3 IT"]: +y[15],
-                        ["L6 CT"]: +y[16],  
-                        ["SMC"]: +y[17],
-                        ["Sst Chodl"]: +y[18],  
+                        ["L2/3 IT"]: +y[1],
+                        ["L4 IT"]: +y[2],
+                        ["L5 IT"]: +y[3],
+                        ["L6 IT"]: +y[4],
+                        ["L6 IT Car3"]: +y[5],
+                        ["L5 ET"]: +y[6],
+                        ["L5/6 NP"]: +y[7],
+                        ["L6b"]: +y[8],
+                        ["L6 CT"]: +y[9],  
+                        Sst: +y[10],
+                        ["Sst Chodl"]: +y[11],  
+                        Pvalb: +y[12],
+                        Chandelier: +y[13],
+                        ["Lamp5 Lhx6"]: +y[14],
+                        Lamp5: +y[15] ,
+                        ["Sncg"]: +y[16],
+                        ["Vip"]: +y[17], 
+                        ["Pax6"]: +y[18],   
                         ["Astro"]: +y[19],
                         ["Oligo"]: +y[20],
-                        ["Pax6"]: +y[21],  
-                        ["VLMC"]: +y[22],
+                        ["OPC"]: +y[21],
+                        Micro: +y[22],
                         ["Endo"]: +y[23],
-                        ["Vip"]: +y[24],  
-                        ["OPC"]: +y[26],
-                        ["L6b"]: +y[27]
+                        ["VLMC"]: +y[24],                        
+                        ["PC"]: +y[25],  
+                        ["SMC"]: +y[26],
+                        Immune: +y[27],
+                        RB: +y[28],
                     })
 
                 } else {
                     e.push({
                         // ExcitatoryNeurons,OPCs,Astrocytes,Misc,Oligodendrocytes,Microglia,InhibitoryNeurons
-                        featurekey: y[0],
+                        featurekey: y[0],                        
                         ExcitatoryNeurons: +y[1],
-                        OPCs: +y[2],
+                        InhibitoryNeurons: +y[2] ,
                         Astrocytes: +y[3] ,
-                        Misc: +y[4],
-                        Oligodendrocytes: +y[5],
+                        Oligodendrocytes: +y[4],
+                        OPCs: +y[5],
                         Microglia: +y[6],
-                        InhibitoryNeurons: +y[7] 
+                        Misc: +y[7],
+                        
                     })
                 }
                 
@@ -476,7 +485,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                             <Typography style={{ marginLeft: "2em", marginBottom: "0.5em" }} type="body" size="large">Color Scheme:</Typography>
                             <ToggleButtonGroup style={{ marginLeft: "2em" }} size={"small"} value={colorScheme} exclusive onChange={(_, x) => setColorScheme(x)}>
                                 <ToggleButton value="expression">
-                                    {gene} Expression
+                                {gene} Expression
                                 </ToggleButton>
                                 <ToggleButton value="cluster">
                                     Cell Type Cluster
@@ -546,7 +555,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                                 fontSize={1.5}
                                                 textAnchor="middle"
                                             >
-                                                {gene} Expression
+                                                log-transformed {gene} Expression
                                             </text>
                                         )}
                                         { colorScheme === "expression" && (
