@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { CircularProgress, Grid, Tabs, Tab, ToggleButton, ToggleButtonGroup, Paper, FormHelperText } from '@mui/material';
-import { Typography, Button, CustomizedTable, Select } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button, CustomizedTable, DataTable } from '@weng-lab/psychscreen-ui-components';
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
 import { groupBy } from 'queryz';
 import React, { useMemo, useRef, useState, useEffect } from 'react';
@@ -15,6 +15,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
 
+const COLUMNS = [{
+    header: "Cell Type",
+    value: row => row.celltype
+},{
+    header: "Fraction Cells Non-Zero",
+    value: row => row.pct,
+    render: row => row.pct.toFixed(3)
+},{
+    header: "Average Expression",
+    value: row => row.avgexp,
+    render: row => row.avgexp.toFixed(3)
+}]
 
 export const StyledTab = styled(Tab)(() => ({
     textTransform: "none",
@@ -137,7 +149,7 @@ const subClassColors = {
 ["Vip"]:"#35bba0",
 ["Pax6"]:"#67be62",
 ["Astro"]:"#f5ed1f",
-["Oligo"]:"#fdfded",
+["Oligo"]:"#99994e",
 ["OPC"]:"#869c98",
 ["Micro"]:"#92575d",
 ["Endo"]:"#d490bf",
@@ -339,29 +351,19 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         })
     }, [ctClass,gene,dataset]);
     const rows = pct && avgexp && pct.length>0 && avgexp.length>0 ? Object.keys(pct[0]).filter(k=>k!=="featurekey").map(k=>{
-              return [
-                      { 
-                        header: "Cell Type",
-                        value: k
-                      },
-                      {
-                        header: "Fraction Cells Non-Zero",
-                        value: pct[0][k],
-                        render: (pct[0][k]).toFixed(3)
-                      },
-                      {
-                        header: "Average Expression",
-                        value: avgexp[0][k],
-                        render: (avgexp[0][k]).toFixed(3)
-                      }]
-    }):[];
-    const ddata = useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
+              return { 
+                        celltype: k,
+                        pct: pct[0][k],
+                        avgexp: avgexp[0][k]
+
+    }}):[];
+    /*const ddata = useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
         variables: {
             disease: dataset,
             gene
         }
-    });
-    const dotplotData  = dataset==="SZBDMulti-Seq" && pct && avgexp && pct.length>0 && avgexp.length>0 ? { singleCellBoxPlotQuery : 
+    });*/
+    const dotplotData  = pct && avgexp && pct.length>0 && avgexp.length>0 ? { singleCellBoxPlotQuery : 
         Object.keys(pct[0]).filter(k=>k!=="featurekey").map(k=>{
             return {
                 expr_frac: pct[0][k],
@@ -383,7 +385,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         stroke: "#000000",
         strokeOpacity: 0.4
     } })), [ data, highlighted, colorScheme, colors, ctClass ]);
-    const groupedVals = useMemo( () => {
+    /*const groupedVals = useMemo( () => {
         const groups = groupBy(points, x => x.data, x => x.val);
         return [ ...groups.keys() ].sort().map(x => [{
             header: "Cell Type",
@@ -397,7 +399,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             value: groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length,
             render: (groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length).toFixed(3)
         }]).sort((a, b) => -(+a[2].value - +b[2].value));
-    }, [ points ]);
+    }, [ points ]);*/
     const domain = useMemo( () => points.length === 0 ? { x: { start: 0, end: 1 }, y: { start: 0, end: 1 } } : ({
         x: { start: lower5(Math.min(...points.map(x => x.x)) * 1.1), end: upper5(Math.max(...points.map(x => x.x))) },
         y: { start: lower5(Math.min(...points.map(x => x.y)) * 1.1), end: upper5(Math.max(...points.map(x => x.y))) }
@@ -413,8 +415,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
       };
     
     return (
-        <Grid container>
-           
+        <Grid container>         
             
             <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
             <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">Select Dataset:</Typography>
@@ -446,13 +447,13 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             { tabIndex === 1 ? (
                 <Grid item sm={12}>
 
-                    { (dataset==="UCLA-ASD" && ddata.loading) || (dataset==="SZBDMulti-Seq" &&  !dotplotData) ? <CircularProgress /> : (
+                    { (!dotplotData) ? <CircularProgress /> : (
                         <>
                         <br/>
                         <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
                         by SubClass
                         </StyledButton>&nbsp;
-                        {dataset==="SZBDMulti-Seq" && <StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
+                        {<StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
                         by Celltype
                         </StyledButton>}
                         <br/>
@@ -460,7 +461,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                             <DotPlot
                                 disease={dataset}
                                 gene={gene}
-                                dotplotData={dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData : ddata.data}
+                                dotplotData={dotplotData}
                                 ref={dotPlotRef}
                             />
                             <Button
@@ -482,34 +483,21 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                         <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
                         by SubClass
                         </StyledButton>&nbsp;
-                        {dataset==="SZBDMulti-Seq" && <StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
+                        {<StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
                         by Celltype
                         </StyledButton>}
                         <br/>
                         <br/>
-                        {
-                          dataset==="UCLA-ASD" && groupedVals.length>0 &&(
-                            <CustomizedTable
-                                rowsPerPage={[30]}
-                                style={{ width: "max-content" }}                                
-                                tabledata={groupedVals}
-                                onRowMouseOver={row => setHighlighted(row[0].value)}
-                                onRowMouseOut={() => setHighlighted("")}
-                            />
-                          )
-                        }
-                        { dataset==="SZBDMulti-Seq" && pct && avgexp && pct.length>0 && avgexp.length>0 && (
+                        {  pct && avgexp && pct.length>0 && avgexp.length>0 ? (
                             <Paper elevation={0} style={{  maxHeight: 500, width: 550, overflow: 'auto'}}>
-                                <CustomizedTable
-                                    rowsPerPage={[30]}
-                                    style={{ width: "max-content" }}
-                                    tabledata={rows}                                
-                                    onRowMouseOver={row => setHighlighted(row[0].value)}
-                                    onRowMouseOut={() => setHighlighted("")}
+                                <DataTable
+                                    columns={COLUMNS} rows={rows} itemsPerPage={30} searchable sortColumn={2}
+                                    onRowMouseEnter={(row: any) => setHighlighted(row.celltype)}
+                                    onRowMouseLeave={() => setHighlighted("")}
                                 />
                             </Paper>
 
-                        )}
+                        ) : <CircularProgress/>}
                         </>
                         
                     </Grid>

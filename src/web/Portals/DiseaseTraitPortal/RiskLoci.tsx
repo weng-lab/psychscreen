@@ -5,7 +5,7 @@ import { groupBy } from 'queryz';
 import React, { useMemo, useState } from 'react';
 import { Cytobands } from 'umms-gb';
 import { linearTransform } from '../GenePortal/violin/utils';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import { GenomicRange } from '../GenePortal/AssociatedxQTL';
 
 type Cytoband = {

@@ -5,7 +5,7 @@ import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import GeneTrack from './GeneTrack';
 import { EpigeneticTracks, tracks } from '../../../genome-explorer';
 import { DeepLearnedModelTracks } from '../../../genome-explorer/DeepLearnedModels';
-import { Button } from '@zscreen/psychscreen-ui-components';
+import { Button } from '@weng-lab/psychscreen-ui-components';
 import { downloadSVG } from '../GenePortal/violin/utils';
 import { downloadSVGAsPNG } from '../../svgToPng';
 

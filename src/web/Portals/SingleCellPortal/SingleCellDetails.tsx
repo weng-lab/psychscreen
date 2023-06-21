@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import { GridProps, Paper } from '@mui/material';
-import { AppBar, Typography, SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, SearchBox, HorizontalCard } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from '@mui/material';

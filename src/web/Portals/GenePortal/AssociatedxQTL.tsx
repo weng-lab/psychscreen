@@ -1,7 +1,7 @@
 import React, {useMemo}  from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { associateBy } from 'queryz';
-import { CustomizedTable, Typography } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Typography } from '@weng-lab/psychscreen-ui-components';
 import { CircularProgress } from '@material-ui/core';
 
 export type GenomicRange = {

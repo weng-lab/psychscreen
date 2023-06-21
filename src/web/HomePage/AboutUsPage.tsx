@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import AboutUsPanel from './AboutUsPanel'
 import { useNavigate } from 'react-router-dom';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../App';
 const AboutUsPage: React.FC<GridProps> = props => {
     const navigate = useNavigate();

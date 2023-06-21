@@ -1,6 +1,6 @@
 import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Chart, Scatter } from 'jubilant-carnival';
-import { Typography, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { Typography, CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { tissueTypeColors } from './consts';
 import { lower5, range, upper5 } from './GTexUMAP';

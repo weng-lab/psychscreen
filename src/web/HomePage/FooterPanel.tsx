@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import {  useNavigate } from 'react-router-dom';
 import { Link } from '@mui/material';
 

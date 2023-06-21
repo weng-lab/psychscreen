@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import { Grid, Container } from '@mui/material';
-import { Typography, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { Typography, CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 type GWASPageProps = {
     id: string;
 };

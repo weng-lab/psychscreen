@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Grid, Container, GridProps, Divider } from '@mui/material';
-import { CustomizedTable, Button } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Button } from '@weng-lab/psychscreen-ui-components';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

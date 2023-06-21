@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, GridProps } from '@mui/material';
-import { Typography, SearchBoxWithSelect, Button } from '@zscreen/psychscreen-ui-components';
+import { Typography, SearchBoxWithSelect, Button } from '@weng-lab/psychscreen-ui-components';
 import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';
 import { useViewportSize } from '../../hooks/useViewportSize';
 

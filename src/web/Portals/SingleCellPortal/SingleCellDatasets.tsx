@@ -3,7 +3,7 @@ import { ValuedPoint } from 'umms-gb/dist/utils/types';
 import { RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 
 import { GridProps } from '@mui/material';
-import { AppBar, Typography, HorizontalCard, Button } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, HorizontalCard, Button } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from '@mui/material';
@@ -82,9 +82,11 @@ export const DISEASE_CARDS = [
     {val: "DevBrain", cardLabel: "DevBrain", cardDesc: ""},
     {val: "IsoHuB", cardLabel: "IsoHuB", cardDesc: ""},
     {val: "SZBDMulti-Seq", cardLabel: "SZBDMulti-Seq", cardDesc: ""},
-    {val: "Urban-DLPFC", cardLabel: "Urban-DLPFC", cardDesc: ""},
-    {val: "CMC-CellHashing", cardLabel: "CMC-CellHashing", cardDesc: ""},
+    {val: "MultiomeBrain-DLPFC", cardLabel: "MultiomeBrain-DLPFC", cardDesc: ""},
+    {val: "CMC", cardLabel: "CMC", cardDesc: ""},
     {val: "UCLA-ASD", cardLabel: "UCLA-ASD", cardDesc: ""},
+    {val: "LIBD", cardLabel: "LIBD", cardDesc: ""},
+    {val: "PTSDBrainomics", cardLabel: "PTSDBrainomics", cardDesc: ""},
     ]
 
 type GenomicRange = {
@@ -316,7 +318,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 {disease==='Indiv-cohort-expression-data'  && <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
                                                
-                        <Grid sm={10} md={10} lg={9} xl={9}>
+                        <Grid sm={10} md={10} lg={9} xl={9} style={{ marginLeft: "25rem" }}>
                         <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "30px", marginTop: "10px" }}>            
                                     <HorizontalCard width={500}

@@ -2,7 +2,7 @@
 import { gql, useQuery } from '@apollo/client';
 import React, {useMemo} from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { CustomizedTable, Typography } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Typography } from '@weng-lab/psychscreen-ui-components';
 
 const OpenTargetQuery = gql`
 query GenePageQuery($geneId: String!) {

@@ -3,13 +3,13 @@
  */
 
  import React from 'react';
- import { AppBar } from '@zscreen/psychscreen-ui-components';
+ import { AppBar } from '@weng-lab/psychscreen-ui-components';
  import { useNavigate } from 'react-router-dom';
  import { Grid, Container, GridProps } from '@mui/material';
- import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
- import { Typography } from '@zscreen/psychscreen-ui-components';
+ import { TabletAppBar } from '@weng-lab/psychscreen-ui-components';
+ import { Typography } from '@weng-lab/psychscreen-ui-components';
  import CheckIcon from '@mui/icons-material/Check';
- import { HorizontalCard } from '@zscreen/psychscreen-ui-components';
+ import { HorizontalCard } from '@weng-lab/psychscreen-ui-components';
  import { useTheme, useMediaQuery } from '@material-ui/core';
  import { PORTALS } from '../../../App';
  import { Logo } from '../../../mobile-portrait/HomePage/HomePage';

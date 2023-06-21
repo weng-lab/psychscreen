@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Typography, Button } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
 import { Divider, Grid, TextField, Box, Tabs, Tab } from '@mui/material';
 import ViolinPlot from './violin/violin';

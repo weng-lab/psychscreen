@@ -4,7 +4,7 @@ import { associateBy } from 'queryz';
 import React, { useMemo } from 'react';
 import { EGene } from './SNPDetails';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Typography, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { Typography, CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 const QUERY = gql`
     query q($id: [String!]) {
         gene(name_prefix: $id, assembly: "GRCh38") {

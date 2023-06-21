@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate  } from 'react-router-dom';
-import '@zscreen/psychscreen-ui-components/src/App.css';
+import '@weng-lab/psychscreen-ui-components/src/App.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import './App.css';
 import { AboutUsPage, HomePage as WebHomePage } from './web/HomePage';

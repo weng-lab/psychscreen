@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { GridProps } from '@mui/material';
-import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container } from '@mui/material';

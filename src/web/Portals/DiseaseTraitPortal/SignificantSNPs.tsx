@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { GWAS_SIGNIFICANT_SNPS } from '../../../data/all-significant-snps.gwas';
 import { groupBy } from 'queryz';
-import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 import { GenomicRange } from '../GenePortal/AssociatedxQTL';
 
 type SignificantSNPEntry = {

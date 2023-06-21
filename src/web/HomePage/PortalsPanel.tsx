@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
-import { Button, Typography } from '@zscreen/psychscreen-ui-components';
+import { Button, Typography } from '@weng-lab/psychscreen-ui-components';
 
 import DiseaseTrait from '../../assets/disease-trait.png';
 import GeneBCRE from '../../assets/gene-bcre.png';

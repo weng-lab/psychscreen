@@ -5,14 +5,14 @@
  //import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, Slide } from '@mui/material';
 
-import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
-import { Typography, Button } from '@zscreen/psychscreen-ui-components';
+import { TabletAppBar } from '@weng-lab/psychscreen-ui-components';
+import { Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import CheckIcon from '@mui/icons-material/Check';
-import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
+import { SearchBox, HorizontalCard } from '@weng-lab/psychscreen-ui-components';
 import { useTheme, useMediaQuery, Paper } from '@material-ui/core';
 import { PORTALS } from '../../../App';
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
 import GenomeExplorer from './GenomeExplorer';
 import { GenomicRange } from '../GenePortal/AssociatedxQTL';

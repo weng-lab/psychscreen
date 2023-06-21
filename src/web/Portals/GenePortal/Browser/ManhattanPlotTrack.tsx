@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { BigBedData } from 'bigwig-reader';
 import { ManhattanTrack, ManhattanTrackProps, LDTrack, EmptyTrack } from 'umms-gb';
 import { ManhattanSNP } from 'umms-gb/dist/components/tracks/manhattan/types';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 
 export type EQTL = {
     snp: string;

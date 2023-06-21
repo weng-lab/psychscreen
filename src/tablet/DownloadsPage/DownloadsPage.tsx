@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Typography, Button, AppBar } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button, AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/system';
 import DownloadIcon from '@mui/icons-material/Download';

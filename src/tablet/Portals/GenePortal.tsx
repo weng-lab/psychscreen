@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
  
 const GenePortal: React.FC = () => {

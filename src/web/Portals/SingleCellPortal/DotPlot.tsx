@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import React from 'react';
 import { YAxis } from '../GenePortal/axis';
 import { linearTransform } from '../GenePortal/violin/utils';
