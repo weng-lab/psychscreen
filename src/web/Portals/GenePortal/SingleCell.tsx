@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
-import { CircularProgress, Grid, Tabs, Tab, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { Typography, Button, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { CircularProgress, Grid, Tabs, Tab, ToggleButton, ToggleButtonGroup, Paper, FormHelperText } from '@mui/material';
+import { Typography, Button, CustomizedTable, Select } from '@zscreen/psychscreen-ui-components';
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
 import { groupBy } from 'queryz';
 import React, { useMemo, useRef, useState, useEffect } from 'react';
@@ -8,7 +8,17 @@ import DotPlot, { DotPlotQueryResponse, DOT_PLOT_QUERY } from '../SingleCellPort
 import { lower5, range, upper5 } from './GTexUMAP';
 import { downloadSVGAsPNG } from '../../svgToPng';
 import { downloadSVG } from './violin/utils';
+import styled from "@emotion/styled";
+import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import { Select as MUISelect } from "@mui/material";
 
+
+export const StyledTab = styled(Tab)(() => ({
+    textTransform: "none",
+  }))
 export type SingleCellGeneQueryItem = {
     sampleid: string;
     featureid: string;
@@ -160,21 +170,23 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
         ]));
     }, [ expressionLoading, expressionData, UMAPData, UMAPLoading, maximumValue ]);
     const colors = useMemo( () => {
-        const unique_celltypes = new Set([ ...results.values() ].map(x => ctClass==="By SubClass" ? x.subclass: x.celltype));
+        const unique_celltypes = new Set([ ...results.values() ].map(x => ctClass==="by SubClass" ? x.subclass: x.celltype));
         
         const rcolors = generateColors(unique_celltypes.size);
-        return new Map([ ...unique_celltypes ].map((x, i) => [ x,  ctClass==="By SubClass" ?  subClassColors[x]: celltypeColors[x] ]))
+        return new Map([ ...unique_celltypes ].map((x, i) => [ x,  ctClass==="by SubClass" ?  subClassColors[x]: celltypeColors[x] ]))
     }, [ results, ctClass ]);
     
     return { loading: expressionLoading || UMAPLoading, data: results, colors, maximumValue };
 }
 
 const DATASETS = [
-    "SZBDMulti-Seq","UCLA-ASD"
+    "SZBDMulti-Seq","UCLA-ASD"//,"IsoHuB","PTSDBrainomics","LIBD"
 ];
+
+
 const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const [ dataset, setDataset ] = useState("SZBDMulti-Seq");
-    const [ ctClass, setCtClass] = useState("By SubClass")
+    const [ ctClass, setCtClass] = useState("by SubClass")
     const [ pct, setPct ] = useState<any>([]);
     const [ avgexp, setAvgexp ] = useState<any>([]);
     const { loading, data, colors, maximumValue } = useSingleCellData(dataset, gene, ctClass);
@@ -182,10 +194,10 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const [ highlighted, setHighlighted ] = useState("");
     const [ colorScheme, setColorScheme ] = React.useState<string | null>('expression');
 
-    console.log(avgexp,"avgexp")
+
     useEffect(()=>{
-        const categoryAvgexp  = ctClass==="By SubClass" ? "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_avgexpression_bysubclass.txt"
-         : "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_avgexpression_bycelltype.txt"
+        const categoryAvgexp  = ctClass==="by SubClass" ? `https://downloads.wenglab.org/psychscreen/${dataset}_avgexpression_bysubclass.txt`
+         : `https://downloads.wenglab.org/psychscreen/${dataset}_avgexpression_bycelltype.txt`
          setAvgexp([])
         fetch(categoryAvgexp)
         .then(x => x.text())
@@ -200,7 +212,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             r.forEach(q=>{
                 let y = q.split(",")
                 
-                if(ctClass==="By SubClass") {
+                if(ctClass==="by SubClass") {
                     //featurekey,Pvalb,Micro,Lamp5,L5/6 NP,Immune,Sst,L5 ET,L5 IT,Chandelier,L6 IT Car3,L4 IT,Lamp5 Lhx6,PC,
                     //Sncg,L6 IT,L2/3 IT,L6 CT,SMC,Sst Chodl,Astro,Oligo,Pax6,VLMC,Endo,Vip,OPC,L6b
                     e.push({
@@ -253,11 +265,11 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             setAvgexp(e)
         })
            
-    },[ctClass,gene])
+    },[ctClass,gene,dataset])
     useEffect( () => {
-        const categoryPct  = ctClass==="By SubClass" ? 
-        "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_percentexpressed_bysubclass.txt" : 
-        "https://downloads.wenglab.org/psychscreen/SZBDMulti-Seq_percentexpressed_bycelltype.txt"        
+        const categoryPct  = ctClass==="by SubClass" ? 
+        `https://downloads.wenglab.org/psychscreen/${dataset}_percentexpressed_bysubclass.txt` : 
+        `https://downloads.wenglab.org/psychscreen/${dataset}_percentexpressed_bycelltype.txt`        
         setPct([])        
         fetch(categoryPct)
         .then(x => x.text())
@@ -272,7 +284,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             r.forEach(q=>{
                 let y = q.split(",")
                 
-                if(ctClass==="By SubClass") {
+                if(ctClass==="by SubClass") {
                     //featurekey,Pvalb,Micro,Lamp5,L5/6 NP,Immune,Sst,L5 ET,L5 IT,Chandelier,L6 IT Car3,L4 IT,Lamp5 Lhx6,PC,
                     //Sncg,L6 IT,L2/3 IT,L6 CT,SMC,Sst Chodl,Astro,Oligo,Pax6,VLMC,Endo,Vip,OPC,L6b
                     e.push({
@@ -325,7 +337,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             })
             setPct(e)
         })
-    }, [ctClass,gene]);
+    }, [ctClass,gene,dataset]);
     const rows = pct && avgexp && pct.length>0 && avgexp.length>0 ? Object.keys(pct[0]).filter(k=>k!=="featurekey").map(k=>{
               return [
                       { 
@@ -363,11 +375,11 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     
 
     const points = useMemo( () => [ ...data.values() ].slice(6000).map(x => ({ 
-        x: x.umap_1, y: x.umap_2, data:ctClass==="By SubClass"? x.subclass: x.celltype, val: Math.log(x.val+1), svgProps: {
-        fill: colorScheme === "expression" ? x.expressionColor : colors.get(ctClass==="By SubClass"? x.subclass: x.celltype),
+        x: x.umap_1, y: x.umap_2, data:ctClass==="by SubClass"? x.subclass: x.celltype, val: Math.log(x.val+1), svgProps: {
+        fill: colorScheme === "expression" ? x.expressionColor : colors.get(ctClass==="by SubClass"? x.subclass: x.celltype),
         fillOpacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
         r: 8,
-        strokeWidth: ctClass==="By SubClass" ?  (x.subclass === highlighted ? 4 : 0) : (  x.celltype === highlighted ? 4 : 0),
+        strokeWidth: ctClass==="by SubClass" ?  (x.subclass === highlighted ? 4 : 0) : (  x.celltype === highlighted ? 4 : 0),
         stroke: "#000000",
         strokeOpacity: 0.4
     } })), [ data, highlighted, colorScheme, colors, ctClass ]);
@@ -396,22 +408,38 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     };
     const chartRef = useRef<SVGSVGElement>(null);
     const dotPlotRef = useRef<SVGSVGElement>(null);
+    const handleChange = (event) => {
+        setDataset(event.target.value);
+      };
+    
     return (
         <Grid container>
+           
+            
             <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
-                <br/>
-                { DATASETS.map( d => (
-                    <>
-                        <Button btheme="light" bvariant={dataset === d ? "filled": "outlined"} key={d} onClick={() => setDataset(d)}>
-                            {d}
-                        </Button>&nbsp;
-                    </>
-                ))}
+            <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">Select Dataset:</Typography>
+            
+                {<FormControl sx={{ m: 1, minWidth: 400 }} style={{ marginLeft: "1em", marginTop: "1em" }}>
+                    <InputLabel id="simple-select-helper-label">Dataset:</InputLabel>
+                    <MUISelect
+                    labelId="simple-select-helper-label"
+                    id="simple-select-helper"
+                    value={dataset}
+                    label="Dataset"
+                    onChange={handleChange}
+                    >
+                        {DATASETS.map(d=>{
+                            return <MenuItem value={d}>{d}</MenuItem>
+                        })}
+                    </MUISelect>
+                    
+                </FormControl>}
+               
             </Grid>
             <Grid item sm={12}>
                 <Tabs value={tabIndex} onChange={handleTabChange}>
-                    <Tab label="Detailed Expression Profile" />
-                    <Tab label="Expression Summary" />
+                    <StyledTab label="Detailed Expression Profile" />
+                    <StyledTab label="Expression Summary" />
                     
                 </Tabs>
             </Grid>
@@ -421,12 +449,12 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                     { (dataset==="UCLA-ASD" && ddata.loading) || (dataset==="SZBDMulti-Seq" &&  !dotplotData) ? <CircularProgress /> : (
                         <>
                         <br/>
-                        <Button btheme="light" bvariant={ctClass === "By SubClass" ? "filled": "outlined"} key={"By SubClass"} onClick={() => setCtClass("By SubClass")}>
-                        By SubClass
-                        </Button>&nbsp;
-                        {dataset==="SZBDMulti-Seq" && <Button btheme="light" bvariant={ctClass === "By Celltype" ? "filled": "outlined"} key={"By Celltype"} onClick={() => setCtClass("By Celltype")}>
-                        By Celltype
-                        </Button>}
+                        <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
+                        by SubClass
+                        </StyledButton>&nbsp;
+                        {dataset==="SZBDMulti-Seq" && <StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
+                        by Celltype
+                        </StyledButton>}
                         <br/>
                         <br/>
                             <DotPlot
@@ -451,18 +479,19 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                     <Grid item sm={6} md={6} lg={6} xl={6}>
                         <>
                         <br/>
-                        <Button btheme="light" bvariant={ctClass === "By SubClass" ? "filled": "outlined"} key={"By SubClass"} onClick={() => setCtClass("By SubClass")}>
-                        By SubClass
-                        </Button>&nbsp;
-                        {dataset==="SZBDMulti-Seq" && <Button btheme="light" bvariant={ctClass === "By Celltype" ? "filled": "outlined"} key={"By Celltype"} onClick={() => setCtClass("By Celltype")}>
-                        By Celltype
-                        </Button>}
+                        <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
+                        by SubClass
+                        </StyledButton>&nbsp;
+                        {dataset==="SZBDMulti-Seq" && <StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
+                        by Celltype
+                        </StyledButton>}
                         <br/>
                         <br/>
                         {
                           dataset==="UCLA-ASD" && groupedVals.length>0 &&(
                             <CustomizedTable
-                                style={{ width: "max-content" }}
+                                rowsPerPage={[30]}
+                                style={{ width: "max-content" }}                                
                                 tabledata={groupedVals}
                                 onRowMouseOver={row => setHighlighted(row[0].value)}
                                 onRowMouseOut={() => setHighlighted("")}
@@ -470,22 +499,26 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                           )
                         }
                         { dataset==="SZBDMulti-Seq" && pct && avgexp && pct.length>0 && avgexp.length>0 && (
-                            <CustomizedTable
-                                style={{ width: "max-content" }}
-                                tabledata={rows}
-                                onRowMouseOver={row => setHighlighted(row[0].value)}
-                                onRowMouseOut={() => setHighlighted("")}
-                            />
+                            <Paper elevation={0} style={{  maxHeight: 500, width: 550, overflow: 'auto'}}>
+                                <CustomizedTable
+                                    rowsPerPage={[30]}
+                                    style={{ width: "max-content" }}
+                                    tabledata={rows}                                
+                                    onRowMouseOver={row => setHighlighted(row[0].value)}
+                                    onRowMouseOut={() => setHighlighted("")}
+                                />
+                            </Paper>
+
                         )}
                         </>
                         
                     </Grid>
                     {<Grid item sm={6} md={6} lg={6} xl={6}>
                         <div style={{ marginLeft: "8em" }}>
-                            <Typography style={{ marginLeft: "2em", marginBottom: "0.5em" }} type="body" size="large">Color Scheme:</Typography>
+                            <Typography style={{ marginLeft: "2em", marginBottom: "0.5em" }} type="body" size="large">Color Scheme: &nbsp;&nbsp;&nbsp;&nbsp;   Gene: {gene} </Typography>
                             <ToggleButtonGroup style={{ marginLeft: "2em" }} size={"small"} value={colorScheme} exclusive onChange={(_, x) => setColorScheme(x)}>
                                 <ToggleButton value="expression">
-                                {gene} Expression
+                                Gene Expression
                                 </ToggleButton>
                                 <ToggleButton value="cluster">
                                     Cell Type Cluster
@@ -555,7 +588,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                                 fontSize={1.5}
                                                 textAnchor="middle"
                                             >
-                                                log-transformed {gene} Expression
+                                                log 10 {gene} Expression
                                             </text>
                                         )}
                                         { colorScheme === "expression" && (

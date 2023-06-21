@@ -19,6 +19,7 @@ import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import GeneBCRE from '../../../assets/gene-bcre.png';
 import CircularProgress from '@mui/material/CircularProgress';
 import { QueryResponse, useGeneDescription } from './GeneOverview';
+import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
@@ -181,14 +182,14 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                     <br/>
                     <br/>
                     <br/>
-                    <Button
+                    {0>1 && <StyledButton
                         bvariant="outlined"
                         btheme="light"
                         style={{ marginLeft: "100px" }}
                         onClick={() => { navigate(`/psychscreen/gene/gtexumap`) }}
                     >
                         GTEx Umap Plots
-                    </Button>
+                    </StyledButton>}
                     </Container>
                    
                 </Grid>

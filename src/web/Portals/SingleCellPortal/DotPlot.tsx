@@ -43,7 +43,6 @@ type DotPlotProps = {
 function useGeneData(disease: string, gene: string, dotplotData?: any) {
 
     // fetch results from API
-   console.log("use gene data",dotplotData)
    let data: any  =  dotplotData
 
    // data = dotplotData && dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData: data

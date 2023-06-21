@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GridProps } from '@mui/material';
 import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
@@ -10,12 +10,14 @@ import DotPlot from './DotPlot'
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {
     const navigate = useNavigate(); 
     const { disease, gene } = useParams();
+    const [ ctClass, setCtClass] = useState("by SubClass")
     const ddata = useQuery<any>(DOT_PLOT_QUERY, {
         variables: {
             disease,
             gene
         }
     });
+
     return(<>
      <AppBar
                 centered

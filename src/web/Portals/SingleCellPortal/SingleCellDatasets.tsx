@@ -15,6 +15,7 @@ import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import SingleCellGRNBrowser from "./SingleCellGRNBrowser"  
 import SingleCellQTLBrowser from "./SingleCellQTLBrowser"  
 import  {DataTable} from "@weng-lab/ts-ztable";
+import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
 
 export const cellTypeCards = [
 { val: "Ast", cardLabel: "Astrocytes", cardDesc: ""},
@@ -212,8 +213,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                             {'scATAC-Seq Peaks'}
                         </Typography>
                         <br/>
-                        <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>Genome Browser</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={page === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(0)}>Cell Type specific ATAC peaks</Button>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>Genome Browser</StyledButton>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={page === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(0)}>Cell Type specific ATAC peaks</StyledButton>&nbsp;&nbsp;&nbsp;
                         {page===0 && <Grid sm={10} md={10} lg={9} xl={9}>
                             <br/>
                         <DataTable columns={COLUMNS} rows={d} itemsPerPage={10} searchable/>
@@ -260,8 +261,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 </Grid>}
                 {disease==='Gene-regulatory-networks'  && <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-                        <Button bvariant={grnpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(-1)}>Genome Browser</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={grnpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(0)}>Cell Types</Button>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={grnpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(-1)}>Genome Browser</StyledButton>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={grnpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(0)}>Cell Types</StyledButton>&nbsp;&nbsp;&nbsp;
                         <br/>
                         <br/>
                         <br/>                        
@@ -286,8 +287,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 </Grid>}
                 {disease==='Cell-type-specific-eQTLs'  && <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-                        <Button bvariant={qtlpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(-1)}>Genome Browser</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={qtlpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(0)}>Cell Types</Button>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={qtlpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(-1)}>Genome Browser</StyledButton>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={qtlpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(0)}>Cell Types</StyledButton>&nbsp;&nbsp;&nbsp;
                         <br/>
                         <br/>
                         <br/>                        

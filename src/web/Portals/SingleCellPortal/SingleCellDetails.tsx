@@ -17,7 +17,6 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
         chromosome
         end
       }
-      __typename
     }
   }
  `;

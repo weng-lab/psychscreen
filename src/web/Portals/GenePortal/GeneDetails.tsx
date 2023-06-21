@@ -15,7 +15,11 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import GeneOverview from './GeneOverview';
 import SingleCell from './SingleCell';
-  
+import styled from "@emotion/styled";
+
+export const StyledTab = styled(Tab)(() => ({
+    textTransform: "none",
+  }))
 type GTExGeneQueryResponse = {
     gtex_genes: {
         val: number;
@@ -123,7 +127,6 @@ const GeneDetails: React.FC = (props) => {
       []
   );
 
-  console.log('reg',region)
     const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {		
         variables: {
             gene_id: geneid
@@ -179,7 +182,7 @@ const GeneDetails: React.FC = (props) => {
               onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
               style={{ marginBottom: "63px" }}
             />
-            <Grid container {...props}> 
+            <Grid container {...props} style={{ marginTop:'6em' }}> 
                 <Grid item sm={1} lg={1.5} />
                 <Grid item sm={9}>
                     <Typography type="headline" size="large" style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}>
@@ -198,12 +201,12 @@ const GeneDetails: React.FC = (props) => {
                 <Grid item sm={9}>
                   <Box>
                     <Tabs value={tabIndex} onChange={handleTabChange}>
-                        <Tab label="Brain (Epi)genome Browser" />
-                        <Tab label="Brain Single Cell Expression" />
-                        <Tab label="Tissue Expression (GTEx)" />                
-                        <Tab label="Brain eQTLs and bCREs" />
+                        <StyledTab label="Brain epi Genome Browser" />
+                        <StyledTab label="Brain Single Cell Expression" />
+                        <StyledTab label="Tissue Expression (GTEx)" />                
+                        <StyledTab label="Brain eQTLs and bCREs" />
                         
-                        { null && <Tab label="Open Target" /> }
+                        { null && <StyledTab label="Open Target" /> }
                     </Tabs>
                     <Divider/>
                   </Box>

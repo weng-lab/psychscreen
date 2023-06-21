@@ -10,7 +10,12 @@ import GwasPage from './GwasPage';
 import { gql, useQuery } from '@apollo/client';
 import EGeneTable from './EGeneTable';
 import RegulatoryElements from './RegulatoryElements';
+import styled from "@emotion/styled";
 
+export const StyledTab = styled(Tab)(() => ({
+    textTransform: "none",
+  }))
+  
 export const QUERY = gql`
 query SNP(
   $coordinates: [GenomicRangeInput]
@@ -169,9 +174,9 @@ const SNPDetails: React.FC<GridProps> = (props) => {
                   <Box>
                     <Tabs value={tabIndex} onChange={handleTabChange}>
                         
-                        <Tab label="eGenes" />
-                        <Tab label="Regulatory Elements" />
-                        <Tab label="GWAS" />
+                        <StyledTab label="eGenes" />
+                        <StyledTab label="Regulatory Elements" />
+                        <StyledTab label="GWAS" />
                     </Tabs>
                     <Divider/>
                   </Box>
