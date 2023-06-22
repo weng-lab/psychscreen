@@ -50,7 +50,7 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
     const results = React.useMemo(() => new Map(
         data?.singleCellBoxPlotQuery.map(x => [
             x.celltype,
-            { radius: x.mean_count, colorpercent: x.expr_frac }
+            { radius: x.expr_frac, colorpercent: x.mean_count }
         ])
     ), [ data ]);
 
@@ -156,7 +156,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                     x={(keys.length*0.75) * (width / length)}
                     y={height * 0.78}
                 >
-                    Mean Count
+                    Percent Expressed
                 </text>
                 { radiusRange.map((r, i) => (
                     <>
@@ -182,7 +182,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                     x={(keys.length*0.4) * (width / length)}
                     y={height * 0.78}
                 >
-                    Fraction Expressed
+                    Mean Expression
                 </text>
                 { colorPercent.map((r, i) => (
                     <>

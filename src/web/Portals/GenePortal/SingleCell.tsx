@@ -1,10 +1,9 @@
 import { gql, useQuery } from '@apollo/client';
 import { CircularProgress, Grid, Tabs, Tab, ToggleButton, ToggleButtonGroup, Paper, FormHelperText } from '@mui/material';
-import { Typography, Button, CustomizedTable, DataTable } from '@weng-lab/psychscreen-ui-components';
+import { Typography, Button, DataTable } from '@weng-lab/psychscreen-ui-components';
 import { Chart, linearTransform, Scatter } from 'jubilant-carnival';
-import { groupBy } from 'queryz';
 import React, { useMemo, useRef, useState, useEffect } from 'react';
-import DotPlot, { DotPlotQueryResponse, DOT_PLOT_QUERY } from '../SingleCellPortal/DotPlot';
+import DotPlot from '../SingleCellPortal/DotPlot';
 import { lower5, range, upper5 } from './GTexUMAP';
 import { downloadSVGAsPNG } from '../../svgToPng';
 import { downloadSVG } from './violin/utils';
@@ -17,13 +16,16 @@ import { Select as MUISelect } from "@mui/material";
 
 const COLUMNS = [{
     header: "Cell Type",
+    headerRender: () =>  {return <b>Cell Type</b>},
     value: row => row.celltype
 },{
     header: "Fraction Cells Non-Zero",
-    value: row => row.pct,
-    render: row => row.pct.toFixed(3)
+    headerRender: () =>  {return <b>Fraction Cells Non-Zero</b>},
+    value: row => row.pctexp,
+    render: row => row.pctexp.toFixed(3)
 },{
     header: "Average Expression",
+    headerRender: () =>  {return <b>Average Expression</b>},
     value: row => row.avgexp,
     render: row => row.avgexp.toFixed(3)
 }]
@@ -63,6 +65,26 @@ export type SingleCellGeneQueryResponse = {
     singleCellGenesQuery: SingleCellGeneQueryItem[];
 };
 
+export type PedatasetValuesbyCelltypeResponse = {
+    getPedatasetValuesbyCelltypeQuery: {
+        dataset: string;
+        gene: string;
+        pctexp: number;
+        avgexp: number;
+        celltype: string;
+    }[]
+}
+
+export type PedatasetValuesbySubclassResponse = {
+    getPedatasetValuesbySubclassQuery: {
+        dataset: string;
+        gene: string;
+        pctexp: number;
+        avgexp: number;
+        celltype: string;
+    }[]
+}
+
 export const SINGLE_CELL_GENE_QUERY = gql`
 query q($disease: String!, $featureKey: [String]) {
    singleCellGenesQuery(disease: $disease, featurekey: $featureKey) {
@@ -94,6 +116,31 @@ query q($disease: String!) {
    }
 }
 `;
+
+export const GET_PEDATASET_VALS_BYCT_QUERY = gql`
+query q($dataset: String!,$gene: String!) {
+    getPedatasetValuesbyCelltypeQuery(dataset: $dataset, gene: $gene) {
+        dataset
+        gene
+        avgexp
+        celltype
+        pctexp
+   }
+}
+`;
+
+export const GET_PEDATASET_VALS_BYSC_QUERY = gql`
+query q($dataset: String!,$gene: String!) {
+    getPedatasetValuesbySubclassQuery(dataset: $dataset, gene: $gene) {
+        dataset
+        gene
+        avgexp
+        celltype
+        pctexp
+   }
+}
+`;
+
 
 function useSingleCellGeneData(dataset: string, gene: string) {
     return useQuery<SingleCellGeneQueryResponse>(SINGLE_CELL_GENE_QUERY, {
@@ -192,185 +239,54 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
 }
 
 const DATASETS = [
-    "SZBDMulti-Seq","UCLA-ASD"//,"IsoHuB","PTSDBrainomics","LIBD"
+    "SZBDMulti-Seq","UCLA-ASD","IsoHuB","PTSDBrainomics","LIBD","CMC","DevBrain-snRNAseq","MultiomeBrain-DLPFC"
 ];
 
 
 const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const [ dataset, setDataset ] = useState("SZBDMulti-Seq");
     const [ ctClass, setCtClass] = useState("by SubClass")
-    const [ pct, setPct ] = useState<any>([]);
-    const [ avgexp, setAvgexp ] = useState<any>([]);
+    
     const { loading, data, colors, maximumValue } = useSingleCellData(dataset, gene, ctClass);
     const [ tooltip, setTooltip ] = useState(-1);
     const [ highlighted, setHighlighted ] = useState("");
     const [ colorScheme, setColorScheme ] = React.useState<string | null>('expression');
-
-
-    useEffect(()=>{
-        const categoryAvgexp  = ctClass==="by SubClass" ? `https://downloads.wenglab.org/psychscreen/${dataset}_avgexpression_bysubclass.txt`
-         : `https://downloads.wenglab.org/psychscreen/${dataset}_avgexpression_bycelltype.txt`
-         setAvgexp([])
-        fetch(categoryAvgexp)
-        .then(x => x.text())
-        .then((x: string) => {
-            const q = x.split("\n");
-            const r =    q.filter(x => x !== "").filter(s=>{
-                let f = s.split(",")
-                return f[0] === gene
-
-            }) 
-            let e: any = []
-            r.forEach(q=>{
-                let y = q.split(",")
-                
-                if(ctClass==="by SubClass") {
-                    //featurekey,Pvalb,Micro,Lamp5,L5/6 NP,Immune,Sst,L5 ET,L5 IT,Chandelier,L6 IT Car3,L4 IT,Lamp5 Lhx6,PC,
-                    //Sncg,L6 IT,L2/3 IT,L6 CT,SMC,Sst Chodl,Astro,Oligo,Pax6,VLMC,Endo,Vip,OPC,L6b
-                    e.push({
-                        featurekey: y[0],
-                        ["L2/3 IT"]: +y[1],
-                        ["L4 IT"]: +y[2],
-                        ["L5 IT"]: +y[3],
-                        ["L6 IT"]: +y[4],
-                        ["L6 IT Car3"]: +y[5],
-                        ["L5 ET"]: +y[6],
-                        ["L5/6 NP"]: +y[7],
-                        ["L6b"]: +y[8],
-                        ["L6 CT"]: +y[9],  
-                        Sst: +y[10],
-                        ["Sst Chodl"]: +y[11],  
-                        Pvalb: +y[12],
-                        Chandelier: +y[13],
-                        ["Lamp5 Lhx6"]: +y[14],
-                        Lamp5: +y[15] ,
-                        ["Sncg"]: +y[16],
-                        ["Vip"]: +y[17], 
-                        ["Pax6"]: +y[18],   
-                        ["Astro"]: +y[19],
-                        ["Oligo"]: +y[20],
-                        ["OPC"]: +y[21],
-                        Micro: +y[22],
-                        ["Endo"]: +y[23],
-                        ["VLMC"]: +y[24],                        
-                        ["PC"]: +y[25],  
-                        ["SMC"]: +y[26],
-                        Immune: +y[27],
-                        RB: +y[28],
-                    })
-
-                } else {
-                    e.push({
-                        // ExcitatoryNeurons,OPCs,Astrocytes,Misc,Oligodendrocytes,Microglia,InhibitoryNeurons
-                        featurekey: y[0],                        
-                        ExcitatoryNeurons: +y[1],
-                        InhibitoryNeurons: +y[2] ,
-                        Astrocytes: +y[3] ,
-                        Oligodendrocytes: +y[4],
-                        OPCs: +y[5],
-                        Microglia: +y[6],
-                        Misc: +y[7]
-                    })
-                }
-                
-            })
-            setAvgexp(e)
-        })
-           
-    },[ctClass,gene,dataset])
-    useEffect( () => {
-        const categoryPct  = ctClass==="by SubClass" ? 
-        `https://downloads.wenglab.org/psychscreen/${dataset}_percentexpressed_bysubclass.txt` : 
-        `https://downloads.wenglab.org/psychscreen/${dataset}_percentexpressed_bycelltype.txt`        
-        setPct([])        
-        fetch(categoryPct)
-        .then(x => x.text())
-        .then((x: string) => {
-            const q = x.split("\n");
-            const r = q.filter(x => x !== "").filter(s=>{
-                let f = s.split(",")
-                return f[0] === gene
-
-            }) 
-            let e: any = []
-            r.forEach(q=>{
-                let y = q.split(",")
-                
-                if(ctClass==="by SubClass") {
-                    //featurekey,Pvalb,Micro,Lamp5,L5/6 NP,Immune,Sst,L5 ET,L5 IT,Chandelier,L6 IT Car3,L4 IT,Lamp5 Lhx6,PC,
-                    //Sncg,L6 IT,L2/3 IT,L6 CT,SMC,Sst Chodl,Astro,Oligo,Pax6,VLMC,Endo,Vip,OPC,L6b
-                    e.push({
-                        featurekey: y[0],
-                        ["L2/3 IT"]: +y[1],
-                        ["L4 IT"]: +y[2],
-                        ["L5 IT"]: +y[3],
-                        ["L6 IT"]: +y[4],
-                        ["L6 IT Car3"]: +y[5],
-                        ["L5 ET"]: +y[6],
-                        ["L5/6 NP"]: +y[7],
-                        ["L6b"]: +y[8],
-                        ["L6 CT"]: +y[9],  
-                        Sst: +y[10],
-                        ["Sst Chodl"]: +y[11],  
-                        Pvalb: +y[12],
-                        Chandelier: +y[13],
-                        ["Lamp5 Lhx6"]: +y[14],
-                        Lamp5: +y[15] ,
-                        ["Sncg"]: +y[16],
-                        ["Vip"]: +y[17], 
-                        ["Pax6"]: +y[18],   
-                        ["Astro"]: +y[19],
-                        ["Oligo"]: +y[20],
-                        ["OPC"]: +y[21],
-                        Micro: +y[22],
-                        ["Endo"]: +y[23],
-                        ["VLMC"]: +y[24],                        
-                        ["PC"]: +y[25],  
-                        ["SMC"]: +y[26],
-                        Immune: +y[27],
-                        RB: +y[28],
-                    })
-
-                } else {
-                    e.push({
-                        // ExcitatoryNeurons,OPCs,Astrocytes,Misc,Oligodendrocytes,Microglia,InhibitoryNeurons
-                        featurekey: y[0],                        
-                        ExcitatoryNeurons: +y[1],
-                        InhibitoryNeurons: +y[2] ,
-                        Astrocytes: +y[3] ,
-                        Oligodendrocytes: +y[4],
-                        OPCs: +y[5],
-                        Microglia: +y[6],
-                        Misc: +y[7],
-                        
-                    })
-                }
-                
-            })
-            setPct(e)
-        })
-    }, [ctClass,gene,dataset]);
-    const rows = pct && avgexp && pct.length>0 && avgexp.length>0 ? Object.keys(pct[0]).filter(k=>k!=="featurekey").map(k=>{
-              return { 
-                        celltype: k,
-                        pct: pct[0][k],
-                        avgexp: avgexp[0][k]
-
-    }}):[];
-    /*const ddata = useQuery<DotPlotQueryResponse>(DOT_PLOT_QUERY, {
+    const {loading: byCtDataLoading, data: byCtData } = useQuery<PedatasetValuesbyCelltypeResponse>(GET_PEDATASET_VALS_BYCT_QUERY, {
         variables: {
-            disease: dataset,
-            gene
+             dataset,
+            gene: gene
         }
-    });*/
-    const dotplotData  = pct && avgexp && pct.length>0 && avgexp.length>0 ? { singleCellBoxPlotQuery : 
-        Object.keys(pct[0]).filter(k=>k!=="featurekey").map(k=>{
+    });
+    const {loading: byScDataLoading, data: byScData } = useQuery<PedatasetValuesbySubclassResponse>(GET_PEDATASET_VALS_BYSC_QUERY, {
+        variables: {
+             dataset,
+            gene: gene
+        }
+    });
+    const ctrows = !byCtDataLoading && byCtData  ? byCtData.getPedatasetValuesbyCelltypeQuery:[];
+  
+    const scrows = !byScDataLoading && byScData  ? byScData.getPedatasetValuesbySubclassQuery:[];
+ 
+    const dotplotDataCt  = !byCtDataLoading && byCtData ? { singleCellBoxPlotQuery : 
+        ctrows.map(k=>{
             return {
-                expr_frac: pct[0][k],
-                mean_count: avgexp[0][k],
+                expr_frac: k.pctexp,
+                mean_count: k.avgexp,
                 disease: dataset,
                 gene: gene,
-                celltype: k
+                celltype: k.celltype
+            }
+        })
+    }   : { singleCellBoxPlotQuery:  []}
+
+    const dotplotDataSc  = !byScDataLoading && byScData ? { singleCellBoxPlotQuery : 
+        scrows.filter(s=>s.celltype!=="RB").map(k=>{
+            return {
+                expr_frac: k.pctexp,
+                mean_count: k.avgexp,
+                disease: dataset,
+                gene: gene,
+                celltype: k.celltype
             }
         })
     }   : { singleCellBoxPlotQuery:  []}
@@ -418,7 +334,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         <Grid container>         
             
             <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
-            <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">Select Dataset:</Typography>
+            <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">Select psychEncode Dataset:</Typography>
             
                 {<FormControl sx={{ m: 1, minWidth: 400 }} style={{ marginLeft: "1em", marginTop: "1em" }}>
                     <InputLabel id="simple-select-helper-label">Dataset:</InputLabel>
@@ -447,7 +363,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             { tabIndex === 1 ? (
                 <Grid item sm={12}>
 
-                    { (!dotplotData) ? <CircularProgress /> : (
+                    { (byCtDataLoading || byScDataLoading) ? <CircularProgress /> : (
                         <>
                         <br/>
                         <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
@@ -461,7 +377,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                             <DotPlot
                                 disease={dataset}
                                 gene={gene}
-                                dotplotData={dotplotData}
+                                dotplotData={ctClass === "by SubClass" ? dotplotDataSc: dotplotDataCt}
                                 ref={dotPlotRef}
                             />
                             <Button
@@ -479,25 +395,25 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                 
                     <Grid item sm={6} md={6} lg={6} xl={6}>
                         <>
-                        <br/>
-                        <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
-                        by SubClass
-                        </StyledButton>&nbsp;
-                        {<StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
-                        by Celltype
-                        </StyledButton>}
-                        <br/>
-                        <br/>
-                        {  pct && avgexp && pct.length>0 && avgexp.length>0 ? (
-                            <Paper elevation={0} style={{  maxHeight: 500, width: 550, overflow: 'auto'}}>
-                                <DataTable
-                                    columns={COLUMNS} rows={rows} itemsPerPage={30} searchable sortColumn={2}
-                                    onRowMouseEnter={(row: any) => setHighlighted(row.celltype)}
-                                    onRowMouseLeave={() => setHighlighted("")}
-                                />
-                            </Paper>
-
-                        ) : <CircularProgress/>}
+                            <br/>
+                            <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
+                                by SubClass
+                            </StyledButton>&nbsp;
+                            <StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
+                                by Celltype
+                            </StyledButton>
+                            <br/>
+                            <br/>
+                            {scrows && ctrows && ctrows.length>0 && scrows.length>0 ? (
+                                <Paper elevation={0} style={{  maxHeight: 500, width: 450, overflow: 'auto'}}>
+                                    <DataTable
+                                        columns={COLUMNS} rows={ctClass === "by SubClass" ? scrows.filter(s=>s.celltype!=="RB"): ctrows} 
+                                        itemsPerPage={ ctClass==='by SubClass'? 30: 10} searchable sortColumn={2}
+                                        onRowMouseEnter={(row: any) => setHighlighted(row.celltype)}
+                                        onRowMouseLeave={() => setHighlighted("")}
+                                    />
+                                </Paper>
+                            ) : <CircularProgress/>}
                         </>
                         
                     </Grid>
@@ -521,8 +437,8 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                         marginFraction={0.28}
                                         innerSize={{ width: 2100, height: 2000 }}
                                         domain={domain}
-                                        xAxisProps={{ ticks: range(domain.x.start, domain.x.end + 1, 5), title: 'UMAP-1' }}
-                                        yAxisProps={{ ticks: range(domain.y.start, domain.y.end + 1, 5), title: 'UMAP-2' }}
+                                        xAxisProps={{ ticks: range(domain.x.start, domain.x.end + 1, 5), title: 'UMAP-2' }}
+                                        yAxisProps={{ ticks: range(domain.y.start, domain.y.end + 1, 5), title: 'UMAP-1' }}
                                         scatterData={[ points ]}
                                         ref={chartRef}
                                     >
@@ -537,6 +453,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                                 <stop offset="100%" stop-color="#ffcd00" />
                                             </linearGradient>
                                         </defs>
+                                        
                                         { tooltip > -1 && (
                                             <rect
                                                 x={points[tooltip].x - points[tooltip].data.replace(/_/g, " ").length * 1}

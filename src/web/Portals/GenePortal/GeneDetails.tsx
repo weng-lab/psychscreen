@@ -106,25 +106,25 @@ const GeneDetails: React.FC = (props) => {
     console.log("geneCoords",geneCoords)
     const onGeneChange = React.useCallback(
       async (value: any) => {
-        console.log('called gene change')
           
           const response = await fetch('https://ga.staging.wenglab.org/graphql', {
               method: 'POST',
               body: JSON.stringify({
                   query: GENE_ID_QUERY,
                   variables: {
-                    name_prefix: [value],
+                    name_prefix: [value.toUpperCase()],
                     assembly: "GRCh38"
                   },
               }),
               headers: { 'Content-Type': 'application/json' },
           });
-          const geneID = (await response.json()).data?.gene;          
+          const geneID = (await response.json()).data?.gene; 
+          let d = geneID.find(n=>n.name.toUpperCase()===value.toUpperCase()) ? geneID.find(n=>n.name.toUpperCase()===value.toUpperCase()): geneID[0]         
           setTrueGeneName(value)
-          setTrueGeneId(geneID[0].id.split(".")[0])
-          setRegion({chromosome: geneID[0].coordinates.chromosome,start: geneID[0].coordinates.start,end: geneID[0].coordinates.end})
+          setTrueGeneId(d.id.split(".")[0])
+          setRegion({chromosome: d.coordinates.chromosome,start: d.coordinates.start,end: d.coordinates.end})
       },
-      []
+      [params.gene]
   );
 
     const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {		
@@ -213,12 +213,12 @@ const GeneDetails: React.FC = (props) => {
                   <Box sx={{ padding: 2 }}>
                     { tabIndex === 3  && 0>1 ? (
                       <Box>
-                        <GeneOverview gene={trueGeneName || gene} />
+                        
                       </Box>
                     ) : tabIndex === 0 && geneCoords? (
                       <Box>
                         <Browser
-                          name={trueGeneName?.toUpperCase() || gene}
+                          name={trueGeneName?.toUpperCase() || gene?.toUpperCase() }
                           coordinates={{ chromosome:  region.chromosome==='' ?  geneCoords.gene[0].coordinates.chromosome : region.chromosome, start:  region.start===null ?  +geneCoords.gene[0].coordinates.start : +region.start, end:  region.end===null ?  +geneCoords.gene[0].coordinates.end : +region.end }}
                         />
                       </Box>
@@ -228,7 +228,7 @@ const GeneDetails: React.FC = (props) => {
                       </Box>
                     ) : tabIndex === 3 ? (
                       <Box>
-                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene} coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}
+                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene?.toUpperCase()} coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}
                         }/>
                       </Box>
                     ) : tabIndex === 5 ? (

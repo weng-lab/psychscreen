@@ -48,6 +48,7 @@ const CCRETooltip: React.FC<CCRETooltipProps> = props => {
     
     const { data, loading } = useCCREInformation(props.name || "");
     const { data: biosamples, loading: biosamplesLoading } = useBrainBiosamples();
+    
     const maxZ = useMemo( () => data && biosamples && {
         DNase: Math.max(...[ ...biosamples.dnase ].map(x => data.zScores.get(x) || -10)),
         H3K4me3: Math.max(...[ ...biosamples.h3k4me3 ].map(x => data.zScores.get(x) || -10)),

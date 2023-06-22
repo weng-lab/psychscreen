@@ -112,6 +112,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
 
     // compute height, handle settings mouse over
     const [ settingsMousedOver, setSettingsMousedOver ] = useState(false);
+    
     const height = useMemo( () => 220 * props.titles.length + 100, [ props.titles ]);
     useEffect( () => props.onHeightChanged && props.onHeightChanged(height), [ height, props.onHeightChanged ]);
 
@@ -130,14 +131,21 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                     { importantSNPs && (
                         <g transform="translate(0,40)">
                             { importantSNPs.map(snp => (
-                                <rect
-                                    fill="#ff0000"
-                                    height={10}
-                                    y={5}
-                                    width={2}
-                                    x={transform(snp.start)}
-                                    onMouseOver={() => props.onSNPMousedOver && props.onSNPMousedOver({ x: transform(snp.start), y: 0, data: { rsId: snp.id, score: 0, coordinates: { ...snp, chromosome: snp.chromosome! } }})}
-                                />
+                                
+                                <g>
+                                    <rect
+                                        fill="#ff0000"
+                                        height={10}
+                                        y={5}
+                                        
+                                        width={2}
+                                        x={transform(snp.start)}
+                                        onMouseOver={() => {
+                                            props.onSNPMousedOver && props.onSNPMousedOver({ x: transform(snp.start), y: 0, data: { rsId: snp.id, score: 0, coordinates: { ...snp, chromosome: snp.chromosome! } }})
+                                            }
+                                        }
+                                                                            />
+                                </g>
                             ))}
                         </g>
                     )}

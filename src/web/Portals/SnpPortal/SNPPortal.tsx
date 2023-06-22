@@ -146,7 +146,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                                     onSearchChange(val)               
                                 }   
                             }}                
-                            helperText={"e.g. rs3794102"}                            
+                            helperText={"e.g. rs11669173"}                            
                         />
 
                     </Container>
