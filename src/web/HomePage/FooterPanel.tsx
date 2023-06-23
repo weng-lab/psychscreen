@@ -52,7 +52,7 @@ const FooterPanel: React.FC<GridProps> = props => {
                         size="medium"
                         style={{ fontSize: "14px", lineHeight: "20px", fontWeight: 400, letterSpacing: "0.1px", marginBottom: "10px" }}
                     >
-                         <Link href={"https://www.umassmed.edu/wenglab/"}> Weng Lab</Link>
+                         <Link rel="noopener noreferrer" target="_blank" href={"https://www.umassmed.edu/wenglab/"}> Weng Lab</Link>
                         
                         
                     </Typography>
@@ -71,7 +71,7 @@ const FooterPanel: React.FC<GridProps> = props => {
                         style={{ fontSize: "14px", lineHeight: "20px", fontWeight: 400, letterSpacing: "0.1px", marginBottom: "10px" }}
                     >
                         
-                        <Link href="https://www.umassmed.edu/">UMass Chan Medical School</Link>
+                        <Link rel="noopener noreferrer" target="_blank" href="https://www.umassmed.edu/">UMass Chan Medical School</Link>
                         
                     </Typography>
                 </div>

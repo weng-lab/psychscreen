@@ -79,14 +79,14 @@ export const qtlcellTypeCards = [
     
 
 export const DISEASE_CARDS = [
-    {val: "DevBrain", cardLabel: "DevBrain", cardDesc: ""},
-    {val: "IsoHuB", cardLabel: "IsoHuB", cardDesc: ""},
-    {val: "SZBDMulti-Seq", cardLabel: "SZBDMulti-Seq", cardDesc: ""},
-    {val: "MultiomeBrain-DLPFC", cardLabel: "MultiomeBrain-DLPFC", cardDesc: ""},
-    {val: "CMC", cardLabel: "CMC", cardDesc: ""},
-    {val: "UCLA-ASD", cardLabel: "UCLA-ASD", cardDesc: ""},
-    {val: "LIBD", cardLabel: "LIBD", cardDesc: ""},
-    {val: "PTSDBrainomics", cardLabel: "PTSDBrainomics", cardDesc: ""},
+    {val: "DevBrain", cardLabel: "DevBrain", cardDesc: "Autism (n=9), Williams syndrome (n=3), and control (n=4) adult DLPFC samples with snRNA-Seq data"},
+    {val: "IsoHuB", cardLabel: "IsoHuB", cardDesc: "Four control adult DLPFC samples with short and long-read snRNA-Seq data"},
+    {val: "SZBDMulti-Seq", cardLabel: "SZBDMulti-Seq", cardDesc: "Schizophrenia, bipolar disorder, and control (n=24 each) adult DLPFC samples with snRNA-Seq data"},
+    {val: "MultiomeBrain-DLPFC", cardLabel: "MultiomeBrain-DLPFC", cardDesc: "Schizophrenia (n=6), bipolar disorder (n=10), and control (n=5) adult DLPFC samples with snMultiome data"},
+    {val: "CMC", cardLabel: "CMC", cardDesc: "Schizophrenia (n=47) and control (n=53) adult DLPFC samples with snRNA-Seq data"},
+    {val: "UCLA-ASD", cardLabel: "UCLA-ASD", cardDesc: "Autism (n=27) and control (n=25) adult DLPFC samples with snRNA-Seq and snATAC-Seq data"},
+    {val: "LIBD", cardLabel: "LIBD", cardDesc: "Ten control adult DLPFC samples with snRNA-Seq and spatial transcriptomics data"},
+    {val: "PTSDBrainomics", cardLabel: "PTSDBrainomics", cardDesc: "PTSD (n=6), MDD (n=4), and control (n=9) adult DLPFC samples with snRNA-Seq data"}
     ]
 
 type GenomicRange = {

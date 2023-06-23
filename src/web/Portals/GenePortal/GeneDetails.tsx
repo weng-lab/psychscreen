@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
@@ -73,17 +73,22 @@ query ($assembly: String!,  $name_prefix: [String!]) {
 const GeneDetails: React.FC = (props) => {
     const { gene } = useParams();
     const { state }: any = useLocation();
-    
+    console.log("state",state)
     const navigate = useNavigate();  
-    const [ tabIndex, setTabIndex ] = useState(0);
+    let { geneid, chromosome, start, end, tabind } = state ? state : { geneid: '', chromosome: '', start: null, end: null, tabind: 0 };
+    const [ tabIndex, setTabIndex ] = useState(tabind || 0);
     const ref = useRef<SVGSVGElement>(null);
     const [ tissueCategory, setTissueCategory] = React.useState<string | null>('granular');
-    let { geneid, chromosome, start, end } = state ? state : { geneid: '', chromosome: '', start: null, end: null };
+    
     const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
     const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
     const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
 
     const [region, setRegion] = useState({chromosome: chromosome, start: start, end: end}) 
+
+    useEffect(()=>{
+      setTabIndex(0)
+    },[])
 
     if (trueGeneId) geneid = trueGeneId;
     const params = useParams();
@@ -102,8 +107,6 @@ const GeneDetails: React.FC = (props) => {
       name_prefix: [params.gene],
       assembly: "GRCh38"
     },skip: params.gene==''})
-
-    console.log("geneCoords",geneCoords)
     const onGeneChange = React.useCallback(
       async (value: any) => {
           
@@ -112,7 +115,7 @@ const GeneDetails: React.FC = (props) => {
               body: JSON.stringify({
                   query: GENE_ID_QUERY,
                   variables: {
-                    name_prefix: [value.toUpperCase()],
+                    name_prefix: [value?.toUpperCase()],
                     assembly: "GRCh38"
                   },
               }),

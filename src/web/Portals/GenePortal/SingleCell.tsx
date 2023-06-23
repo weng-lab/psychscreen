@@ -238,9 +238,17 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
     return { loading: expressionLoading || UMAPLoading, data: results, colors, maximumValue };
 }
 
-const DATASETS = [
-    "SZBDMulti-Seq","UCLA-ASD","IsoHuB","PTSDBrainomics","LIBD","CMC","DevBrain-snRNAseq","MultiomeBrain-DLPFC"
-];
+
+const DATASETS:Map<string, { cohort:string, desc: string, shortdesc: string }> =new Map([
+    ["CMC",{cohort: "CMC",shortdesc: "SCZ/control (n=100)", desc:"Schizophrenia (n=47) and control (n=53) adult DLPFC samples with snRNA-Seq data"}],
+    ["UCLA-ASD",{cohort: "UCLA-ASD",shortdesc: "ASD/control (n=52)", desc:"Autism (n=27) and control (n=25) adult DLPFC samples with snRNA-Seq and snATAC-Seq data"}],
+    ["SZBDMulti-Seq",{cohort: "SZBDMulti-Seq",shortdesc: "SCZ/BPD/control (n=72)", desc:"Schizophrenia, bipolar disorder, and control (n=24 each) adult DLPFC samples with snRNA-Seq data"}],
+    ["MultiomeBrain-DLPFC",{cohort: "MultiomeBrain-DLPFC",shortdesc: "SCZ/BPD/control (n=21)", desc:"Schizophrenia (n=6), bipolar disorder (n=10), and control (n=5) adult DLPFC samples with snMultiome data"}],
+    ["DevBrain-snRNAseq",{cohort: "DevBrain-snRNAseq",shortdesc: "ASD/Williams/control (n=16)", desc:"Autism (n=9), Williams syndrome (n=3), and control (n=4) adult DLPFC samples with snRNA-Seq data"}],
+    ["IsoHuB",{cohort: "IsoHuB",shortdesc: "Control (n=4)", desc:"Four control adult DLPFC samples with short and long-read snRNA-Seq data"}],
+    ["PTSDBrainomics",{cohort: "PTSDBrainomics",shortdesc: "PTSD/MDD/control (n=19)", desc:"PTSD (n=6), MDD (n=4), and control (n=9) adult DLPFC samples with snRNA-Seq data"}],
+    ["LIBD",{cohort: "LIBD",shortdesc: "Control (n=10)", desc:"Ten control adult DLPFC samples with snRNA-Seq and spatial transcriptomics data"}]
+]);
 
 
 const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
@@ -329,7 +337,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const handleChange = (event) => {
         setDataset(event.target.value);
       };
-    
+      let keys = Array.from( DATASETS.keys() );
     return (
         <Grid container>         
             
@@ -345,12 +353,18 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                     label="Dataset"
                     onChange={handleChange}
                     >
-                        {DATASETS.map(d=>{
-                            return <MenuItem value={d}>{d}</MenuItem>
+                        {
+                        keys.map(d=>{
+                            return <MenuItem value={DATASETS.get(d)!.cohort}>{d}{" - "}{DATASETS.get(d)!.shortdesc}</MenuItem>
                         })}
                     </MUISelect>
                     
                 </FormControl>}
+               
+            </Grid>
+            <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
+            <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">{DATASETS.get(dataset)!.desc}</Typography>
+            
                
             </Grid>
             <Grid item sm={12}>

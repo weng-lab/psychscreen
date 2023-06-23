@@ -3,6 +3,8 @@ import { gql, useQuery } from '@apollo/client';
 import { associateBy } from 'queryz';
 import { CustomizedTable, Typography } from '@weng-lab/psychscreen-ui-components';
 import { CircularProgress } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
+import { Link } from '@mui/material';
 
 export type GenomicRange = {
     chromosome?: string;
@@ -271,7 +273,7 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
 
 
 const AssociatedxQTL: React.FC<any> = (props) => { 
-    const [ bccre, setbCRE] = useState<any>([]);
+    const [ bccre, setbCRE] = useState<{accession:string, chrom: string, start: number, end: number}[]>([]);
 
     const eexpandedCoordinates = useMemo( () => expandCoordinates(props.coordinates), [ props.coordinates ]);
     
@@ -282,11 +284,11 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         props.resolvedTranscript
     );
     const groupedQTLs = useMemo( () => associateBy((data?.queriedGene && data.queriedGene[0]?.fetal_eqtls.eqtls) || [], x => x.snp, x => x), [ data ]);
-
+    const navigate = useNavigate();
     const allQTLs = useMemo( () => (
         snpCoordinateData?.snpQuery
             .map(x => ({ ...x, eQTL: groupedQTLs.get(x.id)! }))
-            .sort((a, b) => a.eQTL.fdr - b.eQTL.fdr)
+            //.sort((a, b) => a.eQTL.fdr - b.eQTL.fdr)
     ) || [], [ snpCoordinateData, groupedQTLs ]);
     
     const allQTLsData =allQTLs && allQTLs.map(x=> [{
@@ -294,7 +296,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         value: x.id
     }, {
         header: "eQTL FDR",
-        value: x.eQTL.fdr.toExponential(2)
+        value: x.eQTL ? x.eQTL.fdr.toExponential(2) : 0
     }, {
         header: "eQTL nominal p-value",
         value: x.eQTL.nominal_pval.toExponential(2)
@@ -304,20 +306,42 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     }, {
         header: "intersecting cCRE",
         value:  x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
-        render:  (
-            <span
-                style={{ color: x.intersecting_ccres.intersecting_ccres[0] ? "#006edb" : "#000000" }}
-            >
-                {bccre && bccre.includes(x.intersecting_ccres.intersecting_ccres[0]?.accession) ? "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession || "--": x.intersecting_ccres.intersecting_ccres[0]?.accession || "--"}
-            </span>
-        )
+        render:  bccre && x.intersecting_ccres.intersecting_ccres[0]?.accession && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ? (            
+            <Typography
+            type="body"
+            size="medium"
+            
+            style={{ fontSize: "14px", lineHeight: "20px", fontWeight: 400, letterSpacing: "0.1px", marginBottom: "10px" }}
+            
+        >
+            <Link rel="noopener noreferrer" target="_blank"  href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}> {!x.intersecting_ccres.intersecting_ccres[0]?.accession ? "--": (bccre && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ? "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession : x.intersecting_ccres.intersecting_ccres[0]?.accession) }</Link>
+            
+            
+        </Typography>
+        ) : (<>
+        <Typography
+            type="body"
+            size="medium"           
+        >
+            {!x.intersecting_ccres.intersecting_ccres[0]?.accession ? "--": (bccre && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ? "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession : x.intersecting_ccres.intersecting_ccres[0]?.accession) }
+        </Typography>
+        </>)
     }]);
     React.useEffect(()=>{
-        fetch("https://downloads.wenglab.org/bCREs.bed")
+        fetch("https://downloads.wenglab.org/union_bCREs.bed")
         .then(x => x.text())
         .then((x: string) => {
             const q = x.split("\n");
-            setbCRE(q)
+            const bcres  = q.map(a=>{
+                let r = a.split("\t") 
+                return {
+                    accession: r[4],
+                    chrom: r[0],
+                    start: +r[1],
+                    end: +r[2]
+                }
+            })
+            setbCRE(bcres)
             
         })
     },[])
@@ -328,7 +352,6 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     );
    
    
-    console.log(bccre,"bcre")
     return (
         <>
             { loading ? (
@@ -339,6 +362,9 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                         {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
                     </Typography>
                     <CustomizedTable style={{ width: "max-content" }} tabledata={allQTLsData} />
+                    <Typography type={"label"} size="small">
+                        {`cCREs prefixed with an asterisk are bCREs`}
+                    </Typography>
                 </>
             )}
         </>

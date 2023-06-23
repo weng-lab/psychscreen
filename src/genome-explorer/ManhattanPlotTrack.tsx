@@ -6,7 +6,7 @@ import { BigBedData } from 'bigwig-reader';
 import { ManhattanTrack, ManhattanTrackProps, LDTrack, EmptyTrack } from 'umms-gb';
 import { ManhattanSNP } from 'umms-gb/dist/components/tracks/manhattan/types';
 import { linearTransform } from '../web/Portals/GenePortal/violin/utils';
-
+import { associateBy } from 'queryz';
 export type LDEntry = {
     id: string;
     rSquared: number;
@@ -78,6 +78,8 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
     const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
         variables: { bigRequests: tracks(props.urls, props.domain)}
     });
+    
+
     const transform = useCallback(linearTransform([ props.domain.start, props.domain.end ], [ 0, 1400 ]), [ props ]);
 
     // merge GWAS SNPs and QTLs in viewport
@@ -99,6 +101,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
             coordinates: xx.coordinates
         }))
     ], [ data, props.allQTLs ]);
+    const inViewCoordinates = useMemo( () => associateBy(inView || [], x => x.rsId, x => x.coordinates), [ inView ]);
 
     const allQTLs = useMemo( () => (
         inView?.filter(x => props.groupedQTLs.get(x.rsId))
@@ -119,6 +122,11 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
     // format and return
     return loading ? <Loader active>Loading...</Loader> : (
         <g transform="translate(0,25)">
+             { props.anchor && (
+                <g transform={`translate(${transform(inViewCoordinates.get(props.anchor)?.end || -10000)},0)`}>
+                    <text textAnchor={transform(inViewCoordinates.get(props.anchor)?.end || -10000) > 1000 ? "end" : "start"}>{props.anchor}</text>
+                </g>
+            )}
             { props.titles.map((title, i) => (
                 <g transform={`translate(0,${200 * i})`}>
                     <EmptyTrack

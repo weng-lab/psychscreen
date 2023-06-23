@@ -68,6 +68,17 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
 
 }
 
+function split(left: number, right: number, parts: number) {
+    var result: number[] = [],
+        delta = (right - left) / (parts - 1);
+    while (left < right) {
+        result.push(left);
+        left += delta;
+    }
+    result.push(right);
+    return result;
+}
+
 const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
     = ({ disease, gene, dotplotData }, ref) => {
 
@@ -86,8 +97,12 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
             const radii = keys.map(k => results.get(k)!.radius);
             return [Math.min(...radii), Math.max(...radii)];
         }, [ results, keys ]);
+        const colorDomain: [ number, number ] = React.useMemo(() => {
+            const cp = keys.map(k => results.get(k)!.colorpercent);
+            return [Math.min(...cp), Math.max(...cp)];
+        }, [ results, keys ]);
         const radiusTransform = React.useCallback(linearTransform(radiusDomain, [ 20, 60 ]), radiusDomain);
-        const verticalTransform = React.useCallback(linearTransform([ 0, 1 ], [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
+        const verticalTransform = React.useCallback(linearTransform(colorDomain, [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
 
         // Compute radius and color scaling factors
         const length = keys.length+20;
@@ -95,7 +110,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
             const diff = +((+radiusDomain[1] - +radiusDomain[0]) / 4);
             return [ 0, 1, 2, 3 ].map(x => radiusDomain[0] + diff * x);
         }, [ radiusDomain ]);
-        const colorPercent = [ 0, 0.25, 0.5, 0.75, 1 ];
+        const colorPercent = split(colorDomain[0],colorDomain[1],4);
         
         // No data message if this gene is not recognized
        /* if (data?.singleCellBoxPlotQuery.length === 0)

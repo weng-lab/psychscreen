@@ -266,16 +266,6 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
                 width={1400}
                 id=""
             />
-            { !loading && positiveRegionURL !== undefined && (
-                <ImportantRegions
-                    neutralRegions={props.neutralRegions || []}
-                    negativeRegions={(data?.bigRequests[1].data as BigWigData[]) || []}
-                    positiveRegions={(data?.bigRequests[2].data as BigWigData[]) || []}
-                    width={width}
-                    domain={domain}
-                    onRegionClick={onImportantRegionClick}
-                />
-            )}
             { !loading && imputedSignalURL !== undefined && (
                 <FullBigWig
                     transform="translate(0,15)"

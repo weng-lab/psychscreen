@@ -217,7 +217,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                                         <HorizontalCard width={300} 
                                         onCardClick={(v?: string) => {
                                             let f = geneCards!!.find((g: any)=> g.val===v)
-                                            navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v!!.split("/")[0].split(".")[0], chromosome: v!!.split("/")[1] , start:  v!!.split("/")[2] , end: v!!.split("/")[3] } })
+                                            navigate(`/psychscreen/gene/${f?.cardLabel}`, { state: { geneid: v!!.split("/")[0].split(".")[0], chromosome: v!!.split("/")[1] , start:  v!!.split("/")[2] , end: v!!.split("/")[3], tabind: 0 } })
                                         }}
                                         cardContentText={geneCards!!.map(d=>{
                                             

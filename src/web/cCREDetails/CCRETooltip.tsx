@@ -66,7 +66,7 @@ const CCRETooltip: React.FC<CCRETooltipProps> = props => {
                     </svg>
                     Click for details about this cCRE<br /><br />
                     <strong>Max Z-scores in brain:</strong><br />
-                    { maxZ && [ "DNase", "H3K4me3", "H3K27ac", "CTCF" ].map( (x, i) => (
+                    { maxZ && [ "DNase", "H3K4me3", "H3K27ac", "CTCF" ].filter(a=>maxZ[a]!=-Infinity).map( (x, i) => (
                         <React.Fragment key={i}>
                             <strong>{x}</strong>: {maxZ && maxZ[x]?.toFixed(2)}<br />
                         </React.Fragment>
