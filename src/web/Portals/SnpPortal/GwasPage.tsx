@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import { Grid, Container } from '@mui/material';
-import { Typography, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { Typography, CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 type GWASPageProps = {
     id: string;
 };
@@ -52,7 +52,7 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
                     
                 </>
             ) : <Typography  type="display" style={{ fontWeight: 500, fontSize: "28px" }}
-            size="small">{props.id} has not been identified in any GWAS catalogued by SCREEN.</Typography>}
+            size="small">{props.id} has not been identified in any GWAS catalogued by psychSCREEN.</Typography>}
             {gwasData &&  <CustomizedTable style={{ width: "max-content" }}  tabledata={gwasData} />}
             </Container>
         </Grid>

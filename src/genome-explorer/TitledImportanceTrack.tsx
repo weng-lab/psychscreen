@@ -127,7 +127,7 @@ type ImportantRegionTrackProps = {
 const ImportantRegions: React.FC<ImportantRegionTrackProps> = props => {
     const transform = linearTransform([ props.domain.start, props.domain.end ], [ 0, props.width ]);
     return (
-        <g transform="translate(0,63)">
+        <g transform="translate(0,115)">
             { props.neutralRegions.map((r, i) => (
                 <rect
                     key={`neutral_${i}`}

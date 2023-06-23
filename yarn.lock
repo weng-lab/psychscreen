@@ -2747,6 +2747,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@weng-lab/psychscreen-ui-components@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@weng-lab/psychscreen-ui-components/-/psychscreen-ui-components-0.7.2.tgz#df8b97051acfa0c8f1089629cb33ae3032c8a6f9"
+  integrity sha512-Y71JzxlyAks2WXbUXO4I5ZPmRiplvv4PKhdo5BuvveJiMCrRmq/7HJSBYIEH2Er/vjktAuFECUx3GSY8ln0GFg==
+
 "@weng-lab/ts-ztable@latest":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@weng-lab/ts-ztable/-/ts-ztable-4.0.1.tgz#682a649275bef22d28531da186d11ade49ce5bbe"
@@ -2802,11 +2807,6 @@
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
-
-"@zscreen/psychscreen-ui-components@^0.6.6":
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/@zscreen/psychscreen-ui-components/-/psychscreen-ui-components-0.6.6.tgz#4e4efb3b11b5d4ee0213065ae6ca1a0c8c5384bd"
-  integrity sha512-xaLNt0ZsDg1RlEu+49aRFdMgVdI/l14SoEsB9wdKAlnImsdhKWRIZuwsupabk1jrggNBqHK40J1ZIKp8xvI8xg==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
 import GenomeExplorer from './GenomeExplorer';
 import { GenomicRange } from '../GenePortal/AssociatedxQTL';
@@ -38,8 +38,9 @@ const GenomeExplorerPage: React.FC = () => {
         <>
             <AppBar
                 centered={true}
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
             />
             <Container style={{ width: "70%", marginLeft: "15%", marginTop: "2em" }}>

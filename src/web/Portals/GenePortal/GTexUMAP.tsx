@@ -3,10 +3,10 @@ import { Chart, Scatter } from 'jubilant-carnival';
 import { Grid } from '@mui/material';
 import Legend from './scatterplot/legend';
 import { tissueTypeColors } from './consts';
-import { TabletAppBar, Typography } from '@zscreen/psychscreen-ui-components';
+import { TabletAppBar, Typography } from '@weng-lab/psychscreen-ui-components';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 import { PORTALS } from '../../../App';
-import { AppBar } from '@zscreen/psychscreen-ui-components'; 
+import { AppBar } from '@weng-lab/psychscreen-ui-components'; 
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -107,6 +107,7 @@ const GTexUMAP: React.FC = () => {
                         <TabletAppBar
                             onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                             onHomepageClicked={() => navigate("/")}
+                            onAboutClicked={() => navigate("/psychscreen/aboutus")}
                             onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                             style={{ marginBottom: "63px" }}
                             title={<Logo /> as any}
@@ -115,8 +116,9 @@ const GTexUMAP: React.FC = () => {
                     : (
                         <AppBar
                             centered={true}
-                            onDownloadsClicked={() => navigate("/downloads")}
+                            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                             onHomepageClicked={() => navigate("/")}
+                            onAboutClicked={() => navigate("/psychscreen/aboutus")}
                             onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                         /> 
                     )

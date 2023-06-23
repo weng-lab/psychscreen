@@ -2,7 +2,7 @@
 import { gql, useQuery } from '@apollo/client';
 import React, {useMemo} from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { CustomizedTable, Typography } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Typography } from '@weng-lab/psychscreen-ui-components';
 
 const OpenTargetQuery = gql`
 query GenePageQuery($geneId: String!) {
@@ -183,7 +183,7 @@ const roundTo = function (num: number, places: number) {
 
 const OpenTarget: React.FC<any> = (props) => { 
     const { data, loading } = useOpenTargetsData(props.id);
-	//console.log("openTargetdata:", data);
+	
     const formattedData = useMemo(() => data?.studiesAndLeadVariantsForGeneByL2G?.map(
 		q =>  {
             

@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
 
 const DiseaseTraitPortal: React.FC = () => {
@@ -11,8 +11,9 @@ const DiseaseTraitPortal: React.FC = () => {
     return (
         <>
             <AppBar
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
         </>
     );

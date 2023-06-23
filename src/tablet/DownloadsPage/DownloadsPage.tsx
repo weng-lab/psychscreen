@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Typography, Button, AppBar } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button, AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/system';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -15,9 +15,10 @@ const DownloadsPage: React.FC = () => {
     return (
         <>
             <AppBar
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(PORTALS[index][0])}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
             <Container style={{ marginTop: "5em", marginLeft: "6em", width: "40%" }}>
                 <Typography

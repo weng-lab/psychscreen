@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import BoltIcon from '@mui/icons-material/Bolt';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import { Typography } from '@zscreen/psychscreen-ui-components';
-import { SearchBoxWithSelect } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
+import { SearchBoxWithSelect } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
 
 import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';

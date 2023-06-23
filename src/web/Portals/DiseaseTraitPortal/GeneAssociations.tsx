@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Grid, Container, CircularProgress } from '@mui/material';
-import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 import { GridProps } from '@mui/material';
 
 type GeneAssociation = {

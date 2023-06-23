@@ -3,11 +3,11 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
+import { TabletAppBar } from '@weng-lab/psychscreen-ui-components';
 
 import { PORTALS } from '../../App';
 import MainPanel from './MainPanel';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import PortalsPanel from '../../web/HomePage/PortalsPanel';
 
 export const Logo: React.FC = () => {

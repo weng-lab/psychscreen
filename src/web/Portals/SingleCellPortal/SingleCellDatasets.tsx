@@ -3,7 +3,7 @@ import { ValuedPoint } from 'umms-gb/dist/utils/types';
 import { RequestError } from 'umms-gb/dist/components/tracks/trackset/types';
 
 import { GridProps } from '@mui/material';
-import { AppBar, Typography, HorizontalCard, Button } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, HorizontalCard, Button } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from '@mui/material';
@@ -15,6 +15,7 @@ import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import SingleCellGRNBrowser from "./SingleCellGRNBrowser"  
 import SingleCellQTLBrowser from "./SingleCellQTLBrowser"  
 import  {DataTable} from "@weng-lab/ts-ztable";
+import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
 
 export const cellTypeCards = [
 { val: "Ast", cardLabel: "Astrocytes", cardDesc: ""},
@@ -81,9 +82,11 @@ export const DISEASE_CARDS = [
     {val: "DevBrain", cardLabel: "DevBrain", cardDesc: ""},
     {val: "IsoHuB", cardLabel: "IsoHuB", cardDesc: ""},
     {val: "SZBDMulti-Seq", cardLabel: "SZBDMulti-Seq", cardDesc: ""},
-    {val: "Urban-DLPFC", cardLabel: "Urban-DLPFC", cardDesc: ""},
-    {val: "CMC-CellHashing", cardLabel: "CMC-CellHashing", cardDesc: ""},
+    {val: "MultiomeBrain-DLPFC", cardLabel: "MultiomeBrain-DLPFC", cardDesc: ""},
+    {val: "CMC", cardLabel: "CMC", cardDesc: ""},
     {val: "UCLA-ASD", cardLabel: "UCLA-ASD", cardDesc: ""},
+    {val: "LIBD", cardLabel: "LIBD", cardDesc: ""},
+    {val: "PTSDBrainomics", cardLabel: "PTSDBrainomics", cardDesc: ""},
     ]
 
 type GenomicRange = {
@@ -171,10 +174,11 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
     return (<>
     <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
             <Grid>
            <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
@@ -211,8 +215,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                             {'scATAC-Seq Peaks'}
                         </Typography>
                         <br/>
-                        <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>Genome Browser</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={page === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(0)}>Cell Type specific ATAC peaks</Button>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>Genome Browser</StyledButton>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={page === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(0)}>Cell Type specific ATAC peaks</StyledButton>&nbsp;&nbsp;&nbsp;
                         {page===0 && <Grid sm={10} md={10} lg={9} xl={9}>
                             <br/>
                         <DataTable columns={COLUMNS} rows={d} itemsPerPage={10} searchable/>
@@ -259,8 +263,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 </Grid>}
                 {disease==='Gene-regulatory-networks'  && <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-                        <Button bvariant={grnpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(-1)}>Genome Browser</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={grnpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(0)}>Cell Types</Button>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={grnpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(-1)}>Genome Browser</StyledButton>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={grnpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setGrnPage(0)}>Cell Types</StyledButton>&nbsp;&nbsp;&nbsp;
                         <br/>
                         <br/>
                         <br/>                        
@@ -285,8 +289,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 </Grid>}
                 {disease==='Cell-type-specific-eQTLs'  && <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-                        <Button bvariant={qtlpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(-1)}>Genome Browser</Button>&nbsp;&nbsp;&nbsp;
-                        <Button bvariant={qtlpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(0)}>Cell Types</Button>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={qtlpage === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(-1)}>Genome Browser</StyledButton>&nbsp;&nbsp;&nbsp;
+                        <StyledButton bvariant={qtlpage === 0 ? "filled" : "outlined"} btheme="light" onClick={() => setQtlPage(0)}>Cell Types</StyledButton>&nbsp;&nbsp;&nbsp;
                         <br/>
                         <br/>
                         <br/>                        
@@ -314,7 +318,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 {disease==='Indiv-cohort-expression-data'  && <Grid item  sm={10}  md={10} lg={9} xl={9}>
                     <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
                                                
-                        <Grid sm={10} md={10} lg={9} xl={9}>
+                        <Grid sm={10} md={10} lg={9} xl={9} style={{ marginLeft: "25rem" }}>
                         <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "30px", marginTop: "10px" }}>            
                                     <HorizontalCard width={500}

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Modal, Accordion, Box } from '@material-ui/core';
-import { Typography, Button } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import { AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, Grid } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';

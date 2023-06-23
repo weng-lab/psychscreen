@@ -4,14 +4,14 @@
  */
 
  import React, {useState, useCallback} from 'react';
- import { AppBar } from '@zscreen/psychscreen-ui-components';
+ import { AppBar } from '@weng-lab/psychscreen-ui-components';
  import { useNavigate, useLocation } from 'react-router-dom';
  import { Grid, Container, GridProps, Slide } from '@mui/material';
- import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
- import { Typography } from '@zscreen/psychscreen-ui-components';
+ import { TabletAppBar } from '@weng-lab/psychscreen-ui-components';
+ import { Typography } from '@weng-lab/psychscreen-ui-components';
  import CheckIcon from '@mui/icons-material/Check';
- import { HorizontalCard, SearchBox } from '@zscreen/psychscreen-ui-components';
- import { useTheme, useMediaQuery } from '@material-ui/core';
+ import { HorizontalCard, SearchBox } from '@weng-lab/psychscreen-ui-components';
+ import { useTheme, useMediaQuery, Paper } from '@material-ui/core';
  import { PORTALS } from '../../../App';
  import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
  import SNPQTL from '../../../assets/snp-qtl.png';
@@ -19,21 +19,14 @@
  
 
 const SNP_AUTOCOMPLETE_QUERY = `
-query suggest($id: String!, $assembly: String!) {
-    suggest(id: $id, assembly: $assembly, limit: 5) {
+query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
+    snpAutocompleteQuery(snpid: $snpid, assembly: $assembly) {
         id
         coordinates {
             chromosome
             start
             end
         }
-        ...on Gene {
-            name
-        }
-        ...on Transcript {
-            name
-        }
-        __typename
     }
 }
 `;
@@ -56,13 +49,13 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                 body: JSON.stringify({
                     query: SNP_AUTOCOMPLETE_QUERY,
                     variables: {
-                        assembly: "GRCh38",
-                        id: value,
+                        assembly: "grch38",
+                        snpid: value,
                     },
                 }),
                 headers: { 'Content-Type': 'application/json' },
             });
-            const snpSuggestion = (await response.json()).data?.suggest;            
+            const snpSuggestion = (await response.json()).data?.snpAutocompleteQuery;            
             if(snpSuggestion && snpSuggestion.length > 0) {
                 const r = snpSuggestion.map((g: any)=>{
                     return {
@@ -91,7 +84,8 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                     />
                     :<AppBar
                         centered={true}
-                        onDownloadsClicked={() => navigate("/downloads")}
+                        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                     /> 
@@ -152,7 +146,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                                     onSearchChange(val)               
                                 }   
                             }}                
-                            helperText={"e.g. rs3794102"}                            
+                            helperText={"e.g. rs11669173"}                            
                         />
 
                     </Container>
@@ -178,13 +172,13 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                             <>
                             {snpCards!.length > 0 && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
-                                    {<HorizontalCard width={500}
+                                    {<Paper elevation={0} style={{  maxHeight: 500, width: 350, overflow: 'auto'}}><HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
                                             let f = snpCards!!.find((g: any)=> g.val===v)                                            
                                             navigate(`/psychscreen/snp/${f?.cardLabel}`, { state: { snpid: v!!.split("/")[0], chromosome: v!!.split("/")[1] , start:  v!!.split("/")[2] , end: v!!.split("/")[3] } })
                                         }}
                                         cardContentText={snpCards!!} 
-                                    />  }          
+                                    /></Paper>  }          
                                 </Container>
                             </Slide> } 
                             {snpCards!.length === 0 &&

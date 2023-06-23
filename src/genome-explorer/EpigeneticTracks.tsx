@@ -68,7 +68,7 @@ type EpigeneticTrackProps = {
     onSettingsClick?: () => void;
 };
 
-const TitledTrack: React.FC<{ data: BigResponseData, url: string, title: string, color?: string, height: number, transform?: string, onHeightChanged?: (height: number) => void, domain: GenomicRange, svgRef?: React.RefObject<SVGSVGElement> }>
+export const TitledTrack: React.FC<{ data: BigResponseData, url: string, title: string, color?: string, height: number, transform?: string, onHeightChanged?: (height: number) => void, domain: GenomicRange, svgRef?: React.RefObject<SVGSVGElement> }>
     = ({ data, url, title, height, domain, transform, onHeightChanged, svgRef, color }) => {
         useEffect( () => onHeightChanged && onHeightChanged(height + 40), [ height, onHeightChanged ]);
         return (
@@ -113,6 +113,7 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
         [ "Adult brain bCREs", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed" ],
         [ "all brain regions, aggregated NeuN+", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
         [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
+        
     ]);
     const height = useMemo( () => cTracks.length * 80, [ cTracks ]);
     const bigRequests = useMemo( () => cTracks.map(x => ({

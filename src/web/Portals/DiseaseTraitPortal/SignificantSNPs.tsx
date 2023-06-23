@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { GWAS_SIGNIFICANT_SNPS } from '../../../data/all-significant-snps.gwas';
 import { groupBy } from 'queryz';
-import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 import { GenomicRange } from '../GenePortal/AssociatedxQTL';
 
 type SignificantSNPEntry = {
@@ -17,7 +17,7 @@ type SignificantSNPEntry = {
     };
 };
 
-function useSNPs(trait: string) {
+export function useSNPs(trait: string) {
     const all_snps = useMemo( () => (
         Object.keys(GWAS_SIGNIFICANT_SNPS)
             .reduce<SignificantSNPEntry[]>(
@@ -43,7 +43,7 @@ function useSNPs(trait: string) {
     ), [ groupedSNPs ]);
 }
 
-function traitKey(trait: string): string {
+export function traitKey(trait: string): string {
     if (trait.includes("MDD")) return "MDD";
     if (trait.includes("bipolar")) return "bipolar-II";
     if (trait.includes("ADHD")) return "ADHD-meta-filtered";
@@ -68,6 +68,7 @@ const SignifcantSNPs: React.FC<SignificantSNPsProps>
     = ({ trait, onSNPClick }) => {
 
         const significantSNPs = useSNPs(traitKey(trait));
+        
         const onSNPRowClick = useCallback((row: SignificantSNPEntry) => {
             if (onSNPClick)
                 onSNPClick(snpWindow(row[1].value.split(':')[0], +row[1].value.split(':')[1]))

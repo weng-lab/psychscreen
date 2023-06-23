@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { Grid } from '@mui/material';
-import { Typography, AppBar, Button } from '@zscreen/psychscreen-ui-components';
+import { Typography, AppBar, Button } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/system';
 
@@ -135,6 +135,7 @@ const DownloadsPage: React.FC
                 <AppBar
                     onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                     onHomepageClicked={() => navigate("/")}
+                    onAboutClicked={() => navigate("/psychscreen/aboutus")}
                     onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                     style={{ marginBottom: "63px" }}
                     centered={true}

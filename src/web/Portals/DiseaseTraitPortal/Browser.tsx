@@ -2,7 +2,7 @@ import React, {useMemo, useRef, useState, useCallback}  from 'react';
 import CytobandView from '../GenePortal/Browser/Explorer/Cytobands';
 import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from '../GenePortal/Browser/EGeneTracks';
-import { EpigeneticTracks, tracks, VariantTracks } from '../../../genome-explorer';
+import { EpigeneticTracks, tracks, VariantTracks, ConservationTracks } from '../../../genome-explorer';
 import { useGenePageData } from '../GenePortal/AssociatedxQTL';
 import { DeepLearnedModelTracks } from '../../../genome-explorer/DeepLearnedModels';
 
@@ -93,6 +93,7 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
                     expandedCoordinates={coordinates}
                     squish
                 />
+                
                 <EpigeneticTracks
                     assembly="GRCh38"
                     tracks={epigeneticTracks}
@@ -111,6 +112,12 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
                     trait={props.trait}
                     importantRegions={importantRegions}
                 />
+                <ConservationTracks
+                    assembly="GRCh38"
+                    //tracks={epigeneticTracks}
+                    domain={coordinates}
+                />
+                 
             </GenomeBrowser>
         </>
     );

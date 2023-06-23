@@ -3,14 +3,14 @@
  */
 
 import React, { useState } from 'react';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, GridProps, Slide } from '@mui/material';
 import DiseaseTrait from '../../../assets/disease-trait.png';
-import { TabletAppBar } from '@zscreen/psychscreen-ui-components';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { TabletAppBar } from '@weng-lab/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import CheckIcon from '@mui/icons-material/Check';
-import { SearchBox, HorizontalCard } from '@zscreen/psychscreen-ui-components';
+import { SearchBox, HorizontalCard } from '@weng-lab/psychscreen-ui-components';
 import { useTheme, useMediaQuery } from '@material-ui/core';
 import { PORTALS } from '../../../App';
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
@@ -34,6 +34,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                 useMediaQuery(theme.breakpoints.down('xs'))
                     ? <TabletAppBar
                         onDownloadsClicked={() => navigate("/psychscreen/downloads")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                         style={{ marginBottom: "63px" }}
@@ -41,7 +42,8 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                     />
                     : <AppBar
                         centered={true}
-                        onDownloadsClicked={() => navigate("/downloads")}
+                        onAboutClicked={() => navigate("/psychscreen/aboutus")}
+                        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                         onHomepageClicked={() => navigate("/")}
                         onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                     />

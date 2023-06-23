@@ -1,10 +1,10 @@
 
 import { gql, useQuery } from '@apollo/client';
-import React, {useMemo, useRef, useState, useCallback}  from 'react';
+import React, {useMemo, useRef, useState, useCallback, useEffect}  from 'react';
 import CytobandView from './Explorer/Cytobands';
 import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import EGeneTracks from './EGeneTracks';
-import { EpigeneticTracks, tracks, VariantTracks } from '../../../../genome-explorer';
+import { EpigeneticTracks, tracks, VariantTracks, ConservationTracks } from '../../../../genome-explorer';
 import { URL_MAP } from '../../DiseaseTraitPortal/config/constants';
 import { DeepLearnedModelTracks } from '../../../../genome-explorer/DeepLearnedModels';
 
@@ -282,7 +282,7 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
             transcripts: x.transcripts.map(xx => ({ ...xx, color: (resolvedTranscript ? xx : x).name === name ? "#880000" : "#aaaaaa" }))
         })
     ), [ resolvedTranscript, name, snpResponse ]);
-
+    //console.log("name",name,snpResponse.data?.gene)
     return {
         data: { ...snpResponse.data, ...data },
         loading: loading || snpCoordinateResponse.loading || snpResponse.loading,
@@ -296,10 +296,15 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
 
 
 const Browser: React.FC<any> = (props) => { 
+    console.log("gene coords",props.coordinates)
     const svgRef = useRef<SVGSVGElement>(null);
     const [ coordinates, setCoordinates ] = useState<GenomicRange | null>(null);
     const [ highlight ] = useState<GenomicRange | null>(null);
-    const eexpandedCoordinates = useMemo( () => expandCoordinates(props.coordinates), [ props.coordinates ]);
+    const eexpandedCoordinates = useMemo( () => expandCoordinates(props.coordinates), [ props.coordinates.chromosome,props.coordinates.start,props.coordinates.end ]);
+    
+    useEffect(()=>{
+        setCoordinates(eexpandedCoordinates)
+    },[eexpandedCoordinates])
     
     const { groupedTranscripts, expandedCoordinates } = useGenePageData(
         coordinates || eexpandedCoordinates,
@@ -318,6 +323,7 @@ const Browser: React.FC<any> = (props) => {
     );
 
     const l = useCallback((c: number) => (c - expandedCoordinates.start) * 1400 / (expandedCoordinates.end - expandedCoordinates.start), [ expandedCoordinates ]);
+    console.log(coordinates,eexpandedCoordinates)
     return (<>
         <CytobandView
             innerWidth={1000}
@@ -364,9 +370,14 @@ const Browser: React.FC<any> = (props) => {
                 coordinates={coordinates || expandedCoordinates}
                 resolvedTranscript={props.resolvedTranscript}
                 name={props.name}
-                url={`https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP["ASD"]}.bigBed`}
+                url={URL_MAP["ASD"]}
                 trait="Autism Spectrum Disorder"
             />
+            <ConservationTracks
+                assembly="GRCh38"
+                //tracks={epigeneticTracks}
+                domain={coordinates || expandedCoordinates}
+                />
         </GenomeBrowser>
     </>)
 }

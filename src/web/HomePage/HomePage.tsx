@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 
 import { PORTALS } from '../../App';
 import MainPanel from './MainPanel';
@@ -22,6 +22,7 @@ const HomePage: React.FC = () => {
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
                 centered={true}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
             />
             <MainPanel />
             <PortalsPanel style={{ marginTop: "160px" }} />

@@ -1,7 +1,7 @@
-import React, {useMemo}  from 'react';
+import React, {useMemo,useState}  from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { associateBy } from 'queryz';
-import { CustomizedTable, Typography } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Typography } from '@weng-lab/psychscreen-ui-components';
 import { CircularProgress } from '@material-ui/core';
 
 export type GenomicRange = {
@@ -271,6 +271,7 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
 
 
 const AssociatedxQTL: React.FC<any> = (props) => { 
+    const [ bccre, setbCRE] = useState<any>([]);
 
     const eexpandedCoordinates = useMemo( () => expandCoordinates(props.coordinates), [ props.coordinates ]);
     
@@ -307,17 +308,27 @@ const AssociatedxQTL: React.FC<any> = (props) => {
             <span
                 style={{ color: x.intersecting_ccres.intersecting_ccres[0] ? "#006edb" : "#000000" }}
             >
-                {x.intersecting_ccres.intersecting_ccres[0]?.accession || "--"}
+                {bccre && bccre.includes(x.intersecting_ccres.intersecting_ccres[0]?.accession) ? "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession || "--": x.intersecting_ccres.intersecting_ccres[0]?.accession || "--"}
             </span>
         )
     }]);
-    
+    React.useEffect(()=>{
+        fetch("https://downloads.wenglab.org/bCREs.bed")
+        .then(x => x.text())
+        .then((x: string) => {
+            const q = x.split("\n");
+            setbCRE(q)
+            
+        })
+    },[])
     if (!loading && allQTLsData && allQTLsData.length === 0) return (
         <Typography type="body" size="large">
             No eQTLs or linked bCREs were identified for this gene.
         </Typography>
     );
-
+   
+   
+    console.log(bccre,"bcre")
     return (
         <>
             { loading ? (

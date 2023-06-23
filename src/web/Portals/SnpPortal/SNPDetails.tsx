@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { GridProps, Grid, Divider } from '@mui/material';
-import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import Box from '@mui/material/Box';
@@ -10,7 +10,12 @@ import GwasPage from './GwasPage';
 import { gql, useQuery } from '@apollo/client';
 import EGeneTable from './EGeneTable';
 import RegulatoryElements from './RegulatoryElements';
+import styled from "@emotion/styled";
 
+export const StyledTab = styled(Tab)(() => ({
+    textTransform: "none",
+  }))
+  
 export const QUERY = gql`
 query SNP(
   $coordinates: [GenomicRangeInput]
@@ -135,23 +140,24 @@ const SNPDetails: React.FC<GridProps> = (props) => {
     const handleTabChange = (_: any, newTabIndex: number) => {
         setTabIndex(newTabIndex);
     };
-    const { data  } = useQuery<QueryResponse>(QUERY, {
-        variables: {
-            coordinates: expandedCoordinates,
-            population:  "AFRICAN",
-            rSquaredThreshold: 0.7,
-            id: snpid,
-            ...expandedCoordinates
-        }, context: {
-			clientName: 'psychscreen'
-		}
+      const { data  } = useQuery<QueryResponse>(QUERY, {
+          variables: {
+              coordinates: expandedCoordinates,
+              population:  "AFRICAN",
+              rSquaredThreshold: 0.7,
+              id: snpid,
+              ...expandedCoordinates
+          }, context: {
+        clientName: 'psychscreen'
+      }
     });
     return(
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />
@@ -168,9 +174,9 @@ const SNPDetails: React.FC<GridProps> = (props) => {
                   <Box>
                     <Tabs value={tabIndex} onChange={handleTabChange}>
                         
-                        <Tab label="eGenes" />
-                        <Tab label="Regulatory Elements" />
-                        <Tab label="GWAS" />
+                        <StyledTab label="eGenes" />
+                        <StyledTab label="Regulatory Elements" />
+                        <StyledTab label="GWAS" />
                     </Tabs>
                     <Divider/>
                   </Box>

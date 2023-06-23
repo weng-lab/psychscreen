@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { groupBy } from 'queryz';
 import React, { useMemo } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import AdultFetalScatterPlot from './scatterplot/adult-fetal';
 
 const QUERY = gql`

@@ -1,6 +1,6 @@
 import React from 'react';
 import { GridProps } from '@mui/material';
-import { AppBar, HorizontalCard, Typography } from '@zscreen/psychscreen-ui-components';
+import { AppBar, HorizontalCard, Typography } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from '@mui/material';
@@ -98,9 +98,10 @@ const SingleCelldegdisease: React.FC<GridProps> = props => {
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 style={{ marginBottom: "63px" }}
             />
             <Grid {...props}>

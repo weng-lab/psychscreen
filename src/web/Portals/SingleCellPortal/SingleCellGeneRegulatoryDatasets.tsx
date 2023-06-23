@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { GridProps } from '@mui/material';
-import { AppBar, Typography } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography } from '@weng-lab/psychscreen-ui-components';
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container } from '@mui/material';
@@ -31,18 +31,21 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = props => {
     const { celltype } = useParams();
     const [ grn, setGrn ] = useState<any>([]);
     
+    
     useEffect( () => {
         fetch(`https://downloads.wenglab.org/${celltype}.json`)
             .then(x => x.json())
             .then(setGrn)
     }, [celltype]);
+
   
     return (
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
                 style={{ marginBottom: "63px" }}
             />

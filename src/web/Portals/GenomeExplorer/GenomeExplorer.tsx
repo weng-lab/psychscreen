@@ -5,7 +5,7 @@ import { GenomeBrowser, RulerTrack, UCSCControls } from 'umms-gb';
 import GeneTrack from './GeneTrack';
 import { EpigeneticTracks, tracks } from '../../../genome-explorer';
 import { DeepLearnedModelTracks } from '../../../genome-explorer/DeepLearnedModels';
-import { Button } from '@zscreen/psychscreen-ui-components';
+import { Button } from '@weng-lab/psychscreen-ui-components';
 import { downloadSVG } from '../GenePortal/violin/utils';
 import { downloadSVGAsPNG } from '../../svgToPng';
 
@@ -26,8 +26,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps>
 
         /* drawing rectangular highlight at a given range */
         const [ highlight, setHighlight ] = useState<GenomicRange | null>(null);
-        console.log(setHighlight);
-
+        
         /* tracks and coordinates */
         const epigeneticTracks = useMemo( () => tracks("GRCh38", coordinates), [ coordinates ]);
         const navigateCoordinates = useCallback(({ start, end }) => {

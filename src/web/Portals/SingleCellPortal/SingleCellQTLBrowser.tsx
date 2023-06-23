@@ -7,6 +7,7 @@ import { GenomeBrowser, RulerTrack, UCSCControls, EmptyTrack,  DenseBigBed } fro
 import CytobandView from '../GenePortal/Browser/Explorer/Cytobands';
 import { gql, useQuery } from "@apollo/client"
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
+import { Arcs } from './Arcs';
 
 
 
@@ -40,35 +41,35 @@ export type BigQueryResponse = {
 };
 
 const qtls = [
-    [ "Astrocytes", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Astro_sig_QTLs.bigbed" ],
+    [ "Astrocytes", "https://downloads.wenglab.org/Astro_sig_QTLs.dat.bb" ],
     
-    [ "Chandelier", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Chandelier__Pvalb_sig_QTLs.bigbed" ],
+    [ "Chandelier", "https://downloads.wenglab.org/Chandelier__Pvalb_sig_QTLs.dat.bb" ],
    
    
-    [ "Vip", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Vip_sig_QTLs.bigbed" ],
+    [ "Vip", "https://downloads.wenglab.org/Vip_sig_QTLs.dat.bb" ],
     
-    [ "Sst", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Sst__Sst.Chodl_sig_QTLs.bigbed" ],
+    [ "Sst", "https://downloads.wenglab.org/Sst__Sst.Chodl_sig_QTLs.dat.bb" ],
     
-    [ "Pericytes", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/PC_sig_QTLs.bigbed" ],
+    [ "Pericytes", "https://downloads.wenglab.org/PC_sig_QTLs.dat.bb" ],
     
-    [ "Layer 2/3 Intratelencephalic projecting", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L2.3.IT_sig_QTLs.bigbed" ],
+    [ "Layer 2/3 Intratelencephalic projecting", "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat.bb" ],
 
-    [ "Layer 4 Intratelencephalic projecting ", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L4.IT_sig_QTLs.bigbed" ],
+    [ "Layer 4 Intratelencephalic projecting ", "https://downloads.wenglab.org/L4.IT_sig_QTLs.dat.bb" ],
 
-    [ "Layer 5/6 Near projecting ", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L5.6.NP_sig_QTLs.bigbed" ],
+    [ "Layer 5/6 Near projecting ", "https://downloads.wenglab.org/L5.6.NP_sig_QTLs.dat.bb" ],
 
-    [ "Layer 5 Intratelencephalic projecting", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L5.IT_sig_QTLs.bigbed" ],
+    [ "Layer 5 Intratelencephalic projecting", "https://downloads.wenglab.org/L5.IT_sig_QTLs.dat.bb" ],
     
-    [ "Layer 6 Corticothalamic projecting ", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L6.CT_sig_QTLs.bigbed" ],
-    [ "Layer 6 Intratelencephalic projecting ", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L6.IT_sig_QTLs.bigbed" ],
+    [ "Layer 6 Corticothalamic projecting ", "https://downloads.wenglab.org/L6.CT_sig_QTLs.dat.bb" ],
+    [ "Layer 6 Intratelencephalic projecting ", "https://downloads.wenglab.org/L6.IT_sig_QTLs.dat.bb" ],
 
-    [ "L6b", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/L6b_sig_QTLs.bigbed" ],
+    [ "L6b", "https://downloads.wenglab.org/L6b_sig_QTLs.dat.bb" ],
 
-    [ "Lamp5.Lhx6", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Lamp5.Lhx6_sig_QTLs.bigbed" ],
-    [ "Lamp5", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Lamp5_sig_QTLs.bigbed" ],
-    [ "Microglia", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Micro.PVM_sig_QTLs.bigbed" ],
-    [ "Oligodendrocytes", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/Oligo_sig_QTLs.bigbed" ],
-    [ "Oligodendrocyte Precursor Cells", "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/QTLs/OPC_sig_QTLs.bigbed" ]
+    [ "Lamp5.Lhx6", "https://downloads.wenglab.org/Lamp5.Lhx6_sig_QTLs.dat.bb" ],
+    [ "Lamp5", "https://downloads.wenglab.org/Lamp5_sig_QTLs.dat.bb" ],
+    [ "Microglia", "https://downloads.wenglab.org/Micro.PVM_sig_QTLs.dat.bb" ],
+    [ "Oligodendrocytes", "https://downloads.wenglab.org/Oligo_sig_QTLs.dat.bb" ],
+    [ "Oligodendrocyte Precursor Cells", "https://downloads.wenglab.org/OPC_sig_QTLs.dat.bb" ]
     
     
 ]
@@ -76,8 +77,8 @@ const qtls = [
 
 const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
     const svgRef = React.useRef<SVGSVGElement>(null);
-    const [ coordinates, setCoordinates ] = useState<GenomicRange>({chromosome:"chr11", start:  6191422, end:  6193124});
-  //chr6:152600000-152610000
+    const [ coordinates, setCoordinates ] = useState<GenomicRange>({chromosome:"chr11", start:  6169295, end:  6215251});
+  
     const onDomainChanged = useCallback(
         (d: GenomicRange) => {
             const chr = d.chromosome === undefined ? coordinates.chromosome : d.chromosome;
@@ -124,6 +125,16 @@ const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
 const BBTrack: React.FC<{ data: BigResponseData, url: string, title: string, color?: string, height: number, transform?: string, onHeightChanged?: (height: number) => void, domain: GenomicRange, svgRef?: React.RefObject<SVGSVGElement> }>
     = ({ data, url, title, height, domain, transform, onHeightChanged, svgRef, color }) => {        
         useEffect( () => onHeightChanged && onHeightChanged(height + 40), [ height, onHeightChanged ]);
+        
+        const re = data as BigBedData[]
+        let linkdata  = re
+        .map((r)=>{
+            return {
+                        regionA: { chromosome: r.chr, start: +r.start, end: +r.end+1},
+                        regionB: { chromosome: r.name?.split(":")[0]!!, start:  +r.name?.split(":")[1].split("-")[0]!!, end:   +r.name?.split(":")[1].split("-")[1]!!+1},
+                        score: 30
+                    }            
+        })
        
         return (
             <g transform={transform}>
@@ -134,24 +145,17 @@ const BBTrack: React.FC<{ data: BigResponseData, url: string, title: string, col
                     id=""
                     text={title}
                 />
-                    <DenseBigBed
+                    <Arcs
                         width={1400}
                         height={height}
                         domain={domain}
-                        id="qtl"
+                        id="atc"
+                        arcOpacity={1}
                         transform="translate(0,40)"
-                        data={data as BigBedData[]}
+                        data={linkdata}                       
+                        color="black"
                         svgRef={svgRef}
-                       /* tooltipContent={rect => { 
-                            console.log(rect)
-                            return (
-                                <div style={{ border: "1px solid", borderColor: "#000000", backgroundColor: "#ffffff", padding: "5px" }}>
-                                  {`TF: ${rect.name!!.split("_")[0]}`}
-                                  <br/>
-                                  {`TG: ${rect.name!!.split("_")[1]}`}
-                                </div>
-                              )
-                        }}*/
+                        
                     />
                 
             </g>

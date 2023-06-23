@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { CircularProgress } from '@mui/material';
-import { CustomizedTable, Typography } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Typography } from '@weng-lab/psychscreen-ui-components';
 import React, { useMemo } from 'react';
 import { GenomicRange } from './SNPDetails';
 

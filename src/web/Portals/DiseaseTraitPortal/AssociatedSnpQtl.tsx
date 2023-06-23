@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
-import { CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 import CircularProgress from '@mui/material/CircularProgress';
 import { GwasIntersectingSnpsWithCcres } from './DiseaseIntersectingSnpsWithccres';
 

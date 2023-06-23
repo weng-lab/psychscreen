@@ -1,11 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import { Grid, Container, GridProps, Divider } from '@mui/material';
-import { CustomizedTable, Button } from '@zscreen/psychscreen-ui-components';
+import { CustomizedTable, Button } from '@weng-lab/psychscreen-ui-components';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import styled from "@emotion/styled";
 import { compareByMinimumP } from './AssociatedSnpQtl';
+import { StyledButton } from './DiseaseTraitDetails';
 
+export const StyledTab = styled(Tab)(() => ({
+    textTransform: "none",
+  }))
 export type GwasIntersectingSnpsWithCcres = {    
     snpid: string,
     snp_chrom: string,
@@ -81,9 +86,9 @@ const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccre
                     <Container style={{ marginTop: "30px", marginLeft: "100px" }}>
                         <Box>
                             <Tabs value={tabIndex} onChange={handleTabChange}>
-                                <Tab label="SNPs Intersecting any cCRE" ></Tab>
+                                <StyledTab label="SNPs Intersecting any cCRE" ></StyledTab>
                                 { adult_bcredata && fetal_bcredata && (adult_bcredata.length > 0 || fetal_bcredata.length > 0) && (
-                                    <Tab label="SNPs Intersecting brain cCREs (bCREs)" />
+                                    <StyledTab label="SNPs Intersecting brain cCREs (bCREs)" />
                                 )}
                             </Tabs>
                             <Divider/>
@@ -92,8 +97,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccre
                         { adult_bcredata && fetal_bcredata && (adult_bcredata.length > 0 || fetal_bcredata.length > 0) && tabIndex === 1 && (
                             <>
                                 <br/>
-                                { adult_bcredata && <Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(0)}>Adult</Button> }&nbsp;&nbsp;&nbsp;
-                                { fetal_bcredata && <Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(1)}>Fetal</Button> }
+                                { adult_bcredata && <StyledButton bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(0)}>Adult</StyledButton> }&nbsp;&nbsp;&nbsp;
+                                { fetal_bcredata && <StyledButton bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={() => setPage(1)}>Fetal</StyledButton> }
                                 { page === 0 && <CustomizedTable style={{ width: "max-content" }} tabledata={AdultGWASIntersectingSnpDataWithBcre} /> }
                                 { page === 1 && <CustomizedTable style={{ width: "max-content" }} tabledata={FetalGWASIntersectingSnpDataWithBcre} /> }
                             </>

@@ -1,11 +1,11 @@
 import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Chart, Scatter } from 'jubilant-carnival';
-import { Typography, CustomizedTable } from '@zscreen/psychscreen-ui-components';
+import { Typography, CustomizedTable } from '@weng-lab/psychscreen-ui-components';
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { tissueTypeColors } from './consts';
 import { lower5, range, upper5 } from './GTexUMAP';
 
-type QueryResponse = [
+export type QueryResponse = [
     number,
     string[],
     any,
@@ -51,11 +51,11 @@ function useSpecificities(gene: string) {
     return matches;
 }
 
-function useGeneDescription(gene: string) {
+export function useGeneDescription(gene: string) {
     const [ description, setDescription ] = useState("");
     useEffect( () => {
         setDescription("");
-        fetch("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" + gene)
+        fetch("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" + gene.toUpperCase())
             .then(x => x.json())
             .then(x => {
                 const matches = (x as QueryResponse)[3] && (x as QueryResponse)[3].filter(x => x[3] === gene);
@@ -202,7 +202,7 @@ const GeneOverview: React.FC <{ gene?: string | undefined }> = ({ gene }) => {
     const [ category, setCategory ] = useState("all");
     const description = useGeneDescription(gene || "N/A");
     const specificities = useSpecificities(gene || "");
-    console.log(specificities);
+    
     const data = useMemo( () => [[{
         header: "",
         value: "Gene Description"

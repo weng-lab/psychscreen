@@ -1,10 +1,10 @@
 
 import { useParams } from "react-router-dom";
 import React, { useCallback, useMemo, useState } from 'react';
-import { AppBar } from '@zscreen/psychscreen-ui-components';
+import { AppBar } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, GridProps } from '@mui/material';
-import { Typography, Button } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
@@ -15,8 +15,12 @@ import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
-import SignifcantSNPs from "./SignificantSNPs";
+import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
+import styled from "@emotion/styled";
 
+export const StyledButton = styled(Button)(() => ({
+    textTransform: "none",
+  }))
 const AssociatedSnpQuery = gql`
 query gwassnpAssoQuery(
     $disease: String!
@@ -149,7 +153,6 @@ function useLoci(trait: string) {
                 url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb"
             }
         });
-    console.log(data, loading);
     const loci = useMemo( () => {
         if (!data) return undefined;
         if (!URL_MAP[trait].startsWith("https"))
@@ -201,11 +204,11 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
             : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed"
     );
     const { loci, data } = useLoci(disease || "");
-    console.log(summaryStatisticsURL);
+    
     const { data: genesdata } = useQuery(AssociatedGenesQuery, {
         variables: {
             disease: (disease || ''),
-            limit: 1000,
+          //  limit: 1000,
             skip: disease === ''
         }
     });
@@ -214,6 +217,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
             disease: disease
         },
         skip: disease === ''
+
     });
     const { data: adultgwasIntersectingSnpWithBcresData } = useQuery(GwasIntersectingSnpswithBcresQuery, {
         variables: {
@@ -229,14 +233,17 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
         },
         skip: disease === ''
     });
-
+    const trait = disease ? URL_MAP[disease] : ""
+    const significantSNPs = useSNPs(traitKey(trait));
+    const gassoc = genesdata && genesdata.genesAssociationsQuery.filter(g=>g.dge_fdr<=0.05)
     return (
         <>
             <AppBar
                 centered
-                onDownloadsClicked={() => navigate("/downloads")}
+                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
                 onHomepageClicked={() => navigate("/")}
                 onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
+                onAboutClicked={() => navigate("/psychscreen/aboutus")}
                 style={{ marginBottom: "63px" }}
             />
             <Grid container {...props}>  
@@ -259,16 +266,16 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                             {diseaseDesc}
                         </Typography>
                         <br/>
-                        <Button bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>GWAS Locus Overview</Button>&nbsp;&nbsp;&nbsp;
-                        {genesdata && genesdata.genesAssociationsQuery.length > 0 && <><Button bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</Button>&nbsp;&nbsp;&nbsp;</>}
-                        {data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 && <><Button bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</Button>&nbsp;&nbsp;&nbsp;</>}
+                        <StyledButton bvariant={page === -1 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(-1)}>GWAS Locus Overview</StyledButton>&nbsp;&nbsp;&nbsp;
+                        {gassoc && gassoc.length > 0 && <><StyledButton bvariant={page === 0 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(0); }}>Gene Associations (TWAS)</StyledButton>&nbsp;&nbsp;&nbsp;</>}
+                        {data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 && <><StyledButton bvariant={page === 1 ? "filled" : "outlined"}  btheme="light" onClick={()=>{ setPage(1)}}>Associated SNPs &amp; QTLs</StyledButton>&nbsp;&nbsp;&nbsp;</>}
                         {gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 && (
-                            <><Button bvariant={page === 2 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(2)}>Regulatory SNP Associations</Button>&nbsp;&nbsp;&nbsp;</>
+                            <><StyledButton bvariant={page === 2 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(2)}>Regulatory SNP Associations</StyledButton>&nbsp;&nbsp;&nbsp;</>
                         )}
                         { browserCoordinates && (
-                            <Button bvariant={page === 3 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(3)}>Brain (epi)genome browser</Button>
+                            <StyledButton bvariant={page === 3 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(3)}>Brain epi Genome Browser</StyledButton>
                         )}
-                        <Button bvariant={page === 4 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(4)}>Prioritized risk variants</Button>
+                        {significantSNPs && significantSNPs.length>0 && <StyledButton bvariant={page === 4 ? "filled" : "outlined"} btheme="light" onClick={() => setPage(4)}>Prioritized risk variants</StyledButton>}
                     </Container>
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />
@@ -276,8 +283,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                 <Grid sm={10} md={10} lg={9} xl={9}>
                     { page === -1 ? (
                         <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
-                    ) : page === 0 && genesdata && genesdata.genesAssociationsQuery.length > 0 ? (
-                        <GeneAssociations disease={disease || ''} data={genesdata.genesAssociationsQuery} />
+                    ) : page === 0 && gassoc && gassoc.length > 0 ? (
+                        <GeneAssociations disease={disease || ''} data={gassoc} />
                     ) : page === 1 && data && (data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery?.length > 0 ? (
                         <AssociatedSnpQtl disease={disease || ''} data={(data as { gwassnpAssociationsQuery: GWAS_SNP[] }).gwassnpAssociationsQuery}/>
                     ) : page === 2 && gwasIntersectingSnpWithCcresData && adultgwasIntersectingSnpWithBcresData && fetalgwasIntersectingSnpWithBcresData && gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery.length > 0 ? (
@@ -291,8 +298,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = props => {
                         <div style={{ marginTop: "2em" }}>
                             <Browser coordinates={browserCoordinates} url={summaryStatisticsURL} trait={diseaseLabel || "Autism Spectrum Disorder"} />
                         </div>
-                    ) : page === 4 ? (
-                        <SignifcantSNPs trait={disease ? URL_MAP[disease] : ""} onSNPClick={navigateBrowser} />
+                    ) : page === 4 && significantSNPs && significantSNPs.length>0  ? (
+                        <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
                     ) : null }
                 </Grid>
                 <Grid item sm={1}  md={1} lg={1.5} xl={1.5} />

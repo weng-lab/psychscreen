@@ -1,3 +1,4 @@
 import EpigeneticTracks, { tracks } from './EpigeneticTracks';
 import VariantTracks from './VariantTracks';
-export { EpigeneticTracks, tracks, VariantTracks };
+import ConservationTracks from './ConservationTracks';
+export { EpigeneticTracks, tracks, VariantTracks, ConservationTracks };

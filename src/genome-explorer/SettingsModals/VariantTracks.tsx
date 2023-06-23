@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Modal, Accordion, Box } from '@material-ui/core';
-import { Typography, Button } from '@zscreen/psychscreen-ui-components';
+import { Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import { AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -29,7 +29,7 @@ const style = {
 
 const TRACKS = {
     "EBI Catalog": Object.keys(URL_MAP).map(k => [
-        k, `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[k]}.bigBed`
+        k, URL_MAP[k].startsWith("https") ? URL_MAP[k]: `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[k]}.bigBed`
     ])
 };
 

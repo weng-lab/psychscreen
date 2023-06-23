@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@zscreen/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 
 import { linearTransform } from './utils';
 import  XAxis from './xaxis';

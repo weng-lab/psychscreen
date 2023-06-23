@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Typography, Button } from '@zscreen/psychscreen-ui-components';
+import { AppBar, Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
 import { Divider, Grid, TextField, Box, Tabs, Tab } from '@mui/material';
 import ViolinPlot from './violin/violin';
@@ -15,7 +15,11 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import GeneOverview from './GeneOverview';
 import SingleCell from './SingleCell';
-  
+import styled from "@emotion/styled";
+
+export const StyledTab = styled(Tab)(() => ({
+    textTransform: "none",
+  }))
 type GTExGeneQueryResponse = {
     gtex_genes: {
         val: number;
@@ -43,6 +47,25 @@ query ($assembly: String!,  $name_prefix: [String!]) {
   gene(assembly: $assembly, name_prefix: $name_prefix) {
     name
     id
+    coordinates {
+      start
+      chromosome
+      end
+    } 
+  }
+}
+`
+
+const GENE_COORDS_QUERY = gql`
+query ($assembly: String!,  $name_prefix: [String!]) {
+  gene(assembly: $assembly, name_prefix: $name_prefix) {
+    name
+    id
+    coordinates {
+      start
+      chromosome
+      end
+    } 
   }
 }
 `
@@ -50,7 +73,7 @@ query ($assembly: String!,  $name_prefix: [String!]) {
 const GeneDetails: React.FC = (props) => {
     const { gene } = useParams();
     const { state }: any = useLocation();
-    console.log(useLocation())
+    
     const navigate = useNavigate();  
     const [ tabIndex, setTabIndex ] = useState(0);
     const ref = useRef<SVGSVGElement>(null);
@@ -59,8 +82,11 @@ const GeneDetails: React.FC = (props) => {
     const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
     const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
     const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
-    if (trueGeneId) geneid = trueGeneId;
 
+    const [region, setRegion] = useState({chromosome: chromosome, start: start, end: end}) 
+
+    if (trueGeneId) geneid = trueGeneId;
+    const params = useParams();
     const handleTissueCategory = (
         _: any,
         newTissueCategory: string | null,
@@ -72,6 +98,12 @@ const GeneDetails: React.FC = (props) => {
         setTabIndex(newTabIndex);
     };
 
+    const {data: geneCoords} = useQuery(GENE_COORDS_QUERY,{ variables: {
+      name_prefix: [params.gene],
+      assembly: "GRCh38"
+    },skip: params.gene==''})
+
+    console.log("geneCoords",geneCoords)
     const onGeneChange = React.useCallback(
       async (value: any) => {
           
@@ -80,18 +112,21 @@ const GeneDetails: React.FC = (props) => {
               body: JSON.stringify({
                   query: GENE_ID_QUERY,
                   variables: {
-                    name_prefix: [value],
+                    name_prefix: [value.toUpperCase()],
                     assembly: "GRCh38"
                   },
               }),
               headers: { 'Content-Type': 'application/json' },
           });
-          const geneID = (await response.json()).data?.gene;          
+          const geneID = (await response.json()).data?.gene; 
+          let d = geneID.find(n=>n.name.toUpperCase()===value.toUpperCase()) ? geneID.find(n=>n.name.toUpperCase()===value.toUpperCase()): geneID[0]         
           setTrueGeneName(value)
-          setTrueGeneId(geneID[0].id.split(".")[0])
+          setTrueGeneId(d.id.split(".")[0])
+          setRegion({chromosome: d.coordinates.chromosome,start: d.coordinates.start,end: d.coordinates.end})
       },
-      []
+      [params.gene]
   );
+
     const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {		
         variables: {
             gene_id: geneid
@@ -141,12 +176,13 @@ const GeneDetails: React.FC = (props) => {
       <>
             <AppBar
               centered
-              onDownloadsClicked={() => navigate("/downloads")}
+              onDownloadsClicked={() => navigate("/psychscreen/downloads")}
               onHomepageClicked={() => navigate("/")}
+              onAboutClicked={() => navigate("/psychscreen/aboutus")}
               onPortalClicked={index => navigate(`/psychscreen${PORTALS[index][0]}`)}
               style={{ marginBottom: "63px" }}
             />
-            <Grid container {...props}> 
+            <Grid container {...props} style={{ marginTop:'6em' }}> 
                 <Grid item sm={1} lg={1.5} />
                 <Grid item sm={9}>
                     <Typography type="headline" size="large" style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}>
@@ -165,35 +201,34 @@ const GeneDetails: React.FC = (props) => {
                 <Grid item sm={9}>
                   <Box>
                     <Tabs value={tabIndex} onChange={handleTabChange}>
-                        <Tab label="Brain (Epi)genome Browser" />
-                        <Tab label="Brain Single Cell Expression" />
-                        <Tab label="Tissue Expression (GTEx)" /> 
-                        <Tab label="Brain Specificity" />                        
-                        <Tab label="Brain eQTLs and bCREs" />
+                        <StyledTab label="Brain epi Genome Browser" />
+                        <StyledTab label="Brain Single Cell Expression" />
+                        <StyledTab label="Tissue Expression (GTEx)" />                
+                        <StyledTab label="Brain eQTLs and bCREs" />
                         
-                        { null && <Tab label="Open Target" /> }
+                        { null && <StyledTab label="Open Target" /> }
                     </Tabs>
                     <Divider/>
                   </Box>
                   <Box sx={{ padding: 2 }}>
-                    { tabIndex === 3 ? (
+                    { tabIndex === 3  && 0>1 ? (
                       <Box>
-                        <GeneOverview gene={trueGeneName || gene} />
+                        
                       </Box>
-                    ) : tabIndex === 0 ? (
+                    ) : tabIndex === 0 && geneCoords? (
                       <Box>
                         <Browser
-                          name={trueGeneName?.toUpperCase() || gene}
-                          coordinates={{ chromosome, start: +start, end: +end }}
+                          name={trueGeneName?.toUpperCase() || gene?.toUpperCase() }
+                          coordinates={{ chromosome:  region.chromosome==='' ?  geneCoords.gene[0].coordinates.chromosome : region.chromosome, start:  region.start===null ?  +geneCoords.gene[0].coordinates.start : +region.start, end:  region.end===null ?  +geneCoords.gene[0].coordinates.end : +region.end }}
                         />
                       </Box>
                     ) : tabIndex === 3 && 0>1 ? (
                       <Box>
                         <GeneExpressionPage id={trueGeneId || geneid}/>
                       </Box>
-                    ) : tabIndex === 4 ? (
+                    ) : tabIndex === 3 ? (
                       <Box>
-                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene} coordinates={ {chromosome: chromosome,start: parseInt(start),end: parseInt(end)}
+                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene?.toUpperCase()} coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}
                         }/>
                       </Box>
                     ) : tabIndex === 5 ? (
