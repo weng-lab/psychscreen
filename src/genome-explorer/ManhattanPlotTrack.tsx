@@ -118,11 +118,12 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
     
     const height = useMemo( () => 220 * props.titles.length + 100, [ props.titles ]);
     useEffect( () => props.onHeightChanged && props.onHeightChanged(height), [ height, props.onHeightChanged ]);
+    
 
     // format and return
     return loading ? <Loader active>Loading...</Loader> : (
         <g transform="translate(0,25)">
-             { props.anchor && (
+            { props.anchor && (
                 <g transform={`translate(${transform(inViewCoordinates.get(props.anchor)?.end || -10000)},0)`}>
                     <text textAnchor={transform(inViewCoordinates.get(props.anchor)?.end || -10000) > 1000 ? "end" : "start"}>{props.anchor}</text>
                 </g>
