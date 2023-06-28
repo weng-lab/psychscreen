@@ -3,6 +3,7 @@ import { Typography } from '@weng-lab/psychscreen-ui-components';
 import React from 'react';
 import { YAxis } from '../GenePortal/axis';
 import { linearTransform } from '../GenePortal/violin/utils';
+import { linearTransform as lt} from 'jubilant-carnival';
 
 function pickHex(color1: number[], color2: number[], w1: number) {
     const w2 = 1 - w1;
@@ -50,7 +51,8 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
     const results = React.useMemo(() => new Map(
         data?.singleCellBoxPlotQuery.map(x => [
             x.celltype,
-            { radius: x.expr_frac, colorpercent: x.mean_count }
+            { radius: x.expr_frac, 
+                colorpercent: x.mean_count }
         ])
     ), [ data ]);
 
@@ -102,7 +104,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
             return [Math.min(...cp), Math.max(...cp)];
         }, [ results, keys ]);
         const radiusTransform = React.useCallback(linearTransform(radiusDomain, [ 20, 60 ]), radiusDomain);
-        const verticalTransform = React.useCallback(linearTransform(colorDomain, [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
+        const verticalTransform = React.useCallback(linearTransform([0,1], [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
 
         // Compute radius and color scaling factors
         const length = keys.length+20;
@@ -110,8 +112,15 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
             const diff = +((+radiusDomain[1] - +radiusDomain[0]) / 4);
             return [ 0, 1, 2, 3 ].map(x => radiusDomain[0] + diff * x);
         }, [ radiusDomain ]);
-        const colorPercent = split(colorDomain[0],colorDomain[1],4);
+        const colorPercent =    React.useMemo(()=>{
+            return split(colorDomain[0],colorDomain[1],4);
+        },[colorDomain])
         
+        
+        const gradient =   React.useMemo(()=>{
+            return lt({ start: colorDomain[0], end: colorDomain[1] }, { start: 191, end: 0 });
+        },[colorDomain])
+         
         // No data message if this gene is not recognized
        /* if (data?.singleCellBoxPlotQuery.length === 0)
             return (
@@ -121,6 +130,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
             );*/
         
         // Dot plot for recognized genes
+        console.log(results,"results")
         return (
             <svg
                 viewBox={`0 0 ${width} ${width / 3}`}
@@ -157,7 +167,8 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                                 {x}
                             </text>
                             <circle
-                                fill={`rgb(${pickHex([20,20,255],[235,235,255],results.get(x)!!.colorpercent).join(",")})`}
+                            fill={`rgb(${gradient((results.get(x)!!.colorpercent)).toFixed(0)},${gradient((results.get(x)!!.colorpercent)).toFixed(0)},255)`}
+                                //fill={`rgb(${pickHex([20,20,255],[235,235,255],results.get(x)!!.colorpercent).join(",")})`}
                                 cy={verticalTransform(0.5)}
                                 r={radiusTransform(results.get(x)!!.radius)}
                                 cx={(i + 2.5) * width / length}
@@ -206,7 +217,8 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                             height={100} 
                             x={(keys.length*0.4) * width / length}
                             y={i * 150 + height * 0.8}
-                            fill={`rgb(${pickHex([20,20,255],[235,235,255], r).join(",")})`}
+                            //fill={`rgb(${pickHex([20,20,255],[235,235,255], r).join(",")})`}
+                            fill={`rgb(${gradient((r)).toFixed(0)},${gradient((r)).toFixed(0)},255)`}
                         />
                         <text
                             fontSize="140px"

@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import { GeneAutoComplete } from '../GenePortal/GeneAutocomplete';
 
 
 const GENE_AUTOCOMPLETE_QUERY = `
@@ -81,7 +82,8 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                         >
                             Search Gene to show Dot Plot 
                         </Typography>
-                        <SearchBox
+                        <GeneAutoComplete navigateto={`/psychscreen/single-cell/${disease}/`}/>
+                        {0>1 &&<SearchBox
                             value={val}
                             onChange={
                             e => { 
@@ -93,17 +95,11 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                                 }   
                             }}                
                             helperText={"e.g. sox4, gapdh"}                            
-                        />
+                        />}
 
                     </Container>
-
-                    
-                   
                 </Grid>
                 
-                    
-                
-              
                 <Grid item sm={6} >
                 { fetching ? ( <Container style={{ marginLeft: "12px", marginTop: "150px" }}> <> 
                         <Typography
@@ -118,14 +114,13 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                        
                         </>  </Container>) :  ( 
                             <>
-                            {geneCards && geneCards!.length > 0 && <Slide direction="up" in timeout={1000}>
+                            {0>1 && geneCards && geneCards!.length > 0 && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                     {<Paper elevation={0} style={{  maxHeight: 500, width: 350, overflow: 'auto'}}>
                                         <HorizontalCard width={500}
                                         onCardClick={(v?: string) => {
-                                            let f = geneCards!!.find((g: any)=> g.val===v)
-                                            
-                                   navigate(`/psychscreen/single-cell/${disease}/${f?.cardLabel}`)
+                                            let f = geneCards!!.find((g: any)=> g.val===v)                                            
+                                            navigate(`/psychscreen/single-cell/${disease}/${f?.cardLabel}`)
                                         }}
                                         cardContentText={geneCards!!} 
                                     />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Container, GridProps } from '@mui/material';
 import { Button, Typography } from '@weng-lab/psychscreen-ui-components';
+import { StyledButton } from '../Portals/DiseaseTraitPortal/DiseaseTraitDetails';
 
 const AboutUsPanel: React.FC<GridProps> = props => (
     <Grid container {...props}>
@@ -27,7 +28,7 @@ const AboutUsPanel: React.FC<GridProps> = props => (
                     PsychSCREEN is a comprehensive catalog of genetic and epigenetic knowledge about the human brain. It was designed and built by Dr. Zhiping Weng's
                     lab at UMass Chan Medical School as a product of the PsychENCODE Consortium.
                 </Typography>
-                <Button bvariant='outlined' btheme='light'>Learn More</Button>
+                <StyledButton bvariant='outlined' btheme='light'>Learn More</StyledButton>
             </Container>
         </Grid>
         <Grid item sm={6} md={4} lg={4} xl={3}>

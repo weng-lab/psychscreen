@@ -214,7 +214,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
     
     const { loading: UMAPLoading, data: UMAPData } = useSingleCellUMAPData(dataset);
     
-    const maximumValue = Math.max(...(expressionData?.singleCellGenesQuery || [ { val: 0 }, { val: 1 } ]).map((x: { val: number }) => Math.log(x.val + 1)));
+    const maximumValue = Math.max(...(expressionData?.singleCellGenesQuery || [ { val: 0 }, { val: 1 } ]).map((x: { val: number }) => x.val ));
     const results = useMemo( () => {
         if (expressionLoading || UMAPLoading) return new Map<string, SingleCellGeneQueryItem & SingleCellUMAPQueryItem & { expressionColor: string }>([]);
         const UMAP_map = new Map(UMAPData?.singleCellUmapQuery.map(x => [ x.barcodekey, x ]) || []);
@@ -224,7 +224,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
             x, {
                 ...UMAP_map.get(x)!,
                 ...expression_map.get(x)!,
-                expressionColor: `rgb(255,${gradient(Math.log(expression_map.get(x)!.val + 1)).toFixed(0)},0)`
+                expressionColor: `rgb(255,${gradient((expression_map.get(x)!.val)).toFixed(0)},0)`
             }
         ]));
     }, [ expressionLoading, expressionData, UMAPData, UMAPLoading, maximumValue ]);
@@ -301,7 +301,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     
 
     const points = useMemo( () => [ ...data.values() ].slice(6000).map(x => ({ 
-        x: x.umap_1, y: x.umap_2, data:ctClass==="by SubClass"? x.subclass: x.celltype, val: Math.log(x.val+1), svgProps: {
+        x: x.umap_1, y: x.umap_2, data:ctClass==="by SubClass"? x.subclass: x.celltype, val: (x.val), svgProps: {
         fill: colorScheme === "expression" ? x.expressionColor : colors.get(ctClass==="by SubClass"? x.subclass: x.celltype),
         fillOpacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
         r: 8,
@@ -342,7 +342,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         <Grid container>         
             
             <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginBottom: "2em" }}>
-            <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">Select psychEncode Dataset:</Typography>
+            <Typography style={{ marginLeft: "1em", marginTop: "0.1em" }} type="body" size="large">Select PsychEncode Dataset:</Typography>
             
                 {<FormControl sx={{ m: 1, minWidth: 400 }} style={{ marginLeft: "1em", marginTop: "1em" }}>
                     <InputLabel id="simple-select-helper-label">Dataset:</InputLabel>
@@ -377,7 +377,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             { tabIndex === 1 ? (
                 <Grid item sm={12}>
 
-                    { (byCtDataLoading || byScDataLoading) ? <CircularProgress /> : (
+                    { (byCtDataLoading || byScDataLoading) ? <CircularProgress /> : (dotplotDataSc.singleCellBoxPlotQuery.length>0 || dotplotDataCt.singleCellBoxPlotQuery.length>0) ? (
                         <>
                         <br/>
                         <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
@@ -402,12 +402,12 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                 Download
                             </Button>
                         </>
-                    )}
+                    ): (<>{'Data Not available'}</>)}
                 </Grid>
             ) : (
                 <>
                 
-                    <Grid item sm={6} md={6} lg={6} xl={6}>
+                    {(byCtDataLoading || byScDataLoading) ? <CircularProgress/> : <Grid item sm={5} md={5} lg={5} xl={5}>
                         <>
                             <br/>
                             <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
@@ -427,11 +427,11 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                         onRowMouseLeave={() => setHighlighted("")}
                                     />
                                 </Paper>
-                            ) : <CircularProgress/>}
+                            ) : (<>{'Data Not available'}</>)}
                         </>
                         
-                    </Grid>
-                    {<Grid item sm={6} md={6} lg={6} xl={6}>
+                    </Grid>}
+                    {points && points.length>0 ? <Grid item sm={6} md={6} lg={6} xl={6}>
                         <div style={{ marginLeft: "8em" }}>
                             <Typography style={{ marginLeft: "2em", marginBottom: "0.5em" }} type="body" size="large">Color Scheme: &nbsp;&nbsp;&nbsp;&nbsp;   Gene: {gene} </Typography>
                             <ToggleButtonGroup style={{ marginLeft: "2em" }} size={"small"} value={colorScheme} exclusive onChange={(_, x) => setColorScheme(x)}>
@@ -444,7 +444,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                             </ToggleButtonGroup>
                         </div>
                         <div style={{ marginLeft: "-2em", marginTop: "-3em" }}>
-                            { loading ? <CircularProgress /> : (
+                            { loading ? <CircularProgress /> :   (
                                 <>
                                     <Chart
                                         key={dataset}
@@ -507,7 +507,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                                 fontSize={1.5}
                                                 textAnchor="middle"
                                             >
-                                                log 10 {gene} Expression
+                                                 {gene} Expression
                                             </text>
                                         )}
                                         { colorScheme === "expression" && (
@@ -540,7 +540,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                                 </>
                             )}
                         </div>
-                    </Grid>}
+                    </Grid> : (<></>)}
                 </>
             )}
         </Grid>

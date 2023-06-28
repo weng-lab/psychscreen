@@ -73,7 +73,7 @@ query ($assembly: String!,  $name_prefix: [String!]) {
 const GeneDetails: React.FC = (props) => {
     const { gene } = useParams();
     const { state }: any = useLocation();
-    console.log("state",state)
+    
     const navigate = useNavigate();  
     let { geneid, chromosome, start, end, tabind } = state ? state : { geneid: '', chromosome: '', start: null, end: null, tabind: 0 };
     const [ tabIndex, setTabIndex ] = useState(tabind || 0);

@@ -25,7 +25,6 @@ const COLUMNS = [{
   value: row => row.CRE
 }];
 
-
 const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = props => {
     const navigate = useNavigate(); 
     const { celltype } = useParams();

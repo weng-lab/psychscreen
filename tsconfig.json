@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["DOM", "ES6", "DOM.Iterable", "ScriptHost", "ES2016.Array.Include"],
+    "lib": [
+      "DOM",
+      "ES6",
+      "DOM.Iterable",
+      "ScriptHost",
+      "ES2016.Array.Include"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    //"strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -14,14 +19,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "typeRoots": [
-		  "./types",
-		  "./node_modules/@types"
-		],
+      "./types",
+      "./node_modules/@types"
+    ],
     "noEmit": true,
-    "jsx": "preserve",    
+    "jsx": "react-jsx",
     "downlevelIteration": true,
-    "noImplicitAny": false
-
+    "noImplicitAny": false,
+    "strict": true
   },
   "include": [
     "src"

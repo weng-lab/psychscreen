@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Container, Slide } from '@mui/material';
 
 import { TabletAppBar } from '@weng-lab/psychscreen-ui-components';
-import { Typography, Button } from '@weng-lab/psychscreen-ui-components';
+import { Typography } from '@weng-lab/psychscreen-ui-components';
 import CheckIcon from '@mui/icons-material/Check';
 import { SearchBox, HorizontalCard } from '@weng-lab/psychscreen-ui-components';
 import { useTheme, useMediaQuery, Paper } from '@material-ui/core';
@@ -18,9 +18,9 @@ import { PORTALS } from '../../../App';
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import GeneBCRE from '../../../assets/gene-bcre.png';
 import CircularProgress from '@mui/material/CircularProgress';
-import { QueryResponse, useGeneDescription } from './GeneOverview';
+import { QueryResponse } from './GeneOverview';
 import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
-
+import { GeneAutoComplete} from './GeneAutocomplete';
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
     gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
@@ -80,7 +80,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
         },
         []
     );
-  let r = useEffect(()=>{ 
+    useEffect(()=>{ 
     
     const fetchDAta =  async ()=>{
         let f = await Promise.all(geneCards!!.map(f=>f.cardLabel!!).map(gene =>
@@ -165,7 +165,9 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                         </Typography>
                         <br/>
                         <br/>
-                        <SearchBox
+                        <GeneAutoComplete navigateto="/psychscreen/gene/"/>
+                        <br/>
+                        {0>1 && <SearchBox
                             value={val}
                             onChange={
                             e => { 
@@ -177,7 +179,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                                 }   
                             }}                
                             helperText={"e.g. sox4, gapdh"}                            
-                        />
+                        />}
                          
                     <br/>
                     <br/>
@@ -211,7 +213,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                        
                         </>  </Container>) :  ( 
                             <>
-                            {geneCards!.length > 0 && geneDesc && <Slide direction="up" in timeout={1000}>
+                            {0>1 && geneCards!.length > 0 && geneDesc && <Slide direction="up" in timeout={1000}>
                                 <Container style={{ marginLeft: "12px", marginTop: "150px" }}>            
                                     {<Paper elevation={0} style={{  maxHeight: 500, width: 350, overflow: 'auto'}}>
                                         <HorizontalCard width={300} 

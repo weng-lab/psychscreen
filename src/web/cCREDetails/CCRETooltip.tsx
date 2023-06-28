@@ -63,8 +63,7 @@ const CCRETooltip: React.FC<CCRETooltipProps> = props => {
                     <svg height={18}>
                         <rect width={10} height={10} y={3} fill={COLORS.get(data.group || "") || "#06da93" } />
                         <text x={16} y={12}>{props.name} ⸱ {GROUPS.get(data.group || "")}</text>
-                    </svg>
-                    Click for details about this cCRE<br /><br />
+                    </svg>                    
                     <strong>Max Z-scores in brain:</strong><br />
                     { maxZ && [ "DNase", "H3K4me3", "H3K27ac", "CTCF" ].filter(a=>maxZ[a]!=-Infinity).map( (x, i) => (
                         <React.Fragment key={i}>

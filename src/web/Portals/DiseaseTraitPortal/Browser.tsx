@@ -32,7 +32,7 @@ const Browser: React.FC<{ coordinates: GenomicRange, url: string, trait: string 
     const svgRef = useRef<SVGSVGElement>(null);
     const [ coordinates, setCoordinates ] = useState<GenomicRange>(props.coordinates);
     const [ highlight ] = useState<GenomicRange | null>(null);
-    
+    console.log(props.coordinates,"coords")
     const epigeneticTracks = useMemo( () => tracks("GRCh38", coordinates as { chromosome: string, start: number, end: number }), [ coordinates ]);
 
     const onDomainChanged = useCallback(

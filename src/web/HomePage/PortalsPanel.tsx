@@ -10,6 +10,7 @@ import SingleCell from '../../assets/single-cell.png';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme, useMediaQuery } from '@material-ui/core';
+import { StyledButton } from '../Portals/DiseaseTraitPortal/DiseaseTraitDetails';
 
 const useStyles = makeStyles(theme => ({
     root: {      
@@ -75,7 +76,7 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = props => {
                     >
                         <CheckIcon style={{ marginRight: "9px" }} /> 1,103 bCRE/trait associations
                     </Typography>
-                    <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/traits")}} >Explore Diseases/Traits</Button>
+                    <StyledButton bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/traits")}} >Explore Diseases/Traits</StyledButton>
                 </Container>
             </Grid>
             <Grid item xs={0} sm={0} md={0} lg={1} xl={2} ></Grid>
@@ -136,7 +137,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
                                     >
                                         <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain regulatory elements
                                     </Typography>
-                                    <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/gene")}}>Explore Genes/bCREs</Button>
+                                    <StyledButton bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/gene")}}>Explore Genes/bCREs</StyledButton>
                                 </Container>
                             </Grid> 
                         </>
@@ -180,7 +181,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = props => {
                                     >
                                         <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain regulatory elements
                                     </Typography>
-                                    <Button bvariant="filled" btheme="light"   onClick={()=>{ navigate("/psychscreen/gene")}}>Explore Genes/bCREs</Button>
+                                    <StyledButton bvariant="filled" btheme="light"   onClick={()=>{ navigate("/psychscreen/gene")}}>Explore Genes/bCREs</StyledButton>
                                 </Container>
                             </Grid>
                             <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
@@ -245,7 +246,7 @@ const SNPQTLPortalPanel: React.FC<GridProps> = props => {
                 >
                     <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in bCREs
                 </Typography>
-                <Button bvariant="filled" btheme="light"   onClick={()=>{ navigate("/psychscreen/snp")}}>Explore SNPs/QTLs</Button>
+                <StyledButton bvariant="filled" btheme="light"   onClick={()=>{ navigate("/psychscreen/snp")}}>Explore SNPs/QTLs</StyledButton>
             </Container>
         </Grid>
         <Grid item xs={0} sm={0} md={0} lg={1} xl={2} ></Grid>
@@ -296,7 +297,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility for 1,009,942 single cells
                         </Typography>
-                        <Button bvariant="filled" btheme="light"  onClick={()=>{ navigate("/psychscreen/single-cell")}}>Explore Single Cells</Button>
+                        <StyledButton bvariant="filled" btheme="light"  onClick={()=>{ navigate("/psychscreen/single-cell")}}>Explore Single Cells</StyledButton>
                     </Container>
                 </Grid>
             </> : 
@@ -332,7 +333,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = props => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility for 1,009,942 single cells
                         </Typography>
-                        <Button bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/single-cell")}}>Explore Single Cells</Button>
+                        <StyledButton bvariant="filled" btheme="light" onClick={()=>{ navigate("/psychscreen/single-cell")}}>Explore Single Cells</StyledButton>
                     </Container>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>

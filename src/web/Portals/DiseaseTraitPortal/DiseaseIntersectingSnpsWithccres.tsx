@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Grid, Container, GridProps, Divider } from '@mui/material';
+import { Grid, Container, GridProps, Divider, Link } from '@mui/material';
 import { CustomizedTable, Button } from '@weng-lab/psychscreen-ui-components';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -48,10 +48,27 @@ const formatEntry = (d: GwasIntersectingSnpsWithBcres | GwasIntersectingSnpsWith
     { header: 'bCRE chromosome', value: d.ccre_chrom },
     { header: 'bCRE start', value: d.ccre_start.toLocaleString() },
     { header: 'bCRE end', value: d.ccre_stop.toLocaleString() },
-    { header: 'bCRE ID', value: d.ccreid },
+    { header: 'bCRE ID', value: d.ccreid, render: <Link rel="noopener noreferrer" target="_blank"  href={`https://screen.beta.wenglab.org/search/?q=${d.ccreid}&assembly=GRCh38`}>
+    {d.ccreid }
+</Link>  },
     { header: 'bCRE class', value: d.ccre_class }
 ];
 
+const ccreformatEntry = (d:  GwasIntersectingSnpsWithCcres) => [
+    { header: 'SNP ID', value: d.snpid },
+    { header: 'Chromosome', value: d.snp_chrom },
+    { header: 'Position', value: d.snp_stop.toLocaleString() },
+    { header: 'Risk Allele', value: d.riskallele },
+    { header: 'Nearest Gene', value: d.associated_gene },
+    { header: 'GWAS p-value', value: d.association_p_val.join(",") },
+    { header: 'cCRE chromosome', value: d.ccre_chrom },
+    { header: 'cCRE start', value: d.ccre_start.toLocaleString() },
+    { header: 'cCRE end', value: d.ccre_stop.toLocaleString() },
+    { header: 'cCRE ID', value: d.ccreid, render: <Link rel="noopener noreferrer" target="_blank"  href={`https://screen.beta.wenglab.org/search/?q=${d.ccreid}&assembly=GRCh38`}>
+    {d.ccreid }
+</Link> },
+    { header: 'cCRE class', value: d.ccre_class }
+];
 const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccresProps>
     = ({ ccredata, adult_bcredata, fetal_bcredata, ...props }) => {
         
@@ -64,7 +81,7 @@ const DiseaseIntersectingSnpsWithccres: React.FC<DiseaseIntersectingSnpsWithccre
 
         const GWASIntersectingSnpDataWithCcre = useMemo( () => (
             ccredata && [ ...ccredata ].sort(compareByMinimumP).map(
-                formatEntry
+                ccreformatEntry
             )
         ), [ ccredata ]);
 

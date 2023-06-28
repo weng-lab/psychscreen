@@ -131,7 +131,7 @@ const ConservationTracks: React.FC<ConservationTrackProps> = props => {
             <rect
                 height={height}
                 width={15}
-                fill="#4c1f8f"
+                fill="#9670cf"
                 stroke="#000000"
                 strokeWidth={1}
                 transform="translate(20,0)"

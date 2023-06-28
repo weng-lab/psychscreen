@@ -306,7 +306,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     }, {
         header: "intersecting cCRE",
         value:  x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
-        render:  bccre && x.intersecting_ccres.intersecting_ccres[0]?.accession && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ? (            
+        render:  x.intersecting_ccres.intersecting_ccres[0]?.accession ? (            
             <Typography
             type="body"
             size="medium"
@@ -314,7 +314,14 @@ const AssociatedxQTL: React.FC<any> = (props) => {
             style={{ fontSize: "14px", lineHeight: "20px", fontWeight: 400, letterSpacing: "0.1px", marginBottom: "10px" }}
             
         >
-            <Link rel="noopener noreferrer" target="_blank"  href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}> {!x.intersecting_ccres.intersecting_ccres[0]?.accession ? "--": (bccre && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ? "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession : x.intersecting_ccres.intersecting_ccres[0]?.accession) }</Link>
+             {bccre && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ?
+             <Link rel="noopener noreferrer" target="_blank"  href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}>
+                 { "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession  }
+            </Link>
+                 :
+             <Link rel="noopener noreferrer" target="_blank"  href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}>
+                 {x.intersecting_ccres.intersecting_ccres[0]?.accession }
+            </Link>}
             
             
         </Typography>
@@ -323,7 +330,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
             type="body"
             size="medium"           
         >
-            {!x.intersecting_ccres.intersecting_ccres[0]?.accession ? "--": (bccre && bccre.find(b=>b.accession===x.intersecting_ccres.intersecting_ccres[0]?.accession) ? "*"+x.intersecting_ccres.intersecting_ccres[0]?.accession : x.intersecting_ccres.intersecting_ccres[0]?.accession) }
+            { "--"}
         </Typography>
         </>)
     }]);
