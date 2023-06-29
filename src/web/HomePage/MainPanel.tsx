@@ -7,11 +7,21 @@ import { SearchBoxWithSelect } from '@weng-lab/psychscreen-ui-components';
 import { useNavigate } from 'react-router-dom';
 import { PORTAL_SELECT_OPTIONS } from '../../constants/portals';
 import BRAIN from '../../assets/brain.png';
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { GeneAutoComplete } from '../Portals/GenePortal/GeneAutocomplete';
+import { DiseaseTraitAutoComplete } from '../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete';
+import { SnpAutoComplete } from '../Portals/SnpPortal/SnpAutoComplete';
 
 const MainPanel: React.FC<GridProps> = props => {
     const [searchVal, setSearchVal] = useState<string>('')     
     const navigate = useNavigate(); 
     const [selectedPortal, setSelectedPortal] =  useState<string>('Disease/Trait');
+    const handleChange = (event: SelectChangeEvent) => {
+        setSelectedPortal(event.target.value);
+      };
+    
     
     return (
     <Grid {...props} container>
@@ -39,7 +49,27 @@ const MainPanel: React.FC<GridProps> = props => {
                 >
                     <AccessibilityNewIcon style={{ marginRight: "9px" }} /> Accessible to all
                 </Typography>
-                <SearchBoxWithSelect
+                
+                <FormControl variant="standard">
+                    <Select
+                    id="demo-simple-select-standard"
+                    value={selectedPortal}
+                    // defaultValue={10}
+                    onChange={handleChange}
+                    
+                    >
+                    <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
+                    <MenuItem value={"Gene/bCRE"}>Gene/bCRE</MenuItem>
+                    <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
+                    </Select>
+                </FormControl>
+                <br/>
+                <br/>
+                {selectedPortal==="Disease/Trait" ? (<DiseaseTraitAutoComplete navigateto="/psychscreen/traits/"/>) : selectedPortal==="Gene/bCRE" ? (<GeneAutoComplete navigateto="/psychscreen/gene/"/>) :  (<SnpAutoComplete navigateto="/psychscreen/snp/"/>)
+
+
+                }
+                {0>1 && <SearchBoxWithSelect
                     onSelectChange={(val: {name: string})=>{                    
                         setSelectedPortal(val.name)
                     }}
@@ -64,7 +94,7 @@ const MainPanel: React.FC<GridProps> = props => {
                             
                          }
                     }}
-                />
+                />}
             </Container>
         </Grid>
         <Grid item sm={3} md={4} lg={3} xl={3}>

@@ -164,7 +164,7 @@ const SNPDetails: React.FC<GridProps> = (props) => {
             <Grid container {...props}> 
                 <Grid item sm={1} lg={1.5} />
                 <Grid item sm={9}>
-                    <Typography type="headline" size="large" style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}>
+                    <Typography type="headline" size="large" style={{ marginTop: "2em", marginBottom: "0.2em" }}>
                         SNP Details: {snpid}
                     </Typography>
                 </Grid>

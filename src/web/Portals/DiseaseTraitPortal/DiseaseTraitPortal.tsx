@@ -15,7 +15,7 @@ import { useTheme, useMediaQuery } from '@material-ui/core';
 import { PORTALS } from '../../../App';
 import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
 import { DISEASE_CARDS } from './config/constants';
-
+import { DiseaseTraitAutoComplete} from './DiseaseTraitAutoComplete';
 const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
     const { state }: any = useLocation();
     const { searchvalue } = state ? state : { searchvalue: ''} 
@@ -87,7 +87,9 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                         >
                             <CheckIcon style={{ marginRight: "9px" }} /> 1,103 bCRE/trait associations
                         </Typography>
-                        <SearchBox
+                        <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" showTitle/>
+
+                        {0>1 && <SearchBox
                             value={val}
                             onChange={e => { 
                                 if(e.target.value===''){
@@ -108,7 +110,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                                 );
                             }}                
                             helperText="e.g. schizophrenia, years of education"
-                        />
+                        />}
                     </Container>
                     { useMediaQuery(theme.breakpoints.down('sm')) && diseaseCards && diseaseCards.length > 0 && (
                         <Slide direction="up" in timeout={1000}>

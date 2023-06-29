@@ -16,7 +16,7 @@
  import { Logo } from '../../../mobile-portrait/HomePage/HomePage';
  import SNPQTL from '../../../assets/snp-qtl.png';
  import CircularProgress from '@mui/material/CircularProgress';
- 
+ import { SnpAutoComplete} from './SnpAutoComplete';
 
 const SNP_AUTOCOMPLETE_QUERY = `
 query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
@@ -135,7 +135,8 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                         </Typography>
                         <br/>
                         <br/>
-                        <SearchBox
+                        <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle/>
+                        {0>1 && <SearchBox
                             value={val}
                             onChange={
                             e => { 
@@ -147,7 +148,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
                                 }   
                             }}                
                             helperText={"e.g. rs11669173"}                            
-                        />
+                        />}
 
                     </Container>
                    

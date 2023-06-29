@@ -137,7 +137,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = props => {
                         transform=""
                         id=""
                     />
-                    { importantSNPs && (
+                    { importantSNPs&& 0>1 && (
                         <g transform="translate(0,40)">
                             { importantSNPs.map(snp => (
                                 

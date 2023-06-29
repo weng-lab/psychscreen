@@ -7,54 +7,29 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { debounce } from '@mui/material/utils';
 import { useNavigate } from 'react-router-dom';
-import { QueryResponse } from './GeneOverview';
+
 import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
 import { Label } from '@mui/icons-material';
 
-const GENE_AUTOCOMPLETE_QUERY = `
-query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
-      name
-      id
-      coordinates {
-        start
-        chromosome
-        end
-      }
-      __typename
+const SNP_AUTOCOMPLETE_QUERY = `
+query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
+    snpAutocompleteQuery(snpid: $snpid, assembly: $assembly) {
+        id
+        coordinates {
+            chromosome
+            start
+            end
+        }
     }
-  }
-  
- `;
-
-export const GeneAutoComplete = (props) =>{
+}
+`;
+export const SnpAutoComplete = (props) =>{
     const [value, setValue] = React.useState<any>(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState<any[]>([]);
+    const [snpids, setSnpIds] = React.useState<any[]>([]);
     const navigate = useNavigate();
-    const [ geneDesc, setgeneDesc] = React.useState<{name: string, desc: string}[]>()
-    
-    React.useEffect(()=>{ 
-    
-        const fetchDAta =  async ()=>{
-            let f = await Promise.all(options.map(gene =>
-                // do something with this response like parsing to JSON
-                fetch("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" + gene.toUpperCase())
-                .then(x => x && x.json())
-                .then(x => {
-                    const matches = (x as QueryResponse)[3] && (x as QueryResponse)[3].filter(x => x[3] === gene.toUpperCase());
-                    return  {desc: (matches && matches.length >= 1 ? matches[0][4] : "(no description available)"), name: gene }
-                })
-                .catch(()=>{
-                    return {desc: "(no description available)", name: gene }
-                })
-             ))         
-             setgeneDesc(f)
-           }
-        
-           options && fetchDAta()
-         } ,[options])
-         
+
     
     
     const onSearchChange = async (value: any) => {
@@ -62,21 +37,30 @@ export const GeneAutoComplete = (props) =>{
             const response = await fetch('https://ga.staging.wenglab.org/graphql', {
                 method: 'POST',
                 body: JSON.stringify({
-                    query: GENE_AUTOCOMPLETE_QUERY,
+                    query: SNP_AUTOCOMPLETE_QUERY,
                     variables: {
-                        assembly: "GRCh38",
-                        name_prefix: value,
-                        limit: 1000
+                        assembly: "grch38",
+                        snpid: value
                     },
                 }),
                 headers: { 'Content-Type': 'application/json' },
             });
-            const genesSuggestion = (await response.json()).data?.gene;            
-            if(genesSuggestion && genesSuggestion.length > 0) {
-                const r = genesSuggestion.map((g: any)=>g.name);
+            const snpSuggestion = (await response.json()).data?.snpAutocompleteQuery;            
+            if(snpSuggestion && snpSuggestion.length > 0) {
+                const r = snpSuggestion.map((g: any)=>g.id);
+                const snp = snpSuggestion.map((g: any)=>{
+                    return {
+                        chrom:g.coordinates.chromosome,
+                        start:g.coordinates.start,
+                        end:g.coordinates.end,                        
+                        id: g.id
+                    }
+                });
                 setOptions(r);
-            } else if (genesSuggestion && genesSuggestion.length === 0) {
+                setSnpIds(snp)
+            } else if (snpSuggestion && snpSuggestion.length === 0) {
                 setOptions([]);
+                setSnpIds([])
             }
                 //setgeneCards([]);
             
@@ -88,7 +72,7 @@ export const GeneAutoComplete = (props) =>{
     return(
     <Grid container alignItems="center">
         {props.showTitle && <Grid item sm={12} md={12} lg={12} xl={12}>
-            <Typography>Search gene:</Typography>
+            <Typography>Search snp:</Typography>
             <br/>
         </Grid>}
         <Grid item sm={5.5} md={5.5} lg={5.5} xl={5.5} >
@@ -109,7 +93,11 @@ export const GeneAutoComplete = (props) =>{
           event.defaultPrevented = true;
           
           if(value)
-            navigate(props.navigateto+value)
+          {
+            console.log("nishi", { state: { snpid: value, chromosome: snpids.find(g=>g.id===value)?.chrom , start: snpids.find(g=>g.id===value)?.start , end: snpids.find(g=>g.id===value)?.end } })
+            navigate(props.navigateto+value, { state: { snpid: value, chromosome: snpids.find(g=>g.id===value)?.chrom , start: snpids.find(g=>g.id===value)?.start , end: snpids.find(g=>g.id===value)?.end } })
+          }
+          
         }
       }}
       value={value}
@@ -125,10 +113,10 @@ export const GeneAutoComplete = (props) =>{
             setInputValue(newInputValue);
         }}
 
-      noOptionsText="e.g sox4,gapdh"
+      noOptionsText="e.g. rs11669173"
       
       renderInput={(params) => (
-        <TextField {...params} label="e.g sox4,gapdh" fullWidth />
+        <TextField {...params} label="e.g. rs11669173" fullWidth />
       )}
 
       renderOption={(props, option) => {
@@ -143,8 +131,9 @@ export const GeneAutoComplete = (props) =>{
                   >
                     {option}
                   </Box>
-                  {geneDesc && geneDesc.find(g=>g.name===option)  &&<Typography variant="body2" color="text.secondary">
-                  { geneDesc.find(g=>g.name===option)?.desc}
+                  {snpids && snpids.find(g=>g.id===option)  && 
+                  <Typography variant="body2" color="text.secondary">
+                    { `${snpids.find(g=>g.id===option)?.chrom}:${snpids.find(g=>g.id===option)?.start}:${snpids.find(g=>g.id===option)?.end}`}
                 </Typography>}
                 </Grid>
            </Grid>
@@ -158,7 +147,7 @@ export const GeneAutoComplete = (props) =>{
     <StyledButton bvariant='filled' btheme='light' onClick={()=>{
            
            if(value)
-           navigate(props.navigateto+value)
+           navigate(props.navigateto+value, { state: { snpid: value, chromosome: snpids.find(g=>g.id===value)?.chrom , start: snpids.find(g=>g.id===value)?.start , end: snpids.find(g=>g.id===value)?.end } })
     }}>Search</StyledButton>
     </Grid>
     </Grid>)

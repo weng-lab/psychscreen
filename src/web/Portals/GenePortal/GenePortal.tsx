@@ -165,7 +165,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
                         </Typography>
                         <br/>
                         <br/>
-                        <GeneAutoComplete navigateto="/psychscreen/gene/"/>
+                        <GeneAutoComplete navigateto="/psychscreen/gene/" showTitle/>
                         <br/>
                         {0>1 && <SearchBox
                             value={val}
