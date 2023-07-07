@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Typography, Button } from '@weng-lab/psychscreen-ui-components';
 import { PORTALS } from '../../../App';
-import { Divider, Grid, TextField, Box, Tabs, Tab } from '@mui/material';
+import { Divider, Grid, TextField, Box, Tabs, Tab, CircularProgress } from '@mui/material';
 import ViolinPlot from './violin/violin';
 import { gql, useQuery } from '@apollo/client';
 import { groupBy } from 'queryz';
@@ -16,6 +16,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import GeneOverview from './GeneOverview';
 import SingleCell from './SingleCell';
 import styled from "@emotion/styled";
+import { GeneAutoComplete } from './GeneAutocomplete';
 
 export const StyledTab = styled(Tab)(() => ({
     textTransform: "none",
@@ -78,19 +79,28 @@ const GeneDetails: React.FC = (props) => {
     let { geneid, chromosome, start, end, tabind } = state ? state : { geneid: '', chromosome: '', start: null, end: null, tabind: 0 };
     const [ tabIndex, setTabIndex ] = useState(tabind || 0);
     const ref = useRef<SVGSVGElement>(null);
+    const [gid,setGid] = useState(geneid)
     const [ tissueCategory, setTissueCategory] = React.useState<string | null>('granular');
     
-    const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
-    const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
-    const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
+    //const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
+    //const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
+    //const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
 
     const [region, setRegion] = useState({chromosome: chromosome, start: start, end: end}) 
+
 
     useEffect(()=>{
       setTabIndex(0)
     },[])
 
-    if (trueGeneId) geneid = trueGeneId;
+   useEffect(()=>{
+    let { geneid, chromosome, start, end, tabind } = state ? state : { geneid: '', chromosome: '', start: null, end: null, tabind: 0 };
+    setRegion({chromosome,start,end})
+    setGid(geneid)
+   },[gene,state])
+   console.log(gene,region)
+
+    //if (trueGeneId) geneid = trueGeneId;
     const params = useParams();
     const handleTissueCategory = (
         _: any,
@@ -102,12 +112,13 @@ const GeneDetails: React.FC = (props) => {
     const handleTabChange = (_: any, newTabIndex: number) => {
         setTabIndex(newTabIndex);
     };
+    console.log(region,gene)
 
-    const {data: geneCoords} = useQuery(GENE_COORDS_QUERY,{ variables: {
+    /*const {data: geneCoords} = useQuery(GENE_COORDS_QUERY,{ variables: {
       name_prefix: [params.gene],
       assembly: "GRCh38"
-    },skip: params.gene==''})
-    const onGeneChange = React.useCallback(
+    },skip: params.gene==''})*/
+    /*const onGeneChange = React.useCallback(
       async (value: any) => {
           
           const response = await fetch('https://ga.staging.wenglab.org/graphql', {
@@ -128,13 +139,13 @@ const GeneDetails: React.FC = (props) => {
           setRegion({chromosome: d.coordinates.chromosome,start: d.coordinates.start,end: d.coordinates.end})
       },
       [params.gene]
-  );
+  );*/
 
     const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {		
         variables: {
-            gene_id: geneid
+            gene_id: gid
         },
-        skip: geneid === ''
+        skip: gid === ''
     });
   const grouped = useMemo(
       () =>
@@ -143,7 +154,7 @@ const GeneDetails: React.FC = (props) => {
               x => tissueCategory === 'granular' ? x.tissue_type_detail : x.tissue_type,
               x => x
           ),
-      [ data,tissueCategory ]
+      [ data,tissueCategory,gid ]
   );
 
   const sortedKeys = useMemo(
@@ -152,7 +163,7 @@ const GeneDetails: React.FC = (props) => {
               .filter(x => x !== null && grouped.get(x)!)
               .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
       ),
-      [grouped]
+      [grouped,gid]
   );
 
   const toPlot = useMemo(
@@ -163,7 +174,7 @@ const GeneDetails: React.FC = (props) => {
               grouped.get(x)!.flatMap(x => x.val).filter(x => x !== undefined).map(x => Math.log10(x! + 0.01)),
           ]]),
       ] as [string, Map<string, number[]>]).filter(x => x[1].get('all')!.length > 1)),
-      [sortedKeys, grouped]
+      [sortedKeys, grouped,gid]
   );
  
   const domain: [number, number] = useMemo(() => {
@@ -190,12 +201,13 @@ const GeneDetails: React.FC = (props) => {
                 <Grid item sm={9}>
                     <Typography type="headline" size="large" style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}>
                         <img alt="DNA" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png" width="1.7%" />
-                        &nbsp;Gene Details: {trueGeneName || gene}
+                        &nbsp;Gene Details: {gene}
                     </Typography>
                     <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
                         <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
-                        <TextField variant="standard" onChange={(e) => setPartialGeneId(e.target.value)} />
-                        <Button onClick={() => onGeneChange(partialGeneId)} variant="outlined" bvariant="filled" btheme="light">Go</Button>
+                        <GeneAutoComplete  navigateto="/psychscreen/gene/" gridsize={3.5}/>
+                        
+                        
                     </div>
                 </Grid>
                 <Grid item sm={1} lg={1.5} />
@@ -214,41 +226,43 @@ const GeneDetails: React.FC = (props) => {
                     <Divider/>
                   </Box>
                   <Box sx={{ padding: 2 }}>
+                    {region.chromosome==='' && !region.start && !region.end && <CircularProgress/>}
                     { tabIndex === 3  && 0>1 ? (
                       <Box>
                         
                       </Box>
-                    ) : tabIndex === 0 && geneCoords? (
+                    ) : tabIndex === 0 && region.chromosome!='' && region.start && region.end ? (
                       <Box>
                         <Browser
-                          name={trueGeneName?.toUpperCase() || gene?.toUpperCase() }
-                          coordinates={{ chromosome:  region.chromosome==='' ?  geneCoords.gene[0].coordinates.chromosome : region.chromosome, start:  region.start===null ?  +geneCoords.gene[0].coordinates.start : +region.start, end:  region.end===null ?  +geneCoords.gene[0].coordinates.end : +region.end }}
+                          name={gene?.toUpperCase() }
+                          //coordinates={{ chromosome:  region.chromosome==='' ?  geneCoords.gene[0].coordinates.chromosome : region.chromosome, start:  region.start===null ?  +geneCoords.gene[0].coordinates.start : +region.start, end:  region.end===null ?  +geneCoords.gene[0].coordinates.end : +region.end }}
+                          coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
                         />
                       </Box>
                     ) : tabIndex === 3 && 0>1 ? (
                       <Box>
-                        <GeneExpressionPage id={trueGeneId || geneid}/>
+                        <GeneExpressionPage id={geneid}/>
                       </Box>
-                    ) : tabIndex === 3 ? (
+                    ) : tabIndex === 3  && region.chromosome!='' && region.start && region.end ? (
                       <Box>
-                        <AssociatedxQTL name={trueGeneName?.toUpperCase() || gene?.toUpperCase()} coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}
+                        <AssociatedxQTL name={gene?.toUpperCase()} coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}
                         }/>
                       </Box>
                     ) : tabIndex === 5 ? (
                       <Box>
                         <Typography  type="body"
                                     size="small">
-                              <OpenTarget id={trueGeneId || geneid}/>
+                              <OpenTarget id={ geneid}/>
                         </Typography>
                       </Box>
                     ) : tabIndex === 1 ? (
                       <Box>
-                          <SingleCell gene={trueGeneName?.toUpperCase() || gene || "APOE"} />
+                          <SingleCell gene={gene || "APOE"} />
                       </Box>
                     ) : tabIndex === 2 ? (
                       <Box>
                         {(data &&  data?.gtex_genes.length === 0 )  ? <Typography type="body" size="large">
-                          No GTex data found for {trueGeneName?.toUpperCase() || gene}
+                          No GTex data found for {gene?.toUpperCase()}
                         </Typography> : (
                           <>
                                 <Typography type="body" size="large">Group By: </Typography>

@@ -15,13 +15,13 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
  
     const {loading: byCtDataLoading, data: byCtData } = useQuery<PedatasetValuesbyCelltypeResponse>(GET_PEDATASET_VALS_BYCT_QUERY, {
         variables: {
-             dataset: disease==="DevBrain" ? "DevBrain-snRNAseq": disease,
+             dataset: disease==="DevBrain" ? ["DevBrain-snRNAseq"]: [disease],
             gene: gene
         }
     });
     const {loading: byScDataLoading, data: byScData } = useQuery<PedatasetValuesbySubclassResponse>(GET_PEDATASET_VALS_BYSC_QUERY, {
         variables: {
-             dataset: disease==="DevBrain" ? "DevBrain-snRNAseq": disease,
+             dataset: disease==="DevBrain" ? ["DevBrain-snRNAseq"]: [disease],
             gene: gene
         }
     });
@@ -29,30 +29,29 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
   
     const scrows = !byScDataLoading && byScData  ? byScData.getPedatasetValuesbySubclassQuery:[];
  
-    const dotplotDataCt  = !byCtDataLoading && byCtData ? { singleCellBoxPlotQuery : 
+    const dotplotDataCt  = !byCtDataLoading && byCtData ? 
         ctrows.map(k=>{
             return {
                 expr_frac: k.pctexp,
                 mean_count: k.avgexp,
-                disease: disease==="DevBrain" ? "DevBrain-snRNAseq": disease,
+                dataset: disease==="DevBrain" ? "DevBrain-snRNAseq": k.dataset,
                 gene: gene,
                 celltype: k.celltype
             }
         })
-    }   : { singleCellBoxPlotQuery:  []}
+      :   []
 
-    const dotplotDataSc  = !byScDataLoading && byScData ? { singleCellBoxPlotQuery : 
+    const dotplotDataSc  = !byScDataLoading && byScData ?
         scrows.filter(s=>s.celltype!=="RB").map(k=>{
             return {
                 expr_frac: k.pctexp,
                 mean_count: k.avgexp,
-                disease: disease==="DevBrain" ? "DevBrain-snRNAseq": disease,
+                dataset: disease==="DevBrain" ? "DevBrain-snRNAseq": k.dataset,
                 gene: gene,
                 celltype: k.celltype
             }
         })
-    }   : { singleCellBoxPlotQuery:  []}
-
+       : []
    
     return(<>
      <AppBar
@@ -85,7 +84,7 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
                 <DotPlot
                     disease={disease}
                     gene={gene}
-                    dotplotData={ctClass === "by SubClass" ? dotplotDataSc: dotplotDataCt}                
+                    dotplotData={ctClass === "by SubClass" ? dotplotDataSc.filter(d=>d.dataset===( disease==="DevBrain" ? "DevBrain-snRNAseq": disease)): dotplotDataCt.filter(d=>d.dataset===( disease==="DevBrain" ? "DevBrain-snRNAseq": disease))}                
                 /> 
             }
            

@@ -118,7 +118,7 @@ query q($disease: String!) {
 `;
 
 export const GET_PEDATASET_VALS_BYCT_QUERY = gql`
-query q($dataset: String!,$gene: String!) {
+query q($dataset: [String]!,$gene: String!) {
     getPedatasetValuesbyCelltypeQuery(dataset: $dataset, gene: $gene) {
         dataset
         gene
@@ -130,7 +130,7 @@ query q($dataset: String!,$gene: String!) {
 `;
 
 export const GET_PEDATASET_VALS_BYSC_QUERY = gql`
-query q($dataset: String!,$gene: String!) {
+query q($dataset: [String]!,$gene: String!) {
     getPedatasetValuesbySubclassQuery(dataset: $dataset, gene: $gene) {
         dataset
         gene
@@ -254,20 +254,25 @@ const DATASETS:Map<string, { cohort:string, desc: string, shortdesc: string }> =
 const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
     const [ dataset, setDataset ] = useState("SZBDMulti-Seq");
     const [ ctClass, setCtClass] = useState("by SubClass")
+    const [ allDatasetctClass, setAllDatasetCtClass] = useState("by SubClass")
     
     const { loading, data, colors, maximumValue } = useSingleCellData(dataset, gene, ctClass);
     const [ tooltip, setTooltip ] = useState(-1);
     const [ highlighted, setHighlighted ] = useState("");
     const [ colorScheme, setColorScheme ] = React.useState<string | null>('expression');
+    const [ tabIndex, setTabIndex ] = useState(0);
+    const handleTabChange = (_: any, newTabIndex: number) => {
+        setTabIndex(newTabIndex);
+    };
     const {loading: byCtDataLoading, data: byCtData } = useQuery<PedatasetValuesbyCelltypeResponse>(GET_PEDATASET_VALS_BYCT_QUERY, {
         variables: {
-             dataset,
+            dataset: [...DATASETS.keys()],
             gene: gene
         }
     });
     const {loading: byScDataLoading, data: byScData } = useQuery<PedatasetValuesbySubclassResponse>(GET_PEDATASET_VALS_BYSC_QUERY, {
         variables: {
-             dataset,
+             dataset: [...DATASETS.keys()],
             gene: gene
         }
     });
@@ -275,30 +280,29 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
   
     const scrows = !byScDataLoading && byScData  ? byScData.getPedatasetValuesbySubclassQuery:[];
  
-    const dotplotDataCt  = !byCtDataLoading && byCtData ? { singleCellBoxPlotQuery : 
+    const dotplotDataCt  = !byCtDataLoading && byCtData ? 
         ctrows.map(k=>{
             return {
                 expr_frac: k.pctexp,
                 mean_count: k.avgexp,
-                disease: dataset,
+                dataset: k.dataset,
                 gene: gene,
                 celltype: k.celltype
             }
         })
-    }   : { singleCellBoxPlotQuery:  []}
+  : []
 
-    const dotplotDataSc  = !byScDataLoading && byScData ? { singleCellBoxPlotQuery : 
+    const dotplotDataSc  = !byScDataLoading && byScData ?  
         scrows.filter(s=>s.celltype!=="RB").map(k=>{
             return {
                 expr_frac: k.pctexp,
                 mean_count: k.avgexp,
-                disease: dataset,
+                dataset: k.dataset,
                 gene: gene,
                 celltype: k.celltype
             }
         })
-    }   : { singleCellBoxPlotQuery:  []}
-    
+     : []
 
     const points = useMemo( () => [ ...data.values() ].slice(6000).map(x => ({ 
         x: x.umap_1, y: x.umap_2, data:ctClass==="by SubClass"? x.subclass: x.celltype, val: (x.val), svgProps: {
@@ -328,10 +332,11 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
         x: { start: lower5(Math.min(...points.map(x => x.x)) * 1.1), end: upper5(Math.max(...points.map(x => x.x))) },
         y: { start: lower5(Math.min(...points.map(x => x.y)) * 1.1), end: upper5(Math.max(...points.map(x => x.y))) }
     }), [ points ]);
-    const [ tabIndex, setTabIndex ] = useState(0);
-    const handleTabChange = (_: any, newTabIndex: number) => {
-        setTabIndex(newTabIndex);
+    const [ cttabIndex, setCtTabIndex ] = useState(0);
+    const handleCtTabChange = (_: any, newTabIndex: number) => {
+        setCtTabIndex(newTabIndex);
     };
+    
     const chartRef = useRef<SVGSVGElement>(null);
     const dotPlotRef = useRef<SVGSVGElement>(null);
     const handleChange = (event) => {
@@ -377,7 +382,7 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
             { tabIndex === 1 ? (
                 <Grid item sm={12}>
 
-                    { (byCtDataLoading || byScDataLoading) ? <CircularProgress /> : (dotplotDataSc.singleCellBoxPlotQuery.length>0 || dotplotDataCt.singleCellBoxPlotQuery.length>0) ? (
+                    { (byCtDataLoading || byScDataLoading) ? <CircularProgress /> : (dotplotDataSc.length>0 || dotplotDataCt.length>0) ? (
                         <>
                         <br/>
                         <StyledButton btheme="light" bvariant={ctClass === "by SubClass" ? "filled": "outlined"} key={"by SubClass"} onClick={() => setCtClass("by SubClass")}>
@@ -385,15 +390,32 @@ const SingleCell: React.FC<{ gene: string }> = ({ gene }) => {
                         </StyledButton>&nbsp;
                         {<StyledButton btheme="light" bvariant={ctClass === "by Celltype" ? "filled": "outlined"} key={"by Celltype"} onClick={() => setCtClass("by Celltype")}>
                         by Celltype
-                        </StyledButton>}
+                        </StyledButton>}&nbsp;
+                        {<StyledButton btheme="light" bvariant={ctClass === "All Datasets" ? "filled": "outlined"} key={"All Datasets"} onClick={() => setCtClass("All Datasets")}>
+                        All Datasets
+                        </StyledButton>
+                        }
                         <br/>
                         <br/>
-                            <DotPlot
+                        { ctClass==="All Datasets" ? <>
+                        <Tabs value={cttabIndex} onChange={handleCtTabChange}>
+                    <StyledTab label="by SubClass" />
+                    <StyledTab label="by Celltype" />
+                    
+                </Tabs>
+                <br/>
+                        <DotPlot
                                 disease={dataset}
                                 gene={gene}
-                                dotplotData={ctClass === "by SubClass" ? dotplotDataSc: dotplotDataCt}
+                                dotplotData={cttabIndex === 0 ? dotplotDataSc: dotplotDataCt}
                                 ref={dotPlotRef}
                             />
+                        </> :    <DotPlot
+                                disease={dataset}
+                                gene={gene}
+                                dotplotData={ctClass === "by SubClass" ? dotplotDataSc.filter(d=>d.dataset===dataset): dotplotDataCt.filter(d=>d.dataset===dataset)}
+                                ref={dotPlotRef}
+                            />}
                             <Button
                                 onClick={() => dotPlotRef?.current && downloadSVG(dotPlotRef, `${gene}-${dataset}-single-cell-dot-plot.svg`)}
                                 btheme="dark"

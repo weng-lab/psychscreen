@@ -2,14 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { debounce } from '@mui/material/utils';
 import { useNavigate } from 'react-router-dom';
 
 import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
-import { Label } from '@mui/icons-material';
+
 
 const SNP_AUTOCOMPLETE_QUERY = `
 query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
@@ -94,7 +93,7 @@ export const SnpAutoComplete = (props) =>{
           
           if(value)
           {
-            console.log("nishi", { state: { snpid: value, chromosome: snpids.find(g=>g.id===value)?.chrom , start: snpids.find(g=>g.id===value)?.start , end: snpids.find(g=>g.id===value)?.end } })
+            
             navigate(props.navigateto+value, { state: { snpid: value, chromosome: snpids.find(g=>g.id===value)?.chrom , start: snpids.find(g=>g.id===value)?.start , end: snpids.find(g=>g.id===value)?.end } })
           }
           

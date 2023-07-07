@@ -48,13 +48,18 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
 
    // data = dotplotData && dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData: data
     // map cell types to radii and color shadings
+    let uniqueCellTypes = new Set(data?.map(c=>c.celltype))           
+    
     const results = React.useMemo(() => new Map(
-        data?.singleCellBoxPlotQuery.map(x => [
-            x.celltype,
-            { radius: x.expr_frac, 
-                colorpercent: x.mean_count }
-        ])
+        Array.from(uniqueCellTypes).map(x => {
+            let d = data?.filter(a=>a.celltype===x)
+            
+            return [
+                x, d.map(c=>{return {radius: c.expr_frac, colorpercent: c.mean_count}}) 
+            ]
+        })
     ), [ data ]);
+       
 
     // get sorted cell types as keys
     const keys = React.useMemo( () => (
@@ -64,7 +69,7 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
 
     return [ data, results, keys ] as [
         DotPlotQueryResponse | undefined,
-        Map<string, { radius: number, colorpercent: number }>,
+        Map<string, { radius: number, colorpercent: number }[]>,
         string[]
     ];
 
@@ -88,23 +93,24 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
         const width = 15000;
         const height = width / 3;
 
-       
-        //console.log(dotplotData,ddata,dotplotData ? dotplotData: ddata,"dotplot data")
+        
+
         // Fetch and format expression data
         const [ data, results, keys ] = useGeneData(disease, gene, dotplotData);
-  
         
+        let uniqueDatasets = new Set(dotplotData?.map(c=>c.dataset))           
         // Compute dimension factors
         const radiusDomain: [ number, number ] = React.useMemo(() => {
-            const radii = keys.map(k => results.get(k)!.radius);
+            const radii = keys.map(k => results.get(k)!.map(e=>e.radius)).flat();
             return [Math.min(...radii), Math.max(...radii)];
         }, [ results, keys ]);
         const colorDomain: [ number, number ] = React.useMemo(() => {
-            const cp = keys.map(k => results.get(k)!.colorpercent);
+            const cp = keys.map(k => results.get(k)!.map(e=>e.colorpercent)).flat();
             return [Math.min(...cp), Math.max(...cp)];
         }, [ results, keys ]);
+
         const radiusTransform = React.useCallback(linearTransform(radiusDomain, [ 20, 60 ]), radiusDomain);
-        const verticalTransform = React.useCallback(linearTransform([0,1], [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
+        const verticalTransform = React.useCallback(linearTransform([0,4], [ height / 2 * 0.9, height / 2 * 0.1 ]), [ height ]);
 
         // Compute radius and color scaling factors
         const length = keys.length+20;
@@ -121,16 +127,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
             return lt({ start: colorDomain[0], end: colorDomain[1] }, { start: 191, end: 0 });
         },[colorDomain])
          
-        // No data message if this gene is not recognized
-       /* if (data?.singleCellBoxPlotQuery.length === 0)
-            return (
-                <Typography type="body" size="large">
-                    No data found for {gene}
-                </Typography>
-            );*/
-        
         // Dot plot for recognized genes
-        console.log(results,"results")
         return (
             <svg
                 viewBox={`0 0 ${width} ${width / 3}`}
@@ -143,9 +140,42 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                     height={height / 2}
                     range={[ 0, 1 ]}
                 />
+                {Array.from(uniqueDatasets).map((n,i)=>{
+                    return( <text
+                        fontSize="140px"
+                        fill="#000000"
+                        x={((((keys.length-1) + 2.1) * width) / length + (width / length) * 0.8)+40}
+                        y={Array.from(uniqueDatasets).length===1 ? verticalTransform((2)):verticalTransform((i/2)+ 0.25)}
+                    >
+                        {n as any}
+                    </text>)
+                })
+
+                }
+                { keys.map((x, i) => {
+                    return results.get(x)!!.map((s,j)=>{
+                        return (
+                            <React.Fragment key={`${x}_${i}_${j}`}>
+                                <g> 
+                                    
+                                    <circle
+                                        fill={`rgb(${gradient((s.colorpercent)).toFixed(0)},${gradient((s.colorpercent)).toFixed(0)},255)`}
+                                        //fill={`rgb(${pickHex([20,20,255],[235,235,255],results.get(x)!!.colorpercent).join(",")})`}
+                                        cy={results.get(x)!!.length===1?verticalTransform(2):verticalTransform((j/2)+ 0.25)}
+                                        r={radiusTransform(s.radius)}
+                                        cx={(i + 2.5) * width / length}
+                                    />
+                                </g>
+                            </React.Fragment>
+                        )
+                    }) 
+                    }).flat()}
+
+
                 { keys.map((x, i) => (
                     <React.Fragment key={`${x}_${i}`}>
-                        <g>                   
+                        <g>  
+                                              
                             <rect
                                 width={(width / length) * 0.8}
                                 x={((i + 2.1) * width) / length}
@@ -166,13 +196,6 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps>
                             >
                                 {x}
                             </text>
-                            <circle
-                            fill={`rgb(${gradient((results.get(x)!!.colorpercent)).toFixed(0)},${gradient((results.get(x)!!.colorpercent)).toFixed(0)},255)`}
-                                //fill={`rgb(${pickHex([20,20,255],[235,235,255],results.get(x)!!.colorpercent).join(",")})`}
-                                cy={verticalTransform(0.5)}
-                                r={radiusTransform(results.get(x)!!.radius)}
-                                cx={(i + 2.5) * width / length}
-                            />
                         </g>
                     </React.Fragment>
                 ))}

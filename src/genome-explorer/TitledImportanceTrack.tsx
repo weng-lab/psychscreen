@@ -280,6 +280,13 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = props => {
             ) }
             {(props.domain.end - props.domain.start <= 10000) && (
                 <g transform={`translate(0,${loading || imputedSignalURL === undefined ? 30 : 80})`}>
+                     <EmptyTrack
+                transform=''
+                text={"ChromBPNet significance score"}
+                height={5}
+                width={1400}
+                id=""
+            />
                     <GraphQLImportanceTrack
                         width={width}
                         height={height - (loading || imputedSignalURL === undefined ? 30 : 80)}

@@ -282,7 +282,7 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
             transcripts: x.transcripts.map(xx => ({ ...xx, color: (resolvedTranscript ? xx : x).name === name ? "#880000" : "#aaaaaa" }))
         })
     ), [ resolvedTranscript, name, snpResponse ]);
-    //console.log("name",name,snpResponse.data?.gene)
+    
     return {
         data: { ...snpResponse.data, ...data },
         loading: loading || snpCoordinateResponse.loading || snpResponse.loading,
@@ -296,7 +296,7 @@ export function useGenePageData(expandedCoordinates: GenomicRange, assembly: str
 
 
 const Browser: React.FC<any> = (props) => { 
-    console.log("gene coords",props.coordinates)
+    
     const svgRef = useRef<SVGSVGElement>(null);
     const [ coordinates, setCoordinates ] = useState<GenomicRange | null>(null);
     const [ highlight ] = useState<GenomicRange | null>(null);
@@ -305,7 +305,7 @@ const Browser: React.FC<any> = (props) => {
     useEffect(()=>{
         setCoordinates(eexpandedCoordinates)
     },[eexpandedCoordinates])
-    
+
     const { groupedTranscripts, expandedCoordinates } = useGenePageData(
         coordinates || eexpandedCoordinates,
         "GRCh38",
@@ -323,7 +323,7 @@ const Browser: React.FC<any> = (props) => {
     );
 
     const l = useCallback((c: number) => (c - expandedCoordinates.start) * 1400 / (expandedCoordinates.end - expandedCoordinates.start), [ expandedCoordinates ]);
-    console.log(coordinates,eexpandedCoordinates)
+    
     return (<>
         <CytobandView
             innerWidth={1000}

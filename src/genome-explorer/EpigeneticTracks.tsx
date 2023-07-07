@@ -111,8 +111,8 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = props => {
     
     const [ cTracks, setTracks ] = useState<[ string, string ][]>([
         [ "Adult brain bCREs", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed" ],
-        [ "all brain regions, aggregated NeuN+", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
-        [ "all brain regions, aggregated NeuN-", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
+        [ "all brain regions, aggregated NeuN+ ATAC signal", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN+-healthy-ATAC.bigWig" ],
+        [ "all brain regions, aggregated NeuN- ATAC signal", "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/ACC-NeuN--healthy-ATAC.bigWig" ]
         
     ]);
     const height = useMemo( () => cTracks.length * 80, [ cTracks ]);

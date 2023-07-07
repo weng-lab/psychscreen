@@ -28,8 +28,8 @@ const style = {
 
 const TRACKS = {
     "Adult brain bulk ATAC-seq": [
-        [ "VLPFC glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
-        [ "VLPFC neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons" ],
+        [ "VLPFC glia ATAC signal", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
+        [ "VLPFC neurons ATAC signal", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons" ],
         [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
         [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
     ],

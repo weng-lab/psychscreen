@@ -2,14 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { debounce } from '@mui/material/utils';
 import { useNavigate } from 'react-router-dom';
 import { QueryResponse } from './GeneOverview';
 import { StyledButton } from '../DiseaseTraitPortal/DiseaseTraitDetails';
-import { Label } from '@mui/icons-material';
+
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
@@ -21,24 +20,22 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
         chromosome
         end
       }
-      __typename
     }
-  }
-  
+  }  
  `;
 
 export const GeneAutoComplete = (props) =>{
     const [value, setValue] = React.useState<any>(null);
     const [inputValue, setInputValue] = React.useState('');
-    const [options, setOptions] = React.useState<any[]>([]);
+    const [options, setOptions] = React.useState<string[]>([]);
+    const [geneids, setGeneIds] = React.useState<{chrom: string,start: number,end: number, id: string, name: string}[]>([]);
     const navigate = useNavigate();
     const [ geneDesc, setgeneDesc] = React.useState<{name: string, desc: string}[]>()
     
     React.useEffect(()=>{ 
     
-        const fetchDAta =  async ()=>{
+        const fetchData =  async ()=>{
             let f = await Promise.all(options.map(gene =>
-                // do something with this response like parsing to JSON
                 fetch("https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" + gene.toUpperCase())
                 .then(x => x && x.json())
                 .then(x => {
@@ -52,12 +49,12 @@ export const GeneAutoComplete = (props) =>{
              setgeneDesc(f)
            }
         
-           options && fetchDAta()
+           options && fetchData()
          } ,[options])
          
     
     
-    const onSearchChange = async (value: any) => {
+    const onSearchChange = async (value: string) => {
             setOptions([]);
             const response = await fetch('https://ga.staging.wenglab.org/graphql', {
                 method: 'POST',
@@ -73,29 +70,38 @@ export const GeneAutoComplete = (props) =>{
             });
             const genesSuggestion = (await response.json()).data?.gene;            
             if(genesSuggestion && genesSuggestion.length > 0) {
-                const r = genesSuggestion.map((g: any)=>g.name);
+                const r = genesSuggestion.map((g)=>g.name);
+                const g = genesSuggestion.map((g)=>{
+                    return {
+                        chrom:g.coordinates.chromosome,
+                        start:g.coordinates.start,
+                        end:g.coordinates.end,                        
+                        id: g.id,
+                        name: g.name
+
+                    }
+                });
                 setOptions(r);
+                setGeneIds(g)
             } else if (genesSuggestion && genesSuggestion.length === 0) {
                 setOptions([]);
+                setGeneIds([])
             }
-                //setgeneCards([]);
-            
         }
         
     
-        const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
-
+    const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
+    const gridsize = props.gridsize || 5.5
     return(
     <Grid container alignItems="center">
         {props.showTitle && <Grid item sm={12} md={12} lg={12} xl={12}>
             <Typography>Search gene:</Typography>
             <br/>
         </Grid>}
-        <Grid item sm={5.5} md={5.5} lg={5.5} xl={5.5} >
+        <Grid item sm={gridsize} md={gridsize} lg={gridsize} xl={gridsize} >
      <Autocomplete
-      id="google-map-demo"
-      sx={{ width: 300, paper: { height: 200 } }}
-     
+      id="gene-autocomplete"
+      sx={{ width: 300, paper: { height: 200 } }}     
       options={options}
      ListboxProps={
         {
@@ -108,8 +114,8 @@ export const GeneAutoComplete = (props) =>{
         if (event.key === 'Enter') {
           event.defaultPrevented = true;
           
-          if(value)
-            navigate(props.navigateto+value)
+          if(value && props.navigateto)
+          navigate(props.navigateto+value,{ state: { geneid: geneids.find(g=>g.name===value)?.id.split(".")[0], chromosome: geneids.find(g=>g.name===value)?.chrom , start: geneids.find(g=>g.name===value)?.start , end: geneids.find(g=>g.name===value)?.end } })
         }
       }}
       value={value}
@@ -157,8 +163,8 @@ export const GeneAutoComplete = (props) =>{
     <Grid item sm={1} md={1} lg={1} xl={1} sx={{ verticalAlign:'middle', textAlign:'center' }} >
     <StyledButton bvariant='filled' btheme='light' onClick={()=>{
            
-           if(value)
-           navigate(props.navigateto+value)
+           if(value && props.navigateto)
+           navigate(props.navigateto+value,{ state: { geneid: geneids.find(g=>g.name===value)?.id.split(".")[0], chromosome: geneids.find(g=>g.name===value)?.chrom , start: geneids.find(g=>g.name===value)?.start , end: geneids.find(g=>g.name===value)?.end } })
     }}>Search</StyledButton>
     </Grid>
     </Grid>)

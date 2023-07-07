@@ -41,12 +41,12 @@ const bCREDownloads = {
 
 const bulkImportantRegionDownloads = {
     defaultRows: [
-        createData('VLPFC neurons, upregulating', "VLPFC", 368895, 505784897, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_neurons.profile_scores.bw.pos.bb.bed.annotated.bed"),
-        createData('VLPFC glia, upregulating', "VLPFC", 309342, 422733989, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.pos.bb.bed.annotated.bed")
+        createData('VLPFC neurons ATAC signal, upregulating', "VLPFC", 368895, 505784897, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_neurons.profile_scores.bw.pos.bb.bed.annotated.bed"),
+        createData('VLPFC glia ATAC signal, upregulating', "VLPFC", 309342, 422733989, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.pos.bb.bed.annotated.bed")
     ],
     extraRows: [
-        createData('VLPFC neurons, downregulating', "VLPFC", 125881, 153033684, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_neurons.profile_scores.bw.neg.bb.bed.annotated.bed"),
-        createData('VLPFC glia, downregulating', "VLPFC", 74863, 88924905, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.neg.bb.bed.annotated.bed"),
+        createData('VLPFC neurons ATAC signal, downregulating', "VLPFC", 125881, 153033684, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_neurons.profile_scores.bw.neg.bb.bed.annotated.bed"),
+        createData('VLPFC glia ATAC signal, downregulating', "VLPFC", 74863, 88924905, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.neg.bb.bed.annotated.bed"),
         createData('putamen neurons, upregulating', "putamen", 368895, 499367427, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN+.profile_scores.bw.pos.bb.bed.annotated.bed"),
         createData('putamen glia, upregulating', "putamen", 309342, 422733989, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN-.profile_scores.bw.pos.bb.bed.annotated.bed"),
         createData('putamen neurons, downregulating', "putamen", 125881, 175470333, "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN+.profile_scores.bw.neg.bb.bed.annotated.bed"),

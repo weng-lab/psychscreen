@@ -19,8 +19,8 @@ const CELL_TYPES = new Map([
     [ "oligodendrocyte precursors", "Oligodendrocyte_Precursor" ],
     [ "putamen glia", "NeuN-" ],
     [ "putamen neurons", "NeuN+" ],
-    [ "VLPFC glia", "VLPFC_glia" ],
-    [ "VLPFC neurons", "VLPFC_neurons" ],
+    [ "VLPFC glia ATAC signal", "VLPFC_glia" ],
+    [ "VLPFC neurons ATAC signal", "VLPFC_neurons" ],
     [ "fetal-50-days", "fetal-50-days" ],
     [ "fetal-80-days", "fetal-80-days" ],
     [ "fetal-105-days", "fetal-105-days" ]
@@ -38,8 +38,8 @@ type DeepLearnedModelTrackProps = {
 
 const TRACKSETS = {
     "bulk": [
-        [ "VLPFC glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
-        [ "VLPFC neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons" ],
+        [ "VLPFC glia ATAC signal", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
+        [ "VLPFC neurons ATAC signal", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons" ],
       //  [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
 //        [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
     ],
@@ -49,7 +49,7 @@ const TRACKSETS = {
         [ "fetal-105-days", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/fetal/fetal-105-days" ]
     ],
     "glia": [
-        [ "VLPFC glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
+        [ "VLPFC glia  ATAC signal", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_glia" ],
         [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
         [ "microglia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/adult-cerebrum-single-cell" ]
     ]
