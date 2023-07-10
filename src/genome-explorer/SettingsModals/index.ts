@@ -1,3 +1,3 @@
-import EpigeneticTracksModal from './EpigeneticTracks';
-import ConservationTrackModal from './ConservationTracks';
+import EpigeneticTracksModal from "./EpigeneticTracks";
+import ConservationTrackModal from "./ConservationTracks";
 export { EpigeneticTracksModal, ConservationTrackModal };

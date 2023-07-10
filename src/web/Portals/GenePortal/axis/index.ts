@@ -1,3 +1,3 @@
-import YAxis from './yaxis';
-import XAxis from './xaxis';
+import YAxis from "./yaxis";
+import XAxis from "./xaxis";
 export { YAxis, XAxis };
