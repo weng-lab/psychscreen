@@ -32,6 +32,7 @@ import SingleCellCelltypeQTL from "./web/Portals/SingleCellPortal/SingleCellCell
 import SingleCelldegdisease from "./web/Portals/SingleCellPortal/SingleCelldegdisease";
 import SingleCelldegdiseasect from "./web/Portals/SingleCellPortal/SingleCelldegdiseasect";
 import GenomeExplorerPage from "./web/Portals/GenomeExplorer/GenomeExplorerPage";
+import { SingleCellGeneDetails } from "./web/Portals/SingleCellPortal/SingleCellGeneDetails";
 export const PORTALS: [string, React.FC][] = [
   ["/traits", DiseaseTraitPortal],
   ["/gene", GenePortal],
@@ -115,6 +116,10 @@ const App: React.FC = () => {
           <Route
             path="/psychscreen/single-cell/:disease"
             element={<SingleCellDetails />}
+          />
+          <Route
+            path="/psychscreen/single-cell/gene/:gene"
+            element={<SingleCellGeneDetails />}
           />
           <Route
             path="/psychscreen/single-cell/datasets/:disease"

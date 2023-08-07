@@ -125,7 +125,7 @@ export const GeneAutoComplete = (props) => {
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
-
+                console.log("value",value)
               value &&
                 props.onSelected &&
                 props.onSelected({
@@ -171,7 +171,7 @@ export const GeneAutoComplete = (props) => {
                 <Grid container alignItems="center">
                   <Grid
                     item
-                    sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}
+                    sx={{ width: "calc(100% - 44px)"}}
                   >
                     <Box component="span" sx={{ fontWeight: "regular" }}>
                       {option}

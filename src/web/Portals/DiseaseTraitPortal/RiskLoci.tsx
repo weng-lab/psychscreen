@@ -67,6 +67,7 @@ const RiskLocusView: React.FC<{
   }[];
   onLocusClick?: (locus: GenomicRange) => void;
 }> = (props) => {
+    console.log(props.loci,"loci")
   const groupedLoci = useMemo(
     () =>
       groupBy(

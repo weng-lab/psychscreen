@@ -66,6 +66,8 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   const { celltype } = useParams();
   const [qtl, setQtl] = useState<any>([]);
 
+  
+
   useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}_sig_QTLs.dat`)
       .then((x) => x.text())

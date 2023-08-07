@@ -161,6 +161,7 @@ function useLoci(trait: string) {
         URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
     },
   });
+  console.log(URL_MAP[trait])
   const loci = useMemo(() => {
     if (!data) return undefined;
     if (!URL_MAP[trait].startsWith("https"))
@@ -183,11 +184,12 @@ function useLoci(trait: string) {
           chromosome: x.chr,
           start: x.start,
           end: x.end,
-          p: Math.exp(-+x.name.split("_")[1]),
+          p: Math.exp(- +x.name.split("_")[1]),
         })
       ) || []
     );
   }, [data]);
+  console.log({ loci, loading, data })
   return { loci, loading, data };
 }
 

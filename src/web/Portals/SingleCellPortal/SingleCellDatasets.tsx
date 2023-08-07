@@ -27,6 +27,7 @@ import SingleCellGRNBrowser from "./SingleCellGRNBrowser";
 import SingleCellQTLBrowser from "./SingleCellQTLBrowser";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { SingleCellBrowser } from "./SingleCellBrowser";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
@@ -412,7 +413,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               )}
               {page === -1 && (
                 <Grid sm={10} md={10} lg={9} xl={9}>
-                  {
+                  {/*
                     <>
                       <br />
                       <br />
@@ -466,7 +467,10 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                         <Trackset coordinates={coordinates} tracks={peaks} />
                       </GenomeBrowser>
                     </>
-                  }
+                    */}
+                    {
+                        <SingleCellBrowser coordinates={coordinates} assembly={"hg38"}/>
+                    }
                 </Grid>
               )}
             </Container>

@@ -29,6 +29,7 @@ import GeneOverview from "./GeneOverview";
 import SingleCell from "./SingleCell";
 import styled from "@emotion/styled";
 import { GeneAutoComplete } from "./GeneAutocomplete";
+import { DegExpression } from "./DegExpression";
 
 export const StyledTab = styled(Tab)(() => ({
   textTransform: "none",
@@ -160,7 +161,6 @@ const GeneDetails: React.FC = (props) => {
       },
       [params.gene]
   );*/
-  console.log(geneCoords, "geneCoords");
   const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {
     variables: {
       gene_id: gid || (geneCoords && geneCoords.gene[0].id.split(".")[0]),
@@ -270,6 +270,7 @@ const GeneDetails: React.FC = (props) => {
               <StyledTab label="Tissue Expression (GTEx)" />
               <StyledTab label="Brain eQTLs and bCREs" />
 
+              <StyledTab label="Diff. Expressed Genes Expression" />
               {null && <StyledTab label="Open Target" />}
             </Tabs>
             <Divider />
@@ -313,6 +314,7 @@ const GeneDetails: React.FC = (props) => {
               <Box>
                 <AssociatedxQTL
                   name={gene?.toUpperCase()}
+                  geneid={gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])}
                   coordinates={{
                     chromosome:
                       region.chromosome === ""
@@ -330,7 +332,9 @@ const GeneDetails: React.FC = (props) => {
                   //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
                 />
               </Box>
-            ) : tabIndex === 5 ? (
+            ) :   tabIndex === 4 ? (<Box>
+              <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"}/>
+            </Box>) :  tabIndex === 5 ? (
               <Box>
                 <Typography type="body" size="small">
                   <OpenTarget id={geneid} />

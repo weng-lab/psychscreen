@@ -28,7 +28,6 @@ export const DiseaseTraitAutoComplete = (props) => {
       )}
       <Grid item sm={5.5} md={5.5} lg={5.5} xl={5.5}>
         <Autocomplete
-          id="google-map-demo"
           sx={{ width: 300, paper: { height: 200 } }}
           options={OPTIONS}
           ListboxProps={{

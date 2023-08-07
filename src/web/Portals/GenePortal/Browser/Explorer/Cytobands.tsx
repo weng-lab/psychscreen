@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Cytobands } from "umms-gb";
-//import { Grid } from 'semantic-ui-react';
 import { Grid } from "@mui/material";
 import { GenomicRange } from "./GenomeExplorer";
 

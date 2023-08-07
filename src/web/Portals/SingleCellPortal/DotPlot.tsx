@@ -40,6 +40,8 @@ type DotPlotProps = {
   disease: string;
   gene: string;
   dotplotData?: any;
+  title1?: string;
+  title2?: string;
 };
 
 function useGeneData(disease: string, gene: string, dotplotData?: any) {
@@ -95,7 +97,7 @@ function split(left: number, right: number, parts: number) {
 }
 
 const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
-  { disease, gene, dotplotData },
+  { disease, gene, dotplotData, title1, title2 },
   ref
 ) => {
   // SVG-related parameters
@@ -235,7 +237,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         x={keys.length * 0.75 * (width / length)}
         y={height * 0.78}
       >
-        Percent Expressed
+        {title1 || "Percent Expressed"}
       </text>
       {radiusRange.map((r, i) => (
         <>
@@ -261,7 +263,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         x={keys.length * 0.4 * (width / length)}
         y={height * 0.78}
       >
-        Mean Expression
+        {title2  || "Mean Expression"}
       </text>
       {colorPercent.map((r, i) => (
         <>

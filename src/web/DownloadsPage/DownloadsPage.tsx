@@ -24,7 +24,280 @@ function createData(
 ): DataRow {
   return { name, group, elements, fileSize, url };
 }
+const grns  = {
+    colorGroups: {
+    all: "#fafafa"
+  },
+    defaultRows: [
+        createData(
+            "Astrocytes",
+            "all",
+            93130,
+            4900000,
+            "http://brainscope.psychencode.org/data/GRNs/Ast.txt"
 
+        ),
+        createData(
+            "Chandelier",
+            "all",
+            105953,
+            6300000,
+            "http://brainscope.psychencode.org/data/GRNs/Chandelier.txt"
+
+        ),
+        createData(
+            "Endothelial cells",
+            "all",
+            83472,
+            4100000,
+            "http://brainscope.psychencode.org/data/GRNs/End.txt"
+
+        )
+    ],
+    extraRows: [
+        createData(
+            "Immune cells",
+            "all",
+            224547,
+            12000000,
+            "http://brainscope.psychencode.org/data/GRNs/Immune.txt"
+
+        ),
+        createData(
+            "Layer 2/3 Intratelencephalic projecting",
+            "all",
+            347324,
+            19000000,
+            "http://brainscope.psychencode.org/data/GRNs/L2.3.IT.txt"
+
+        ),
+        createData(
+            "Layer 4 Intratelencephalic projecting",
+            "all",
+            347110,
+            18000000,
+            "http://brainscope.psychencode.org/data/GRNs/L4.IT.txt"
+
+        ),createData(
+            "Layer 5/6 Near projecting",
+            "all",
+            349520,
+            19000000,
+            "http://brainscope.psychencode.org/data/GRNs/L5.6.NP.txt"
+
+        ),
+        createData(
+            "Layer 5 Extratelencephalic projecting",
+            "all",
+            89213,
+            18000000,
+            "http://brainscope.psychencode.org/data/GRNs/L5.ET.txt"
+
+        ),
+        createData(
+            "Layer 5 Intratelencephalic projecting",
+            "all",
+            159900,
+            18000000,
+            "http://brainscope.psychencode.org/data/GRNs/L5.IT.txt"
+
+        ),
+        createData(
+            "Layer 6 Corticothalamic projecting",
+            "all",
+            159900,
+            18000000,
+            "http://brainscope.psychencode.org/data/GRNs/L6.CT.txt"
+
+        ),
+        createData(
+            "Layer 6 Intratelencephalic projecting Car3",
+            "all",
+            159900,
+            20000000,
+            "http://brainscope.psychencode.org/data/GRNs/L6.IT.Car3.txt"
+
+        ),
+        createData(
+            "Layer 6 Intratelencephalic projecting",
+            "all",
+            159900,
+            18000000,
+            "http://brainscope.psychencode.org/data/GRNs/L6.IT.txt"
+
+        ),
+        createData(
+            "L6b",
+            "all",
+            159900,
+            18000000,
+            "http://brainscope.psychencode.org/data/GRNs/L6b.txt"
+
+        ),
+        createData(
+            "Lamp5.Lhx6",
+            "all",
+            159900,
+            6500000,
+            "http://brainscope.psychencode.org/data/GRNs/Lamp5.Lhx6.txt"
+
+        ),
+        createData(
+            "Lamp5",
+            "all",
+            159900,
+            6000000,
+            "http://brainscope.psychencode.org/data/GRNs/Lamp5.txt"
+
+        ),
+        createData(
+            "Microglia",
+            "all",
+            159900,
+            11000000,
+            "http://brainscope.psychencode.org/data/GRNs/Mic.txt"
+
+        ),
+        createData(
+            "Oligodendrocyte Precursor Cells",
+            "all",
+            159900,
+            5000000,
+            "http://brainscope.psychencode.org/data/GRNs/OPC.txt"
+
+        ),
+        createData(
+            "Oligodendrocytes",
+            "all",
+            159900,
+            10000000,
+            "http://brainscope.psychencode.org/data/GRNs/Oli.txt"
+
+        ),
+        createData(
+            "Pax6",
+            "all",
+            159900,
+            6000000,
+            "http://brainscope.psychencode.org/data/GRNs/Pax6.txt"
+
+        ),
+        createData(
+            "Pvalb",
+            "all",
+            159900,
+            6000000,
+            "http://brainscope.psychencode.org/data/GRNs/Pvalb.txt"
+
+        ),
+        createData(
+            "Sncg",
+            "all",
+            159900,
+            6000000,
+            "http://brainscope.psychencode.org/data/GRNs/Sncg.txt"
+
+        ),
+        createData(
+            "Sst",
+            "all",
+            159900,
+            6000000,
+            "http://brainscope.psychencode.org/data/GRNs/Sst.txt"
+
+        ),
+        createData(
+            "Vascular Leptomeningeal Cells",
+            "all",
+            159900,
+            4000000,
+            "http://brainscope.psychencode.org/data/GRNs/VLMC.txt"
+
+        ),
+        createData(
+            "Vip",
+            "all",
+            159900,
+            6000000,
+            "http://brainscope.psychencode.org/data/GRNs/Vip.txt"
+
+        )
+        
+
+    ]
+}
+
+const atacPeaks  = {
+    defaultRows: [
+        createData(
+            "Astrocytes",
+            "all",
+            82084,
+            2400000,
+            "https://downloads.wenglab.org/merged_peaks_Astro.bed"
+        ),
+        createData(
+            "Oligodendrocyte Precursor Cells",
+            "all",
+            69415,
+            2000000,
+            "https://downloads.wenglab.org/merged_peaks_OPC.bed"
+        ),
+        createData(
+            "Microglia",
+            "all",
+            67410,
+            2000000,
+            "https://downloads.wenglab.org/merged_peaks_Micro.bed"
+        )
+
+    ],
+    extraRows: [
+        
+            //"Inhibitory Neurons",
+            createData(
+                "Inhibitory Neurons",
+                "all",
+                138508,
+                4000000,
+                "https://downloads.wenglab.org/merged_peaks_Inh.bed"
+            ),
+            createData(
+                "Excitatory Neurons",
+                "all",
+                191451,
+                5500000,
+                "https://downloads.wenglab.org/merged_peaks_Exc.bed"
+            ),
+            //"All CellTypes",
+            createData(
+                "All CellTypes",
+                "all",
+                324888,
+                9300000,
+                "https://downloads.wenglab.org/merged_peaks_all_types.bed"
+            ),
+            //"Endothelial Cells",
+            createData(
+                "Endothelial Cells",
+                "all",
+                62595,
+                1800000,
+                "https://downloads.wenglab.org/merged_peaks_Endo.bed"
+            ),
+            createData(
+                "Astrocytes",
+                "all",
+                80181,
+                2300000,
+                "https://downloads.wenglab.org/merged_peaks_Astro.bed"
+            ),
+
+    ],
+    colorGroups: {
+        all: "#fafafa"
+      },
+}
 const bCREDownloads = {
   defaultRows: [
     createData(
@@ -403,7 +676,7 @@ const gwasMetaDownloads = {
   },
 };
 
-const pages = ["Regulatory Elements", "TF Binding Sites", "GWAS meta analysis"];
+const pages = ["Regulatory Elements", "TF Binding Sites", "GWAS meta analysis", "ATAC-Seq Peaks","Gene Regulatory Networks"];
 
 const DownloadsPage: React.FC = () => {
   // page and navigation controls
@@ -486,6 +759,24 @@ const DownloadsPage: React.FC = () => {
                 />
               </>
             )}
+            {page === 3 && (
+                <BEDFileDownloadTable
+                title="Atac seq peaks"
+                
+                {...atacPeaks}
+              />
+            )
+                
+            }
+            {page === 4 && (
+                <BEDFileDownloadTable
+                title="Gene Regulatory Networks"
+                
+                {...grns}
+              />
+            )
+                
+            }
           </div>
         </Grid>
         <Grid item sm={0} md={0} lg={1} xl={2} />

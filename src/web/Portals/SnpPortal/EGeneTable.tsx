@@ -23,11 +23,143 @@ type QueryResponse = {
     id: string;
   }[];
 };
+const DECONQTL_QUERY = gql`
+  query deconqtlsQuery(
+    $geneid: String, $snpid: String
+  ) {
+    deconqtlsQuery(geneid: $geneid, snpid: $snpid) {
+        celltype
+        snpid
+        slope
+        nom_val
+        geneid
+        adj_beta_pval
+        r_squared
+        snp_chrom
+        snp_start
+    }
+  }
+`;
+
+const QTLSIGASSOC_QUERY = gql`
+  query qtlsigassocQuery(
+    $geneid: String, $snpid: String
+  ) {
+    qtlsigassocQuery(geneid: $geneid, snpid: $snpid) {
+        snpid
+    slope
+    qtltype
+    dist
+    geneid
+    npval
+    fdr
+    }
+  }
+`;
+
+const GENE_NAME_QUERY = gql`
+query ($assembly: String!,  $name_prefix: [String!]) {
+    gene( assembly: $assembly, name_prefix: $name_prefix) {
+      name
+      id
+      
+    }
+  }
+`
+const TRANSCRIPT_NAME_QUERY = gql`
+query ($assembly: String!,  $name_prefix: [String!]) {
+    transcript( assembly: $assembly, name_prefix: $name_prefix) {
+      name
+      id
+      
+    }
+  }
+`
 const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
   const navigate = useNavigate();
   const { data, loading } = useQuery<QueryResponse>(QUERY, {
     variables: { id: props.genes.map((x) => x.gene.split(".")[0]) },
   });
+  const {data: eqtlData, loading: eqtlLoading} = useQuery(DECONQTL_QUERY, {variables: {
+    snpid: props.snp
+  }})
+
+  const {data: qtlsigassocData, loading: qtlsigassocLoading} = useQuery(QTLSIGASSOC_QUERY, {variables: {
+    snpid: props.snp
+  }})
+
+  const {data: geneNameData, loading: geneNameLoading} = useQuery(GENE_NAME_QUERY, {variables: {
+    name_prefix: qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>x.geneid.split(".")[0]).filter((x)=>x.includes("ENSG")),
+    assembly:"GRCh38"
+  }, skip: qtlsigassocLoading || (!qtlsigassocData) })
+
+  const {data: transcriptNameData, loading: transcriptNameLoading} = useQuery(TRANSCRIPT_NAME_QUERY, {variables: {
+    name_prefix: qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>x.geneid.split(".")[0]).filter((x)=>x.includes("ENST")),
+    assembly:"GRCh38"
+  }, skip: qtlsigassocLoading || (!qtlsigassocData) })
+  
+  console.log(geneNameData,transcriptNameData)
+  
+
+  const qtlsigData  = qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>[
+    {
+        header: "Gene Id",
+        value: x.geneid.includes("ENSG") ?  ((geneNameData && geneNameData.gene.find(g=>g.id.split(".")[0]===x.geneid)?.name)  ||  x.geneid) : ((transcriptNameData && transcriptNameData.transcript.find(g=>g.id.split(".")[0]===x.geneid.split(".")[0])?.name ) ||  x.geneid)
+    },
+    {
+        header: "Dist",
+        value: x.dist
+    },
+    {
+        header: "Slope",
+        value: x.slope.toFixed(3)
+    },
+    {
+        header: "FDR",
+        value: x.fdr.toFixed(3)
+    },
+    {
+        header: "Npval",
+        value: x.npval.toFixed(3)
+    },
+    {
+        header: "Type",
+        value: x.qtltype
+    },
+  ])
+  console.log(qtlsigData)
+
+  const deconqtlData  = eqtlData && eqtlData.deconqtlsQuery.map((x)=>[
+    {
+        header: "Gene Id",
+        value: x.geneid
+    },
+    {
+        header: "Slope",
+        value: x.slope.toFixed(2)
+    },
+    {
+        header: "eQTL nominal p-value",
+        value: x.nom_val.toExponential(2),
+    },    
+    {
+        header: "Adjusted beta pvalue",
+        value: x.adj_beta_pval.toFixed(2)
+    },
+    {
+        header: "r Squared",
+        value: x.r_squared.toFixed(2)
+    },
+    {
+        header: "coordinates",
+        value: "chr"+ x.snp_chrom +":"+ x.snp_start
+    },
+    {
+        header: "Cell Type",
+        value: x.celltype
+    },
+    ])
+
   const genemap = useMemo(
     () =>
       associateBy(
@@ -107,7 +239,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
           },
         ];
       });
-  return loading || !egeneData ? (
+  return loading || !egeneData || qtlsigassocLoading || eqtlLoading ? (
     <>
       <Typography
         type="body"
@@ -126,7 +258,9 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       <br />
       <CircularProgress color="inherit" />
     </>
-  ) : egeneData && egeneData.length > 0 ? (
+  ) :(<> {
+    
+    egeneData && egeneData.length > 0 ? (
     <>
       <Typography
         type="display"
@@ -140,15 +274,40 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     </>
   ) : (
     <>
-      <Typography
-        type="display"
-        size="small"
-        style={{ fontWeight: 500, fontSize: "28px" }}
-      >
+      <Typography type="headline" size="small">
         {" "}
         No eGenes have been identified for this SNP.
       </Typography>
+      <br/>
+      <br/>
     </>
-  );
+  )}
+  {deconqtlData && deconqtlData.length>0 && (
+            <>
+            <Typography type="headline" size="small">
+            {`The following decon-eQTLs have been identified for ${props.snp} by PsychENCODE:`}
+          </Typography>
+          <CustomizedTable
+            style={{ width: "max-content" }}
+            tabledata={deconqtlData}
+          />
+          </>
+        )
+
+        }
+        {qtlsigData && qtlsigData.length>0 && (
+            <>
+            <Typography type="headline" size="small">
+            {`The following eQTLs/isoQTLs (Gandal lab) have been identified for ${props.snp} by PsychENCODE:`}
+          </Typography>
+          <CustomizedTable
+            style={{ width: "max-content" }}
+            tabledata={qtlsigData}
+          />
+          </>
+        )
+
+        }
+  </>);
 };
 export default EGeneTable;

@@ -14,6 +14,7 @@ import { useTheme, useMediaQuery } from "@material-ui/core";
 import { PORTALS } from "../../../App";
 import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import SingleCell from "../../../assets/single-cell.png";
+import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 
 export const DISEASE_CARDS = [
   {
@@ -147,8 +148,12 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
               <CheckIcon style={{ marginRight: "9px" }} /> Chromatin
               accessibility for 1,009,942 single cells
             </Typography>
+            <br />
+            <br />
+            {/*<GeneAutoComplete navigateto="/psychscreen/single-cell/gene/" showTitle />*/}
+            <br />
           </Container>
-          {
+          {1>0&&
             <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
               <HorizontalCard
                 width={500}

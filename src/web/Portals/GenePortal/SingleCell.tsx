@@ -702,8 +702,8 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
                       columns={COLUMNS}
                       rows={
                         ctClass === "by SubClass"
-                          ? scrows.filter((s) => s.celltype !== "RB")
-                          : ctrows
+                          ? scrows.filter((s) => s.celltype !== "RB").filter(e=>e.dataset===dataset)
+                          : ctrows.filter(e=>e.dataset===dataset)
                       }
                       itemsPerPage={ctClass === "by SubClass" ? 30 : 10}
                       searchable

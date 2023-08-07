@@ -50,14 +50,16 @@ export type BigQueryResponse = {
 
 const grns = [
   [
-    "Astrocytes Enhancer and Promoter and Promoter",
+    "Astrocytes Enhancer and Promoter ",
     "https://downloads.wenglab.org/Ast.bb",
   ],
   [
     "Endothelial cells Enhancer and Promoter",
     "https://downloads.wenglab.org/End.bb",
   ],
-  ["Vip  Enhancer and Promoter", "https://downloads.wenglab.org/Vip.bb"],
+  ["Vip  Enhancer and Promoter",
+   "https://downloads.wenglab.org/Vip.bb"
+  ],
   [
     "Oligodendrocytes Enhancer and Promoter",
     "https://downloads.wenglab.org/Oli.bb",
@@ -224,7 +226,7 @@ const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
   );
 };
 
-const BBTrack: React.FC<{
+export const BBTrack: React.FC<{
   data: BigResponseData;
   url: string;
   title: string;

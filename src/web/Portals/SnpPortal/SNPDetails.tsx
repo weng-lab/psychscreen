@@ -11,11 +11,19 @@ import { gql, useQuery } from "@apollo/client";
 import EGeneTable from "./EGeneTable";
 import RegulatoryElements from "./RegulatoryElements";
 import styled from "@emotion/styled";
-
+import {CAQTL} from "./caQTL";
 export const StyledTab = styled(Tab)(() => ({
   textTransform: "none",
 }));
 
+export const CAQTL_QUERY = gql`
+query caqtls($snpid: String!) {
+  caqtls(snpid: $snpid){
+    snpid
+    type
+  }
+}
+`
 export const QUERY = gql`
   query SNP(
     $coordinates: [GenomicRangeInput]
@@ -139,11 +147,20 @@ export function expandCoordinates(
   };
 }
 
+
+
 const SNPDetails: React.FC<GridProps> = (props) => {
   const { snpid } = useParams();
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const { state }: any = useLocation();
+  
+  const { data: caqtlData, loading: loadingData } = useQuery(CAQTL_QUERY, {
+    variables: {
+      snpid
+    },
+  });
+  
   const { chromosome, start, end } = state
     ? state
     : { chromosome: "", start: null, end: null };
@@ -204,6 +221,7 @@ const SNPDetails: React.FC<GridProps> = (props) => {
           <Box>
             <Tabs value={tabIndex} onChange={handleTabChange}>
               <StyledTab label="eGenes" />
+              <StyledTab label="caQTL" />
               <StyledTab label="Regulatory Elements" />
               <StyledTab label="GWAS" />
             </Tabs>
@@ -214,12 +232,15 @@ const SNPDetails: React.FC<GridProps> = (props) => {
               <EGeneTable genes={data?.fetal_eQTLQuery || []} snp={snpid} />
             )}
             {tabIndex === 1 && snpid && (
+              <CAQTL caqtls={caqtlData.caqtls} loading={loadingData}/>
+            )}
+            {tabIndex === 2 && snpid && (
               <RegulatoryElements
                 coordinates={expandCoordinates(coordinates, 0)}
                 assembly="grch38"
               />
             )}
-            {tabIndex === 2 && snpid && <GwasPage id={snpid} />}
+            {tabIndex === 3 && snpid && <GwasPage id={snpid} />}
           </Box>
         </Grid>
       </Grid>
