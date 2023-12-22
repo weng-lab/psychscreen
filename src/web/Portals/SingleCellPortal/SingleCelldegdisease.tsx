@@ -8,6 +8,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from "@mui/material";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 const diseaseCT = {
   ASD: [
@@ -247,6 +248,8 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
           </Container>
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

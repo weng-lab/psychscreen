@@ -4,6 +4,7 @@ import React from "react";
 import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
+import { PropaneSharp } from "@mui/icons-material";
 
 function pickHex(color1: number[], color2: number[], w1: number) {
   const w2 = 1 - w1;
@@ -38,6 +39,8 @@ export type DotPlotQueryResponse = {
 
 type DotPlotProps = {
   disease: string;
+  showTooltip?: boolean;
+  deg?: boolean;
   gene: string;
   dotplotData?: any;
   title1?: string;
@@ -61,7 +64,7 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
           return [
             x,
             d.map((c) => {
-              return { radius: c.expr_frac, colorpercent: c.mean_count };
+              return { radius: c.expr_frac, colorpercent: c.mean_count, highlighted: c.highlighted ? c.highlighted :  false };
             }),
           ];
         })
@@ -80,14 +83,14 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
 
   return [data, results, keys] as [
     DotPlotQueryResponse | undefined,
-    Map<string, { radius: number; colorpercent: number }[]>,
+    Map<string, { radius: number; colorpercent: number, highlighted: boolean }[]>,
     string[]
   ];
 }
 
 function split(left: number, right: number, parts: number) {
   var result: number[] = [],
-    delta = (right - left) / (parts - 1);
+    delta = (right - left) / (parts-1);
   while (left < right) {
     result.push(left);
     left += delta;
@@ -97,7 +100,7 @@ function split(left: number, right: number, parts: number) {
 }
 
 const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
-  { disease, gene, dotplotData, title1, title2 },
+  { disease, gene, dotplotData, title1, title2, showTooltip ,deg },
   ref
 ) => {
   // SVG-related parameters
@@ -138,15 +141,28 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   const colorPercent = React.useMemo(() => {
     return split(colorDomain[0], colorDomain[1], 4);
   }, [colorDomain]);
-
   const gradient = React.useMemo(() => {
     return lt(
-      { start: colorDomain[0], end: colorDomain[1] },
+      { start: 0, end: colorDomain[1] },
       { start: 191, end: 0 }
     );
   }, [colorDomain]);
 
+  const posgradient = React.useMemo(() => {
+    return lt(
+      { start: 0, end: colorDomain[1] },
+      { start: 191, end: 0 }
+    );
+  }, [colorDomain]);
+  const neggradient = React.useMemo(() => {
+    return lt(
+      { start: colorDomain[0], end: 0 },
+      { start: 0, end: 191 }
+    );
+  }, [colorDomain]);
+
   // Dot plot for recognized genes
+  console.log(colorPercent,"colpercent")
   return (
     <svg
       viewBox={`0 0 ${width} ${width / 3}`}
@@ -163,7 +179,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         return (
           <text
             fontSize="140px"
-            fill="#000000"
+            fill="#000000"            
             x={
               ((keys.length - 1 + 2.1) * width) / length +
               (width / length) * 0.8 +
@@ -186,10 +202,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               <React.Fragment key={`${x}_${i}_${j}`}>
                 <g>
                   <circle
-                    fill={`rgb(${gradient(s.colorpercent).toFixed(
-                      0
-                    )},${gradient(s.colorpercent).toFixed(0)},255)`}
-                    //fill={`rgb(${pickHex([20,20,255],[235,235,255],results.get(x)!!.colorpercent).join(",")})`}
+                    fill={ !deg ? `rgb(${gradient(s.colorpercent).toFixed(0)},${gradient(s.colorpercent).toFixed(0)},255)` :  s.colorpercent == 0  ? 'rgb(232, 223, 221)' : s.colorpercent > 0 ? `rgb(${posgradient(s.colorpercent)},${posgradient(s.colorpercent)},255)` : `rgb(255,${neggradient(s.colorpercent)},${neggradient(s.colorpercent)})`}                    
                     cy={
                       results.get(x)!!.length === 1
                         ? verticalTransform(2)
@@ -197,7 +210,14 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                     }
                     r={radiusTransform(s.radius)}
                     cx={((i + 2.5) * width) / length}
-                  />
+                    stroke="#000000"
+                    strokeWidth={s.highlighted ? 4: 0}
+                    strokeOpacity={4}
+                  >
+                    <title>
+                    {showTooltip? "p-adjusted: " + s.radius.toExponential(2) +"\nexpression fold change: " + s.colorpercent.toExponential(2)  :"" }
+                    </title>
+                    </circle>
                 </g>
               </React.Fragment>
             );
@@ -220,6 +240,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               fontSize="140px"
               transform="rotate(-90)"
               textAnchor="end"
+              fontWeight={deg ? results!!.get(x)!![0].highlighted ? "bold": "" : ""}
               y={((i + 2.5) * width) / length}
               x={-height / 2}
               height={width / (length - 1)}
@@ -246,6 +267,8 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             cx={(keys.length * 0.76 * width) / length}
             cy={i * 150 + height * 0.81}
             fill="#000000"
+          
+            
           />
           <text
             fontSize="140px"
@@ -253,7 +276,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             y={i * 150 + height * 0.82}
             fill="#000000"
           >
-            {r.toFixed(2)}
+            {!deg ? r.toFixed(2) : r.toExponential(2)}
           </text>
         </>
       ))}
@@ -273,9 +296,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             x={(keys.length * 0.4 * width) / length}
             y={i * 150 + height * 0.8}
             //fill={`rgb(${pickHex([20,20,255],[235,235,255], r).join(",")})`}
-            fill={`rgb(${gradient(r).toFixed(0)},${gradient(r).toFixed(
-              0
-            )},255)`}
+            fill={ !deg ? `rgb(${gradient(r).toFixed(0)},${gradient(r).toFixed(0)},255)` :  r > 0 ? `rgb(${posgradient(r).toFixed(0)},${posgradient(r).toFixed(0)},255)` : `rgb(255,${neggradient(r).toFixed(0)},${neggradient(r).toFixed(0)})`}
           />
           <text
             fontSize="140px"
@@ -283,7 +304,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             y={i * 150 + height * 0.82}
             fill="#000000"
           >
-            {r.toFixed(2)}
+            {!deg ? r.toFixed(2) : r.toExponential(2)}
           </text>
         </>
       ))}

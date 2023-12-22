@@ -15,6 +15,7 @@ import { PORTALS } from "../../../App";
 import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import SingleCell from "../../../assets/single-cell.png";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 export const DISEASE_CARDS = [
   {
@@ -188,6 +189,8 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
         )}
         <Grid item sm={0} md={1} lg={2} xl={3}></Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

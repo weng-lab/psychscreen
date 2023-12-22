@@ -35,6 +35,7 @@ export const DiseaseTraitAutoComplete = (props) => {
               maxHeight: "180px",
             },
           }}
+          
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;

@@ -30,6 +30,7 @@ import SingleCell from "./SingleCell";
 import styled from "@emotion/styled";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 export const StyledTab = styled(Tab)(() => ({
   textTransform: "none",
@@ -391,6 +392,7 @@ const GeneDetails: React.FC = (props) => {
           </Box>
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
     </>
   );
 };

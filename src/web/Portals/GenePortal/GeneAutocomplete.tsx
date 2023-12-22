@@ -132,6 +132,7 @@ export const GeneAutoComplete = (props) => {
                   geneid: geneids
                     .find((g) => g.name === value)
                     ?.id.split(".")[0],
+                  name: value,
                   chromosome: geneids.find((g) => g.name === value)?.chrom,
                   start: geneids.find((g) => g.name === value)?.start,
                   end: geneids.find((g) => g.name === value)?.end,
@@ -142,6 +143,7 @@ export const GeneAutoComplete = (props) => {
                     geneid: geneids
                       .find((g) => g.name === value)
                       ?.id.split(".")[0],
+                    
                     chromosome: geneids.find((g) => g.name === value)?.chrom,
                     start: geneids.find((g) => g.name === value)?.start,
                     end: geneids.find((g) => g.name === value)?.end,
@@ -201,6 +203,17 @@ export const GeneAutoComplete = (props) => {
             bvariant="filled"
             btheme="light"
             onClick={() => {
+              value &&
+                props.onSelected &&
+                props.onSelected({
+                  geneid: geneids
+                    .find((g) => g.name === value)
+                    ?.id.split(".")[0],
+                  name: value,
+                  chromosome: geneids.find((g) => g.name === value)?.chrom,
+                  start: geneids.find((g) => g.name === value)?.start,
+                  end: geneids.find((g) => g.name === value)?.end,
+                });
               if (value && props.navigateto)
                 navigate(props.navigateto + value, {
                   state: {

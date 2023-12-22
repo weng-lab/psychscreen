@@ -64,7 +64,7 @@ export const DATASETS: Map<
     "Bipolar",
     {
       cohort: "Bipolar",
-      shortdesc: "Bipolar Disorder",
+      shortdesc: "SZBD cohort, BPD (n=23) versus control (n=24)",
       desc: "Bipolar",
     },
   ],
@@ -72,7 +72,7 @@ export const DATASETS: Map<
     "ASD",
     {
       cohort: "ASD",
-      shortdesc: "Autism Spectrum Disorder",
+      shortdesc: "UCLA-ASD cohort, ASD (n=21) versus control (n=19)",
       desc: "ASD",
     },
   ],
@@ -80,7 +80,7 @@ export const DATASETS: Map<
     "Schizophrenia",
     {
       cohort: "Schizophrenia",
-      shortdesc: "Schizophrenia",
+      shortdesc: "SZBD cohort, SCZ (n=24) versus control (n=24)",
       desc: "Schizophrenia",
     },
   ],
@@ -88,7 +88,7 @@ export const DATASETS: Map<
     "Age",
     {
       cohort: "Age",
-      shortdesc: "Aging",
+      shortdesc: "CMC&SZBD cohorts, >70 y.o. (n=40) versus <70 y.o. (n=36)",
       desc: "Age",
     },
   ]
@@ -110,17 +110,24 @@ export const DegExpression = (props) =>{
     let keys = Array.from(DATASETS.keys());
     const dotplotData =
     !loading && data
-      ? data.degQuery.map((k) => {
-          return {
-            expr_frac: k.log2_fc,
-            mean_count: -Math.log10(k.padj),
+      ? data.degQuery.filter(d=>d.padj!=0).map((k) => {
+        if(k.padj < 0.05)
+        {
+          console.log(k.padj < 0.05,props.gene)  
+        }
+        
+        return {
+            expr_frac: -Math.log10(k.padj),
+            
+            highlighted: (k.padj)< 0.05 ? true : false,
+            mean_count: k.log2_fc,
             dataset,
             gene: props.gene,
             celltype: k.celltype,
           };
         })
       : []; 
-      
+      console.log(dotplotData,props.gene)
     return (<>
     <Grid container>
     <Grid
@@ -179,16 +186,20 @@ export const DegExpression = (props) =>{
       {
         loading || !dotplotData ? (
             <CircularProgress />
-          ): ( <>
+          ): dotplotData.length==0  ? (<>
+          {'No data available for ' +props.gene}
+          </>) :( <>
           
           <DotPlot
+          deg={true}
             disease={dataset}
             gene={props.gene}
+            showTooltip={true}
             dotplotData={
                 dotplotData
             }
-            title2={"-log10(P-adjusted)"}
-            title1={"log2(expression fold change)"}
+            title1={"-log10(P-adj)"}
+            title2={"log2(fc)"}
             ref={dotPlotRef}/></>)
       }
       </Grid>

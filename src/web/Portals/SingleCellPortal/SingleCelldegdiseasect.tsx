@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 const COLUMNS = [
   {
@@ -13,23 +14,28 @@ const COLUMNS = [
   },
   {
     header: "Base mean",
-    value: (row) => row.baseMean,
+    value: (row) => row.baseMean.toFixed(2),
   },
   {
-    header: "LfcSE",
-    value: (row) => row.lfcSE,
+    header: "log2(fc)",
+    value: (row) => row.log2FoldChange.toFixed(2),
+
+  },
+  {
+    header: "Std Error",
+    value: (row) => row.lfcSE.toFixed(2),
   },
   {
     header: "Stat",
-    value: (row) => row.stat,
+    value: (row) => row.stat.toFixed(2),
   },
   {
     header: "Pvalue",
-    value: (row) => row.pvalue,
+    value: (row) => row.pvalue.toFixed(2),
   },
   {
-    header: "Padj",
-    value: (row) => row.padj,
+    header: "Ajdusted-P",
+    value: (row) => row.padj.toExponential(2),
   },
 ];
 
@@ -52,10 +58,11 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
             return {
               gene: val[0].replace(/['"]+/g, ""),
               baseMean: +val[1],
-              lfcSE: +val[2],
-              stat: +val[3],
-              pvalue: +val[4],
-              padj: +val[5],
+              log2FoldChange: +val[2],
+              lfcSE: +val[3],
+              stat: +val[4],
+              pvalue: +val[5],
+              padj: +val[6],
             };
           });
         setDeg(r);
@@ -116,13 +123,17 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
                   columns={COLUMNS}
                   rows={deg}
                   itemsPerPage={20}
+                  sortDescending
                   searchable
+                  sortColumn={6}
                 />
               </Grid>
             )}
           </Container>
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

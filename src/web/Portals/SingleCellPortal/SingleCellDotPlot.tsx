@@ -13,6 +13,7 @@ import SingleCell, {
   PedatasetValuesbyCelltypeResponse,
   PedatasetValuesbySubclassResponse,
 } from "../GenePortal/SingleCell";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
@@ -60,6 +61,8 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
           )}
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

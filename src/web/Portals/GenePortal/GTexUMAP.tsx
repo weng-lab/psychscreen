@@ -10,6 +10,7 @@ import { AppBar } from "@weng-lab/psychscreen-ui-components";
 import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 const dictionaryInvert = (obj) =>
   Object.fromEntries(Object.entries(obj).map((a) => a.reverse()));
@@ -288,6 +289,8 @@ const GTexUMAP: React.FC = () => {
           ) : null}
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

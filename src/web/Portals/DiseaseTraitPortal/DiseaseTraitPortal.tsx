@@ -16,6 +16,7 @@ import { PORTALS } from "../../../App";
 import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import { DISEASE_CARDS } from "./config/constants";
 import { DiseaseTraitAutoComplete } from "./DiseaseTraitAutoComplete";
+import FooterPanel from "../../HomePage/FooterPanel";
 const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
   const { state }: any = useLocation();
   const { searchvalue } = state ? state : { searchvalue: "" };
@@ -234,6 +235,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
         )}
         <Grid item sm={0} md={1} lg={2} xl={3} />
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
     </>
   );
 };

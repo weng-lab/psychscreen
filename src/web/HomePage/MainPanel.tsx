@@ -13,6 +13,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
 import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
 import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
 
 const MainPanel: React.FC<GridProps> = (props) => {
   const [searchVal, setSearchVal] = useState<string>("");
@@ -23,16 +24,16 @@ const MainPanel: React.FC<GridProps> = (props) => {
   };
 
   return (
-    <Grid {...props} container>
-      <Grid item sm={0} md={0} lg={1} xl={2}></Grid>
-      <Grid item sm={9} md={8} lg={7} xl={5}>
+    <Grid2 {...props} container>
+      <Grid2 sm={0} md={0} lg={1} xl={2}></Grid2>
+      <Grid2 sm={9} md={8} lg={7} xl={5}>
         <Container style={{ marginTop: "147px", width: "741px" }}>
           <Typography
             type="display"
             size="medium"
             style={{
               fontWeight: 700,
-              fontSize: "48px",
+              fontSize: "44px",
               lineHeight: "57.6px",
               letterSpacing: "0.5px",
               marginBottom: "16px",
@@ -127,14 +128,14 @@ const MainPanel: React.FC<GridProps> = (props) => {
             />
           )}
         </Container>
-      </Grid>
-      <Grid item sm={3} md={4} lg={3} xl={3}>
+      </Grid2>
+      <Grid2 sm={3} md={4} lg={3} xl={3}>
         <Container style={{ marginTop: "143px" }}>
-          - <img alt="PsychSCREEN" src={BRAIN} style={{ width: "85%" }} />
+          <img alt="PsychSCREEN" src={BRAIN} style={{ width: "100%" }} />
         </Container>
-      </Grid>
-      <Grid item sm={0} md={0} lg={1} xl={2}></Grid>
-    </Grid>
+      </Grid2>
+      <Grid2 sm={0} md={0} lg={1} xl={2}></Grid2>
+    </Grid2>
   );
 };
 export default MainPanel;

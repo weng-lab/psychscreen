@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
 import { RequestError } from "umms-gb/dist/components/tracks/trackset/types";
 
-import { GridProps } from "@mui/material";
+import { Box, GridProps, Tabs } from "@mui/material";
 import {
   AppBar,
   Typography,
@@ -20,6 +20,7 @@ import {
   EmptyTrack,
   DenseBigBed,
 } from "umms-gb";
+
 import CytobandView from "../GenePortal/Browser/Explorer/Cytobands";
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
@@ -28,6 +29,10 @@ import SingleCellQTLBrowser from "./SingleCellQTLBrowser";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
 import { SingleCellBrowser } from "./SingleCellBrowser";
+import { StyledTab } from "../GenePortal/SingleCell";
+import { DegExpression } from "../GenePortal/DegExpression";
+import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
@@ -277,8 +282,9 @@ const COLUMNS = [
 
 const SingleCellDatasets: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
-
+  const [tabIndex, setTabIndex] = useState(0);
   const { disease } = useParams();
+  const [ gene, setGene ] = useState("SNX31")
 
   const [page, setPage] = useState<number>(-1);
   const [grnpage, setGrnPage] = useState<number>(-1);
@@ -289,7 +295,9 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
     start: 6192271,
     end: 6680547,
   });
-
+  const handleTabChange = (_: any, newTabIndex: number) => {
+    setTabIndex(newTabIndex);
+  };
   const onDomainChanged = useCallback((d: GenomicRange) => {
     const chr =
       d.chromosome === undefined ? coordinates.chromosome : d.chromosome;
@@ -344,6 +352,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                   lineHeight: "57.6px",
                   letterSpacing: "0.5px",
                   marginBottom: "16px",
+                  marginLeft: "40px"
                 }}
               >
                 {"Diff. expressed genes"}
@@ -351,8 +360,15 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
             </Container>
             <br />
             <br />
+            <Box style={{ marginLeft: "80px"}}>
+            <Tabs value={tabIndex} onChange={handleTabChange}>              
+              <StyledTab label="Diff. expressed genes expression"/>
+              <StyledTab label="Data Table"/>
+            </Tabs>
+            </Box>
+            {tabIndex===1 &&
             <Slide direction="up" in timeout={1000}>
-              <Container style={{ marginLeft: "30px", marginTop: "10px" }}>
+              <Container style={{ marginLeft: "80px", marginTop: "100px" }}>
                 <HorizontalCard
                   width={500}
                   onCardClick={(v?: string) => {
@@ -364,7 +380,31 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                   cardContentText={degCards}
                 />
               </Container>
-            </Slide>
+            </Slide>}
+            {tabIndex===0 &&
+            <Container style={{ marginTop: "10px", marginLeft: "100px" }}>
+               <Typography
+              type="display"
+              size="small"              
+              style={{
+                display: "inline-block",                
+                fontSize: "28px",
+                marginTop: "0.5em", marginBottom: "0.5em"
+              }}
+          >
+            Gene: {gene}
+          </Typography>
+          <br/>
+            <span style={{ marginRight: "10px" }}>Switch to another gene:</span><br/>
+            <br/>
+            <GeneAutoComplete 
+               onSelected={(value) => {
+               setGene(value.name)
+              }}
+            gridsize={3.5} />
+            <DegExpression gene={gene} disease={"Schizophrenia"}/>
+            </Container>
+            }
           </Grid>
         )}
         {disease === "scATAC-Seq-peaks" && (
@@ -608,6 +648,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
           </Grid>
         )}
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+    
     </>
   );
 };

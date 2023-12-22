@@ -5,6 +5,7 @@ import { PORTALS } from "../../../App";
 import GenomeExplorer from "./GenomeExplorer";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { Container, Grid } from "semantic-ui-react";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 type GenomicRangeParams = {
   chromosome: string;
@@ -58,6 +59,8 @@ const GenomeExplorerPage: React.FC = () => {
           defaultTrackset={trackset}
         />
       </Container>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

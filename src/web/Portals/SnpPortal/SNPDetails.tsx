@@ -12,6 +12,7 @@ import EGeneTable from "./EGeneTable";
 import RegulatoryElements from "./RegulatoryElements";
 import styled from "@emotion/styled";
 import {CAQTL} from "./caQTL";
+import FooterPanel from "../../HomePage/FooterPanel";
 export const StyledTab = styled(Tab)(() => ({
   textTransform: "none",
 }));
@@ -244,6 +245,8 @@ const SNPDetails: React.FC<GridProps> = (props) => {
           </Box>
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

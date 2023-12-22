@@ -23,6 +23,7 @@ import SingleCell from "../GenePortal/SingleCell";
 import styled from "@emotion/styled";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { SingleCellBrowser } from "./SingleCellBrowser";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 export const StyledTab = styled(Tab)(() => ({
     textTransform: "none",
@@ -161,6 +162,8 @@ export const SingleCellGeneDetails = (props) =>{
          </Box>
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
     </>)
 }

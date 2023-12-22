@@ -67,7 +67,7 @@ const RiskLocusView: React.FC<{
   }[];
   onLocusClick?: (locus: GenomicRange) => void;
 }> = (props) => {
-    console.log(props.loci,"loci")
+    
   const groupedLoci = useMemo(
     () =>
       groupBy(
@@ -125,7 +125,7 @@ const RiskLocusView: React.FC<{
         <Container
           style={{ marginTop: "30px", marginLeft: "150px", width: "750px" }}
         >
-          <svg width="100%" viewBox="0 0 1000 720">
+          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size*30}`}>
             {[...groupedLoci.keys()]
               .filter((x) => x && groupedCytobands.get(x))
               .sort(

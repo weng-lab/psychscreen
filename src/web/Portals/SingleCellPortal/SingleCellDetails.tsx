@@ -11,6 +11,7 @@ import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import FooterPanel from "../../HomePage/FooterPanel";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
@@ -169,6 +170,8 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
           )}
         </Grid>
       </Grid>
+      <FooterPanel style={{ marginTop: "160px" }} />
+
     </>
   );
 };

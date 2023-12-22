@@ -27,10 +27,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
 
-const COLUMNS = [
+const COLUMNS  = 
+   [
   {
     header: "Cell Type",
     headerRender: () => {
+      
       return <b>Cell Type</b>;
     },
     value: (row) => row.celltype,
@@ -486,6 +488,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
             render: (groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length).toFixed(3)
         }]).sort((a, b) => -(+a[2].value - +b[2].value));
     }, [ points ]);*/
+  
   const domain = useMemo(
     () =>
       points.length === 0
@@ -503,6 +506,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
     [points]
   );
   const [cttabIndex, setCtTabIndex] = useState(0);
+  
   const handleCtTabChange = (_: any, newTabIndex: number) => {
     setCtTabIndex(newTabIndex);
   };
@@ -513,6 +517,8 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
     setDataset(event.target.value);
   };
   let keys = Array.from(DATASETS.keys());
+
+  
   return (
     <Grid container>
         {selectDatasets && <>

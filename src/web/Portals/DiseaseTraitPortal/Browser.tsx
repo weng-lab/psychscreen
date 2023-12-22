@@ -10,11 +10,12 @@ import {
 } from "../../../genome-explorer";
 import { useGenePageData } from "../GenePortal/AssociatedxQTL";
 import { DeepLearnedModelTracks } from "../../../genome-explorer/DeepLearnedModels";
-import { FormControl, Grid, MenuItem } from "@mui/material";
+import { FormControl, Grid, MenuItem, Stack } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { CoordinatesSearch } from "./CoordinatesSearch";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
 
 type GenomicRange = {
   chromosome?: string;
@@ -104,9 +105,11 @@ const Browser: React.FC<{
   );
   return (
     <>
-      <Grid container>
-        <Grid item sm={5} md={5} lg={5} xl={5}>
-          <FormControl
+
+<Stack direction={"row"} sx={{ mt: "1em", display: "flex", flexGrow: 1 }}>
+      <Grid2 container>
+        <Grid2>
+        <FormControl
             variant="standard"
             sx={{ marginLeft: "410px", verticalAlign: "middle" }}
           >
@@ -121,9 +124,9 @@ const Browser: React.FC<{
               <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item sm={3} md={3} lg={3} xl={3}>
-          {selectedSearch === "Genes" ? (
+        </Grid2>
+        <Grid2 sx={{ marginLeft: "1rem", verticalAlign: "middle" }}>
+        {selectedSearch === "Genes" ? (
             <GeneAutoComplete
               gridsize={3.5}
               hideSearchButton
@@ -160,8 +163,11 @@ const Browser: React.FC<{
               defaultText={`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}
             />
           )}
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
+    </Stack>
+
+     
       <br />
       <br />
       <CytobandView
