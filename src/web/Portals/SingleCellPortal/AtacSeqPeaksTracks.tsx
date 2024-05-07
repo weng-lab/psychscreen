@@ -17,19 +17,19 @@ export const DEFAULT_TRACKS = (
     [
       "Astrocytes",
       {
-        url: "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Astro.bigbed",
-      },
+        url: "https://downloads.wenglab.org/Astro.PeakCalls.bb",
+      }
     ],
     [
       "Endothelial Cells",
       {
-        url: "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Endo.bigbed",
+        url: "https://downloads.wenglab.org/Endo.PeakCalls.bb",
       },
     ],
     [
       "Oligodendrocyte Precursor Cells",
       {
-        url: "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_OPC.bigbed",
+        url: "https://downloads.wenglab.org/OPC.PeakCalls.bb",
       },
     ]
   ]);
@@ -131,7 +131,7 @@ export const TitledTrack: React.FC<{
         id=""
         text={title}
       />
-      {(url.endsWith(".bigBed") || url.endsWith(".bigbed")) ? (
+      {(url.endsWith(".bigBed") || url.endsWith(".bb") || url.endsWith(".bigbed")) ? (
         <DenseBigBed
           width={1400}
           height={height}
@@ -162,15 +162,15 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
   const [cTracks, setTracks] = useState<[string, string][]>([
     [
         "Astrocytes",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Astro.bigbed",
+        "https://downloads.wenglab.org/Astro.PeakCalls.bb",
       ],
       [
         "Endothelial Cells",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Endo.bigbed",
+        "https://downloads.wenglab.org/Endo.PeakCalls.bb",
       ],
       [
         "Oligodendrocyte Precursor Cells",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_OPC.bigbed",
+        "https://downloads.wenglab.org/OPC.PeakCalls.bb",
       ]
   ]);
   const height = useMemo(() => cTracks.length * 80, [cTracks]);
@@ -188,6 +188,7 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
   const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
     variables: { bigRequests },
   });
+  console.log(data,"data")
   useEffect(() => {
     props.onHeightChanged && props.onHeightChanged(height);
   }, [props.onHeightChanged, height, props]);

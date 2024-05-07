@@ -51,78 +51,78 @@ export type BigQueryResponse = {
 const grns = [
   [
     "Astrocytes Enhancer and Promoter ",
-    "https://downloads.wenglab.org/Ast.bb",
+    "https://downloads.wenglab.org/Ast_GRN.bb",
   ],
   [
     "Endothelial cells Enhancer and Promoter",
-    "https://downloads.wenglab.org/End.bb",
+    "https://downloads.wenglab.org/End_GRN.bb",
   ],
   ["Vip  Enhancer and Promoter",
-   "https://downloads.wenglab.org/Vip.bb"
+   "https://downloads.wenglab.org/Vip_GRN.bb"
   ],
   [
     "Oligodendrocytes Enhancer and Promoter",
-    "https://downloads.wenglab.org/Oli.bb",
+    "https://downloads.wenglab.org/Oli_GRN.bb",
   ],
   [
     "Chandelier Enhancer and Promoter",
-    "https://downloads.wenglab.org/Chandelier.bb",
+    "https://downloads.wenglab.org/Chandelier_GRN.bb",
   ],
   [
     "Immune Cells  Enhancer and Promoter",
-    "https://downloads.wenglab.org/Immune.bb",
+    "https://downloads.wenglab.org/Immune_GRN.bb",
   ],
 
   [
     "Vascular Leptomeningeal Cells Enhancer and Promoter",
-    "https://downloads.wenglab.org/VLMC.bb",
+    "https://downloads.wenglab.org/VLMC_GRN.bb",
   ],
-  ["Sncg Enhancer and Promoter", "https://downloads.wenglab.org/Sncg.bb"],
-  ["Sst  Enhancer and Promoter", "https://downloads.wenglab.org/Sst.bb"],
-  ["Pvalb  Enhancer and Promoter", "https://downloads.wenglab.org/Pvalb.bb"],
-  ["Pax6  Enhancer and Promoter", "https://downloads.wenglab.org/Pax6.bb"],
+  ["Sncg Enhancer and Promoter", "https://downloads.wenglab.org/Sncg_GRN.bb"],
+  ["Sst  Enhancer and Promoter", "https://downloads.wenglab.org/Sst_GRN.bb"],
+  ["Pvalb  Enhancer and Promoter", "https://downloads.wenglab.org/Pvalb_GRN.bb"],
+  ["Pax6  Enhancer and Promoter", "https://downloads.wenglab.org/Pax6_GRN.bb"],
   [
     "Oligodendrocyte Precursor Cells  Enhancer and Promoter",
-    "https://downloads.wenglab.org/OPC.bb",
+    "https://downloads.wenglab.org/OPC_GRN.bb",
   ],
-  ["Microglia Enhancer and Promoter", "https://downloads.wenglab.org/Mic.bb"],
+  ["Microglia Enhancer and Promoter", "https://downloads.wenglab.org/Mic_GRN.bb"],
   [
     "Lamp5.Lhx6  Enhancer and Promoter",
-    "https://downloads.wenglab.org/Lamp5.Lhx6.bb",
+    "https://downloads.wenglab.org/Lamp5.Lhx6_GRN.bb",
   ],
-  ["Lamp5 Enhancer and Promoter", "https://downloads.wenglab.org/Lamp5.bb"],
-  ["L6b  Enhancer and Promoter", "https://downloads.wenglab.org/L6b.bb"],
+  ["Lamp5 Enhancer and Promoter", "https://downloads.wenglab.org/Lamp5_GRN.bb"],
+  ["L6b  Enhancer and Promoter", "https://downloads.wenglab.org/L6b_GRN.bb"],
   [
     "Layer 6 Intratelencephalic projecting  Enhancer and Promoter",
-    "https://downloads.wenglab.org/L6.IT.bb",
+    "https://downloads.wenglab.org/L6.IT_GRN.bb",
   ],
   [
     "Layer 5 Intratelencephalic projecting Enhancer and Promoter",
-    "https://downloads.wenglab.org/L5.IT.bb",
+    "https://downloads.wenglab.org/L5.IT_GRN.bb",
   ],
   [
     "Layer 4 Intratelencephalic projecting Enhancer and Promoter",
-    "https://downloads.wenglab.org/L4.IT.bb",
+    "https://downloads.wenglab.org/L4.IT_GRN.bb",
   ],
   [
     "Layer 2/3 Intratelencephalic projecting Enhancer and Promoter",
-    "https://downloads.wenglab.org/L2.3.IT.bb",
+    "https://downloads.wenglab.org/L2.3.IT_GRN.bb",
   ],
   [
     "Layer 5 Extratelencephalic projecting Enhancer and Promoter",
-    "https://downloads.wenglab.org/L5.ET.bb",
+    "https://downloads.wenglab.org/L5.ET_GRN.bb",
   ],
   [
     "Layer 5/6 Near projecting Enhancer and Promoter",
-    "https://downloads.wenglab.org/L5.6.NP.bb",
+    "https://downloads.wenglab.org/L5.6.NP_GRN.bb",
   ],
   [
     "Layer 6 Intratelencephalic projecting Car3 Enhancer and Promoter",
-    "https://downloads.wenglab.org/L6.IT.Car3.bb",
+    "https://downloads.wenglab.org/L6.IT.Car3_GRN.bb",
   ],
   [
     "Layer 6 Corticothalamic projecting  Enhancer and Promoter",
-    "https://downloads.wenglab.org/L6.CT.bb",
+    "https://downloads.wenglab.org/L6.CT_GRN.bb",
   ],
   /*
     

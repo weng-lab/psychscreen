@@ -43,7 +43,7 @@ export const scCtMapping: Map<string, string> = new Map([
 
 const DEG_QUERY = gql`
   query degQuery(
-    $gene: String!, $disease: String!
+    $gene: String, $disease: String!
   ) {
     degQuery(gene: $gene, disease: $disease) {
         padj

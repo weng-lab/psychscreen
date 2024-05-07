@@ -4,7 +4,7 @@ export const PORTAL_SELECT_OPTIONS = [
     name: "Disease/Trait",
     helperText: "e.g. schizophrenia, years of education",
   },
-  { value: "gene/bcre", name: "Gene/bCRE", helperText: "e.g. APOE, SOX4" },
+  { value: "gene/bcre", name: "Gene/b-cCRE", helperText: "e.g. APOE, SOX4" },
   {
     value: "snp/qtl",
     name: "SNP/QTL",

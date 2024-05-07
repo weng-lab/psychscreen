@@ -47,11 +47,11 @@ const formatEntry = (
   { header: "Risk Allele", value: d.riskallele },
   { header: "Nearest Gene", value: d.associated_gene },
   { header: "GWAS p-value", value: d.association_p_val.join(",") },
-  { header: "bCRE chromosome", value: d.ccre_chrom },
-  { header: "bCRE start", value: d.ccre_start.toLocaleString() },
-  { header: "bCRE end", value: d.ccre_stop.toLocaleString() },
+  { header: "b-cCRE chromosome", value: d.ccre_chrom },
+  { header: "b-cCRE start", value: d.ccre_start.toLocaleString() },
+  { header: "b-cCRE end", value: d.ccre_stop.toLocaleString() },
   {
-    header: "bCRE ID",
+    header: "b-cCRE ID",
     value: d.ccreid,
     render: (
       <Link
@@ -63,7 +63,7 @@ const formatEntry = (
       </Link>
     ),
   },
-  { header: "bCRE class", value: d.ccre_class },
+  { header: "b-cCRE class", value: d.ccre_class },
 ];
 
 const ccreformatEntry = (d: GwasIntersectingSnpsWithCcres) => [
@@ -131,7 +131,7 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
               {adult_bcredata &&
                 fetal_bcredata &&
                 (adult_bcredata.length > 0 || fetal_bcredata.length > 0) && (
-                  <StyledTab label="SNPs Intersecting brain cCREs (bCREs)" />
+                  <StyledTab label="SNPs Intersecting brain cCREs (b-cCREs)" />
                 )}
             </Tabs>
             <Divider />

@@ -178,7 +178,7 @@ export const TitledTrack: React.FC<{
 const EpigeneticTracks: React.FC<EpigeneticTrackProps> = (props) => {
   const [cTracks, setTracks] = useState<[string, string][]>([
     [
-      "Adult brain bCREs",
+      "Adult brain b-cCREs",
       "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed",
     ],
     [

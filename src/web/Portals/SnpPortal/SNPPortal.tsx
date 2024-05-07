@@ -136,7 +136,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
               Search SNPs of interest and explore their impact on gene
               expression, chromatin accessibility, transcription factor (TF)
               binding and other molecular traits in the human brain based on
-              PsychENCODE QTLs and sequence analysis of bCREs. Link SNPs to
+              PsychENCODE QTLs and sequence analysis of b-cCREs. Link SNPs to
               complex traits using GWAS annotations.
             </Typography>
             <Typography
@@ -182,7 +182,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
               }}
             >
               <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in
-              bCREs
+              b-cCREs
             </Typography>
             <br />
             <br />
@@ -208,7 +208,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
             {!snpCards && !fetching ? (
               <Container style={{ marginTop: "170px" }}>
                 <img
-                  alt="gene/bcre portal"
+                  alt="gene/b-ccre portal"
                   src={SNPQTL}
                   style={{ width: "100%", height: "100%" }}
                 />

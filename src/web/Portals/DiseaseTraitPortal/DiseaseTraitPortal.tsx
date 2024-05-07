@@ -105,7 +105,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
             >
               Explore heritability enrichment for {DISEASE_CARDS.length}{" "}
               distinct psychiatric, behavioral, and neuronal traits within gene
-              regulatory features, such as bCREs and quantitative trait loci
+              regulatory features, such as b-cCREs and quantitative trait loci
               (QTLs). Search genes associated with complex traits based on
               PsychENCODE TWAS.
             </Typography>
@@ -137,7 +137,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                 marginBottom: "40px",
               }}
             >
-              <CheckIcon style={{ marginRight: "9px" }} /> 1,103 bCRE/trait
+              <CheckIcon style={{ marginRight: "9px" }} /> 1,103 b-cCRE/trait
               associations
             </Typography>
             <DiseaseTraitAutoComplete

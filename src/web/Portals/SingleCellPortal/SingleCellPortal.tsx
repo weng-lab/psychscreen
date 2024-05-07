@@ -115,7 +115,7 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
             >
               Visualize the single cell composition of the human brain based on
               single cell ATAC-seq and RNA-seq from PsychENCODE and public
-              sources. Identify marker genes and bCREs specific to particular
+              sources. Identify marker genes and b-cCREs specific to particular
               cell types and states.
             </Typography>
             <Typography

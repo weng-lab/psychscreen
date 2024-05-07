@@ -83,7 +83,7 @@ const MainPanel: React.FC<GridProps> = (props) => {
               onChange={handleChange}
             >
               <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
-              <MenuItem value={"Gene/bCRE"}>Gene/bCRE</MenuItem>
+              <MenuItem value={"Gene/b-cCRE"}>Gene/b-cCRE</MenuItem>
               <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
             </Select>
           </FormControl>
@@ -91,7 +91,7 @@ const MainPanel: React.FC<GridProps> = (props) => {
           <br />
           {selectedPortal === "Disease/Trait" ? (
             <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" />
-          ) : selectedPortal === "Gene/bCRE" ? (
+          ) : selectedPortal === "Gene/b-cCRE" ? (
             <GeneAutoComplete navigateto="/psychscreen/gene/" />
           ) : (
             <SnpAutoComplete navigateto="/psychscreen/snp/" />
@@ -114,7 +114,7 @@ const MainPanel: React.FC<GridProps> = (props) => {
                     navigate("/psychscreen/traits", {
                       state: { searchvalue: searchVal },
                     });
-                  } else if (selectedPortal === "Gene/bCRE") {
+                  } else if (selectedPortal === "Gene/b-cCRE") {
                     navigate("/psychscreen/gene", {
                       state: { searchvalue: searchVal },
                     });

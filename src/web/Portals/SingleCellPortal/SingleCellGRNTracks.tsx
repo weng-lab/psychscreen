@@ -51,14 +51,14 @@ export const SingleCellGRNTracks: React.FC<any> = (props) =>{
     const [cTracks, setTracks] = useState<[string, string][]>([
         [
             "Astrocytes Enhancer and Promoter",
-            "https://downloads.wenglab.org/Ast.bb",
+            "https://downloads.wenglab.org/Ast_GRN.bb",
           ],
           [
             "Endothelial cells Enhancer and Promoter",
-            "https://downloads.wenglab.org/End.bb",
+            "https://downloads.wenglab.org/End_GRN.bb",
           ],
           ["Vip  Enhancer and Promoter",
-           "https://downloads.wenglab.org/Vip.bb"
+           "https://downloads.wenglab.org/Vip_GRN.bb"
           ]
       ]);
       const height = useMemo(() => cTracks.length * 80, [cTracks]);

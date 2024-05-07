@@ -269,7 +269,7 @@ const GeneDetails: React.FC = (props) => {
               <StyledTab label="Brain epi Genome Browser" />
               <StyledTab label="Brain Single Cell Expression" />
               <StyledTab label="Tissue Expression (GTEx)" />
-              <StyledTab label="Brain eQTLs and bCREs" />
+              <StyledTab label="Brain eQTLs and b-cCREs" />
 
               <StyledTab label="Diff. Expressed Genes Expression" />
               {null && <StyledTab label="Open Target" />}

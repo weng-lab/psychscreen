@@ -6,12 +6,18 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { FormControl, Grid, MenuItem, Stack } from "@mui/material";
 import CytobandView from "../../Portals/GenePortal/Browser/Explorer/Cytobands"
 import { GenomeBrowser, RulerTrack, UCSCControls } from "umms-gb";
 import EGeneTracks from "../../Portals/GenePortal/Browser/EGeneTracks";
 import AtacSeqPeaksTracks, { tracks } from "./AtacSeqPeaksTracks";
 import { SingleCellGRNTracks } from "./SingleCellGRNTracks";
 import { SingleCellQTLTracks } from "./SingleCellQTLTracks";
+import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
+import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import { CoordinatesSearch } from "../DiseaseTraitPortal/CoordinatesSearch";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
 
 const SNP_QUERY = gql`
   query s(
@@ -86,7 +92,11 @@ export function expandCoordinates(
 export const SingleCellBrowser = (props) =>{
     const svgRef = useRef<SVGSVGElement>(null);
     const [coordinates, setCoordinates] = useState<GenomicRange | null>(null);
-    
+    const [selectedSearch, setSearch] = useState<string>("Genes");
+  const handleChange = (event: SelectChangeEvent) => {
+    setSearch(event.target.value);
+  };
+
     const eexpandedCoordinates = useMemo(
       () => expandCoordinates(props.coordinates),
       [
@@ -143,6 +153,66 @@ export const SingleCellBrowser = (props) =>{
       );
     return(<>
         <br/>
+        <Grid2 container>
+        <Grid2>
+        <FormControl
+            variant="standard"
+            sx={{ marginLeft: "410px", verticalAlign: "middle" }}
+          >
+            <Select
+              id="search"
+              value={selectedSearch}
+              // defaultValue={10}
+              onChange={handleChange}
+            >
+              <MenuItem value={"Genes"}>Genes</MenuItem>
+              <MenuItem value={"SNPs"}>SNPs</MenuItem>
+              <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
+            </Select>
+          </FormControl>
+          </Grid2>
+          <Grid2 sx={{ marginLeft: "1rem", verticalAlign: "middle" }}>
+        {selectedSearch === "Genes" ? (
+            <GeneAutoComplete
+              gridsize={3.5}
+              hideSearchButton
+              onSelected={(value) => {
+                setCoordinates({
+                  chromosome: value.chromosome,
+                  start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
+                  end: +value.end + 20000,
+                });
+              }}
+            />
+          ) : selectedSearch === "SNPs" ? (
+            <SnpAutoComplete
+              gridsize={3.5}
+              hideSearchButton
+              onSelected={(value) => {
+                setCoordinates({
+                  chromosome: value.chromosome,
+                  start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
+                  end: +value.end + 20000,
+                });
+              }}
+            />
+          ) : (
+            <CoordinatesSearch
+              onSelected={(value) => {
+                setCoordinates({
+                  chromosome: value.chromosome,
+                  start: +value.start < 0 ? 1 : +value.start,
+                  end: +value.end,
+                });
+              }}
+              hideSearchButton
+              defaultText={`${coordinates!!.chromosome}:${coordinates!!.start}-${coordinates!!.end}`}
+            />
+          )}
+        </Grid2>
+        </Grid2>
+          <br/>
+          <br/>
         <CytobandView
           innerWidth={1000}
           height={15}
@@ -185,21 +255,21 @@ export const SingleCellBrowser = (props) =>{
           expandedCoordinates={coordinates || eexpandedCoordinates}
           squish
         />
-        <AtacSeqPeaksTracks
+          {props.atactracks && <AtacSeqPeaksTracks
           assembly="GRCh38"
           tracks={atacseqpeaksTracks}
           domain={coordinates || eexpandedCoordinates}
-        />
-        <SingleCellGRNTracks
+        />}
+         {props.grntracks &&<SingleCellGRNTracks
          assembly="GRCh38"
          //tracks={atacseqpeaksTracks}
          domain={coordinates || eexpandedCoordinates}
-        />
-         <SingleCellQTLTracks
+        />}
+           {props.qtltracks && <SingleCellQTLTracks
          assembly="GRCh38"
          //tracks={atacseqpeaksTracks}
          domain={coordinates || eexpandedCoordinates}
-        />
+        />}
 
       </GenomeBrowser>
         </>)

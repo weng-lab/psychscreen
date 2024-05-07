@@ -322,7 +322,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
   ].map((ct) => {
     return {
       name: ct[1],
-      url: `https://downloads.wenglab.org/merged_peaks_${ct[0]}.bed`,
+      url: `https://downloads.wenglab.org/${ct[0]}.PeakCalls.bed`,
     };
   });
 
@@ -509,7 +509,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                     </>
                     */}
                     {
-                        <SingleCellBrowser coordinates={coordinates} assembly={"hg38"}/>
+                        <SingleCellBrowser coordinates={coordinates} assembly={"hg38"} atactracks grntracks qtltracks/>
                     }
                 </Grid>
               )}
@@ -560,7 +560,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
 
                 {grnpage === -1 && (
                   <>
-                    <SingleCellGRNBrowser />
+                  <SingleCellBrowser coordinates={coordinates} assembly={"hg38"} grntracks/>
+                    
                   </>
                 )}
               </Grid>
@@ -613,7 +614,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
 
                 {qtlpage === -1 && (
                   <>
-                    <SingleCellQTLBrowser />
+                    <SingleCellBrowser coordinates={coordinates} assembly={"hg38"} qtltracks/>
                   </>
                 )}
               </Grid>

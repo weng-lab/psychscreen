@@ -54,7 +54,7 @@ const BEDFileDownloadTable: React.FC<BEDFileDownloadTableProps> = ({
   title,
   elementText,
 }) => {
-  // Whether or not bCRE subset rows are displayed
+  // Whether or not b-cCRE subset rows are displayed
   // Default is hidden; a "show more subsets" row toggles them on
   const [expanded, setExpanded] = React.useState(false);
   const displayedRows = expanded ? [...defaultRows, ...extraRows] : defaultRows;

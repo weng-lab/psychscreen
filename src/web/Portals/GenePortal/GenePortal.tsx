@@ -147,7 +147,7 @@ const GenePortal: React.FC = (props) => {
           {useMediaQuery(theme.breakpoints.down("sm")) && (
             <Container style={{ marginTop: "130px" }}>
               <img
-                alt="Gene bCRE portal"
+                alt="Gene b-cCRE portal"
                 src={GeneBCRE}
                 style={{ width: "70%", height: "100%" }}
               />
@@ -165,7 +165,7 @@ const GenePortal: React.FC = (props) => {
                 marginBottom: "16px",
               }}
             >
-              Gene/bCRE Portal
+              Gene/b-cCRE Portal
             </Typography>
             <br />
             <Typography
@@ -182,7 +182,7 @@ const GenePortal: React.FC = (props) => {
             >
               Explore gene expression and regulatory element activity in the
               fetal and adult brain at bulk and single-cell resolution.
-              Visualize gene/bCRE links based on PsychENCODE QTLs and single
+              Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
               cell co-expression analyses.
             </Typography>
             <Typography
@@ -271,7 +271,7 @@ const GenePortal: React.FC = (props) => {
             {!geneCards && !fetching ? (
               <Container style={{ marginTop: "170px" }}>
                 <img
-                  alt="gene/bcre portal"
+                  alt="gene/b-ccre portal"
                   src={GeneBCRE}
                   style={{ width: "100%", height: "100%" }}
                 />

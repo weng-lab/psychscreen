@@ -11,8 +11,6 @@ import { BigQueryResponse, BIG_QUERY } from "./EpigeneticTracks";
 import DeepLearnedTrackModal from "./SettingsModals/DeepLearnedTracks";
 import TitledImportanceTrack from "./TitledImportanceTrack";
 import { BigBedData } from "bigwig-reader";
-import GWASPredictionTrack from "./GWASPredictions/GWASPredictionTrack";
-import { URL_MAP } from "../web/Portals/DiseaseTraitPortal/config/constants";
 
 const CELL_TYPES = new Map([
   ["astrocytes", "Astrocyte_1"],
@@ -51,7 +49,7 @@ const TRACKSETS = {
     [
       "VLPFC neurons ATAC signal",
       "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons",
-    ],
+    ]
     //  [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
     //        [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
   ],

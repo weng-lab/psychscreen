@@ -184,8 +184,10 @@ const Browser: React.FC<{
           domain={coordinates}
           withInput={false}
         />
+        
       </div>
       <br />
+      
       <GenomeBrowser
         svgRef={svgRef}
         domain={coordinates}

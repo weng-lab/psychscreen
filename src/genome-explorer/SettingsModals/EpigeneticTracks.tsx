@@ -36,11 +36,11 @@ const style = {
 const TRACKS = {
   "Candidate cis-Regulatory Elements": [
     [
-      "Adult brain bCREs",
+      "Adult brain b-cCREs",
       "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed",
     ],
     [
-      "Fetal brain bCREs",
+      "Fetal brain b-cCREs",
       "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/fetal_bCREs.bigBed",
     ],
     [

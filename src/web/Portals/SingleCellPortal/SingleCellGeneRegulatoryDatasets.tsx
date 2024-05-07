@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { GridProps } from "@mui/material";
 import { AppBar, Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import FooterPanel from "../../HomePage/FooterPanel";
 const COLUMNS = [
   {
     header: "TF",
-    value: (row) => row.TF,
+    value: (row) => row.tf,
   },
   {
     header: "Enhancer",
@@ -22,11 +22,23 @@ const COLUMNS = [
   },
   {
     header: "TG",
-    value: (row) => row.TG,
+    value: (row) => row.tg,
   },
   {
-    header: "CRE",
-    value: (row) => row.CRE,
+    header: "Edge Weight",
+    value: (row) => row.edgeweight.toFixed(2),
+  },
+  {
+    header: "Method",
+    value: (row) => row.method,
+  },
+  {
+    header: "Correlation",
+    value: (row) => row.correlation.toFixed(2),
+  },
+  {
+    header: "Regulation",
+    value: (row) => row.regulation,
   },
 ];
 
@@ -34,12 +46,38 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
   const { celltype } = useParams();
   const [grn, setGrn] = useState<any>([]);
+//  const [grnNew, setGrnNew] = useState<any>([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
+    fetch(`https://downloads.wenglab.org/${celltype}_GRN.txt`)
+      .then((x) => x.text())
+      .then((x: string) => {
+        const q = x.split("\n");
+        const bcres = q.filter(a=>!a.includes("edgeWeight")).filter((x) => x !== "").map((a) => {
+          let r = a.split("\t");
+          
+          return {
+            //TF      enhancer        promoter        TG      edgeWeight      method  celltype        Correlation     Regulation
+            tf: r[0],
+            enhancer: r[1],
+            promoter: r[2],
+            tg: r[3],
+            edgeweight: +r[4],
+            method: r[5],
+            
+            correlation: +r[7],
+            regulation: r[8]
+          };
+        });
+        setGrn(bcres);
+      });
+  }, [celltype]);
+  console.log("grnNew",grn)
+  /*useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}.json`)
       .then((x) => x.json())
       .then(setGrn);
-  }, [celltype]);
+  }, [celltype]);*/
 
   return (
     <>
@@ -96,6 +134,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
                   rows={grn}
                   itemsPerPage={20}
                   searchable
+                  sortColumn={3}
                 />
               </Grid>
             )}

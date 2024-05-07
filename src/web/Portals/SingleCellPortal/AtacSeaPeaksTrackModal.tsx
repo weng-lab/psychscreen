@@ -48,35 +48,35 @@ const TRACKS = {
   "ATAC Seq Peaks": [
       [
         "Astrocytes",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Astro.bigbed",
+        "https://downloads.wenglab.org/Astro.PeakCalls.bb",
       ],
       [
         "Endothelial Cells",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Endo.bigbed",
+        "https://downloads.wenglab.org/Endo.PeakCalls.bb",
       ],
       [
         "Oligodendrocyte Precursor Cells",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_OPC.bigbed",
+        "https://downloads.wenglab.org/OPC.PeakCalls.bb",
       ],
       [
         "Excitatory Neurons",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Exc.bigbed",
+        "https://downloads.wenglab.org/Exc.PeakCalls.bb",
       ],
       [
         "Oligodendrocytes",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Oligo.bigbed",
+        "https://downloads.wenglab.org/Oligo.PeakCalls.bb",
       ],
       [
         "Inhibitory Neurons",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Inh.bigbed",
+        "https://downloads.wenglab.org/Inh.PeakCalls.bb",
       ],
       [
         "Microglia",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_Micro.bigbed",
+        "https://downloads.wenglab.org/Micro.PeakCalls.bb",
       ],
       [
         "All CellTypes",
-        "http://warehouse.gersteinlab.org/data/Psychscreen_tracks/ATAC_Seq/merged_peaks_all_types.bigbed",
+        "https://downloads.wenglab.org/All.celltypes.Union.PeakCalls.bb",
       ],
   ],
   

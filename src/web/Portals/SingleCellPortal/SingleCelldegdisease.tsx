@@ -9,11 +9,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from "@mui/material";
 import FooterPanel from "../../HomePage/FooterPanel";
+/*
 
+L2.3.IT
+L4.IT
+L5.IT
+
+
+
+
+
+
+
+
+
+
+*/
 const diseaseCT = {
   ASD: [
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
-    { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
+    //{ val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
     { val: "Endo", cardLabel: "Endothelial cells", cardDesc: "" },
     { val: "Sncg", cardLabel: "Sncg", cardDesc: "" },
     { val: "Vip", cardLabel: "Vip", cardDesc: "" },
@@ -22,19 +37,19 @@ const diseaseCT = {
     { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
     { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
     { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
-    { val: "Lamp5.Lhx6", cardLabel: "Lamp5.Lhx6", cardDesc: "" },
+   // { val: "Lamp5.Lhx6", cardLabel: "Lamp5.Lhx6", cardDesc: "" },
     { val: "Lamp5", cardLabel: "Lamp5", cardDesc: "" },
-    { val: "L6b", cardLabel: "L6b", cardDesc: "" },
+   // { val: "L6b", cardLabel: "L6b", cardDesc: "" },
     {
       val: "L6.IT",
       cardLabel: "Layer 6 Intratelencephalic projecting",
       cardDesc: "",
     },
-    {
+    /*{
       val: "L6.IT.Car3",
       cardLabel: "Layer 6 Intratelencephalic projecting Car3",
       cardDesc: "",
-    },
+    },*/
     {
       val: "L6.CT",
       cardLabel: "Layer 6 Corticothalamic projecting",
@@ -45,7 +60,7 @@ const diseaseCT = {
       cardLabel: "Layer 5 Intratelencephalic projecting",
       cardDesc: "",
     },
-    { val: "L5.6.NP", cardLabel: "Layer 5/6 Near projecting", cardDesc: "" },
+    //{ val: "L5.6.NP", cardLabel: "Layer 5/6 Near projecting", cardDesc: "" },
     {
       val: "L4.IT",
       cardLabel: "Layer 4 Intratelencephalic projecting",
@@ -57,10 +72,11 @@ const diseaseCT = {
       cardDesc: "",
     },
   ],
+ 
   Age: [
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
     { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
-    { val: "Pax6", cardLabel: "Pax6", cardDesc: "" },
+    //{ val: "Pax6", cardLabel: "Pax6", cardDesc: "" },
     { val: "Sncg", cardLabel: "Sncg", cardDesc: "" },
     { val: "Vip", cardLabel: "Vip", cardDesc: "" },
     { val: "Sst", cardLabel: "Sst", cardDesc: "" },
@@ -148,6 +164,7 @@ const diseaseCT = {
       cardDesc: "",
     },
   ],
+ 
   Schizophrenia: [
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
     { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },

@@ -2649,10 +2649,10 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@weng-lab/psychscreen-ui-components@^0.7.8-a.1":
-  version "0.7.8-a.1"
-  resolved "https://registry.yarnpkg.com/@weng-lab/psychscreen-ui-components/-/psychscreen-ui-components-0.7.8-a.1.tgz#51f1e1ef688522c7900bcd5a21ac1386f320676d"
-  integrity sha512-xfJK/J8oIssFZfTj2+Ur0FFIFGvZIibCt79B9lLhAPGXpZzkeaKsuv1nYfU7moY1p//in5Z0t+BoXiWHTmjpqg==
+"@weng-lab/psychscreen-ui-components@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@weng-lab/psychscreen-ui-components/-/psychscreen-ui-components-0.8.6.tgz#aeca8c7d50480691fcafa2c2a53ac04cf7880764"
+  integrity sha512-hI+sA5pb7k5jXPj+RXCpESurRxfl+r5RDnKdBqwFWDqNOuFomwnZZx9NeX7wlvQPWs9W/jaq27YpSLpK/flkRw==
 
 "@weng-lab/ts-ztable@latest":
   version "4.0.1"

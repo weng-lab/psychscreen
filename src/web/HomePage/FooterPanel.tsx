@@ -92,7 +92,7 @@ const FooterPanel = (props) => {
      </Typography>
      <Typography variant="body2" color="#ffffff" align="justify">
      <MuiLink color="inherit" href="/psychscreen/gene">
-     Gene/bCRE
+     Gene/b-cCRE
       </MuiLink>
      
      </Typography>

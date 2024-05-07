@@ -6,7 +6,25 @@ import { PORTALS } from "../../../App";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 import FooterPanel from "../../HomePage/FooterPanel";
+import { gql, useQuery } from "@apollo/client";
 
+
+const DEG_BYCT_QUERY = gql`
+  query degQuery(
+    $gene: String, $disease: String!,$celltype: String
+  ) {
+    degQuery(gene: $gene, disease: $disease, celltype: $celltype) {
+        padj
+        base_mean
+        lfc_se
+        stat
+        pvalue
+        gene
+        celltype
+        log2_fc
+    }
+  }
+`;
 const COLUMNS = [
   {
     header: "Gene",
@@ -14,16 +32,16 @@ const COLUMNS = [
   },
   {
     header: "Base mean",
-    value: (row) => row.baseMean.toFixed(2),
+    value: (row) => row.base_mean.toFixed(2),
   },
   {
     header: "log2(fc)",
-    value: (row) => row.log2FoldChange.toFixed(2),
+    value: (row) => row.log2_fc.toFixed(2),
 
   },
   {
     header: "Std Error",
-    value: (row) => row.lfcSE.toFixed(2),
+    value: (row) => row.lfc_se.toFixed(2),
   },
   {
     header: "Stat",
@@ -43,31 +61,14 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
   const { disease } = useParams();
   const { celltype } = useParams();
-  const [deg, setDeg] = useState<any>([]);
+  
 
-  useEffect(() => {
-    fetch(`https://downloads.wenglab.org/${celltype}_${disease}_table.csv`)
-      .then((x) => x.text())
-      .then((d) => {
-        const r = d
-          .split("\n")
-          .filter((x) => !x.includes("pvalue"))
-          .filter((x) => x !== "")
-          .map((s) => {
-            const val = s.split(",");
-            return {
-              gene: val[0].replace(/['"]+/g, ""),
-              baseMean: +val[1],
-              log2FoldChange: +val[2],
-              lfcSE: +val[3],
-              stat: +val[4],
-              pvalue: +val[5],
-              padj: +val[6],
-            };
-          });
-        setDeg(r);
-      });
-  }, [disease, celltype]);
+  const {data, loading} = useQuery(DEG_BYCT_QUERY, { variables: {
+    celltype,
+    disease
+  }})
+  console.log(data,loading)
+
 
   return (
     <>
@@ -99,7 +100,7 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
               {celltype}
             </Typography>
             <br />
-            {deg.length === 0 && (
+            {!data && (
               <Grid sm={10} md={10} lg={9} xl={9}>
                 <Typography
                   type="body"
@@ -117,11 +118,11 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
                 </Typography>
               </Grid>
             )}
-            {deg && deg.length > 0 && (
+            { data && data.degQuery.length>0 && (
               <Grid sm={10} md={10} lg={9} xl={9}>
                 <DataTable
                   columns={COLUMNS}
-                  rows={deg}
+                  rows={data.degQuery}
                   itemsPerPage={20}
                   sortDescending
                   searchable

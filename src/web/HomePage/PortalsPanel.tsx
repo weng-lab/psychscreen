@@ -78,7 +78,7 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = (props) => {
           >
             Explore heritability enrichment for 40 distinct psychiatric,
             behavioral, and neuronal traits within gene regulatory features,
-            such as bCREs and quantitative trait loci (QTLs). Search genes
+            such as b-cCREs and quantitative trait loci (QTLs). Search genes
             associated with complex traits based on PsychENCODE TWAS.
           </Typography>
           <Typography
@@ -109,7 +109,7 @@ const DiseaseTraitPortalPanel: React.FC<GridProps> = (props) => {
               marginBottom: "40px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 1,103 bCRE/trait
+            <CheckIcon style={{ marginRight: "9px" }} /> 1,103 b-cCRE/trait
             associations
           </Typography>
           <StyledButton
@@ -139,7 +139,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
           <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
             <Container style={{ width: "508px" }}>
               <img
-                alt="Gene bCRE portal"
+                alt="Gene b-cCRE portal"
                 src={GeneBCRE}
                 style={{ width: "80%" }}
               />
@@ -160,7 +160,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
                   marginBottom: "40px",
                 }}
               >
-                Gene/bCRE Portal
+                Gene/b-cCRE Portal
               </Typography>
               <Typography
                 type="body"
@@ -176,7 +176,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
               >
                 Explore gene expression and regulatory element activity in the
                 fetal and adult brain at bulk and single-cell resolution.
-                Visualize gene/bCRE links based on PsychENCODE QTLs and single
+                Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
                 cell co-expression analyses.
               </Typography>
               <Typography
@@ -232,7 +232,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
                   navigate("/psychscreen/gene");
                 }}
               >
-                Explore Genes/bCREs
+                Explore Genes/b-cCREs
               </StyledButton>
             </Container>
           </Grid>
@@ -252,7 +252,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
                   marginBottom: "40px",
                 }}
               >
-                Gene/bCRE Portal
+                Gene/b-cCRE Portal
               </Typography>
               <Typography
                 type="body"
@@ -268,7 +268,7 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
               >
                 Explore gene expression and regulatory element activity in the
                 fetal and adult brain at bulk and single-cell resolution.
-                Visualize gene/bCRE links based on PsychENCODE QTLs and single
+                Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
                 cell co-expression analyses.
               </Typography>
               <Typography
@@ -324,14 +324,14 @@ const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
                   navigate("/psychscreen/gene");
                 }}
               >
-                Explore Genes/bCREs
+                Explore Genes/b-cCREs
               </StyledButton>
             </Container>
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
             <Container style={{ width: "508px" }}>
               <img
-                alt="Gene bCRE portal"
+                alt="Gene b-cCRE portal"
                 src={GeneBCRE}
                 style={{ width: "90%" }}
               />
@@ -384,7 +384,7 @@ const SNPQTLPortalPanel: React.FC<GridProps> = (props) => {
             Search SNPs of interest and explore their impact on gene expression,
             chromatin accessibility, transcription factor (TF) binding and other
             molecular traits in the human brain based on PsychENCODE QTLs and
-            sequence analysis of bCREs. Link SNPs to complex traits using GWAS
+            sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS
             annotations.
           </Typography>
           <Typography
@@ -431,7 +431,7 @@ const SNPQTLPortalPanel: React.FC<GridProps> = (props) => {
             }}
           >
             <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in
-            bCREs
+            b-cCREs
           </Typography>
           <StyledButton
             bvariant="filled"
@@ -497,7 +497,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = (props) => {
               >
                 Visualize the single cell composition of the human brain based
                 on single cell ATAC-seq and RNA-seq from PsychENCODE and public
-                sources. Identify marker genes and bCREs specific to particular
+                sources. Identify marker genes and b-cCREs specific to particular
                 cell types and states.
               </Typography>
               <Typography
@@ -574,7 +574,7 @@ const SingleCellPortalPanel: React.FC<GridProps> = (props) => {
               >
                 Visualize the single cell composition of the human brain based
                 on single cell ATAC-seq and RNA-seq from PsychENCODE and public
-                sources. Identify marker genes and bCREs specific to particular
+                sources. Identify marker genes and b-cCREs specific to particular
                 cell types and states.
               </Typography>
               <Typography

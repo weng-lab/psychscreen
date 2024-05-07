@@ -17,6 +17,7 @@ import {
 } from "../../../../genome-explorer";
 import { URL_MAP } from "../../DiseaseTraitPortal/config/constants";
 import { DeepLearnedModelTracks } from "../../../../genome-explorer/DeepLearnedModels";
+import {PseudobulkAtacTracks} from "../../../../genome-explorer/PseudobulkAtacTracks";
 
 export const LD_QUERY = gql`
   query s($id: [String]) {
@@ -461,6 +462,8 @@ const Browser: React.FC<any> = (props) => {
           domain={coordinates || expandedCoordinates}
           trait="MDD"
         />
+        {<PseudobulkAtacTracks domain={coordinates || expandedCoordinates}/>
+        }
         <VariantTracks
           coordinates={coordinates || expandedCoordinates}
           resolvedTranscript={props.resolvedTranscript}
