@@ -9,22 +9,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from "@mui/material";
 import FooterPanel from "../../HomePage/FooterPanel";
-/*
 
-L2.3.IT
-L4.IT
-L5.IT
-
-
-
-
-
-
-
-
-
-
-*/
 const diseaseCT = {
   ASD: [
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },

@@ -1,4 +1,3 @@
-//import { GenomicRange } from '../../../HomePage/Browser/Explorer/GenomeExplorer';
 import React, { useState } from "react";
 import {
   EmptyTrack,

@@ -5,7 +5,6 @@ import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { SearchBoxWithSelect } from "@weng-lab/psychscreen-ui-components";
 import { useNavigate } from "react-router-dom";
-
 import { PORTAL_SELECT_OPTIONS } from "../../constants/portals";
 import { useViewportSize } from "../../hooks/useViewportSize";
 import BRAIN from "../../assets/brain.png";

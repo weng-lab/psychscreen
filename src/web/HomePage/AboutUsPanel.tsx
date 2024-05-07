@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Container, GridProps } from "@mui/material";
-import { Button, Typography } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 
 const AboutUsPanel: React.FC<GridProps> = (props) => (

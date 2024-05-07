@@ -8,7 +8,6 @@ import {
   RequestError,
 } from "umms-gb/dist/components/tracks/trackset/types";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
-//import { GenomicRange } from '../../../HomePage/Browser/Explorer/GenomeExplorer';
 import CCRETooltip from "../../../../genome-explorer/CCRETooltip";
 export type GenomicRange = {
   chromosome?: string;

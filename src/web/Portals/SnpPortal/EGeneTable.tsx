@@ -88,12 +88,12 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     snpid: props.snp
   }})
 
-  const {data: geneNameData, loading: geneNameLoading} = useQuery(GENE_NAME_QUERY, {variables: {
+  const {data: geneNameData } = useQuery(GENE_NAME_QUERY, {variables: {
     name_prefix: qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>x.geneid.split(".")[0]).filter((x)=>x.includes("ENSG")),
     assembly:"GRCh38"
   }, skip: qtlsigassocLoading || (!qtlsigassocData) })
 
-  const {data: transcriptNameData, loading: transcriptNameLoading} = useQuery(TRANSCRIPT_NAME_QUERY, {variables: {
+  const {data: transcriptNameData } = useQuery(TRANSCRIPT_NAME_QUERY, {variables: {
     name_prefix: qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>x.geneid.split(".")[0]).filter((x)=>x.includes("ENST")),
     assembly:"GRCh38"
   }, skip: qtlsigassocLoading || (!qtlsigassocData) })

@@ -17,7 +17,7 @@ import {
 } from "../../../../genome-explorer";
 import { URL_MAP } from "../../DiseaseTraitPortal/config/constants";
 import { DeepLearnedModelTracks } from "../../../../genome-explorer/DeepLearnedModels";
-import {PseudobulkAtacTracks} from "../../../../genome-explorer/PseudobulkAtacTracks";
+import { PseudobulkAtacTracks } from "../../../../genome-explorer/PseudobulkAtacTracks";
 
 export const LD_QUERY = gql`
   query s($id: [String]) {

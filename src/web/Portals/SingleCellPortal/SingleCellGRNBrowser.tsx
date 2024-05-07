@@ -6,9 +6,7 @@ import {
   GenomeBrowser,
   RulerTrack,
   UCSCControls,
-  EmptyTrack,
-  DenseBigBed,
-  LinkTrack,
+  EmptyTrack
 } from "umms-gb";
 import CytobandView from "../GenePortal/Browser/Explorer/Cytobands";
 import { gql, useQuery } from "@apollo/client";

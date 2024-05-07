@@ -2,14 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
-import { Label } from "@mui/icons-material";
-
 import { DISEASE_CARDS } from "./config/constants";
 
 const OPTIONS = DISEASE_CARDS.map((d) => d.cardLabel).sort();

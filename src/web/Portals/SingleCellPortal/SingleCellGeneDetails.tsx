@@ -1,24 +1,19 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   AppBar,
-  Typography,
-  Button,
+  Typography  
 } from "@weng-lab/psychscreen-ui-components";
 import { PORTALS } from "../../../App";
 import {
   Divider,
   Grid,
-  TextField,
   Box,
   Tabs,
-  Tab,
-  CircularProgress,
+  Tab
 } from "@mui/material";
 
 import { gql, useQuery } from "@apollo/client";
-import { groupBy } from "queryz";
-
 import SingleCell from "../GenePortal/SingleCell";
 import styled from "@emotion/styled";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
@@ -52,7 +47,7 @@ export const SingleCellGeneDetails = (props) =>{
   const [tabIndex, setTabIndex] = useState(tabind || 0);
   
 
-    const ref = useRef<SVGSVGElement>(null);
+    
     const [gid, setGid] = useState(geneid);
     const [region, setRegion] = useState({
       chromosome: chromosome,

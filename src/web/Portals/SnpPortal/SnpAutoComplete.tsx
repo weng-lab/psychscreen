@@ -58,7 +58,7 @@ export const SnpAutoComplete = (props) => {
       setOptions([]);
       setSnpIds([]);
     }
-    //setgeneCards([]);
+    
   };
 
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
@@ -109,8 +109,8 @@ export const SnpAutoComplete = (props) => {
             setValue(newValue);
           }}
           inputValue={inputValue}
-          onInputChange={(event, newInputValue) => {
-            if (newInputValue != "") {
+          onInputChange={(_, newInputValue) => {
+            if (newInputValue !== "") {
               debounceFn(newInputValue);
             }
 

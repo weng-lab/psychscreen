@@ -1,13 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
-import React, { RefObject, useEffect, useMemo, useState } from "react";
-import { DenseBigBed, EmptyTrack, FullBigWig } from "umms-gb";
+import React, { useEffect, useMemo, useState } from "react";
+import { EmptyTrack } from "umms-gb";
 import {
-  BigRequest,
-  RequestError,
+  RequestError
 } from "umms-gb/dist/components/tracks/trackset/types";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
-import CCRETooltip from "../../../web/cCREDetails/CCRETooltip";
 import { BBTrack } from "./SingleCellGRNBrowser";
 import SingleCellGRNTracksModal from "./SingleCellGRNTracksModal";
 
@@ -23,12 +21,6 @@ export const BIG_QUERY = gql`
     }
   }
 `;
-
-type GenomicRange = {
-  chromosome?: string;
-  start: number;
-  end: number;
-};
 
 export type BigResponseData =
   | BigWigData[]

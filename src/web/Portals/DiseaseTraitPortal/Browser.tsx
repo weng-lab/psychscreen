@@ -10,7 +10,7 @@ import {
 } from "../../../genome-explorer";
 import { useGenePageData } from "../GenePortal/AssociatedxQTL";
 import { DeepLearnedModelTracks } from "../../../genome-explorer/DeepLearnedModels";
-import { FormControl, Grid, MenuItem, Stack } from "@mui/material";
+import { FormControl, MenuItem, Stack } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";

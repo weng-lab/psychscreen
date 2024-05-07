@@ -3,7 +3,6 @@ import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import React, { RefObject, useEffect, useMemo, useState } from "react";
 import { EmptyTrack, FullBigWig } from "umms-gb";
 import {
-  BigRequest,
   RequestError,
 } from "umms-gb/dist/components/tracks/trackset/types";
 import { ValuedPoint } from "umms-gb/dist/utils/types";

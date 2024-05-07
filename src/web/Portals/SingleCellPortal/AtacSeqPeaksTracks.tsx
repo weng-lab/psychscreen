@@ -11,7 +11,7 @@ import CCRETooltip from "../../../web/cCREDetails/CCRETooltip";
 import AtacSeaPeaksTrackModal from "./AtacSeaPeaksTrackModal";
 
 export const DEFAULT_TRACKS = (
-  assembly: string
+  
 ): Map<string, { url: string }> =>
   new Map([
     [
@@ -46,7 +46,7 @@ export const tracks = (assembly: string, pos: GenomicRange) =>
     chr1: pos.chromosome!,
     start: pos.start,
     end: pos.end,
-    ...DEFAULT_TRACKS(assembly).get(x)!,
+    ...DEFAULT_TRACKS().get(x)!,
     preRenderedWidth: 1400,
   }));
 

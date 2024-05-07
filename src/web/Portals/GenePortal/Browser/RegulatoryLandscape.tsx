@@ -1,4 +1,3 @@
-//import { GenomicRange } from '../../../HomePage/Browser/Explorer/GenomeExplorer';
 import React, { useState } from "react";
 import {
   EmptyTrack,
@@ -21,9 +20,7 @@ export type EGeneTrackProps = {
   squish?: boolean;
 };
 
-const TRACKS = [
-  "https://users.wenglab.org/sheddn/psychSCREEN_bws/ATAC/data/VLPFC-NeuN--healthy-ATAC.bigWig",
-];
+
 
 const RegulatoryLandscape: React.FC<EGeneTrackProps> = (props) => {
   const [settingsMousedOver, setSettingsMousedOver] = useState(false);

@@ -1,18 +1,9 @@
-import React, { useState } from "react";
-import { CircularProgress, Grid, GridProps } from "@mui/material";
+import React from "react";
+import { Grid, GridProps } from "@mui/material";
 import { AppBar, Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
-import { useQuery } from "@apollo/client";
-import DotPlot from "./DotPlot";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
-import SingleCell, {
-    DATASETS,
-  GET_PEDATASET_VALS_BYCT_QUERY,
-  GET_PEDATASET_VALS_BYSC_QUERY,
-  PedatasetValuesbyCelltypeResponse,
-  PedatasetValuesbySubclassResponse,
-} from "../GenePortal/SingleCell";
+import SingleCell, { DATASETS } from "../GenePortal/SingleCell";
 import FooterPanel from "../../HomePage/FooterPanel";
 
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {

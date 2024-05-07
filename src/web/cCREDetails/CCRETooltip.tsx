@@ -25,7 +25,6 @@ export const GROUPS: Map<string, string> = new Map([
   ["CTCF-only", "CTCF-only"],
 ]);
 
-const MARKS = ["DNase", "H3K4me3", "H3K27ac", "CTCF"];
 
 function useBrainBiosamples() {
   const { data, loading } = useBiosamples();
@@ -59,7 +58,7 @@ function useBrainBiosamples() {
 
 const CCRETooltip: React.FC<CCRETooltipProps> = (props) => {
   const { data, loading } = useCCREInformation(props.name || "");
-  const { data: biosamples, loading: biosamplesLoading } = useBrainBiosamples();
+  const { data: biosamples } = useBrainBiosamples();
 
   const maxZ = useMemo(
     () =>
@@ -104,7 +103,7 @@ const CCRETooltip: React.FC<CCRETooltipProps> = (props) => {
           <br />
           {maxZ &&
             ["DNase", "H3K4me3", "H3K27ac", "CTCF"]
-              .filter((a) => maxZ[a] != -Infinity)
+              .filter((a) => maxZ[a] !== -Infinity)
               .map((x, i) => (
                 <React.Fragment key={i}>
                   <strong>{x}</strong>: {maxZ && maxZ[x]?.toFixed(2)}

@@ -1,13 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
-import React, {
+import {
   useMemo,
   useRef,
   useState,
-  useCallback,
-  useEffect,
+  useCallback  
 } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { FormControl, Grid, MenuItem, Stack } from "@mui/material";
+import { FormControl, MenuItem } from "@mui/material";
 import CytobandView from "../../Portals/GenePortal/Browser/Explorer/Cytobands"
 import { GenomeBrowser, RulerTrack, UCSCControls } from "umms-gb";
 import EGeneTracks from "../../Portals/GenePortal/Browser/EGeneTracks";

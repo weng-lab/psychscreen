@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
 import { RequestError } from "umms-gb/dist/components/tracks/trackset/types";
-
 import { Box, GridProps, Tabs } from "@mui/material";
 import {
   AppBar,
@@ -14,18 +13,11 @@ import { PORTALS } from "../../../App";
 import { Grid, Container, Slide } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import {
-  GenomeBrowser,
-  RulerTrack,
-  UCSCControls,
   EmptyTrack,
   DenseBigBed,
 } from "umms-gb";
-
-import CytobandView from "../GenePortal/Browser/Explorer/Cytobands";
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
-import SingleCellGRNBrowser from "./SingleCellGRNBrowser";
-import SingleCellQTLBrowser from "./SingleCellQTLBrowser";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
 import { SingleCellBrowser } from "./SingleCellBrowser";

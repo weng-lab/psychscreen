@@ -6,8 +6,7 @@ import {
   Tab,
   ToggleButton,
   ToggleButtonGroup,
-  Paper,
-  FormHelperText,
+  Paper
 } from "@mui/material";
 import {
   Typography,
@@ -15,7 +14,7 @@ import {
   DataTable,
 } from "@weng-lab/psychscreen-ui-components";
 import { Chart, linearTransform, Scatter } from "jubilant-carnival";
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
@@ -201,34 +200,34 @@ const celltypeColors = {
 };
 
 const subClassColors = {
-  ["L2/3 IT"]: "#078d46",
-  ["L4 IT"]: "#0073ab",
-  ["L5 IT"]: "#fbdbe6",
-  ["L6 IT"]: "#8ecda0",
-  ["L6 IT Car3"]: "#ba9c66",
-  ["L5 ET"]: "#d388b1",
-  ["L5/6 NP"]: "#7b4c1e",
-  ["L6b"]: "#004d45",
-  ["L6 CT"]: "#29348c",
-  ["Sst"]: "#6b6a64",
-  ["Sst Chodl"]: "#bc2025",
-  ["Pvalb"]: "#5066b0",
-  ["Chandelier"]: "#64cce9",
-  ["Lamp5 Lhx6"]: "#ae98a1",
-  ["Lamp5"]: "#a1b6de",
-  ["Sncg"]: "#f175aa",
-  ["Vip"]: "#35bba0",
-  ["Pax6"]: "#67be62",
-  ["Astro"]: "#f5ed1f",
-  ["Oligo"]: "#99994e",
-  ["OPC"]: "#869c98",
-  ["Micro"]: "#92575d",
-  ["Endo"]: "#d490bf",
-  ["VLMC"]: "#717c33",
-  ["PC"]: "#29471f",
-  ["SMC"]: "#413c42",
-  ["Immune"]: "#f15c5a",
-  ["RB"]: "#050304",
+  "L2/3 IT": "#078d46",
+  "L4 IT": "#0073ab",
+  "L5 IT": "#fbdbe6",
+  "L6 IT": "#8ecda0",
+  "L6 IT Car3": "#ba9c66",
+  "L5 ET": "#d388b1",
+  "L5/6 NP": "#7b4c1e",
+  "L6b": "#004d45",
+  "L6 CT": "#29348c",
+  "Sst": "#6b6a64",
+  "Sst Chodl": "#bc2025",
+  "Pvalb": "#5066b0",
+  "Chandelier": "#64cce9",
+  "Lamp5 Lhx6": "#ae98a1",
+  "Lamp5": "#a1b6de",
+  "Sncg": "#f175aa",
+  "Vip": "#35bba0",
+  "Pax6": "#67be62",
+  "Astro": "#f5ed1f",
+  "Oligo": "#99994e",
+  "OPC": "#869c98",
+  "Micro": "#92575d",
+  "Endo": "#d490bf",
+  "VLMC": "#717c33",
+  "PC": "#29471f",
+  "SMC": "#413c42",
+  "Immune": "#f15c5a",
+  "RB": "#050304",
 };
 
 function useSingleCellData(dataset: string, gene: string, ctClass: string) {

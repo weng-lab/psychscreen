@@ -1,5 +1,4 @@
-import {
-  ApolloCache,
+import {  
   ApolloClient,
   gql,
   InMemoryCache,

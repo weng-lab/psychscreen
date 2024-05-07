@@ -4,7 +4,7 @@ import { AppBar } from "@weng-lab/psychscreen-ui-components";
 import { PORTALS } from "../../../App";
 import GenomeExplorer from "./GenomeExplorer";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
-import { Container, Grid } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import FooterPanel from "../../HomePage/FooterPanel";
 
 type GenomicRangeParams = {

@@ -190,7 +190,7 @@ function useLoci(trait: string) {
       ) || []
     );
   }, [data]);
-  console.log({ loci, loading, data })
+  
   return { loci, loading, data };
 }
 

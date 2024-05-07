@@ -1,11 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
-import React, { RefObject, useEffect, useMemo, useState } from "react";
-import { DenseBigBed, EmptyTrack, FullBigWig } from "umms-gb";
-import {
-  BigRequest,
-  RequestError,
-} from "umms-gb/dist/components/tracks/trackset/types";
+import React, { useEffect, useMemo, useState } from "react";
+import { EmptyTrack } from "umms-gb";
+import {  RequestError } from "umms-gb/dist/components/tracks/trackset/types";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
 import { BBTrack } from "./SingleCellGRNBrowser";
 import SingleCellQTLTracksModal from "./SingleCellQTLTracksModal";

@@ -1,10 +1,9 @@
-import { gql, useQuery } from "@apollo/client";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { gql } from "@apollo/client";
 import React from "react";
 import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
-import { PropaneSharp } from "@mui/icons-material";
+
 
 function pickHex(color1: number[], color2: number[], w1: number) {
   const w2 = 1 - w1;
