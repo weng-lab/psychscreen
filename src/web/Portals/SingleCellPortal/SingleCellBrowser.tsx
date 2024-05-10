@@ -90,7 +90,7 @@ export function expandCoordinates(
 
 export const SingleCellBrowser = (props) =>{
     const svgRef = useRef<SVGSVGElement>(null);
-    const [coordinates, setCoordinates] = useState<GenomicRange | null>(null);
+    const [coordinates, setCoordinates] = useState<GenomicRange | null>({ chromosome: "chr11", start: 52000, end: 54000});
     const [selectedSearch, setSearch] = useState<string>("Genes");
   const handleChange = (event: SelectChangeEvent) => {
     setSearch(event.target.value);
@@ -198,6 +198,7 @@ export const SingleCellBrowser = (props) =>{
           ) : (
             <CoordinatesSearch
               onSelected={(value) => {
+                console.log(value,"val")
                 setCoordinates({
                   chromosome: value.chromosome,
                   start: +value.start < 0 ? 1 : +value.start,
