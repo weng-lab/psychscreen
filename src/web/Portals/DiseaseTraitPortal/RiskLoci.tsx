@@ -104,6 +104,8 @@ const RiskLocusView: React.FC<{
   const [selected, setSelected] = useState<
     [string, number, number, number] | null
   >(null);
+
+  console.log(groupedLoci.size,"groupedLoci")
   return props.loci.length === 0 ? (
     <CircularProgress />
   ) : (
@@ -125,7 +127,7 @@ const RiskLocusView: React.FC<{
         <Container
           style={{ marginTop: "30px", marginLeft: "150px", width: "750px" }}
         >
-          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size*30}`}>
+          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size*30+100}`}>
             {[...groupedLoci.keys()]
               .filter((x) => x && groupedCytobands.get(x))
               .sort(
