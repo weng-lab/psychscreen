@@ -11,6 +11,7 @@ import MainPanel from "./MainPanel";
 import PortalsPanel from "./PortalsPanel";
 import AboutUsPanel from "./AboutUsPanel";
 import FooterPanel from "./FooterPanel";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,8 +28,10 @@ const HomePage: React.FC = () => {
         onAboutClicked={() => navigate("/psychscreen/aboutus")}
       />
       <MainPanel />
-      <PortalsPanel style={{ marginTop: "160px" }} />
-      <AboutUsPanel style={{ marginTop: "355px" }} />
+      <Grid2 container pt={3} maxWidth={{ xl: "60%", lg: "75%", md: "85%", sm: "90%", xs: "95%" }} margin={"auto"}>
+        <PortalsPanel />
+        <AboutUsPanel />
+      </Grid2>
       <FooterPanel style={{ marginTop: "160px" }} />
     </>
   );

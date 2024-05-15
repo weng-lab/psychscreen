@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Container, GridProps } from "@mui/material";
+import { Grid, Container, GridProps, Box, Stack, Divider } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { Button, Typography } from "@weng-lab/psychscreen-ui-components";
 
@@ -11,636 +11,217 @@ import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    [theme.breakpoints.up("xl")]: {
-      paddingLeft: "90px",
-    },
-    [theme.breakpoints.between("md", "lg")]: {
-      paddingLeft: "40px",
-    },
-  },
-}));
 
-const DiseaseTraitPortalPanel: React.FC<GridProps> = (props) => {
+type PortalPanelProps = {
+  title: string
+  description: string
+  stats?: string[]
+  buttonText: string
+  buttonLink: string
+  imageSRC: string
+  /**
+   * Placement of image on large screen width. On small width will always be on top of button
+   */
+  imagePlacement: "right" | "left"
+  imgAltText: string
+}
+
+/**
+ * 
+ * @param props 
+ * Generates homepage panel with given info
+ */
+export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
   const navigate = useNavigate();
-  const classes = useStyles();
+
   return (
-    <Grid container {...props}>
-      <Grid item xs={0} sm={1} md={0} lg={1} xl={2}></Grid>
-      <Grid item xs={12} sm={11} md={0} lg={11} xl={10}>
-        <Typography
-          type="body"
-          size="medium"
-          className={classes.root}
-          style={{ fontSize: "32px", lineHeight: "38.4px", fontWeight: 700 }}
+    <div>
+      <Grid2 container xs={12} justifyContent={"space-between"} spacing={3}>
+        <Grid2 xs={12} md={6} order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }} alignSelf={"center"}>
+          <Stack spacing={2} alignItems={"flex-start"}>
+            <Typography
+              type="body"
+              size="medium"
+              style={{
+                fontSize: "20px",
+                lineHeight: "24.4px",
+                fontWeight: 700,
+              }}
+            >
+              {props.title}
+            </Typography>
+            <Typography
+              type="body"
+              size="medium"
+              style={{
+                fontSize: "16px",
+                lineHeight: "24px",
+                fontWeight: 400,
+                letterSpacing: "0.3%",
+                width: "414px",
+              }}
+            >
+              {props.description}
+            </Typography>
+            <div>
+              {props.stats?.map((stat) =>
+                <Typography
+                  type="body"
+                  size="large"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    fontSize: "16px",
+                    fontWeight: 400,
+                    lineHeight: "19px",
+                  }}
+                >
+                  <CheckIcon style={{ marginRight: "9px" }} />
+                  {stat}
+                </Typography>
+              )}
+            </div>
+            <StyledButton
+              bvariant="filled"
+              btheme="light"
+              onClick={() => {
+                navigate(props.buttonLink);
+              }}
+            >
+              {props.buttonText}
+            </StyledButton>
+          </Stack>
+        </Grid2>
+        <Grid2 xs={12} md={6} 
+          order={{ xs: 1, md: props.imagePlacement === "right" ? 2 : 1 }}
+          minHeight={300}
         >
-          Portals
-        </Typography>
-      </Grid>
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-      <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
-        <Container style={{ marginTop: "111px", width: "508px" }}>
-          <img
-            alt="Disease/Trait Portal"
-            src={DiseaseTrait}
-            style={{ width: "90%" }}
-          />
-        </Container>
-      </Grid>
-      <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-        <Container style={{ marginTop: "140px", width: "508px" }}>
-          <Typography
-            type="body"
-            size="medium"
-            style={{
-              fontSize: "20px",
-              lineHeight: "24.4px",
-              fontWeight: 700,
-              letterSpacing: "1%",
-              marginBottom: "40px",
-            }}
-          >
-            Disease/Trait Portal
-          </Typography>
-          <Typography
-            type="body"
-            size="medium"
-            style={{
-              fontSize: "16px",
-              lineHeight: "24px",
-              fontWeight: 400,
-              letterSpacing: "0.3%",
-              marginBottom: "16px",
-              width: "414px",
-            }}
-          >
-            Explore heritability enrichment for 40 distinct psychiatric,
-            behavioral, and neuronal traits within gene regulatory features,
-            such as b-cCREs and quantitative trait loci (QTLs). Search genes
-            associated with complex traits based on PsychENCODE TWAS.
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> 40 total traits
-            cataloged
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-              marginBottom: "40px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> 1,103 b-cCRE/trait
-            associations
-          </Typography>
-          <StyledButton
-            bvariant="filled"
-            btheme="light"
-            onClick={() => {
-              navigate("/psychscreen/traits");
-            }}
-          >
-            Explore Diseases/Traits
-          </StyledButton>
-        </Container>
-      </Grid>
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-    </Grid>
-  );
-};
+          <Box 
+            position={"relative"} 
+            height={"100%"} 
+            width={'100%'} 
+            sx={{ 
+              objectPosition: props.imagePlacement === "right" ? 
+              { md: "right bottom", xs: "left bottom" } 
+              : { md: "left bottom", xs: "left bottom" } 
+            }}>
+            <img
+              style={{ 
+                objectFit: "contain", 
+                objectPosition: "inherit",
+                position: "absolute"
+              }}
+              height={"100%"}
+              width={"100%"}
+              src={props.imageSRC}
+              alt={props.imgAltText}
+            />
+          </Box>
+        </Grid2>
+      </Grid2>
+    </div>
+  )
+}
 
-const GeneBCREPortalPanel: React.FC<GridProps> = (props) => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  return (
-    <Grid container {...props}>
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-      {useMediaQuery(theme.breakpoints.down("sm")) ? (
-        <>
-          <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
-            <Container style={{ width: "508px" }}>
-              <img
-                alt="Gene b-cCRE portal"
-                src={GeneBCRE}
-                style={{ width: "80%" }}
-              />
-            </Container>
-            <br />
-            <br />
-          </Grid>
-          <Grid item xs={12} sm={12} md={8} lg={5} xl={5}>
-            <Container style={{ marginLeft: "110px", width: "508px" }}>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "24.4px",
-                  fontWeight: 700,
-                  letterSpacing: "1%",
-                  marginBottom: "40px",
-                }}
-              >
-                Gene/b-cCRE Portal
-              </Typography>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  fontWeight: 400,
-                  letterSpacing: "0.3%",
-                  marginBottom: "16px",
-                  width: "414px",
-                }}
-              >
-                Explore gene expression and regulatory element activity in the
-                fetal and adult brain at bulk and single-cell resolution.
-                Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
-                cell co-expression analyses.
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> Gene expression in
-                11 brain regions
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> 23 fetal,
-                adolescent, and adult time points covered
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                  marginBottom: "40px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain
-                regulatory elements
-              </Typography>
-              <StyledButton
-                bvariant="filled"
-                btheme="light"
-                onClick={() => {
-                  navigate("/psychscreen/gene");
-                }}
-              >
-                Explore Genes/b-cCREs
-              </StyledButton>
-            </Container>
-          </Grid>
-        </>
-      ) : (
-        <>
-          <Grid item xs={12} sm={12} md={8} lg={5} xl={5}>
-            <Container style={{ marginLeft: "70px", width: "508px" }}>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "24.4px",
-                  fontWeight: 700,
-                  letterSpacing: "1%",
-                  marginBottom: "40px",
-                }}
-              >
-                Gene/b-cCRE Portal
-              </Typography>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  fontWeight: 400,
-                  letterSpacing: "0.3%",
-                  marginBottom: "16px",
-                  width: "414px",
-                }}
-              >
-                Explore gene expression and regulatory element activity in the
-                fetal and adult brain at bulk and single-cell resolution.
-                Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
-                cell co-expression analyses.
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> Gene expression in
-                11 brain regions
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> 23 fetal,
-                adolescent, and adult time points covered
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                  marginBottom: "40px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain
-                regulatory elements
-              </Typography>
-              <StyledButton
-                bvariant="filled"
-                btheme="light"
-                onClick={() => {
-                  navigate("/psychscreen/gene");
-                }}
-              >
-                Explore Genes/b-cCREs
-              </StyledButton>
-            </Container>
-          </Grid>
-          <Grid item xs={12} sm={12} md={4} lg={5} xl={3}>
-            <Container style={{ width: "508px" }}>
-              <img
-                alt="Gene b-cCRE portal"
-                src={GeneBCRE}
-                style={{ width: "90%" }}
-              />
-            </Container>
-          </Grid>
-        </>
-      )}
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-    </Grid>
-  );
-};
-
-const SNPQTLPortalPanel: React.FC<GridProps> = (props) => {
-  const navigate = useNavigate();
-  return (
-    <Grid container {...props}>
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-      <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
-        <Container style={{ marginTop: "111px", width: "508px" }}>
-          <img alt="SNP/QTL Portal" src={SNPQTL} style={{ width: "80%" }} />
-        </Container>
-      </Grid>
-      <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-        <Container style={{ marginTop: "140px", width: "508px" }}>
-          <Typography
-            type="body"
-            size="medium"
-            style={{
-              fontSize: "20px",
-              lineHeight: "24.4px",
-              fontWeight: 700,
-              letterSpacing: "1%",
-              marginBottom: "40px",
-            }}
-          >
-            SNP/QTL Portal
-          </Typography>
-          <Typography
-            type="body"
-            size="medium"
-            style={{
-              fontSize: "16px",
-              lineHeight: "24px",
-              fontWeight: 400,
-              letterSpacing: "0.3%",
-              marginBottom: "16px",
-              width: "414px",
-            }}
-          >
-            Search SNPs of interest and explore their impact on gene expression,
-            chromatin accessibility, transcription factor (TF) binding and other
-            molecular traits in the human brain based on PsychENCODE QTLs and
-            sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS
-            annotations.
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> 441,502 eQTLs, sQTLs,
-            caQTLs, and fQTLs
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> 13,336 variants
-            associated with complex traits
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-              marginBottom: "40px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in
-            b-cCREs
-          </Typography>
-          <StyledButton
-            bvariant="filled"
-            btheme="light"
-            onClick={() => {
-              navigate("/psychscreen/snp");
-            }}
-          >
-            Explore SNPs/QTLs
-          </StyledButton>
-        </Container>
-      </Grid>
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-    </Grid>
-  );
-};
-
-const SingleCellPortalPanel: React.FC<GridProps> = (props) => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  return (
-    <Grid container {...props}>
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-      {useMediaQuery(theme.breakpoints.down("sm")) ? (
-        <>
-          <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-            <Container style={{ width: "408px" }}>
-              <img
-                alt="single cell portal"
-                src={SingleCell}
-                style={{ width: "100%" }}
-              />
-            </Container>
-            <br />
-            <br />
-          </Grid>
-          <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
-            <Container style={{ marginLeft: "120px", width: "508px" }}>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "24.4px",
-                  fontWeight: 700,
-                  letterSpacing: "1%",
-                  marginBottom: "40px",
-                }}
-              >
-                Single-Cell Portal
-              </Typography>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  fontWeight: 400,
-                  letterSpacing: "0.3%",
-                  marginBottom: "16px",
-                  width: "414px",
-                }}
-              >
-                Visualize the single cell composition of the human brain based
-                on single cell ATAC-seq and RNA-seq from PsychENCODE and public
-                sources. Identify marker genes and b-cCREs specific to particular
-                cell types and states.
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> Transcriptomes for
-                1,391,772 single cells
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                  marginBottom: "40px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> Chromatin
-                accessibility for 1,009,942 single cells
-              </Typography>
-              <StyledButton
-                bvariant="filled"
-                btheme="light"
-                onClick={() => {
-                  navigate("/psychscreen/single-cell");
-                }}
-              >
-                Explore Single Cells
-              </StyledButton>
-            </Container>
-          </Grid>
-        </>
-      ) : (
-        <>
-          <Grid item xs={12} sm={12} md={8} lg={6} xl={5}>
-            <Container style={{ marginLeft: "70px", width: "508px" }}>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "24.4px",
-                  fontWeight: 700,
-                  letterSpacing: "1%",
-                  marginBottom: "40px",
-                }}
-              >
-                Single-Cell Portal
-              </Typography>
-              <Typography
-                type="body"
-                size="medium"
-                style={{
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  fontWeight: 400,
-                  letterSpacing: "0.3%",
-                  marginBottom: "16px",
-                  width: "414px",
-                }}
-              >
-                Visualize the single cell composition of the human brain based
-                on single cell ATAC-seq and RNA-seq from PsychENCODE and public
-                sources. Identify marker genes and b-cCREs specific to particular
-                cell types and states.
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> Transcriptomes for
-                1,391,772 single cells
-              </Typography>
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                  marginBottom: "40px",
-                }}
-              >
-                <CheckIcon style={{ marginRight: "9px" }} /> Chromatin
-                accessibility for 1,009,942 single cells
-              </Typography>
-              <StyledButton
-                bvariant="filled"
-                btheme="light"
-                onClick={() => {
-                  navigate("/psychscreen/single-cell");
-                }}
-              >
-                Explore Single Cells
-              </StyledButton>
-            </Container>
-          </Grid>
-          <Grid item xs={12} sm={12} md={4} lg={4} xl={3}>
-            <Container style={{ width: "508px", marginLeft: "40px" }}>
-              <img
-                alt="single cell portal"
-                src={SingleCell}
-                style={{ width: "80%" }}
-              />
-            </Container>
-          </Grid>
-        </>
-      )}
-      <Grid item xs={0} sm={0} md={0} lg={1} xl={2}></Grid>
-    </Grid>
-  );
-};
-
-const PortalsPanel: React.FC<GridProps> = (props) => (
-  <>
-    <DiseaseTraitPortalPanel {...props} />
-    <GeneBCREPortalPanel style={{ marginTop: "216px" }} />
-    <SNPQTLPortalPanel style={{ marginTop: "156px" }} />
-    <SingleCellPortalPanel style={{ marginTop: "176px" }} />
-  </>
+export const PortalsPanel: React.FC<GridProps> = (props) => (
+  <Grid2 container rowSpacing={10}>
+    <Grid2 xs={12}>
+      <PortalPanel
+        title={"Disease/Trait Portal"}
+        description={`
+          Explore heritability enrichment for 40 distinct psychiatric,
+          behavioral, and neuronal traits within gene regulatory features,
+          such as b-cCREs and quantitative trait loci (QTLs). Search genes
+          associated with complex traits based on PsychENCODE TWAS.
+        `}
+        stats={[
+          "40 total traits cataloged",
+          "1,103 b-cCRE/trait associations"
+        ]}
+        buttonText={"Explore Diseases/Traits"}
+        buttonLink={"/psychscreen/traits"}
+        imageSRC={DiseaseTrait}
+        imagePlacement={"left"}
+        imgAltText={"Disease/Trait Portal"}
+      />
+    </Grid2>
+    <Grid2 xs={12}>
+      <Divider />
+    </Grid2>
+    <Grid2 xs={12}>
+      <PortalPanel
+        title={"Gene/b-cCRE Portal"}
+        description={`
+          Explore gene expression and regulatory element activity in the
+          fetal and adult brain at bulk and single-cell resolution.
+          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
+          cell co-expression analyses.
+        `}
+        stats={[
+          "Gene expression in 11 brain regions",
+          "23 fetal, adolescent, and adult time points covered",
+          "761,984 brain regulatory elements"
+        ]}
+        buttonText={"Explore Genes/b-cCREs"}
+        buttonLink={"/psychscreen/gene"}
+        imageSRC={GeneBCRE}
+        imagePlacement={"right"}
+        imgAltText={"Gene b-cCRE portal"}
+      />
+    </Grid2>
+    <Grid2 xs={12}>
+      <Divider />
+    </Grid2>
+    <Grid2 xs={12}>
+      <PortalPanel
+        title={"SNP/QTL Portal"}
+        description={`
+          Search SNPs of interest and explore their impact on gene expression,
+          chromatin accessibility, transcription factor (TF) binding and other
+          molecular traits in the human brain based on PsychENCODE QTLs and
+          sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS
+        `}
+        stats={[
+          "441,502 eQTLs, sQTLs, caQTLs, and fQTLs",
+          "13,336 variants associated with complex traits",
+          "510,062 variants in b-cCREs"
+        ]}
+        buttonText={"Explore SNPs/QTLs"}
+        buttonLink={"/psychscreen/snp"}
+        imageSRC={SNPQTL}
+        imagePlacement={"left"}
+        imgAltText={"SNP/QTL Portal"}
+      />
+    </Grid2>
+    <Grid2 xs={12}>
+      <Divider />
+    </Grid2>
+    <Grid2 xs={12}>
+      <PortalPanel
+        title={"Single-Cell Portal"}
+        description={`
+          Visualize the single cell composition of the human brain based
+          on single cell ATAC-seq and RNA-seq from PsychENCODE and public
+          sources. Identify marker genes and b-cCREs specific to particular
+          cell types and states.
+        `}
+        stats={[
+          "Transcriptomes for 1,391,772 single cells",
+          "Chromatin accessibility for 1,009,942 single cells"
+        ]}
+        buttonText={"Explore Single Cells"}
+        buttonLink={"/psychscreen/single-cell"}
+        imageSRC={SingleCell}
+        imagePlacement={"right"}
+        imgAltText={"Single cell portal"}
+      />
+    </Grid2>
+    <Grid2 xs={12} mb={3}>
+      <Divider />
+    </Grid2>
+  </Grid2>
 );
 export default PortalsPanel;

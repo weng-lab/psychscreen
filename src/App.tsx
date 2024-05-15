@@ -9,6 +9,7 @@ import "@weng-lab/psychscreen-ui-components/src/App.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import "./App.css";
 import { AboutUsPage, HomePage as WebHomePage } from "./web/HomePage";
+//Is tablet view even used?
 import { HomePage as TabletHomePage } from "./mobile-portrait/HomePage";
 import { DownloadsPage } from "./web/DownloadsPage";
 import {
@@ -86,7 +87,8 @@ const App: React.FC = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Navigate replace to="/psychscreen" />} />
-          <Route path="/psychscreen" element={<HomePage />} />
+          <Route path="/psychscreen" element={<WebHomePage />} />
+          {/* <Route path="/psychscreen" element={<HomePage />} /> */}
           <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
           <Route path="/psychscreen/aboutus" element={<AboutUsPage />} />
           <Route
