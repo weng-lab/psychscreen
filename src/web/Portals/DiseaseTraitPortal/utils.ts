@@ -15,10 +15,12 @@ function compare(a: GenomicRange, b: GenomicRange): number {
 }
 
 export function riskLoci(
-  snps: (GenomicRange & { p: number })[]
-): (GenomicRange & { count: number; minimump: number })[] {
+  snps: (GenomicRange & { p: number })[],
+  trait?: string
+  
+): ( GenomicRange & { count: number; minimump: number })[] {
   const expandedCoordinates = snps
-    .filter((x) => x.p < 5e-8)
+   .filter((x) => trait &&  trait==="Anorexia" ? x : x.p < 5e-8) //Ask Nicole about this filter threshold value 
     .map((x) => ({
       chromosome: x.chromosome,
       start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
@@ -26,7 +28,7 @@ export function riskLoci(
       p: x.p,
     }))
     .sort(compare);
-    console.log("expandedCoordinates",expandedCoordinates)
+    
   const riskLoci: (GenomicRange & { count: number; minimump: number })[] = [];
   expandedCoordinates.forEach((r, i) => {
     if (i === 0) {
