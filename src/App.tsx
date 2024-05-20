@@ -9,8 +9,6 @@ import "@weng-lab/psychscreen-ui-components/src/App.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import "./App.css";
 import { AboutUsPage, HomePage as WebHomePage } from "./web/HomePage";
-//Is tablet view even used?
-import { HomePage as TabletHomePage } from "./mobile-portrait/HomePage";
 import { DownloadsPage } from "./web/DownloadsPage";
 import {
   DiseaseTraitPortal,
@@ -74,15 +72,6 @@ const App: React.FC = () => {
       }),
     []
   );
-
-  //const { width, height } = useViewportSize();
-  const theme = useTheme();
-  //useMediaQuery(theme.breakpoints.down('sm'))
-  //const HomePage = useMemo( () => width < 1280 && height > width ? TabletHomePage : WebHomePage, [ width ] );
-
-  const HomePage = useMediaQuery(theme.breakpoints.down("sm"))
-    ? TabletHomePage
-    : WebHomePage;
 
   return (
     <ApolloProvider client={client}>

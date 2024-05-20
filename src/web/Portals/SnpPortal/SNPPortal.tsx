@@ -5,12 +5,10 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Container, GridProps, Slide } from "@mui/material";
-import { TabletAppBar } from "@weng-lab/psychscreen-ui-components";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import CheckIcon from "@mui/icons-material/Check";
 import { HorizontalCard, SearchBox } from "@weng-lab/psychscreen-ui-components";
 import { useTheme, useMediaQuery, Paper } from "@material-ui/core";
-import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import SNPQTL from "../../../assets/snp-qtl.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SnpAutoComplete } from "./SnpAutoComplete";
