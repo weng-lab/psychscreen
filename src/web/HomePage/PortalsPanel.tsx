@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import { ExpandMore } from "@mui/icons-material";
 
 
 type PortalPanelProps = {
@@ -128,6 +129,21 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
 
 export const PortalsPanel: React.FC<GridProps> = (props) => (
   <Grid2 container rowSpacing={10}>
+    <Grid2 xs={12}>
+      <Divider>
+        <Stack
+          alignItems={"center"}
+          onClick={() => {
+            var element = document.getElementById("Portals");
+            element && element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          sx={{ cursor: 'pointer' }}
+        >
+          <Typography id="Portals" type={"display"} size={"small"}>Portals</Typography>
+          <ExpandMore />
+        </Stack>
+      </Divider>
+    </Grid2>
     <Grid2 xs={12}>
       <PortalPanel
         title={"Disease/Trait Portal"}

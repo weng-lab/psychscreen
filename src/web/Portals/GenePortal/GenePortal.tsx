@@ -21,7 +21,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { QueryResponse } from "./GeneOverview";
 import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
 import { GeneAutoComplete } from "./GeneAutocomplete";
-import FooterPanel from "../../HomePage/FooterPanel";
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
     gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
@@ -358,7 +357,6 @@ const GenePortal: React.FC = (props) => {
 
         <Grid item sm={0} md={1} lg={2} xl={3}></Grid>
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
     </>
   );
 };

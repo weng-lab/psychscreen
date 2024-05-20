@@ -24,7 +24,6 @@ import { SingleCellBrowser } from "./SingleCellBrowser";
 import { StyledTab } from "../GenePortal/SingleCell";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
@@ -641,8 +640,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
           </Grid>
         )}
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
-    
     </>
   );
 };

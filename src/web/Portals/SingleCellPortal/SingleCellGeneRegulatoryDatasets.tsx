@@ -5,7 +5,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 const COLUMNS = [
   {
@@ -141,8 +140,6 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
           </Container>
         </Grid>
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
-
     </>
   );
 };

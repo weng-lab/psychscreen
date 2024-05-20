@@ -14,7 +14,6 @@ import { Container } from "@mui/system";
 
 import { PORTALS } from "../../App";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
-import FooterPanel from "../HomePage/FooterPanel";
 
 function createData(
   name: string,
@@ -971,7 +970,6 @@ const DownloadsPage: React.FC = () => {
         </Grid>
         <Grid item sm={0} md={0} lg={1} xl={2} />
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }}/>
     </>
   );
 };

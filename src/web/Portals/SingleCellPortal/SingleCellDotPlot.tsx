@@ -4,7 +4,6 @@ import { AppBar, Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { PORTALS } from "../../../App";
 import SingleCell, { DATASETS } from "../GenePortal/SingleCell";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
@@ -52,8 +51,6 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
           )}
         </Grid>
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
-
     </>
   );
 };

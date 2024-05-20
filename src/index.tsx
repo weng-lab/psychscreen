@@ -3,13 +3,24 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import FooterPanel from "./web/HomePage/FooterPanel";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <div className="app">
+      <div className="header">
+        {/* App bar here */}
+      </div>
+      <div className="main">
+        <App />
+      </div>
+      <div className="footer">
+        <FooterPanel />
+      </div>
+    </div>
   </React.StrictMode>
 );
 

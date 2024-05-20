@@ -16,7 +16,6 @@ import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import SNPQTL from "../../../assets/snp-qtl.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SnpAutoComplete } from "./SnpAutoComplete";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 const SNP_AUTOCOMPLETE_QUERY = `
 query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
@@ -283,8 +282,6 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
 
         <Grid item sm={0} md={1} lg={2} xl={3}></Grid>
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
-
     </>
   );
 };

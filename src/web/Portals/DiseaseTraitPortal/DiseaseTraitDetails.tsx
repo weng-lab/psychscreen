@@ -16,7 +16,6 @@ import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import styled from "@emotion/styled";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 export const StyledButton = styled(Button)(() => ({
   textTransform: "none",
@@ -430,7 +429,6 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
         </Grid>
         <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
     </>
   );
 };

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Grid, Container, GridProps } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { SearchBoxWithSelect } from "@weng-lab/psychscreen-ui-components";
 import { useNavigate } from "react-router-dom";
-import { PORTAL_SELECT_OPTIONS } from "../../constants/portals";
 import BRAIN from "../../assets/brain.png";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,33 +12,64 @@ import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
 import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
 import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-const MainPanel: React.FC<GridProps> = (props) => {
-  const [searchVal, setSearchVal] = useState<string>("");
-  const navigate = useNavigate();
+const MainPanel: React.FC = () => {
   const [selectedPortal, setSelectedPortal] = useState<string>("Disease/Trait");
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedPortal(event.target.value);
   };
 
+  const theme = useTheme();
+  const betweenSmLg = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
+
+
   return (
-    <Grid2 {...props} container>
-      <Grid2 sm={0} md={0} lg={1} xl={2}></Grid2>
-      <Grid2 sm={9} md={8} lg={7} xl={5}>
-        <Container style={{ marginTop: "147px", width: "741px" }}>
+    <div>
+      <Grid2 container xs={12} justifyContent={"space-between"} spacing={3} mb={4}>
+        <Grid2 display={betweenSmLg ? "block" : "none"}>
           <Typography
             type="display"
             size="medium"
             style={{
               fontWeight: 700,
               fontSize: "44px",
-              lineHeight: "57.6px",
+              lineHeight: "54px",
               letterSpacing: "0.5px",
-              marginBottom: "16px",
             }}
           >
-            Explore the genetics and epigenetics of human brain development,
-            function, and pathophysiology.
+            Explore the genetics and epigenetics of human brain development, function, and pathophysiology.
+          </Typography>
+        </Grid2>
+        <Grid2 xs={12} sm={6} order={{ xs: 2, sm: 1 }} alignSelf={"flex-start"}>
+          <Stack spacing={3} alignItems={"flex-start"}>
+          {!betweenSmLg && <Typography
+            type="display"
+            size="medium"
+            style={{
+              fontWeight: 700,
+              fontSize: "44px",
+              lineHeight: "54px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            Explore the genetics and epigenetics of human brain development, function, and pathophysiology.
+          </Typography>}
+          <div>
+            <Typography
+            type="body"
+            size="large"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
+            }}
+          >
+            <BoltIcon style={{ marginRight: "9px" }} />
+            Powered by the PsychENCODE Consortium
           </Typography>
           <Typography
             type="body"
@@ -48,38 +77,18 @@ const MainPanel: React.FC<GridProps> = (props) => {
             style={{
               display: "flex",
               alignItems: "center",
-              flexWrap: "wrap",
               fontSize: "16px",
               fontWeight: 400,
               lineHeight: "19px",
-              marginBottom: "4px",
             }}
           >
-            <BoltIcon style={{ marginRight: "9px" }} /> Powered by the
-            PsychENCODE Consortium
+            <AccessibilityNewIcon style={{ marginRight: "9px" }} />
+            Accessible to all
           </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-              marginBottom: "56px",
-            }}
-          >
-            <AccessibilityNewIcon style={{ marginRight: "9px" }} /> Accessible
-            to all
-          </Typography>
-
+          </div>
           <FormControl variant="standard">
             <Select
-              id="demo-simple-select-standard"
               value={selectedPortal}
-              // defaultValue={10}
               onChange={handleChange}
             >
               <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
@@ -87,8 +96,6 @@ const MainPanel: React.FC<GridProps> = (props) => {
               <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
             </Select>
           </FormControl>
-          <br />
-          <br />
           {selectedPortal === "Disease/Trait" ? (
             <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" />
           ) : selectedPortal === "Gene/b-cCRE" ? (
@@ -96,46 +103,36 @@ const MainPanel: React.FC<GridProps> = (props) => {
           ) : (
             <SnpAutoComplete navigateto="/psychscreen/snp/" />
           )}
-          {0 > 1 && (
-            <SearchBoxWithSelect
-              onSelectChange={(val: { name: string }) => {
-                setSelectedPortal(val.name);
+          </Stack>
+        </Grid2>
+        <Grid2 xs={12} sm={6} 
+          order={{ xs: 1, sm: 2 }}
+          minHeight={250}
+        >
+          <Box 
+            position={"relative"} 
+            height={"100%"} 
+            width={'100%'} 
+            sx={{ 
+              objectPosition: { md: "right bottom", xs: "left bottom" }
+            }}>
+            <img
+              style={{ 
+                objectFit: "contain", 
+                objectPosition: "inherit",
+                position: "absolute",
+                zIndex: -10 //For making sure it's being app bar menu
               }}
-              selectOptions={PORTAL_SELECT_OPTIONS}
-              style={{ marginBottom: "14px" }}
-              onChange={(e) => {
-                if (e.target.value === "") {
-                }
-                setSearchVal(e.target.value);
-              }}
-              onClick={() => {
-                if (searchVal !== "") {
-                  if (selectedPortal === "Disease/Trait") {
-                    navigate("/psychscreen/traits", {
-                      state: { searchvalue: searchVal },
-                    });
-                  } else if (selectedPortal === "Gene/b-cCRE") {
-                    navigate("/psychscreen/gene", {
-                      state: { searchvalue: searchVal },
-                    });
-                  } else if (selectedPortal === "SNP/QTL") {
-                    navigate("/psychscreen/snp", {
-                      state: { searchvalue: searchVal },
-                    });
-                  }
-                }
-              }}
+              height={"100%"}
+              width={"100%"}
+              src={BRAIN}
+              alt={"psychSCREEN Brain"}
             />
-          )}
-        </Container>
+          </Box>
+        </Grid2>
       </Grid2>
-      <Grid2 sm={3} md={4} lg={3} xl={3}>
-        <Container style={{ marginTop: "143px" }}>
-          <img alt="PsychSCREEN" src={BRAIN} style={{ width: "100%" }} />
-        </Container>
-      </Grid2>
-      <Grid2 sm={0} md={0} lg={1} xl={2}></Grid2>
-    </Grid2>
+    </div>
+       
   );
 };
 export default MainPanel;
