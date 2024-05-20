@@ -4,80 +4,16 @@ import MuiLink from "@mui/material/Link"
 
 const FooterPanel = () => {
   return (
-    <Box
-      sx={{ textAlign: "center", width: "100%", zIndex: -9999, backgroundColor: 'black' }}
-    >
-      <Grid2 container>
-        <Grid2 sm={3}>
-          <Typography variant="h5" color="#ffffff" align="justify">
+    <Box sx={{ textAlign: "center", width: "100%", zIndex: -9999, backgroundColor: 'black' }}    >
+      <Grid2 container pt={5} pb={5} spacing={3} maxWidth={{ xl: "60%", lg: "75%", md: "85%", sm: "90%", xs: "95%" }} margin={'auto'}>
+        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+          <Typography variant="h4">
             psychSCREEN
           </Typography>
-          <Typography variant="body2" color="#ffffff" align="justify">
-            Explore the genetics and epigenetics of human brain.
+          <Typography variant="body2" mb={2}>
+            Explore the genetics and epigenetics<br/>of the human brain.
           </Typography>
-        </Grid2>
-        <Grid2 sm={3}        >
-          <Typography variant="body1" color="#ffffff" align="justify">
-            About Us
-          </Typography>
-          <Typography variant="body2" align="justify" color="#ffffff">
-            <MuiLink color="inherit" href="/psychscreen/aboutus">
-              Overview
-            </MuiLink>
-          </Typography>
-          <Typography variant="body2" align="justify" color="#ffffff">
-            <MuiLink color="inherit" href="https://www.umassmed.edu/wenglab/">
-              Weng Lab
-            </MuiLink>
-          </Typography>
-          <Typography variant="body2" align="justify" color="#ffffff" justifySelf={"left"} justifyContent={"left"} justifyItems={"left"}>
-            <MuiLink color="inherit" href="https://psychencode.synapse.org/" justifySelf={"left"} justifyContent={"left"} justifyItems={"left"}>
-              PsychENCODE Consortium
-            </MuiLink>
-          </Typography>
-          <Typography variant="body2" align="justify" color="#ffffff" justifyContent={"left"}>
-            <MuiLink color="inherit" href="https://www.umassmed.edu/">
-              UMass Chan Medical School
-            </MuiLink>
-          </Typography>
-        </Grid2>
-        <Grid2 sm={2}        >
-          <Typography variant="body1" color="#ffffff" align="justify">
-            Portals
-          </Typography>
-          <br />
-          <Typography variant="body2" color="#ffffff" align="justify">
-            <MuiLink color="inherit" href="/psychscreen/traits">
-              Disease/Trait
-            </MuiLink>
-          </Typography>
-          <Typography variant="body2" color="#ffffff" align="justify">
-            <MuiLink color="inherit" href="/psychscreen/gene">
-              Gene/b-cCRE
-            </MuiLink>
-          </Typography>
-          <Typography variant="body2" color="#ffffff" align="justify">
-            <MuiLink color="inherit" href="/psychscreen/snp">
-              SNP/QTL
-            </MuiLink>
-          </Typography>
-          <Typography variant="body2" color="#ffffff" align="justify">
-            <MuiLink color="inherit" href="/psychscreen/single-cell">
-              Single Cell
-            </MuiLink>
-          </Typography>
-        </Grid2>
-        <Grid2 sm={2}        >
-          <Typography variant="body1" color="#ffffff" align="justify" >
-            <MuiLink color="inherit" href="/psychscreen/downloads">
-              Downloads
-            </MuiLink>
-          </Typography>
-        </Grid2>
-      </Grid2>
-      <Grid2 container>
-        <Grid2 sm={12}        >
-          <Typography variant="body2" color="#ffffff" align="left">
+          <Typography variant="body2">
             {"Copyright © "}
             <MuiLink color="inherit" href="https://www.umassmed.edu/wenglab/">
               Weng Lab
@@ -88,14 +24,71 @@ const FooterPanel = () => {
             </MuiLink>{" "}
             {new Date().getFullYear()}.
           </Typography>
-          <Typography variant="body2" color="#ffffff" align="right">
-            UI and art by &nbsp;
+          <Typography variant="body2">
+            UI and art by&ensp;
             <MuiLink color="inherit" href="mailto:tl842@cornell.edu">
               Elo
             </MuiLink>
             {" from "}
             <MuiLink color="inherit" href="https://co-labo.org/">
               CoLabo
+            </MuiLink>
+          </Typography>
+        </Grid2>
+        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+          <Typography variant="h5" mb={1}>
+            Helpful Links
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="/psychscreen/aboutus" underline="hover">
+              About Us
+            </MuiLink>
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="https://www.umassmed.edu/wenglab/" underline="hover">
+              Weng Lab
+            </MuiLink>
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="https://psychencode.synapse.org/" underline="hover">
+              PsychENCODE Consortium
+            </MuiLink>
+          </Typography>
+          <Typography variant="body2" >
+            <MuiLink color="inherit" href="https://www.umassmed.edu/" underline="hover">
+              UMass Chan Medical School
+            </MuiLink>
+          </Typography>
+        </Grid2>
+        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+          <Typography variant="h5" mb={1}>
+            Portals
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="/psychscreen/traits" underline="hover">
+              Disease/Trait
+            </MuiLink>
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="/psychscreen/gene" underline="hover">
+              Gene/b-cCRE
+            </MuiLink>
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="/psychscreen/snp" underline="hover">
+              SNP/QTL
+            </MuiLink>
+          </Typography>
+          <Typography variant="body2">
+            <MuiLink color="inherit" href="/psychscreen/single-cell" underline="hover">
+              Single Cell
+            </MuiLink>
+          </Typography>
+        </Grid2>
+        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+          <Typography variant="h5">
+            <MuiLink color="inherit" href="/psychscreen/downloads" underline="hover">
+              Downloads
             </MuiLink>
           </Typography>
         </Grid2>

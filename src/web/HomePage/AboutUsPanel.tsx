@@ -5,7 +5,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 
 const AboutUsPanel: React.FC = () => {
   return (
-    <Grid2 container xs={12}>
+    <Grid2 container xs={12} mt={3}>
       <Grid2 xs={12}>
         <PortalPanel
           title={"About Us"}
@@ -18,7 +18,7 @@ const AboutUsPanel: React.FC = () => {
           buttonText={"Learn More"}
           buttonLink={"/psychscreen/aboutus"}
           imageSRC={logo}
-          imagePlacement={"right"}
+          imagePlacement={"left"}
           imgAltText={"UMass Chan Medical School Logo"}
         />
       </Grid2>

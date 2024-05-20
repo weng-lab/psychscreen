@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Link, Stack } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
@@ -69,7 +69,7 @@ const MainPanel: React.FC = () => {
             }}
           >
             <BoltIcon style={{ marginRight: "9px" }} />
-            Powered by the PsychENCODE Consortium
+            Powered by the&ensp;<Link href="https://psychencode.synapse.org/">PsychENCODE Consortium</Link> 
           </Typography>
           <Typography
             type="body"

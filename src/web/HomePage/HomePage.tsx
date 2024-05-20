@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
         centered={true}
         onAboutClicked={() => navigate("/psychscreen/aboutus")}
       />
-      <Grid2 container pt={3} maxWidth={{ xl: "60%", lg: "75%", md: "85%", sm: "90%", xs: "95%" }} margin={"auto"}>
+      <Grid2 container pt={3} pb={8} maxWidth={{ xl: "60%", lg: "75%", md: "85%", sm: "90%", xs: "95%" }} margin={"auto"}>
         <MainPanel />
         <PortalsPanel />
         <AboutUsPanel />

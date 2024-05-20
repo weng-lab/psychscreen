@@ -39,7 +39,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
 
   return (
     <div>
-      <Grid2 container xs={12} justifyContent={"space-between"} spacing={3}>
+      <Grid2 container xs={12} justifyContent={"space-between"} spacing={10}>
         <Grid2 xs={12} md={6} order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }} alignSelf={"center"}>
           <Stack spacing={2} alignItems={"flex-start"}>
             <Typography
@@ -106,8 +106,8 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
             width={'100%'} 
             sx={{ 
               objectPosition: props.imagePlacement === "right" ? 
-              { md: "right bottom", xs: "left bottom" } 
-              : { md: "left bottom", xs: "left bottom" } 
+              { md: "right center", xs: "left center" } 
+              : { md: "left center", xs: "left center" } 
             }}>
             <img
               style={{ 
