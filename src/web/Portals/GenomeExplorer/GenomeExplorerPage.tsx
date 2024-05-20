@@ -1,11 +1,8 @@
 import React, { useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppBar } from "@weng-lab/psychscreen-ui-components";
-import { PORTALS } from "../../../App";
 import GenomeExplorer from "./GenomeExplorer";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { Container } from "semantic-ui-react";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 type GenomicRangeParams = {
   chromosome: string;
@@ -42,26 +39,13 @@ const GenomeExplorerPage: React.FC = () => {
   );
 
   return (
-    <>
-      <AppBar
-        centered={true}
-        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-        onHomepageClicked={() => navigate("/")}
-        onAboutClicked={() => navigate("/psychscreen/aboutus")}
-        onPortalClicked={(index) =>
-          navigate(`/psychscreen${PORTALS[index][0]}`)
-        }
+    <Container style={{ width: "70%", marginLeft: "15%", marginTop: "2em" }}>
+      <GenomeExplorer
+        coordinates={{ chromosome, start, end }}
+        onDomainChanged={onDomainChanged}
+        defaultTrackset={trackset}
       />
-      <Container style={{ width: "70%", marginLeft: "15%", marginTop: "2em" }}>
-        <GenomeExplorer
-          coordinates={{ chromosome, start, end }}
-          onDomainChanged={onDomainChanged}
-          defaultTrackset={trackset}
-        />
-      </Container>
-      <FooterPanel style={{ marginTop: "160px" }} />
-
-    </>
+    </Container>
   );
 };
 export default GenomeExplorerPage;

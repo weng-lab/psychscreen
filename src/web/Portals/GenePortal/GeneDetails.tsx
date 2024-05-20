@@ -1,19 +1,15 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
-  AppBar,
   Typography,
-  Button,
 } from "@weng-lab/psychscreen-ui-components";
 import { PORTALS } from "../../../App";
 import {
   Divider,
   Grid,
-  TextField,
   Box,
   Tabs,
   Tab,
-  CircularProgress,
 } from "@mui/material";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
@@ -25,12 +21,10 @@ import GeneExpressionPage from "./GeneExpression";
 import Browser from "./Browser/Browser";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import GeneOverview from "./GeneOverview";
 import SingleCell from "./SingleCell";
 import styled from "@emotion/styled";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
-import FooterPanel from "../../HomePage/FooterPanel";
 
 export const StyledTab = styled(Tab)(() => ({
   textTransform: "none",
@@ -223,177 +217,164 @@ const GeneDetails: React.FC = (props) => {
   }, [toPlot]);
 
   return (
-    <>
-      <AppBar
-        centered
-        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-        onHomepageClicked={() => navigate("/")}
-        onAboutClicked={() => navigate("/psychscreen/aboutus")}
-        onPortalClicked={(index) =>
-          navigate(`/psychscreen${PORTALS[index][0]}`)
-        }
-        style={{ marginBottom: "63px" }}
-      />
-      <Grid container {...props} style={{ marginTop: "6em" }}>
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={9}>
-          <Typography
-            type="headline"
-            size="large"
-            style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
-          >
-            <img
-              alt="DNA"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
-              width="1.7%"
-            />
-            &nbsp;Gene Details: {gene}
-          </Typography>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              fontWeight: "bold",
-            }}
-          >
-            <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
-            <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
-          </div>
-        </Grid>
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={12} style={{ marginBottom: "10px" }} />
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={9}>
-          <Box>
-            <Tabs value={tabIndex} onChange={handleTabChange}>
-              <StyledTab label="Brain epi Genome Browser" />
-              <StyledTab label="Brain Single Cell Expression" />
-              <StyledTab label="Tissue Expression (GTEx)" />
-              <StyledTab label="Brain eQTLs and b-cCREs" />
-
-              <StyledTab label="Diff. Expressed Genes Expression" />
-              {null && <StyledTab label="Open Target" />}
-            </Tabs>
-            <Divider />
-          </Box>
-          <Box sx={{ padding: 2 }}>
-            {
-              //region.chromosome==='' && !region.start && !region.end && <CircularProgress/>
-            }
-            {tabIndex === 3 && 0 > 1 ? (
-              <Box></Box>
-            ) : tabIndex === 0 &&
-              (geneCoords ||
-                (region.chromosome !== "" && region.start && region.end)) ? (
-              <Box>
-                <Browser
-                  name={gene?.toUpperCase()}
-                  coordinates={{
-                    chromosome:
-                      region.chromosome === ""
-                        ? geneCoords.gene[0].coordinates.chromosome
-                        : region.chromosome,
-                    start:
-                      region.start === null
-                        ? +geneCoords.gene[0].coordinates.start
-                        : +region.start,
-                    end:
-                      region.end === null
-                        ? +geneCoords.gene[0].coordinates.end
-                        : +region.end,
-                  }}
-                  // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
-                />
-              </Box>
-            ) : tabIndex === 3 && 0 > 1 ? (
-              <Box>
-                <GeneExpressionPage id={geneid} />
-              </Box>
-            ) : tabIndex === 3 &&
-              (geneCoords ||
-                (region.chromosome !== "" && region.start && region.end)) ? (
-              <Box>
-                <AssociatedxQTL
-                  name={gene?.toUpperCase()}
-                  geneid={gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])}
-                  coordinates={{
-                    chromosome:
-                      region.chromosome === ""
-                        ? geneCoords.gene[0].coordinates.chromosome
-                        : region.chromosome,
-                    start:
-                      region.start === null
-                        ? +geneCoords.gene[0].coordinates.start
-                        : +region.start,
-                    end:
-                      region.end === null
-                        ? +geneCoords.gene[0].coordinates.end
-                        : +region.end,
-                  }}
-                  //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
-                />
-              </Box>
-            ) :   tabIndex === 4 ? (<Box>
-              <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"}/>
-            </Box>) :  tabIndex === 5 ? (
-              <Box>
-                <Typography type="body" size="small">
-                  <OpenTarget id={geneid} />
-                </Typography>
-              </Box>
-            ) : tabIndex === 1 ? (
-              <Box>
-                <SingleCell gene={gene || "APOE"} pedataset={"SZBDMulti-Seq"} selectDatasets />
-              </Box>
-            ) : tabIndex === 2 ? (
-              <Box>
-                {data && data?.gtex_genes.length === 0 ? (
-                  <Typography type="body" size="large">
-                    No GTex data found for {gene?.toUpperCase()}
-                  </Typography>
-                ) : (
-                  <>
-                    <Typography type="body" size="large">
-                      Group By:{" "}
-                    </Typography>
-                    <br />
-                    <ToggleButtonGroup
-                      size={"small"}
-                      value={tissueCategory}
-                      exclusive
-                      onChange={handleTissueCategory}
-                    >
-                      <ToggleButton value="broad">
-                        Broad Tissue Category
-                      </ToggleButton>
-                      <ToggleButton value="granular">
-                        Granular Tissue Category
-                      </ToggleButton>
-                    </ToggleButtonGroup>
-                    <svg
-                      viewBox={`0 0 ${width} ${width / 2}`}
-                      style={{ width: "100%" }}
-                      ref={ref}
-                    >
-                      <ViolinPlot
-                        data={toPlot}
-                        title="log10 TPM"
-                        width={width}
-                        height={width / 2}
-                        colors={tissueColors}
-                        domain={domain}
-                        tKeys={54}
-                      />
-                    </svg>
-                  </>
-                )}
-              </Box>
-            ) : null}
-          </Box>
-        </Grid>
+    <Grid container {...props} style={{ marginTop: "6em" }}>
+      <Grid item sm={1} lg={1.5} />
+      <Grid item sm={9}>
+        <Typography
+          type="headline"
+          size="large"
+          style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
+        >
+          <img
+            alt="DNA"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
+            width="1.7%"
+          />
+          &nbsp;Gene Details: {gene}
+        </Typography>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontWeight: "bold",
+          }}
+        >
+          <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
+          <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
+        </div>
       </Grid>
-      <FooterPanel style={{ marginTop: "160px" }} />
-    </>
+      <Grid item sm={1} lg={1.5} />
+      <Grid item sm={12} style={{ marginBottom: "10px" }} />
+      <Grid item sm={1} lg={1.5} />
+      <Grid item sm={9}>
+        <Box>
+          <Tabs value={tabIndex} onChange={handleTabChange}>
+            <StyledTab label="Brain epi Genome Browser" />
+            <StyledTab label="Brain Single Cell Expression" />
+            <StyledTab label="Tissue Expression (GTEx)" />
+            <StyledTab label="Brain eQTLs and b-cCREs" />
+
+            <StyledTab label="Diff. Expressed Genes Expression" />
+            {null && <StyledTab label="Open Target" />}
+          </Tabs>
+          <Divider />
+        </Box>
+        <Box sx={{ padding: 2 }}>
+          {
+            //region.chromosome==='' && !region.start && !region.end && <CircularProgress/>
+          }
+          {tabIndex === 3 && 0 > 1 ? (
+            <Box></Box>
+          ) : tabIndex === 0 &&
+            (geneCoords ||
+              (region.chromosome !== "" && region.start && region.end)) ? (
+            <Box>
+              <Browser
+                name={gene?.toUpperCase()}
+                coordinates={{
+                  chromosome:
+                    region.chromosome === ""
+                      ? geneCoords.gene[0].coordinates.chromosome
+                      : region.chromosome,
+                  start:
+                    region.start === null
+                      ? +geneCoords.gene[0].coordinates.start
+                      : +region.start,
+                  end:
+                    region.end === null
+                      ? +geneCoords.gene[0].coordinates.end
+                      : +region.end,
+                }}
+              // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
+              />
+            </Box>
+          ) : tabIndex === 3 && 0 > 1 ? (
+            <Box>
+              <GeneExpressionPage id={geneid} />
+            </Box>
+          ) : tabIndex === 3 &&
+            (geneCoords ||
+              (region.chromosome !== "" && region.start && region.end)) ? (
+            <Box>
+              <AssociatedxQTL
+                name={gene?.toUpperCase()}
+                geneid={gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])}
+                coordinates={{
+                  chromosome:
+                    region.chromosome === ""
+                      ? geneCoords.gene[0].coordinates.chromosome
+                      : region.chromosome,
+                  start:
+                    region.start === null
+                      ? +geneCoords.gene[0].coordinates.start
+                      : +region.start,
+                  end:
+                    region.end === null
+                      ? +geneCoords.gene[0].coordinates.end
+                      : +region.end,
+                }}
+              //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
+              />
+            </Box>
+          ) : tabIndex === 4 ? (<Box>
+            <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
+          </Box>) : tabIndex === 5 ? (
+            <Box>
+              <Typography type="body" size="small">
+                <OpenTarget id={geneid} />
+              </Typography>
+            </Box>
+          ) : tabIndex === 1 ? (
+            <Box>
+              <SingleCell gene={gene || "APOE"} pedataset={"SZBDMulti-Seq"} selectDatasets />
+            </Box>
+          ) : tabIndex === 2 ? (
+            <Box>
+              {data && data?.gtex_genes.length === 0 ? (
+                <Typography type="body" size="large">
+                  No GTex data found for {gene?.toUpperCase()}
+                </Typography>
+              ) : (
+                <>
+                  <Typography type="body" size="large">
+                    Group By:{" "}
+                  </Typography>
+                  <br />
+                  <ToggleButtonGroup
+                    size={"small"}
+                    value={tissueCategory}
+                    exclusive
+                    onChange={handleTissueCategory}
+                  >
+                    <ToggleButton value="broad">
+                      Broad Tissue Category
+                    </ToggleButton>
+                    <ToggleButton value="granular">
+                      Granular Tissue Category
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                  <svg
+                    viewBox={`0 0 ${width} ${width / 2}`}
+                    style={{ width: "100%" }}
+                    ref={ref}
+                  >
+                    <ViolinPlot
+                      data={toPlot}
+                      title="log10 TPM"
+                      width={width}
+                      height={width / 2}
+                      colors={tissueColors}
+                      domain={domain}
+                      tKeys={54}
+                    />
+                  </svg>
+                </>
+              )}
+            </Box>
+          ) : null}
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 export default GeneDetails;
