@@ -132,15 +132,9 @@ const GwasIntersectingSnpswithBcresQuery = gql`
 `;
 
 const locusQuery = gql`
-  query q($url: String!) {
+  query q($bigRequests: [BigRequest!]!) {
     bigRequests(
-      requests: {
-        url: $url
-        chr1: "chr1"
-        chr2: "chr22"
-        start: 0
-        end: 300000000
-      }
+      requests:  $bigRequests 
     ) {
       data
       error {
@@ -157,8 +151,15 @@ function useLoci(trait: string) {
   >(!URL_MAP[trait].startsWith("https") ? AssociatedSnpQuery : locusQuery, {
     variables: {
       disease: trait || "",
-      url:
-        URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
+      bigRequests: [{
+        chr1:  "chr1",
+        chr2: trait==="Anorexia" ? "chr5":"chr22",
+        start: 0,
+        end: 300000000,
+        url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
+      }],
+      
+        
     },
   });
   console.log(URL_MAP[trait])
@@ -186,7 +187,7 @@ function useLoci(trait: string) {
           end: x.end,
           p: Math.exp(- +x.name.split("_")[1]),
         })
-      ) || []
+      ) || [], trait
     );
   }, [data]);
   

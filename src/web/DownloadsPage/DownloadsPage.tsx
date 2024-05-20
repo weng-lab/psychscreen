@@ -893,14 +893,14 @@ const DownloadsPage: React.FC = () => {
         <Grid item sm={0} md={0} lg={1} xl={2} />
         <Grid item sm={0} md={0} lg={10} xl={8}>
           {pages.map((p, i) => (
-            <Button
+            <StyledButton
               bvariant={page === i ? "filled" : "outlined"}
               btheme="light"
               onClick={() => setPage(i)}
               style={{ marginRight: "5px" }}
             >
               {p}
-            </Button>
+            </StyledButton>
           ))}
           <div style={{ marginTop: "20px" }}>
             {page === 0 && (
