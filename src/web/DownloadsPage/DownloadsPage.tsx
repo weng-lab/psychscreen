@@ -14,6 +14,7 @@ import { Container } from "@mui/system";
 
 import { PORTALS } from "../../App";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
+import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 
 function createData(
   name: string,
