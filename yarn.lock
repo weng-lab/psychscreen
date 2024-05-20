@@ -3731,12 +3731,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@weng-lab/psychscreen-ui-components@npm:^0.8.6":
-  version: 0.8.6
-  resolution: "@weng-lab/psychscreen-ui-components@npm:0.8.6"
+"@weng-lab/psychscreen-ui-components@npm:^0.8.7":
+  version: 0.8.7
+  resolution: "@weng-lab/psychscreen-ui-components@npm:0.8.7"
   peerDependencies:
     react: ">=16"
-  checksum: 5c8783237c1b7c047020b9f6944bfbf3deca821ae6cf340f5c4427fb0c7957e985ae62863c918ed20662587e32187fb1bc7a5eef88b825053ce8bbc11e48efad
+  checksum: 28466ab2ca07a5fb45d960036e2ee30138a02060e255f24cfb591f53746b2fff89ace0aef2483c529df2e486f3ca2620e7f3201c443f780c0c3969c51fb108a3
   languageName: node
   linkType: hard
 
@@ -13774,7 +13774,7 @@ __metadata:
     "@types/node": ^16.11.47
     "@types/react": ^18.0.15
     "@types/react-dom": ^18.0.6
-    "@weng-lab/psychscreen-ui-components": ^0.8.6
+    "@weng-lab/psychscreen-ui-components": ^0.8.7
     "@weng-lab/ts-ztable": latest
     apollo-link: ^1.2.14
     apollo-link-http: ^1.5.17

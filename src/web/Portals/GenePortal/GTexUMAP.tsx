@@ -6,7 +6,6 @@ import { tissueTypeColors } from "./consts";
 import { TabletAppBar, Typography } from "@weng-lab/psychscreen-ui-components";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import { PORTALS } from "../../../App";
-import { AppBar } from "@weng-lab/psychscreen-ui-components";
 import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -149,31 +148,6 @@ const GTexUMAP: React.FC = () => {
 
   return (
     <>
-      {
-        //show vertical app bar only for mobile view
-        useMediaQuery(theme.breakpoints.down("xs")) ? (
-          <TabletAppBar
-            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-            onHomepageClicked={() => navigate("/")}
-            onAboutClicked={() => navigate("/psychscreen/aboutus")}
-            onPortalClicked={(index) =>
-              navigate(`/psychscreen${PORTALS[index][0]}`)
-            }
-            style={{ marginBottom: "63px" }}
-            title={(<Logo />) as any}
-          />
-        ) : (
-          <AppBar
-            centered={true}
-            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-            onHomepageClicked={() => navigate("/")}
-            onAboutClicked={() => navigate("/psychscreen/aboutus")}
-            onPortalClicked={(index) =>
-              navigate(`/psychscreen${PORTALS[index][0]}`)
-            }
-          />
-        )
-      }
       <Grid container>
         <Grid item sm={6} md={6} lg={6} xl={6}>
           {data && data.length > 0 ? (

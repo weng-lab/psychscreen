@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import React, { useCallback, useMemo, useState } from "react";
-import { AppBar } from "@weng-lab/psychscreen-ui-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Container, GridProps } from "@mui/material";
 import { Typography, Button } from "@weng-lab/psychscreen-ui-components";
@@ -152,14 +151,14 @@ function useLoci(trait: string) {
     variables: {
       disease: trait || "",
       bigRequests: [{
-        chr1:  "chr1",
-        chr2: trait==="Anorexia" ? "chr5":"chr22",
+        chr1: "chr1",
+        chr2: trait === "Anorexia" ? "chr5" : "chr22",
         start: 0,
         end: 300000000,
         url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
       }],
-      
-        
+
+
     },
   });
   console.log(URL_MAP[trait])
@@ -190,7 +189,7 @@ function useLoci(trait: string) {
       ) || [], trait
     );
   }, [data]);
-  
+
   return { loci, loading, data };
 }
 
@@ -263,174 +262,162 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     genesdata &&
     genesdata.genesAssociationsQuery.filter((g) => g.dge_fdr <= 0.05);
   return (
-    <>
-      <AppBar
-        centered
-        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-        onHomepageClicked={() => navigate("/")}
-        onPortalClicked={(index) =>
-          navigate(`/psychscreen${PORTALS[index][0]}`)
-        }
-        onAboutClicked={() => navigate("/psychscreen/aboutus")}
-        style={{ marginBottom: "63px" }}
-      />
-      <Grid container {...props}>
-        <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-            <Typography
-              type="display"
-              size="medium"
-              style={{
-                fontWeight: 700,
-                fontSize: "48px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-                marginBottom: "16px",
-              }}
-            >
-              {diseaseLabel}
-            </Typography>
-            <br />
-            <Typography
-              type="body"
-              size="large"
-              style={{
-                fontSize: "16px",
-                lineHeight: "24px",
-                fontWeight: 400,
-                letterSpacing: "0.3%",
-                marginBottom: "16px",
-              }}
-            >
-              {diseaseDesc}
-            </Typography>
-            <br />
-            <StyledButton
-              bvariant={page === -1 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setPage(-1)}
-            >
-              GWAS Locus Overview
-            </StyledButton>
-            &nbsp;&nbsp;&nbsp;
-            {gassoc && gassoc.length > 0 && (
+    <Grid container {...props}>
+      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+      <Grid item sm={10} md={10} lg={9} xl={9}>
+        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+          <Typography
+            type="display"
+            size="medium"
+            style={{
+              fontWeight: 700,
+              fontSize: "48px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+              marginBottom: "16px",
+            }}
+          >
+            {diseaseLabel}
+          </Typography>
+          <br />
+          <Typography
+            type="body"
+            size="large"
+            style={{
+              fontSize: "16px",
+              lineHeight: "24px",
+              fontWeight: 400,
+              letterSpacing: "0.3%",
+              marginBottom: "16px",
+            }}
+          >
+            {diseaseDesc}
+          </Typography>
+          <br />
+          <StyledButton
+            bvariant={page === -1 ? "filled" : "outlined"}
+            btheme="light"
+            onClick={() => setPage(-1)}
+          >
+            GWAS Locus Overview
+          </StyledButton>
+          &nbsp;&nbsp;&nbsp;
+          {gassoc && gassoc.length > 0 && (
+            <>
+              <StyledButton
+                bvariant={page === 0 ? "filled" : "outlined"}
+                btheme="light"
+                onClick={() => {
+                  setPage(0);
+                }}
+              >
+                Gene Associations (TWAS)
+              </StyledButton>
+              &nbsp;&nbsp;&nbsp;
+            </>
+          )}
+          {data &&
+            (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
+              .gwassnpAssociationsQuery?.length > 0 && (
               <>
                 <StyledButton
-                  bvariant={page === 0 ? "filled" : "outlined"}
+                  bvariant={page === 1 ? "filled" : "outlined"}
                   btheme="light"
                   onClick={() => {
-                    setPage(0);
+                    setPage(1);
                   }}
                 >
-                  Gene Associations (TWAS)
+                  Associated SNPs &amp; QTLs
                 </StyledButton>
                 &nbsp;&nbsp;&nbsp;
               </>
             )}
-            {data &&
-              (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
-                .gwassnpAssociationsQuery?.length > 0 && (
-                <>
-                  <StyledButton
-                    bvariant={page === 1 ? "filled" : "outlined"}
-                    btheme="light"
-                    onClick={() => {
-                      setPage(1);
-                    }}
-                  >
-                    Associated SNPs &amp; QTLs
-                  </StyledButton>
-                  &nbsp;&nbsp;&nbsp;
-                </>
-              )}
-            {gwasIntersectingSnpWithCcresData &&
-              adultgwasIntersectingSnpWithBcresData &&
-              fetalgwasIntersectingSnpWithBcresData &&
-              gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
-                .length > 0 && (
-                <>
-                  <StyledButton
-                    bvariant={page === 2 ? "filled" : "outlined"}
-                    btheme="light"
-                    onClick={() => setPage(2)}
-                  >
-                    Regulatory SNP Associations
-                  </StyledButton>
-                  &nbsp;&nbsp;&nbsp;
-                </>
-              )}
-            {browserCoordinates && (
-              <StyledButton
-                bvariant={page === 3 ? "filled" : "outlined"}
-                btheme="light"
-                onClick={() => setPage(3)}
-              >
-                Brain epi Genome Browser
-              </StyledButton>
-            )}
-            {significantSNPs && significantSNPs.length > 0 && (
-              <StyledButton
-                bvariant={page === 4 ? "filled" : "outlined"}
-                btheme="light"
-                onClick={() => setPage(4)}
-              >
-                Prioritized risk variants
-              </StyledButton>
-            )}
-          </Container>
-        </Grid>
-        <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-        <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-        <Grid sm={10} md={10} lg={9} xl={9}>
-          {page === -1 ? (
-            <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
-          ) : page === 0 && gassoc && gassoc.length > 0 ? (
-            <GeneAssociations disease={disease || ""} data={gassoc} />
-          ) : page === 1 &&
-            data &&
-            (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
-              .gwassnpAssociationsQuery?.length > 0 ? (
-            <AssociatedSnpQtl
-              disease={disease || ""}
-              data={
-                (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
-                  .gwassnpAssociationsQuery
-              }
-            />
-          ) : page === 2 &&
-            gwasIntersectingSnpWithCcresData &&
+          {gwasIntersectingSnpWithCcresData &&
             adultgwasIntersectingSnpWithBcresData &&
             fetalgwasIntersectingSnpWithBcresData &&
             gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
-              .length > 0 ? (
-            <DiseaseIntersectingSnpsWithccres
-              disease={disease || ""}
-              ccredata={
-                gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
-              }
-              adult_bcredata={
-                adultgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
-              }
-              fetal_bcredata={
-                fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
-              }
-            />
-          ) : page === 3 ? (
-            <div style={{ marginTop: "2em" }}>
-              <Browser
-                coordinates={browserCoordinates}
-                url={summaryStatisticsURL}
-                trait={diseaseLabel || "Autism Spectrum Disorder"}
-              />
-            </div>
-          ) : page === 4 && significantSNPs && significantSNPs.length > 0 ? (
-            <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
-          ) : null}
-        </Grid>
-        <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+              .length > 0 && (
+              <>
+                <StyledButton
+                  bvariant={page === 2 ? "filled" : "outlined"}
+                  btheme="light"
+                  onClick={() => setPage(2)}
+                >
+                  Regulatory SNP Associations
+                </StyledButton>
+                &nbsp;&nbsp;&nbsp;
+              </>
+            )}
+          {browserCoordinates && (
+            <StyledButton
+              bvariant={page === 3 ? "filled" : "outlined"}
+              btheme="light"
+              onClick={() => setPage(3)}
+            >
+              Brain epi Genome Browser
+            </StyledButton>
+          )}
+          {significantSNPs && significantSNPs.length > 0 && (
+            <StyledButton
+              bvariant={page === 4 ? "filled" : "outlined"}
+              btheme="light"
+              onClick={() => setPage(4)}
+            >
+              Prioritized risk variants
+            </StyledButton>
+          )}
+        </Container>
       </Grid>
-    </>
+      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+      <Grid sm={10} md={10} lg={9} xl={9}>
+        {page === -1 ? (
+          <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
+        ) : page === 0 && gassoc && gassoc.length > 0 ? (
+          <GeneAssociations disease={disease || ""} data={gassoc} />
+        ) : page === 1 &&
+          data &&
+          (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
+            .gwassnpAssociationsQuery?.length > 0 ? (
+          <AssociatedSnpQtl
+            disease={disease || ""}
+            data={
+              (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
+                .gwassnpAssociationsQuery
+            }
+          />
+        ) : page === 2 &&
+          gwasIntersectingSnpWithCcresData &&
+          adultgwasIntersectingSnpWithBcresData &&
+          fetalgwasIntersectingSnpWithBcresData &&
+          gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
+            .length > 0 ? (
+          <DiseaseIntersectingSnpsWithccres
+            disease={disease || ""}
+            ccredata={
+              gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
+            }
+            adult_bcredata={
+              adultgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
+            }
+            fetal_bcredata={
+              fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
+            }
+          />
+        ) : page === 3 ? (
+          <div style={{ marginTop: "2em" }}>
+            <Browser
+              coordinates={browserCoordinates}
+              url={summaryStatisticsURL}
+              trait={diseaseLabel || "Autism Spectrum Disorder"}
+            />
+          </div>
+        ) : page === 4 && significantSNPs && significantSNPs.length > 0 ? (
+          <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
+        ) : null}
+      </Grid>
+      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+    </Grid>
   );
 };
 export default DiseaseTraitDetails;

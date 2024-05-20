@@ -3,7 +3,6 @@
  */
 
 import React, { useState, useCallback } from "react";
-import { AppBar } from "@weng-lab/psychscreen-ui-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Container, GridProps, Slide } from "@mui/material";
 import { TabletAppBar } from "@weng-lab/psychscreen-ui-components";
@@ -11,7 +10,6 @@ import { Typography } from "@weng-lab/psychscreen-ui-components";
 import CheckIcon from "@mui/icons-material/Check";
 import { HorizontalCard, SearchBox } from "@weng-lab/psychscreen-ui-components";
 import { useTheme, useMediaQuery, Paper } from "@material-ui/core";
-import { PORTALS } from "../../../App";
 import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import SNPQTL from "../../../assets/snp-qtl.png";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -68,221 +66,194 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
     setFetching(false);
   }, []);
   return (
-    <>
-      {
-        //show vertical app bar only for mobile view
-        useMediaQuery(theme.breakpoints.down("xs")) ? (
-          <TabletAppBar
-            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-            onHomepageClicked={() => navigate("/")}
-            onPortalClicked={(index) =>
-              navigate(`/psychscreen${PORTALS[index][0]}`)
-            }
-            style={{ marginBottom: "63px" }}
-            title={(<Logo />) as any}
-          />
-        ) : (
-          <AppBar
-            centered={true}
-            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-            onAboutClicked={() => navigate("/psychscreen/aboutus")}
-            onHomepageClicked={() => navigate("/")}
-            onPortalClicked={(index) =>
-              navigate(`/psychscreen${PORTALS[index][0]}`)
-            }
-          />
-        )
-      }
-      <Grid container {...props}>
-        <Grid item sm={0} md={1} lg={2} xl={2}></Grid>
-        <Grid item sm={8} md={6} lg={5} xl={4}>
-          {useMediaQuery(theme.breakpoints.down("sm")) && (
-            <Container style={{ marginTop: "130px" }}>
+    <Grid container {...props}>
+      <Grid item sm={0} md={1} lg={2} xl={2}></Grid>
+      <Grid item sm={8} md={6} lg={5} xl={4}>
+        {useMediaQuery(theme.breakpoints.down("sm")) && (
+          <Container style={{ marginTop: "130px" }}>
+            <img
+              alt="SNP/QTL Portal"
+              src={SNPQTL}
+              style={{ width: "70%", height: "100%" }}
+            />
+          </Container>
+        )}
+        <Container style={{ width: "741px", marginTop: "147px" }} fixed>
+          <Typography
+            type="display"
+            size="medium"
+            style={{
+              fontWeight: 700,
+              fontSize: "48px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+              marginBottom: "16px",
+            }}
+          >
+            SNP/QTL Portal
+          </Typography>
+          <br />
+          <Typography
+            type="body"
+            size="large"
+            style={{
+              fontSize: "16px",
+              lineHeight: "24px",
+              fontWeight: 400,
+              letterSpacing: "0.3%",
+              marginBottom: "16px",
+              width: "414px",
+            }}
+          >
+            Search SNPs of interest and explore their impact on gene
+            expression, chromatin accessibility, transcription factor (TF)
+            binding and other molecular traits in the human brain based on
+            PsychENCODE QTLs and sequence analysis of b-cCREs. Link SNPs to
+            complex traits using GWAS annotations.
+          </Typography>
+          <Typography
+            type="body"
+            size="large"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
+            }}
+          >
+            <CheckIcon style={{ marginRight: "9px" }} /> 441,502 eQTLs, sQTLs,
+            caQTLs, and fQTLs
+          </Typography>
+          <Typography
+            type="body"
+            size="large"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
+            }}
+          >
+            <CheckIcon style={{ marginRight: "9px" }} /> 13,336 variants
+            associated with complex traits
+          </Typography>
+          <Typography
+            type="body"
+            size="large"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
+            }}
+          >
+            <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in
+            b-cCREs
+          </Typography>
+          <br />
+          <br />
+          <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
+          {0 > 1 && (
+            <SearchBox
+              value={val}
+              onChange={(e) => {
+                setVal(e.target.value);
+              }}
+              onSearchButtonClick={() => {
+                if (val !== "") {
+                  onSearchChange(val);
+                }
+              }}
+              helperText={"e.g. rs11669173"}
+            />
+          )}
+        </Container>
+      </Grid>
+      {useMediaQuery(theme.breakpoints.up("md")) && (
+        <Grid item sm={4} md={4} lg={3} xl={3}>
+          {!snpCards && !fetching ? (
+            <Container style={{ marginTop: "170px" }}>
               <img
-                alt="SNP/QTL Portal"
+                alt="gene/b-ccre portal"
                 src={SNPQTL}
-                style={{ width: "70%", height: "100%" }}
+                style={{ width: "100%", height: "100%" }}
               />
             </Container>
-          )}
-          <Container style={{ width: "741px", marginTop: "147px" }} fixed>
-            <Typography
-              type="display"
-              size="medium"
-              style={{
-                fontWeight: 700,
-                fontSize: "48px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-                marginBottom: "16px",
-              }}
-            >
-              SNP/QTL Portal
-            </Typography>
-            <br />
-            <Typography
-              type="body"
-              size="large"
-              style={{
-                fontSize: "16px",
-                lineHeight: "24px",
-                fontWeight: 400,
-                letterSpacing: "0.3%",
-                marginBottom: "16px",
-                width: "414px",
-              }}
-            >
-              Search SNPs of interest and explore their impact on gene
-              expression, chromatin accessibility, transcription factor (TF)
-              binding and other molecular traits in the human brain based on
-              PsychENCODE QTLs and sequence analysis of b-cCREs. Link SNPs to
-              complex traits using GWAS annotations.
-            </Typography>
-            <Typography
-              type="body"
-              size="large"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                fontSize: "16px",
-                fontWeight: 400,
-                lineHeight: "19px",
-              }}
-            >
-              <CheckIcon style={{ marginRight: "9px" }} /> 441,502 eQTLs, sQTLs,
-              caQTLs, and fQTLs
-            </Typography>
-            <Typography
-              type="body"
-              size="large"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                fontSize: "16px",
-                fontWeight: 400,
-                lineHeight: "19px",
-              }}
-            >
-              <CheckIcon style={{ marginRight: "9px" }} /> 13,336 variants
-              associated with complex traits
-            </Typography>
-            <Typography
-              type="body"
-              size="large"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                fontSize: "16px",
-                fontWeight: 400,
-                lineHeight: "19px",
-              }}
-            >
-              <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in
-              b-cCREs
-            </Typography>
-            <br />
-            <br />
-            <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
-            {0 > 1 && (
-              <SearchBox
-                value={val}
-                onChange={(e) => {
-                  setVal(e.target.value);
-                }}
-                onSearchButtonClick={() => {
-                  if (val !== "") {
-                    onSearchChange(val);
-                  }
-                }}
-                helperText={"e.g. rs11669173"}
-              />
-            )}
-          </Container>
-        </Grid>
-        {useMediaQuery(theme.breakpoints.up("md")) && (
-          <Grid item sm={4} md={4} lg={3} xl={3}>
-            {!snpCards && !fetching ? (
-              <Container style={{ marginTop: "170px" }}>
-                <img
-                  alt="gene/b-ccre portal"
-                  src={SNPQTL}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </Container>
-            ) : fetching ? (
-              <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
-                {" "}
-                <>
-                  <Typography
-                    type="body"
-                    size="large"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                      fontSize: "16px",
-                      fontWeight: 400,
-                      lineHeight: "19px",
-                    }}
-                  >
-                    Loading Data...
-                  </Typography>
-                  <br />
-                  <CircularProgress color="inherit" />
-                </>{" "}
-              </Container>
-            ) : (
+          ) : fetching ? (
+            <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
+              {" "}
               <>
-                {snpCards!.length > 0 && (
-                  <Slide direction="up" in timeout={1000}>
-                    <Container
-                      style={{ marginLeft: "12px", marginTop: "150px" }}
-                    >
-                      {
-                        <Paper
-                          elevation={0}
-                          style={{
-                            maxHeight: 500,
-                            width: 350,
-                            overflow: "auto",
+                <Typography
+                  type="body"
+                  size="large"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    fontSize: "16px",
+                    fontWeight: 400,
+                    lineHeight: "19px",
+                  }}
+                >
+                  Loading Data...
+                </Typography>
+                <br />
+                <CircularProgress color="inherit" />
+              </>{" "}
+            </Container>
+          ) : (
+            <>
+              {snpCards!.length > 0 && (
+                <Slide direction="up" in timeout={1000}>
+                  <Container
+                    style={{ marginLeft: "12px", marginTop: "150px" }}
+                  >
+                    {
+                      <Paper
+                        elevation={0}
+                        style={{
+                          maxHeight: 500,
+                          width: 350,
+                          overflow: "auto",
+                        }}
+                      >
+                        <HorizontalCard
+                          width={500}
+                          onCardClick={(v?: string) => {
+                            let f = snpCards!!.find((g: any) => g.val === v);
+                            navigate(`/psychscreen/snp/${f?.cardLabel}`, {
+                              state: {
+                                snpid: v!!.split("/")[0],
+                                chromosome: v!!.split("/")[1],
+                                start: v!!.split("/")[2],
+                                end: v!!.split("/")[3],
+                              },
+                            });
                           }}
-                        >
-                          <HorizontalCard
-                            width={500}
-                            onCardClick={(v?: string) => {
-                              let f = snpCards!!.find((g: any) => g.val === v);
-                              navigate(`/psychscreen/snp/${f?.cardLabel}`, {
-                                state: {
-                                  snpid: v!!.split("/")[0],
-                                  chromosome: v!!.split("/")[1],
-                                  start: v!!.split("/")[2],
-                                  end: v!!.split("/")[3],
-                                },
-                              });
-                            }}
-                            cardContentText={snpCards!!}
-                          />
-                        </Paper>
-                      }
-                    </Container>
-                  </Slide>
-                )}
-                {snpCards!.length === 0 && (
-                  <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
-                    {"No Results found"}
+                          cardContentText={snpCards!!}
+                        />
+                      </Paper>
+                    }
                   </Container>
-                )}
-              </>
-            )}
-          </Grid>
-        )}
-
-        <Grid item sm={0} md={1} lg={2} xl={3}></Grid>
-      </Grid>
-    </>
+                </Slide>
+              )}
+              {snpCards!.length === 0 && (
+                <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
+                  {"No Results found"}
+                </Container>
+              )}
+            </>
+          )}
+        </Grid>
+      )}
+      <Grid item sm={0} md={1} lg={2} xl={3}></Grid>
+    </Grid>
   );
 };
 export default SNPPortal;

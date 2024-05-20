@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GridProps } from "@mui/material";
-import { AppBar, Typography } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { PORTALS } from "../../../App";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 
@@ -66,7 +65,7 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   const { celltype } = useParams();
   const [qtl, setQtl] = useState<any>([]);
 
-  
+
 
   useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}_sig_QTLs.dat`)
@@ -98,67 +97,55 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   }, [celltype]);
 
   return (
-    <>
-      <AppBar
-        centered
-        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-        onHomepageClicked={() => navigate("/")}
-        onAboutClicked={() => navigate("/psychscreen/aboutus")}
-        onPortalClicked={(index) =>
-          navigate(`/psychscreen${PORTALS[index][0]}`)
-        }
-        style={{ marginBottom: "63px" }}
-      />
-      <Grid {...props}>
-        <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-            <Typography
-              type="display"
-              size="medium"
-              style={{
-                fontWeight: 700,
-                fontSize: "36px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-                marginBottom: "16px",
-              }}
-            >
-              {celltype}
-            </Typography>
-            <br />
-            {qtl.length === 0 && (
-              <Grid sm={10} md={10} lg={9} xl={9}>
-                <Typography
-                  type="body"
-                  size="large"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    lineHeight: "19px",
-                  }}
-                >
-                  Loading Gene Regulatory Networks data for {celltype}...
-                </Typography>
-              </Grid>
-            )}
-            {qtl && qtl.length > 0 && (
-              <Grid sm={14} md={14} lg={14} xl={14}>
-                <DataTable
-                  columns={COLUMNS}
-                  rows={qtl}
-                  itemsPerPage={20}
-                  searchable
-                />
-              </Grid>
-            )}
-          </Container>
-        </Grid>
+    <Grid {...props}>
+      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+      <Grid item sm={10} md={10} lg={9} xl={9}>
+        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+          <Typography
+            type="display"
+            size="medium"
+            style={{
+              fontWeight: 700,
+              fontSize: "36px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+              marginBottom: "16px",
+            }}
+          >
+            {celltype}
+          </Typography>
+          <br />
+          {qtl.length === 0 && (
+            <Grid sm={10} md={10} lg={9} xl={9}>
+              <Typography
+                type="body"
+                size="large"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "19px",
+                }}
+              >
+                Loading Gene Regulatory Networks data for {celltype}...
+              </Typography>
+            </Grid>
+          )}
+          {qtl && qtl.length > 0 && (
+            <Grid sm={14} md={14} lg={14} xl={14}>
+              <DataTable
+                columns={COLUMNS}
+                rows={qtl}
+                itemsPerPage={20}
+                searchable
+              />
+            </Grid>
+          )}
+        </Container>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

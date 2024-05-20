@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { GridProps, Grid, Divider } from "@mui/material";
-import { AppBar, Typography } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { PORTALS } from "../../../App";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -11,7 +10,7 @@ import { gql, useQuery } from "@apollo/client";
 import EGeneTable from "./EGeneTable";
 import RegulatoryElements from "./RegulatoryElements";
 import styled from "@emotion/styled";
-import {CAQTL} from "./caQTL";
+import { CAQTL } from "./caQTL";
 
 export const StyledTab = styled(Tab)(() => ({
   textTransform: "none",
@@ -155,13 +154,13 @@ const SNPDetails: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const { state }: any = useLocation();
-  
+
   const { data: caqtlData, loading: loadingData } = useQuery(CAQTL_QUERY, {
     variables: {
       snpid
     },
   });
-  
+
   const { chromosome, start, end } = state
     ? state
     : { chromosome: "", start: null, end: null };
@@ -194,58 +193,46 @@ const SNPDetails: React.FC<GridProps> = (props) => {
     },
   });
   return (
-    <>
-      <AppBar
-        centered
-        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-        onHomepageClicked={() => navigate("/")}
-        onAboutClicked={() => navigate("/psychscreen/aboutus")}
-        onPortalClicked={(index) =>
-          navigate(`/psychscreen${PORTALS[index][0]}`)
-        }
-        style={{ marginBottom: "63px" }}
-      />
-      <Grid container {...props}>
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={9}>
-          <Typography
-            type="headline"
-            size="large"
-            style={{ marginTop: "2em", marginBottom: "0.2em" }}
-          >
-            SNP Details: {snpid}
-          </Typography>
-        </Grid>
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={9}>
-          <Box>
-            <Tabs value={tabIndex} onChange={handleTabChange}>
-              <StyledTab label="eGenes" />
-              <StyledTab label="caQTL" />
-              <StyledTab label="Regulatory Elements" />
-              <StyledTab label="GWAS" />
-            </Tabs>
-            <Divider />
-          </Box>
-          <Box sx={{ padding: 2 }}>
-            {tabIndex === 0 && snpid && (
-              <EGeneTable genes={data?.fetal_eQTLQuery || []} snp={snpid} />
-            )}
-            {tabIndex === 1 && snpid && (
-              <CAQTL caqtls={caqtlData.caqtls} loading={loadingData}/>
-            )}
-            {tabIndex === 2 && snpid && (
-              <RegulatoryElements
-                coordinates={expandCoordinates(coordinates, 0)}
-                assembly="grch38"
-              />
-            )}
-            {tabIndex === 3 && snpid && <GwasPage id={snpid} />}
-          </Box>
-        </Grid>
+    <Grid container {...props}>
+      <Grid item sm={1} lg={1.5} />
+      <Grid item sm={9}>
+        <Typography
+          type="headline"
+          size="large"
+          style={{ marginTop: "2em", marginBottom: "0.2em" }}
+        >
+          SNP Details: {snpid}
+        </Typography>
       </Grid>
-    </>
+      <Grid item sm={1} lg={1.5} />
+      <Grid item sm={1} lg={1.5} />
+      <Grid item sm={9}>
+        <Box>
+          <Tabs value={tabIndex} onChange={handleTabChange}>
+            <StyledTab label="eGenes" />
+            <StyledTab label="caQTL" />
+            <StyledTab label="Regulatory Elements" />
+            <StyledTab label="GWAS" />
+          </Tabs>
+          <Divider />
+        </Box>
+        <Box sx={{ padding: 2 }}>
+          {tabIndex === 0 && snpid && (
+            <EGeneTable genes={data?.fetal_eQTLQuery || []} snp={snpid} />
+          )}
+          {tabIndex === 1 && snpid && (
+            <CAQTL caqtls={caqtlData.caqtls} loading={loadingData} />
+          )}
+          {tabIndex === 2 && snpid && (
+            <RegulatoryElements
+              coordinates={expandCoordinates(coordinates, 0)}
+              assembly="grch38"
+            />
+          )}
+          {tabIndex === 3 && snpid && <GwasPage id={snpid} />}
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 

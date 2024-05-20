@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { GridProps } from "@mui/material";
-import { AppBar, Typography } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { PORTALS } from "../../../App";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 
@@ -45,16 +44,16 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
   const { celltype } = useParams();
   const [grn, setGrn] = useState<any>([]);
-//  const [grnNew, setGrnNew] = useState<any>([]);
+  //  const [grnNew, setGrnNew] = useState<any>([]);
 
   React.useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}_GRN.txt`)
       .then((x) => x.text())
       .then((x: string) => {
         const q = x.split("\n");
-        const bcres = q.filter(a=>!a.includes("edgeWeight")).filter((x) => x !== "").map((a) => {
+        const bcres = q.filter(a => !a.includes("edgeWeight")).filter((x) => x !== "").map((a) => {
           let r = a.split("\t");
-          
+
           return {
             //TF      enhancer        promoter        TG      edgeWeight      method  celltype        Correlation     Regulation
             tf: r[0],
@@ -63,7 +62,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
             tg: r[3],
             edgeweight: +r[4],
             method: r[5],
-            
+
             correlation: +r[7],
             regulation: r[8]
           };
@@ -71,7 +70,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
         setGrn(bcres);
       });
   }, [celltype]);
-  console.log("grnNew",grn)
+  console.log("grnNew", grn)
   /*useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}.json`)
       .then((x) => x.json())
@@ -79,68 +78,56 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   }, [celltype]);*/
 
   return (
-    <>
-      <AppBar
-        centered
-        onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-        onHomepageClicked={() => navigate("/")}
-        onAboutClicked={() => navigate("/psychscreen/aboutus")}
-        onPortalClicked={(index) =>
-          navigate(`/psychscreen${PORTALS[index][0]}`)
-        }
-        style={{ marginBottom: "63px" }}
-      />
-      <Grid {...props}>
-        <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-            <Typography
-              type="display"
-              size="medium"
-              style={{
-                fontWeight: 700,
-                fontSize: "36px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-                marginBottom: "16px",
-              }}
-            >
-              {celltype}
-            </Typography>
-            <br />
-            {grn.length === 0 && (
-              <Grid sm={10} md={10} lg={9} xl={9}>
-                <Typography
-                  type="body"
-                  size="large"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    fontSize: "16px",
-                    fontWeight: 400,
-                    lineHeight: "19px",
-                  }}
-                >
-                  Loading Gene Regulatory Networks data for {celltype}...
-                </Typography>
-              </Grid>
-            )}
-            {grn && grn.length > 0 && (
-              <Grid sm={10} md={10} lg={9} xl={9}>
-                <DataTable
-                  columns={COLUMNS}
-                  rows={grn}
-                  itemsPerPage={20}
-                  searchable
-                  sortColumn={3}
-                />
-              </Grid>
-            )}
-          </Container>
-        </Grid>
+    <Grid {...props}>
+      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+      <Grid item sm={10} md={10} lg={9} xl={9}>
+        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+          <Typography
+            type="display"
+            size="medium"
+            style={{
+              fontWeight: 700,
+              fontSize: "36px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+              marginBottom: "16px",
+            }}
+          >
+            {celltype}
+          </Typography>
+          <br />
+          {grn.length === 0 && (
+            <Grid sm={10} md={10} lg={9} xl={9}>
+              <Typography
+                type="body"
+                size="large"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "19px",
+                }}
+              >
+                Loading Gene Regulatory Networks data for {celltype}...
+              </Typography>
+            </Grid>
+          )}
+          {grn && grn.length > 0 && (
+            <Grid sm={10} md={10} lg={9} xl={9}>
+              <DataTable
+                columns={COLUMNS}
+                rows={grn}
+                itemsPerPage={20}
+                searchable
+                sortColumn={3}
+              />
+            </Grid>
+          )}
+        </Container>
       </Grid>
-    </>
+    </Grid>
   );
 };
 

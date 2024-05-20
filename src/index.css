@@ -11,21 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-/* Ensure the body and html take up the full height */
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-/* Container for the app with flexbox */
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Main content should take all available space */
-.main {
-  flex: 1;
-}
