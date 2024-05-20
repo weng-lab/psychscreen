@@ -7,17 +7,15 @@ import { Box } from "@mui/material";
 const Header: React.FC = () => {
     const navigate = useNavigate();
     return (
-        <Box zIndex={10}>
-            <AppBar
-                onDownloadsClicked={() => navigate("/psychscreen/downloads")}
-                onHomepageClicked={() => navigate("/")}
-                onPortalClicked={(index) =>
-                    navigate(`/psychscreen${PORTALS[index][0]}`)
-                }
-                style={{ marginBottom: "63px" }}
-                onAboutClicked={() => navigate("/psychscreen/aboutus")}
-            />
-        </Box>
+        <AppBar
+            onDownloadsClicked={() => navigate("/psychscreen/downloads")}
+            onHomepageClicked={() => navigate("/")}
+            onPortalClicked={(index) =>
+                navigate(`/psychscreen${PORTALS[index][0]}`)
+            }
+            style={{ marginBottom: "63px" }}
+            onAboutClicked={() => navigate("/psychscreen/aboutus")}
+        />
     );
 };
 export default Header;

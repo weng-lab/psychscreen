@@ -69,7 +69,7 @@ const MainPanel: React.FC = () => {
             }}
           >
             <BoltIcon style={{ marginRight: "9px" }} />
-            Powered by the&ensp;<Link href="https://psychencode.synapse.org/">PsychENCODE Consortium</Link> 
+            Powered by the PsychENCODE Consortium
           </Typography>
           <Typography
             type="body"
@@ -114,14 +114,13 @@ const MainPanel: React.FC = () => {
             height={"100%"} 
             width={'100%'} 
             sx={{ 
-              objectPosition: { md: "right bottom", xs: "left bottom" }
+              objectPosition: { md: "right center", xs: "left center" }
             }}>
             <img
               style={{ 
                 objectFit: "contain", 
                 objectPosition: "inherit",
                 position: "absolute",
-                zIndex: -10 //For making sure it's being app bar menu
               }}
               height={"100%"}
               width={"100%"}

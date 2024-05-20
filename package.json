@@ -17,7 +17,7 @@
     "@types/node": "^16.11.47",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
-    "@weng-lab/psychscreen-ui-components": "^0.8.7",
+    "@weng-lab/psychscreen-ui-components": "^0.8.8",
     "@weng-lab/ts-ztable": "latest",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
@@ -44,10 +44,10 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "predeploy": "react-scripts build",
+    "predeploy": "react-scripts --openssl-legacy-provider build",
     "deploy": "env-cmd -f .env.github yarn build && gh-pages -d build",
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write src"
