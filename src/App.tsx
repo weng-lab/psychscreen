@@ -34,6 +34,7 @@ import GenomeExplorerPage from "./web/Portals/GenomeExplorer/GenomeExplorerPage"
 import { SingleCellGeneDetails } from "./web/Portals/SingleCellPortal/SingleCellGeneDetails";
 import Header from "./web/HomePage/Header";
 import FooterPanel from "./web/HomePage/FooterPanel";
+
 export const PORTALS: [string, React.FC][] = [
   ["/traits", DiseaseTraitPortal],
   ["/gene", GenePortal],
