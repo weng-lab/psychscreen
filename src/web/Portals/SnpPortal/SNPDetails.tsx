@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { GridProps, Grid, Divider } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -151,7 +151,6 @@ export function expandCoordinates(
 
 const SNPDetails: React.FC<GridProps> = (props) => {
   const { snpid } = useParams();
-  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const { state }: any = useLocation();
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 
@@ -41,7 +41,6 @@ const COLUMNS = [
 ];
 
 const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
-  const navigate = useNavigate();
   const { celltype } = useParams();
   const [grn, setGrn] = useState<any>([]);
   //  const [grnNew, setGrnNew] = useState<any>([]);

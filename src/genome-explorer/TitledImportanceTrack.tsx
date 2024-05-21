@@ -152,6 +152,7 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = (props) => {
     [props.domain.start, props.domain.end],
     [0, props.width]
   );
+  
   return (
     <g transform="translate(0,115)">
       {props.neutralRegions.map((r, i) => (

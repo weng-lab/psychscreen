@@ -157,7 +157,7 @@ export const GeneAutoComplete = (props) => {
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {
-            if (newInputValue != "") {
+            if (newInputValue !== "") {
               debounceFn(newInputValue);
             }
 

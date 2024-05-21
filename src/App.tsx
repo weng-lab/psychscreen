@@ -19,7 +19,6 @@ import {
 import DiseaseTraitDetails from "./web/Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 import SingleCellDetails from "./web/Portals/SingleCellPortal/SingleCellDetails";
 import SingleCellDatasets from "./web/Portals/SingleCellPortal/SingleCellDatasets";
-import { useTheme, useMediaQuery } from "@material-ui/core";
 import { HttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 import GeneDetails from "./web/Portals/GenePortal/GeneDetails";

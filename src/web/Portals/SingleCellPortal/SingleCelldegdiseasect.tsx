@@ -1,7 +1,7 @@
 import React from "react";
 import { GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { gql, useQuery } from "@apollo/client";
@@ -56,7 +56,6 @@ const COLUMNS = [
 ];
 
 const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
-  const navigate = useNavigate();
   const { disease } = useParams();
   const { celltype } = useParams();
 
@@ -67,8 +66,6 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
       disease
     }
   })
-  console.log(data, loading)
-
 
   return (
     <Grid>

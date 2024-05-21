@@ -1,15 +1,12 @@
 import React from "react";
-import { Grid, Container, GridProps, Box, Stack, Divider } from "@mui/material";
+import { GridProps, Box, Stack, Divider } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { Button, Typography } from "@weng-lab/psychscreen-ui-components";
-
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import DiseaseTrait from "../../assets/disease-trait.png";
 import GeneBCRE from "../../assets/gene-bcre.png";
 import SNPQTL from "../../assets/snp-qtl.png";
 import SingleCell from "../../assets/single-cell.png";
 import { useNavigate } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme, useMediaQuery } from "@material-ui/core";
 import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { ExpandMore } from "@mui/icons-material";
