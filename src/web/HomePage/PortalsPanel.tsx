@@ -145,13 +145,13 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
       <PortalPanel
         title={"Disease/Trait Portal"}
         description={`
-          Explore heritability enrichment for 40 distinct psychiatric,
+          Explore heritability enrichment for 18 distinct psychiatric,
           behavioral, and neuronal traits within gene regulatory features,
           such as b-cCREs and quantitative trait loci (QTLs). Search genes
           associated with complex traits based on PsychENCODE TWAS.
         `}
         stats={[
-          "40 total traits cataloged",
+          "18 total traits cataloged",
           "1,103 b-cCRE/trait associations"
         ]}
         buttonText={"Explore Diseases/Traits"}
