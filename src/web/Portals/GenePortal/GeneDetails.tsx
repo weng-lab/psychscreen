@@ -22,13 +22,11 @@ import Browser from "./Browser/Browser";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import SingleCell from "./SingleCell";
-import styled from "@emotion/styled";
+import { StyledTab } from "../../Portals/styles";
+
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
 type GTExGeneQueryResponse = {
   gtex_genes: {
     val: number;
@@ -217,7 +215,7 @@ const GeneDetails: React.FC = (props) => {
   }, [toPlot]);
 
   return (
-    <Grid container {...props} style={{ marginTop: "6em" }}>
+    <Grid container {...props} style={{ marginTop: "0.5em" }}>
       <Grid item sm={1} lg={1.5} />
       <Grid item sm={9}>
         <Typography
@@ -232,6 +230,7 @@ const GeneDetails: React.FC = (props) => {
           />
           &nbsp;Gene Details: {gene}
         </Typography>
+        <br/>
         <div
           style={{
             display: "flex",

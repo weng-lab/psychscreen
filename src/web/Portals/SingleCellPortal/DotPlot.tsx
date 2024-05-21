@@ -1,18 +1,10 @@
 import { gql } from "@apollo/client";
-import React from "react";
+import React, { useMemo } from "react";
 import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
 
 
-function pickHex(color1: number[], color2: number[], w1: number) {
-  const w2 = 1 - w1;
-  return [
-    Math.round(color1[0] * w1 + color2[0] * w2),
-    Math.round(color1[1] * w1 + color2[1] * w2),
-    Math.round(color1[2] * w1 + color2[2] * w2),
-  ];
-}
 
 export const DOT_PLOT_QUERY = gql`
   query singleCellBoxPlot($disease: String!, $gene: [String]) {
@@ -40,25 +32,26 @@ type DotPlotProps = {
   disease: string;
   showTooltip?: boolean;
   deg?: boolean;
-  gene: string;
+  yaxistitle: string;
   dotplotData?: any;
-  title1?: string;
-  title2?: string;
+  title1?: React.ReactElement;
+  title2?: React.ReactElement;
+  celltype?: boolean;
 };
 
-function useGeneData(disease: string, gene: string, dotplotData?: any) {
+function useGeneData(disease: string, gene: string, dotplotData?: any, celltype?: boolean) {
   // fetch results from API
   let data: any = dotplotData;
 
   // data = dotplotData && dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData: data
   // map cell types to radii and color shadings
-  let uniqueCellTypes = new Set(data?.map((c) => c.celltype));
+  let uniqueCellTypes = new Set(data?.map((c) => celltype ? c.gene : c.celltype));
 
-  const results = React.useMemo(
+  const results = useMemo(
     () =>
       new Map(
         Array.from(uniqueCellTypes).map((x) => {
-          let d = data?.filter((a) => a.celltype === x);
+          let d = data?.filter((a) => celltype ? a.gene === x : a.celltype === x);
 
           return [
             x,
@@ -72,7 +65,7 @@ function useGeneData(disease: string, gene: string, dotplotData?: any) {
   );
 
   // get sorted cell types as keys
-  const keys = React.useMemo(
+  const keys = useMemo(
     () =>
       [...results.keys()].sort((a: any, b: any) =>
         a.toLowerCase().localeCompare(b.toLowerCase())
@@ -99,7 +92,7 @@ function split(left: number, right: number, parts: number) {
 }
 
 const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
-  { disease, gene, dotplotData, title1, title2, showTooltip ,deg },
+  { disease, yaxistitle, dotplotData, title1, title2, showTooltip ,deg, celltype },
   ref
 ) => {
   // SVG-related parameters
@@ -107,25 +100,31 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   const height = width / 3;
 
   // Fetch and format expression data
-  const [data, results, keys] = useGeneData(disease, gene, dotplotData);
+  const [data, results, keys] = useGeneData(disease, yaxistitle, dotplotData, celltype);
 
+  
   let uniqueDatasets = new Set(dotplotData?.map((c) => c.dataset));
   // Compute dimension factors
   const radiusDomain: [number, number] = React.useMemo(() => {
     const radii = keys.map((k) => results.get(k)!.map((e) => e.radius)).flat();
-    return [Math.min(...radii), Math.max(...radii)];
+    let min = Math.min(...radii) 
+    let max = Math.max(...radii)===Math.min(...radii) ? Math.max(...radii)*2  :Math.max(...radii)
+    return [min, max];
   }, [results, keys]);
   const colorDomain: [number, number] = React.useMemo(() => {
     const cp = keys
       .map((k) => results.get(k)!.map((e) => e.colorpercent))
       .flat();
-    return [Math.min(...cp), Math.max(...cp)];
+    let min = Math.min(...cp)
+    let max = Math.max(...cp)===Math.min(...cp) ? Math.max(...cp)*2 : Math.max(...cp)
+    return [min, max];
   }, [results, keys]);
-
+  
   const radiusTransform = React.useCallback(
     linearTransform(radiusDomain, [20, 60]),
     radiusDomain
   );
+  console.log(results,radiusTransform(radiusDomain[0]), colorDomain,"datadotplot")
   const verticalTransform = React.useCallback(
     linearTransform([0, 4], [(height / 2) * 0.9, (height / 2) * 0.1]),
     [height]
@@ -169,7 +168,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       ref={ref}
     >
       <YAxis
-        title={gene}
+        title={yaxistitle}
         width={(width / length) * 2}
         height={height / 2}
         range={[0, 1]}
@@ -214,7 +213,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                     strokeOpacity={4}
                   >
                     <title>
-                    {showTooltip? "p-adjusted: " + s.radius.toExponential(2) +"\nexpression fold change: " + s.colorpercent.toExponential(2)  :"" }
+                    {showTooltip? "p-adjusted: " + s.radius.toFixed(2) +"\nexpression fold change: " + s.colorpercent.toFixed(2)  :"" }
                     </title>
                     </circle>
                 </g>
@@ -254,16 +253,17 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       <text
         fontSize="140px"
         fill="#000000"
-        x={keys.length * 0.75 * (width / length)}
+        x={keys.length * 0.8 * (width / length)}
         y={height * 0.78}
       >
-        {title1 || "Percent Expressed"}
+        {title1 ||  "Percent Expressed"}
+        
       </text>
       {radiusRange.map((r, i) => (
         <>
           <circle
             r={radiusTransform(r)}
-            cx={(keys.length * 0.76 * width) / length}
+            cx={(keys.length * 0.81 * width) / length}
             cy={i * 150 + height * 0.81}
             fill="#000000"
           
@@ -271,11 +271,11 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
           />
           <text
             fontSize="140px"
-            x={(keys.length * 0.78 * width) / length}
+            x={(keys.length * 0.82 * width) / length}
             y={i * 150 + height * 0.82}
             fill="#000000"
           >
-            {!deg ? r.toFixed(2) : r.toExponential(2)}
+            {!deg ? r.toFixed(2) : r.toFixed(2)}
           </text>
         </>
       ))}
@@ -303,7 +303,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             y={i * 150 + height * 0.82}
             fill="#000000"
           >
-            {!deg ? r.toFixed(2) : r.toExponential(2)}
+            {!deg ? r.toFixed(2) : r.toFixed(2)}
           </text>
         </>
       ))}

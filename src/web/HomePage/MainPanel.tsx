@@ -3,7 +3,6 @@ import { Box, Link, Stack } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useNavigate } from "react-router-dom";
 import BRAIN from "../../assets/brain.png";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,6 +13,7 @@ import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
 
 const MainPanel: React.FC = () => {
   const [selectedPortal, setSelectedPortal] = useState<string>("Disease/Trait");
@@ -94,13 +94,14 @@ const MainPanel: React.FC = () => {
               <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
               <MenuItem value={"Gene/b-cCRE"}>Gene/b-cCRE</MenuItem>
               <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
+              <MenuItem value={"Single-Cell"}>Single-Cell</MenuItem>
             </Select>
           </FormControl>
           {selectedPortal === "Disease/Trait" ? (
             <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" />
           ) : selectedPortal === "Gene/b-cCRE" ? (
             <GeneAutoComplete navigateto="/psychscreen/gene/" />
-          ) : (
+          ) : selectedPortal === "Single-Cell" ? (<CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" />) : (
             <SnpAutoComplete navigateto="/psychscreen/snp/" />
           )}
           </Stack>

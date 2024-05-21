@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
 
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../../Portals/styles";
 
 const SNP_AUTOCOMPLETE_QUERY = `
 query snpAutocompleteQuery($snpid: String!, $assembly: String!) {

@@ -96,12 +96,12 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
   );
   const height = useMemo(
     () =>
-      130 +
+      90 +
       (domain.end - domain.start <= 10000 &&
       displayedTracks.find((x) => x[0] === "241-way mammalian phylo-P")?.length
-        ? 130 + displayedTracks.length * 130 - 130
-        : displayedTracks.length * 130) -
-      130,
+        ? 90 + displayedTracks.length * 90 - 130
+        : displayedTracks.length * 90) -
+      90,
     [displayedTracks, domain]
   );
   useEffect(() => {
@@ -183,9 +183,9 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
         .map((x, i) => (
           <TitledImportanceTrack
             key={`${i}_${domain.start}`}
-            transform={`translate(0,${130 * i})`}
+            transform={`translate(0,${90 * i})`}
             title={x[0]}
-            height={130}
+            height={90}
             width={1400}
             signalURL={`${x[1]}/${CELL_TYPES.get(x[0])!}.profile_scores.bw`}
             imputedSignalURL={`${x[1]}/predictions_${CELL_TYPES.get(

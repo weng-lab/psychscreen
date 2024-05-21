@@ -15,8 +15,9 @@ import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
 import GeneBCRE from "../../../assets/gene-bcre.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { QueryResponse } from "./GeneOverview";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+
 import { GeneAutoComplete } from "./GeneAutocomplete";
+import { StyledButton } from "../styles";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {

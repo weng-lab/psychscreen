@@ -18,6 +18,7 @@ import {
   SNPPortal,
   SingleCellPortal,
 } from "./web/Portals";
+import SingleCellCellTypeDetails from "./web/Portals/SingleCellPortal/SingleCellCellTypeDetails";
 import DiseaseTraitDetails from "./web/Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 import SingleCellDetails from "./web/Portals/SingleCellPortal/SingleCellDetails";
 import SingleCellDatasets from "./web/Portals/SingleCellPortal/SingleCellDatasets";
@@ -102,6 +103,10 @@ const App: React.FC = () => {
                 path="/psychscreen/traits/:disease"
                 element={<DiseaseTraitDetails />}
               />
+               <Route
+                path="/psychscreen/single-cell/celltype/:celltype"
+                element={<SingleCellCellTypeDetails />}
+          />
               <Route
                 path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease"
                 element={<SingleCelldegdisease />}

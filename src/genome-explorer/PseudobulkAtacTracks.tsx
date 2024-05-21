@@ -68,8 +68,8 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
   const [displayedTracks, setDisplayedTracks] = useState<[string, string][]>(TRACKSETS);
   const height = useMemo(
     () =>
-      130 +
-      (displayedTracks.length * 130) - 130,
+      90 +
+      (displayedTracks.length * 90) - 90,
     [displayedTracks, domain]
   );
   //console.log(domain, "domain")
@@ -89,9 +89,9 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
         .map((x, i) => (
             <TitledImportanceTrack            
             key={`${i}_${domain.start}`}
-            transform={`translate(0,${130 * i})`}
+            transform={`translate(0,${90 * i})`}
             title={x[0]}
-            height={130}
+            height={90}
             width={1400}
             signalURL={`https://downloads.wenglab.org/pseudobulkatac/${x[0]}.profile_scores.bw`}
             imputedSignalURL={x[1]}

@@ -20,7 +20,7 @@ export function riskLoci(
   
 ): ( GenomicRange & { count: number; minimump: number })[] {
   const expandedCoordinates = snps
-   .filter((x) => trait &&  trait==="Anorexia" ? x : x.p < 5e-8) //Ask Nicole about this filter threshold value 
+   
     .map((x) => ({
       chromosome: x.chromosome,
       start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,

@@ -19,12 +19,12 @@ import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
-import styled from "@emotion/styled";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../../Portals/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
+import { StyledTab } from "../../Portals/styles";
 
 const COLUMNS  = 
    [
@@ -54,9 +54,7 @@ const COLUMNS  =
   },
 ];
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
+
 export type SingleCellGeneQueryItem = {
   sampleid: string;
   featureid: string;
@@ -634,7 +632,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
                   <br />
                   <DotPlot
                     disease={dataset}
-                    gene={gene}
+                    yaxistitle={gene}
                     dotplotData={
                       cttabIndex === 0 ? dotplotDataSc : dotplotDataCt
                     }
@@ -644,7 +642,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
               ) : (
                 <DotPlot
                   disease={dataset}
-                  gene={gene}
+                  yaxistitle={gene}
                   dotplotData={
                     ctClass === "by SubClass"
                       ? dotplotDataSc.filter((d) => d.dataset === dataset)

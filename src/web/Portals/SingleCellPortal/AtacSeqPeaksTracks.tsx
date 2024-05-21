@@ -261,7 +261,7 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
         textAnchor="middle"
         fill="#4c1f8f"
       >
-        Atac Seq Peaks
+        scATAC-Seq Peaks
       </text>
     </>
   );

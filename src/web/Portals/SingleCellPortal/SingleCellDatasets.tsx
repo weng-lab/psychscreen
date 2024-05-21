@@ -17,11 +17,10 @@ import {
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import { DataTable } from "@weng-lab/ts-ztable";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
 import { SingleCellBrowser } from "./SingleCellBrowser";
-import { StyledTab } from "../GenePortal/SingleCell";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import { StyledTab, StyledButton } from "../../Portals/styles";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },

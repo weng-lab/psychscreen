@@ -10,7 +10,7 @@ import SingleCell from "../../assets/single-cell.png";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme, useMediaQuery } from "@material-ui/core";
-import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../Portals/styles";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { ExpandMore } from "@mui/icons-material";
 

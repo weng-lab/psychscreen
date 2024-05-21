@@ -89,6 +89,7 @@ export const TitledTrack: React.FC<{
           width={1400}
           height={height}
           domain={domain}
+          range={{min:-2, max: 9}}
           id="NeuN+"
           color={color}
           data={data as BigWigData[]}
@@ -103,12 +104,13 @@ const ConservationTracks: React.FC<ConservationTrackProps> = (props) => {
   const [cTracks, setTracks] = useState<[string, string][]>([
     //        [ "100-vertebrate phyloP conservation score", "https://downloads.wenglab.org/hg38.phyloP100way.bw" ],
     [
-      "240-mammal phyloP conservation score",
+      
+      "240-mammal phyloP conservation score (Vertical Viewing Range (-2 to 9))",
       "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig",
     ],
     //  [ "43-primate conservation score", "https://downloads.wenglab.org/hg38_43primates_phastCons.bw" ]
   ]);
-  const height = useMemo(() => cTracks.length * 80, [cTracks]);
+  const height = useMemo(() => cTracks.length * 150, [cTracks]);
   const bigRequests = useMemo(
     () =>
       cTracks.map((x) => ({
@@ -143,12 +145,9 @@ const ConservationTracks: React.FC<ConservationTrackProps> = (props) => {
         }}
         initialSelection={cTracks}
       />
-      <g className="encode-fetal-brain">
-        <rect y={10} height={55} fill="none" width={1400} />
-      </g>
       {(data?.bigRequests || []).map((data, i) => (
         <TitledTrack
-          height={40}
+          height={100}
           key={cTracks[i][1]}
           url={cTracks[i][1]}
           domain={props.domain}

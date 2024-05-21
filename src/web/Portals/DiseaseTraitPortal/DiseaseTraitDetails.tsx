@@ -6,7 +6,7 @@ import { Typography, Button } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import { DISEASE_CARDS, URL_MAP } from "./config/constants";
+import { DISEASE_CARDS, FULLSUMSTAT_URL_MAP, URL_CHROM_MAP, URL_MAP } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { PORTALS } from "../../../App";
 import { riskLoci } from "./utils";
@@ -14,11 +14,8 @@ import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
-import styled from "@emotion/styled";
+import { StyledButton } from "../../Portals/styles";
 
-export const StyledButton = styled(Button)(() => ({
-  textTransform: "none",
-}));
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
     $disease: String!
@@ -152,16 +149,16 @@ function useLoci(trait: string) {
       disease: trait || "",
       bigRequests: [{
         chr1: "chr1",
-        chr2: trait === "Anorexia" ? "chr5" : "chr22",
+        chr2: URL_CHROM_MAP[trait],
         start: 0,
         end: 300000000,
-        url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
+        url: URL_MAP[trait] //.replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
       }],
 
 
     },
   });
-  console.log(URL_MAP[trait])
+  
   const loci = useMemo(() => {
     if (!data) return undefined;
     if (!URL_MAP[trait].startsWith("https"))
@@ -202,9 +199,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     ? state
     : { searchvalue: "", diseaseDesc: "" };
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
-    chromosome: "chr1",
-    start: 1000000,
-    end: 2000000,
+    chromosome: "chr12",
+    start: 5219427,
+    end: 5234775,
   });
   const navigateBrowser = useCallback((coordinates: GenomicRange) => {
     setBrowserCoordinates(coordinates);
@@ -214,8 +211,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
   const diseaseLabel =
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
   const summaryStatisticsURL = disease
-    ? URL_MAP[disease].startsWith("gs") || URL_MAP[disease].startsWith("https")
-      ? URL_MAP[disease]
+  ? FULLSUMSTAT_URL_MAP[disease].startsWith("gs") || FULLSUMSTAT_URL_MAP[disease].startsWith("https")
+        ? FULLSUMSTAT_URL_MAP[disease]
       : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
     : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
   const { loci, data } = useLoci(disease || "");

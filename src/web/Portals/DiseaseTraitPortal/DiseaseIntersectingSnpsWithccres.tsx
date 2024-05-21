@@ -3,14 +3,10 @@ import { Grid, Container, GridProps, Divider, Link } from "@mui/material";
 import { CustomizedTable } from "@weng-lab/psychscreen-ui-components";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import styled from "@emotion/styled";
 import { compareByMinimumP } from "./AssociatedSnpQtl";
-import { StyledButton } from "./DiseaseTraitDetails";
+import { StyledButton } from "../../Portals/styles";
+import { StyledTab } from "../../Portals/styles";
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
 export type GwasIntersectingSnpsWithCcres = {
   snpid: string;
   snp_chrom: string;
@@ -150,7 +146,7 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                 <br />
                 {adult_bcredata && (
                   <StyledButton
-                    bvariant={page === 0 ? "filled" : "outlined"}
+                    variant={page === 0 ? "filled" : "outlined"}
                     btheme="light"
                     onClick={() => setPage(0)}
                   >
@@ -160,7 +156,7 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                 &nbsp;&nbsp;&nbsp;
                 {fetal_bcredata && (
                   <StyledButton
-                    bvariant={page === 1 ? "filled" : "outlined"}
+                    variant={page === 1 ? "filled" : "outlined"}
                     btheme="light"
                     onClick={() => setPage(1)}
                   >

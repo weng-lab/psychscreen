@@ -9,12 +9,11 @@ import GwasPage from "./GwasPage";
 import { gql, useQuery } from "@apollo/client";
 import EGeneTable from "./EGeneTable";
 import RegulatoryElements from "./RegulatoryElements";
-import styled from "@emotion/styled";
-import { CAQTL } from "./caQTL";
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
+import { CAQTL } from "./caQTL";
+import { StyledTab } from "../../Portals/styles";
+
+
 
 export const CAQTL_QUERY = gql`
 query caqtls($snpid: String!) {

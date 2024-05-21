@@ -193,13 +193,13 @@ export const DegExpression = (props) =>{
           <DotPlot
           deg={true}
             disease={dataset}
-            gene={props.gene}
+            yaxistitle={props.gene}
             showTooltip={true}
             dotplotData={
                 dotplotData
             }
-            title1={"-log10(P-adj)"}
-            title2={"log2(fc)"}
+            title1={<>{"-log"}<tspan baseline-shift = "sub">10</tspan>{"(p-adj)"}</>}                
+            title2={<>{"log"}<tspan baseline-shift = "sub">2</tspan>{"(fold change)"}</>}
             ref={dotPlotRef}/></>)
       }
       </Grid>

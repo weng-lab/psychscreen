@@ -10,9 +10,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
 
-import { PORTALS } from "../../App";
+
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
-import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../Portals/styles";
 
 function createData(
   name: string,

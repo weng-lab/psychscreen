@@ -13,13 +13,11 @@ import {
 
 import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
-import styled from "@emotion/styled";
+
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { SingleCellBrowser } from "./SingleCellBrowser";
+import { StyledTab } from "../../Portals/styles";
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
     gene(assembly: $assembly, name_prefix: $name_prefix) {
@@ -76,7 +74,7 @@ export const SingleCellGeneDetails = (props) => {
   };
 
   return (
-    <Grid container {...props} style={{ marginTop: "6em" }}>
+    <Grid container {...props} style={{ marginTop: "0.5em" }}>
       <Grid item sm={1} lg={1.5} />
       <Grid item sm={9}>
         <Typography
@@ -91,6 +89,7 @@ export const SingleCellGeneDetails = (props) => {
           />
           &nbsp;Gene Details: {gene}
         </Typography>
+        <br/>
         <div
           style={{
             display: "flex",
