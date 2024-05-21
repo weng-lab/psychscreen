@@ -99,7 +99,6 @@ const GeneDetails: React.FC = (props) => {
     setRegion({ chromosome, start, end });
     setGid(geneid);
   }, [gene, state]);
-  //console.log(gene,region)
 
   //if (trueGeneId) geneid = trueGeneId;
   const params = useParams();

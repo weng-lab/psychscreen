@@ -161,7 +161,6 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   }, [colorDomain]);
 
   // Dot plot for recognized genes
-  console.log(colorPercent,"colpercent")
   return (
     <svg
       viewBox={`0 0 ${width} ${width / 3}`}

@@ -109,10 +109,6 @@ export const DegExpression = (props) => {
   const dotplotData =
     !loading && data
       ? data.degQuery.filter(d => d.padj != 0).map((k) => {
-        if (k.padj < 0.05) {
-          console.log(k.padj < 0.05, props.gene)
-        }
-
         return {
           expr_frac: -Math.log10(k.padj),
 
@@ -124,7 +120,6 @@ export const DegExpression = (props) => {
         };
       })
       : [];
-  console.log(dotplotData, props.gene)
   return (<>
     <Grid container>
       <Grid

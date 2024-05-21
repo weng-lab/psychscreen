@@ -69,7 +69,6 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
         setGrn(bcres);
       });
   }, [celltype]);
-  console.log("grnNew", grn)
   /*useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}.json`)
       .then((x) => x.json())

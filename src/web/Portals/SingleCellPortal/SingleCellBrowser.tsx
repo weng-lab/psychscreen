@@ -198,7 +198,6 @@ export const SingleCellBrowser = (props) =>{
           ) : (
             <CoordinatesSearch
               onSelected={(value) => {
-                console.log(value,"val")
                 setCoordinates({
                   chromosome: value.chromosome,
                   start: +value.start < 0 ? 1 : +value.start,

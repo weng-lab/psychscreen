@@ -188,7 +188,6 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
   const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
     variables: { bigRequests },
   });
-  console.log(data,"data")
   useEffect(() => {
     props.onHeightChanged && props.onHeightChanged(height);
   }, [props.onHeightChanged, height, props]);

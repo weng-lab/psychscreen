@@ -160,7 +160,6 @@ function useLoci(trait: string) {
 
     },
   });
-  console.log(URL_MAP[trait])
   const loci = useMemo(() => {
     if (!data) return undefined;
     if (!URL_MAP[trait].startsWith("https"))
