@@ -161,7 +161,6 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   }, [colorDomain]);
 
   // Dot plot for recognized genes
-  console.log(colorPercent,"colpercent")
   return (
     <svg
       viewBox={`0 0 ${width} ${width / 3}`}
@@ -201,7 +200,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               <React.Fragment key={`${x}_${i}_${j}`}>
                 <g>
                   <circle
-                    fill={ !deg ? `rgb(${gradient(s.colorpercent).toFixed(0)},${gradient(s.colorpercent).toFixed(0)},255)` :  s.colorpercent == 0  ? 'rgb(232, 223, 221)' : s.colorpercent > 0 ? `rgb(${posgradient(s.colorpercent)},${posgradient(s.colorpercent)},255)` : `rgb(255,${neggradient(s.colorpercent)},${neggradient(s.colorpercent)})`}                    
+                    fill={ !deg ? `rgb(${gradient(s.colorpercent).toFixed(0)},${gradient(s.colorpercent).toFixed(0)},255)` :  s.colorpercent === 0  ? 'rgb(232, 223, 221)' : s.colorpercent > 0 ? `rgb(${posgradient(s.colorpercent)},${posgradient(s.colorpercent)},255)` : `rgb(255,${neggradient(s.colorpercent)},${neggradient(s.colorpercent)})`}                    
                     cy={
                       results.get(x)!!.length === 1
                         ? verticalTransform(2)

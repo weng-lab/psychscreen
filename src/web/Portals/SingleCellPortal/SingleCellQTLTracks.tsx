@@ -20,12 +20,6 @@ export const BIG_QUERY = gql`
   }
 `;
 
-type GenomicRange = {
-  chromosome?: string;
-  start: number;
-  end: number;
-};
-
 export type BigResponseData =
   | BigWigData[]
   | BigBedData[]

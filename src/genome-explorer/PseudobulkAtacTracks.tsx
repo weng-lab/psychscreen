@@ -1,14 +1,11 @@
 
 import React, {
   RefObject,
-  useCallback,
   useEffect,
   useMemo,
   useState,
 } from "react";
 import { GenomicRange } from "../web/Portals/GenePortal/AssociatedxQTL";
-
-import DeepLearnedTrackModal from "./SettingsModals/DeepLearnedTracks";
 import TitledImportanceTrack from "./TitledImportanceTrack";
 import { BigBedData } from "bigwig-reader";
 
@@ -72,7 +69,6 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
       (displayedTracks.length * 130) - 130,
     [displayedTracks, domain]
   );
-  //console.log(domain, "domain")
   useEffect(() => {
     onHeightChanged && onHeightChanged(height);
   }, [onHeightChanged, height]);
@@ -80,8 +76,6 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
   // manage settings modal
   const [settingsMousedOver, setSettingsMousedOver] = useState(false);
   const [settingsModalShown, setSettingsModalShown] = useState(false);
-
-  //console.log("displayedTracks",displayedTracks)
 
   return (
     <>

@@ -7,10 +7,7 @@ import { Grid } from "@mui/material";
 import {
   Typography
 } from "@weng-lab/psychscreen-ui-components";
-import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
-
-import { PORTALS } from "../../App";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
 import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 

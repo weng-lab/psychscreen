@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Box, Link, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useNavigate } from "react-router-dom";
 import BRAIN from "../../assets/brain.png";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";

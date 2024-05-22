@@ -37,9 +37,6 @@ const FooterPanel = () => {
         </Grid2>
         <Grid2 color="white" textAlign={"left"} flexGrow={1}>
           <Typography variant="h5" mb={1}>
-            Helpful Links
-          </Typography>
-          <Typography variant="body2">
             <MuiLink color="inherit" href="/psychscreen/aboutus" underline="hover">
               About Us
             </MuiLink>

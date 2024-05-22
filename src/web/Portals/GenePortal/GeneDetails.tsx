@@ -1,9 +1,8 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Typography,
 } from "@weng-lab/psychscreen-ui-components";
-import { PORTALS } from "../../../App";
 import {
   Divider,
   Grid,
@@ -51,20 +50,6 @@ const GTEX_GENES_QUERY = gql`
   }
 `;
 
-const GENE_ID_QUERY = `
-query ($assembly: String!,  $name_prefix: [String!]) {
-  gene(assembly: $assembly, name_prefix: $name_prefix) {
-    name
-    id
-    coordinates {
-      start
-      chromosome
-      end
-    } 
-  }
-}
-`;
-
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
     gene(assembly: $assembly, name_prefix: $name_prefix) {
@@ -83,7 +68,6 @@ const GeneDetails: React.FC = (props) => {
   const { gene } = useParams();
   const { state }: any = useLocation();
 
-  const navigate = useNavigate();
   let { geneid, chromosome, start, end, tabind } = state
     ? state
     : { geneid: "", chromosome: "", start: null, end: null, tabind: 0 };
@@ -115,7 +99,6 @@ const GeneDetails: React.FC = (props) => {
     setRegion({ chromosome, start, end });
     setGid(geneid);
   }, [gene, state]);
-  //console.log(gene,region)
 
   //if (trueGeneId) geneid = trueGeneId;
   const params = useParams();
@@ -132,7 +115,7 @@ const GeneDetails: React.FC = (props) => {
       name_prefix: [params.gene],
       assembly: "GRCh38",
     },
-    skip: params.gene == "",
+    skip: params.gene === "",
   });
   /*const onGeneChange = React.useCallback(
       async (value: any) => {

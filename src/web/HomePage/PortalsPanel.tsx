@@ -1,15 +1,12 @@
 import React from "react";
-import { Grid, Container, GridProps, Box, Stack, Divider } from "@mui/material";
+import { GridProps, Box, Stack, Divider } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { Button, Typography } from "@weng-lab/psychscreen-ui-components";
-
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import DiseaseTrait from "../../assets/disease-trait.png";
 import GeneBCRE from "../../assets/gene-bcre.png";
 import SNPQTL from "../../assets/snp-qtl.png";
 import SingleCell from "../../assets/single-cell.png";
 import { useNavigate } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme, useMediaQuery } from "@material-ui/core";
 import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { ExpandMore } from "@mui/icons-material";
@@ -148,13 +145,13 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
       <PortalPanel
         title={"Disease/Trait Portal"}
         description={`
-          Explore heritability enrichment for 40 distinct psychiatric,
+          Explore heritability enrichment for 18 distinct psychiatric,
           behavioral, and neuronal traits within gene regulatory features,
           such as b-cCREs and quantitative trait loci (QTLs). Search genes
           associated with complex traits based on PsychENCODE TWAS.
         `}
         stats={[
-          "40 total traits cataloged",
+          "18 total traits cataloged",
           "1,103 b-cCRE/trait associations"
         ]}
         buttonText={"Explore Diseases/Traits"}

@@ -198,7 +198,6 @@ export const SingleCellBrowser = (props) =>{
           ) : (
             <CoordinatesSearch
               onSelected={(value) => {
-                console.log(value,"val")
                 setCoordinates({
                   chromosome: value.chromosome,
                   start: +value.start < 0 ? 1 : +value.start,
@@ -216,7 +215,7 @@ export const SingleCellBrowser = (props) =>{
         <CytobandView
           innerWidth={1000}
           height={15}
-          chromosome={(coordinates || eexpandedCoordinates) .chromosome!}
+          chromosome={(coordinates || eexpandedCoordinates).chromosome!}
           assembly={"hg38"}
           position={coordinates || eexpandedCoordinates}
         />

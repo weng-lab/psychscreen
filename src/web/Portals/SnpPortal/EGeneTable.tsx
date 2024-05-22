@@ -97,9 +97,6 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     name_prefix: qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>x.geneid.split(".")[0]).filter((x)=>x.includes("ENST")),
     assembly:"GRCh38"
   }, skip: qtlsigassocLoading || (!qtlsigassocData) })
-  
-  console.log(geneNameData,transcriptNameData)
-  
 
   const qtlsigData  = qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>[
     {
@@ -127,7 +124,6 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
         value: x.qtltype
     },
   ])
-  console.log(qtlsigData)
 
   const deconqtlData  = eqtlData && eqtlData.deconqtlsQuery.map((x)=>[
     {

@@ -6,7 +6,6 @@ import {
   Typography,
 } from "@weng-lab/psychscreen-ui-components";
 import { CircularProgress } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
 import { Link } from "@mui/material";
 
 export type GenomicRange = {
@@ -431,7 +430,6 @@ const AssociatedxQTL: React.FC<any> = (props) => {
       ),
     [data]
   );
-  const navigate = useNavigate();
   const allQTLs = useMemo(
     () =>
       snpCoordinateData?.snpQuery.map((x) => ({
