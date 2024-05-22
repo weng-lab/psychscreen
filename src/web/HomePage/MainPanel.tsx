@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Link, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";

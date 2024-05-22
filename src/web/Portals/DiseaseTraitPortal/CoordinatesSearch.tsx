@@ -33,7 +33,6 @@ export const CoordinatesSearch = (props) => {
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
-              console.log(value, "val");
               value &&
                 props.onSelected &&
                 props.onSelected({

@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar } from "@weng-lab/psychscreen-ui-components";
 import { PORTALS } from "../../App";
-import { Box } from "@mui/material";
 
 const Header: React.FC = () => {
     const navigate = useNavigate();

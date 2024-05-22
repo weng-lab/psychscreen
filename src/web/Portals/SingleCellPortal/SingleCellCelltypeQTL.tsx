@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 
@@ -61,11 +61,8 @@ const COLUMNS = [
 ];
 
 const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
-  const navigate = useNavigate();
   const { celltype } = useParams();
   const [qtl, setQtl] = useState<any>([]);
-
-
 
   useEffect(() => {
     fetch(`https://downloads.wenglab.org/${celltype}_sig_QTLs.dat`)

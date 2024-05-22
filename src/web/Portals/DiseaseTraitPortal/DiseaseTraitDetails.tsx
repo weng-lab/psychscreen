@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import React, { useCallback, useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Grid, Container, GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
@@ -8,7 +8,6 @@ import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
 import { DISEASE_CARDS, FULLSUMSTAT_URL_MAP, URL_CHROM_MAP, URL_MAP } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
-import { PORTALS } from "../../../App";
 import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
@@ -192,7 +191,6 @@ function useLoci(trait: string) {
 
 const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
-  const navigate = useNavigate();
   const [page, setPage] = useState<number>(-1);
   const { state }: any = useLocation();
   const { searchvalue, diseaseDesc } = state

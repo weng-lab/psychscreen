@@ -126,7 +126,6 @@ export const GeneAutoComplete = (props) => {
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
-                console.log("value",value)
               value &&
                 props.onSelected &&
                 props.onSelected({
@@ -158,7 +157,7 @@ export const GeneAutoComplete = (props) => {
           }}
           inputValue={inputValue}
           onInputChange={(event, newInputValue) => {
-            if (newInputValue != "") {
+            if (newInputValue !== "") {
               debounceFn(newInputValue);
             }
 

@@ -1,12 +1,10 @@
 import React from "react";
 import { Grid, GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { useParams, useNavigate } from "react-router-dom";
-import { PORTALS } from "../../../App";
+import { useParams } from "react-router-dom";
 import SingleCell, { DATASETS } from "../GenePortal/SingleCell";
 
 const SingleCellDotPlot: React.FC<GridProps> = (props) => {
-  const navigate = useNavigate();
   const { disease, gene } = useParams();
 
   return (

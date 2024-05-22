@@ -152,6 +152,7 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = (props) => {
     [props.domain.start, props.domain.end],
     [0, props.width]
   );
+  
   return (
     <g transform="translate(0,115)">
       {props.neutralRegions.map((r, i) => (
@@ -213,7 +214,6 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = (props) => {
     positiveRegionURL,
     onImportantRegionsLoaded,
   } = props;
-console.log("domain",signalURL, props.domain)
   
   useEffect(
     () => props.onHeightChanged && props.onHeightChanged(height),

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   Typography
 } from "@weng-lab/psychscreen-ui-components";
@@ -31,8 +31,6 @@ const GENE_COORDS_QUERY = gql`
   }
 `;
 export const SingleCellGeneDetails = (props) => {
-  const navigate = useNavigate();
-
   const { gene } = useParams();
   const { state }: any = useLocation();
   let { geneid, chromosome, start, end, tabind } = state
@@ -66,7 +64,7 @@ export const SingleCellGeneDetails = (props) => {
       name_prefix: [gene],
       assembly: "GRCh38",
     },
-    skip: gene == "",
+    skip: gene === "",
   });
   const handleTabChange = (_: any, newTabIndex: number) => {
     setTabIndex(newTabIndex);

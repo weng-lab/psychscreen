@@ -183,7 +183,7 @@ const deepEqual = function (x, y) {
     typeof y == "object" &&
     y != null
   ) {
-    if (Object.keys(x).length != Object.keys(y).length) return false;
+    if (Object.keys(x).length !== Object.keys(y).length) return false;
 
     for (var prop in x) {
       if (y.hasOwnProperty(prop)) {

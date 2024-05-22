@@ -3,11 +3,7 @@ import { Chart, Scatter } from "jubilant-carnival";
 import { Grid } from "@mui/material";
 import Legend from "./scatterplot/legend";
 import { tissueTypeColors } from "./consts";
-import { TabletAppBar, Typography } from "@weng-lab/psychscreen-ui-components";
-import { useTheme, useMediaQuery } from "@material-ui/core";
-import { PORTALS } from "../../../App";
-import { Logo } from "../../../mobile-portrait/HomePage/HomePage";
-import { useNavigate } from "react-router-dom";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const dictionaryInvert = (obj) =>
@@ -42,8 +38,6 @@ export const range = (min: number, max: number, by: number = 1) => {
 const GTexUMAP: React.FC = () => {
   const [data, setData] = useState<GTexumap[]>([]);
   const [pcdata, setPcData] = useState<GTexumap[]>([]);
-  const theme = useTheme();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://downloads.wenglab.org/GTEx_v8_RNAseq_gene_tpm_matrix.txt")

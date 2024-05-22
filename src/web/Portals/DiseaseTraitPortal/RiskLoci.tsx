@@ -105,7 +105,6 @@ const RiskLocusView: React.FC<{
     [string, number, number, number] | null
   >(null);
 
-  console.log(groupedLoci.size,"groupedLoci")
   return props.loci.length === 0 ? (
     <CircularProgress />
   ) : (
