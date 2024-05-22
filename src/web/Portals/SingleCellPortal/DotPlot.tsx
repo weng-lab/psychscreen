@@ -253,29 +253,29 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       <text
         fontSize="140px"
         fill="#000000"
-        x={keys.length * 0.8 * (width / length)}
+        x={(keys.length * (keys.length<=2  ? 1.3 : 0.8)) * (width / length)}
         y={height * 0.78}
       >
         {title1 ||  "Percent Expressed"}
         
       </text>
-      {radiusRange.map((r, i) => (
+      { radiusRange.map((r, i) => (
         <>
           <circle
             r={radiusTransform(r)}
-            cx={(keys.length * 0.81 * width) / length}
-            cy={i * 150 + height * 0.81}
+            cx={(keys.length * (keys.length<=2  ? 1.4 : 0.83)* width) / length}
+            cy={i * 150 + height * 0.82}
             fill="#000000"
           
             
           />
           <text
             fontSize="140px"
-            x={(keys.length * 0.82 * width) / length}
-            y={i * 150 + height * 0.82}
+            x={(keys.length * (keys.length<=2  ? 1.5 : 0.85) * width) / length}
+            y={i * 150 + height * 0.83}
             fill="#000000"
           >
-            {!deg ? r.toFixed(2) : r.toFixed(2)}
+            {r.toFixed(2)}
           </text>
         </>
       ))}
@@ -293,17 +293,17 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             width={100}
             height={100}
             x={(keys.length * 0.4 * width) / length}
-            y={i * 150 + height * 0.8}
+            y={i * 150 + height * 0.81}
             //fill={`rgb(${pickHex([20,20,255],[235,235,255], r).join(",")})`}
             fill={ !deg ? `rgb(${gradient(r).toFixed(0)},${gradient(r).toFixed(0)},255)` :  r > 0 ? `rgb(${posgradient(r).toFixed(0)},${posgradient(r).toFixed(0)},255)` : `rgb(255,${neggradient(r).toFixed(0)},${neggradient(r).toFixed(0)})`}
           />
           <text
             fontSize="140px"
             x={(keys.length * 0.44 * width) / length}
-            y={i * 150 + height * 0.82}
+            y={i * 150 + height * 0.83}
             fill="#000000"
           >
-            {!deg ? r.toFixed(2) : r.toFixed(2)}
+            { r.toFixed(2)}
           </text>
         </>
       ))}

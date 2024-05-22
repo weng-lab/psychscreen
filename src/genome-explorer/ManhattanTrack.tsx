@@ -138,8 +138,8 @@ export type ManhattanTrackProps = {
 };
 
 export const defaultManhattanSNPProps = (snp: ManhattanSNP, props: ManhattanTrackProps): React.SVGProps<SVGCircleElement> => ({
-    fill: snp.data.score < 1e-8 ? "#ff00000" : "#888888",
-    r: snp.data.score < 1e-8 ? props.height / 30 : props.height / 40
+    fill: snp.data.score < 5e-8 ? "#ff00000" : "#dddddd",
+    r: snp.data.score < 5e-8 ? props.height / 30 : props.height / 40
 });
 
 export const ManhattanTrack: React.FC<ManhattanTrackProps> = props => {

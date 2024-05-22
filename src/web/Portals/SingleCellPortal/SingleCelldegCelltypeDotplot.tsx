@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { CircularProgress } from "@mui/material";
-import { Grid } from "@mui/material";
-
+import { Grid, FormControl } from "@mui/material";
+import {
+    AppBar,
+    Typography,
+    Button,
+  } from "@weng-lab/psychscreen-ui-components";
 import { gql, useQuery } from "@apollo/client";
 import DotPlot from "./DotPlot";
 
-
+import { Select as MUISelect } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 const DEG_BYCT_QUERY = gql`
   query degQuery(
     $gene: String, $disease: String!,$celltype: String
@@ -28,14 +34,17 @@ const SingleCelldegCelltypeDotplot = (props) => {
         disease: props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease
       }})
       
-      const dotPlotRef = React.useRef<SVGSVGElement>(null);      
+      const handleDtChange = (event) => {
+        setDt(event.target.value);
+      };
+      const [dt, setDt] = useState("log2(fold change)");
+      
+      const dotPlotRef = useRef<SVGSVGElement>(null);      
       
       
       const dotplotData =
         !loading && data
           ? data.degQuery.filter(d=>d.padj!=0).filter(k=>k.padj < 0.05).map((k) => {
-          
-            
             return {
                 expr_frac: -Math.log10(k.padj),            
                 highlighted:  false,
@@ -50,16 +59,103 @@ const SingleCelldegCelltypeDotplot = (props) => {
       
     
       return (
+
+        <>
         <Grid container>
         <Grid
+            item
+            sm={4}
+            md={4}
+            lg={4}
+            xl={4}
+            style={{ marginBottom: "2em",marginTop: "2em" }}
+          >
+           <Typography
+          style={{ marginLeft: "0.1em", marginTop: "0.1em" }}
+          type="body"
+          size="large"
+        >
+          Select Disease:
+        </Typography>
+
+        
+          <FormControl
+            sx={{ m: 1, minWidth: 400 }}
+            style={{ marginLeft: "0.1em", marginTop: "1em" }}
+          >
+            <InputLabel id="simple-select-helper-label">Disease:</InputLabel>
+            <MUISelect
+              labelId="simple-select-helper-label"
+              id="simple-select-helper"
+              value={props.dataset}
+              label="Dataset"
+              onChange={props.handleChange}
+            >
+              {props.degDiseases.map((d) => {
+                return (
+                  <MenuItem value={d}>
+                    {d}
+                   
+                  </MenuItem>
+                );
+              })}
+            </MUISelect>
+          </FormControl>
+          </Grid>
+          {dotplotData.length>=50  && <Grid
+            item
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ marginBottom: "2em",marginTop: "2em" }}
+          >
+          <Typography
+          style={{ marginLeft: "0.1em", marginTop: "0.1em" }}
+          type="body"
+          size="large"
+        >
+          {`Showing top 50 datasets based on ${dt}:`}
+        </Typography>
+
+        
+          <FormControl
+            sx={{ m: 1, minWidth: 400 }}
+            style={{ marginLeft: "0.1em", marginTop: "1em" }}
+          >
+            <InputLabel id="simple-select-helper-label">Value:</InputLabel>
+            <MUISelect
+              labelId="simple-select-helper-label"
+              id="simple-select-helper"
+              value={dt}
+              label="Dt"
+              onChange={handleDtChange}
+            >
+              {["log2(fold change)","-log10(padj)"].map((d) => {
+                return (
+                  <MenuItem value={d}>
+                    {d}
+                   
+                  </MenuItem>
+                );
+              })}
+            </MUISelect>
+          </FormControl>
+
+          
+
+         
+          </Grid>}
+            </Grid>
+            <Grid container>
+            <Grid
             item
             sm={12}
             md={12}
             lg={12}
             xl={12}
-            style={{ marginBottom: "2em",marginTop: "2em" }}
+            
           >
-    
           {
             loading || !dotplotData ? (
                 <CircularProgress />
@@ -73,14 +169,15 @@ const SingleCelldegCelltypeDotplot = (props) => {
                 yaxistitle={props.celltype}
                 showTooltip={true}
                 dotplotData={
-                    dotplotData.length>=50 ? dotplotData.sort((a,b)=>a.expr_frac-b.expr_frac).slice(0,50) : dotplotData
+                    dotplotData.length>=50 ? dotplotData.sort((a,b)=> dt==="log2(fold change)" ? b.mean_count-a.mean_count : b.expr_frac-a.expr_frac  ).slice(0,50) : dotplotData
                 }
                 title1={<>{"-log"}<tspan baseline-shift = "sub">10</tspan>{"(p-adj)"}</>}                
                 title2={<>{"log"}<tspan baseline-shift = "sub">2</tspan>{"(fold change)"}</>}
                 ref={dotPlotRef}/>)
           }
           </Grid>
-            </Grid>
+          </Grid>
+            </>
       );
 };
 

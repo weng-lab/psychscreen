@@ -3,13 +3,11 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   Typography,
 } from "@weng-lab/psychscreen-ui-components";
-import { PORTALS } from "../../../App";
 import {
   Divider,
   Grid,
   Box,
-  Tabs,
-  Tab,
+  Tabs  
 } from "@mui/material";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
@@ -23,7 +21,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import SingleCell from "./SingleCell";
 import { StyledTab } from "../../Portals/styles";
-
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 

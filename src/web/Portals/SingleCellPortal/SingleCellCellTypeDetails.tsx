@@ -121,39 +121,15 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
           </> )}
           {tabIndex==3 && degDiseases && degDiseases.length==0 && <><br/> {'No data diff. expressed genes available for ' +celltype?.replace(" or ","/")} </>}
           {tabIndex==3 && degDiseases.length>0 && dataset && <> 
-            <br/>
-            <Typography
-          style={{ marginLeft: "0.1em", marginTop: "0.1em" }}
-          type="body"
-          size="large"
-        >
-          Select Disease:
-        </Typography>
-
-        
-          <FormControl
-            sx={{ m: 1, minWidth: 400 }}
-            style={{ marginLeft: "0.1em", marginTop: "1em" }}
-          >
-            <InputLabel id="simple-select-helper-label">Disease:</InputLabel>
-            <MUISelect
-              labelId="simple-select-helper-label"
-              id="simple-select-helper"
-              value={dataset}
-              label="Dataset"
-              onChange={handleChange}
-            >
-              {degDiseases.map((d) => {
-                return (
-                  <MenuItem value={d}>
-                    {d}
-                   
-                  </MenuItem>
-                );
-              })}
-            </MUISelect>
-          </FormControl>
-          <SingleCelldegCelltypeDotplot disease={dataset} celltype={diseaseCT[dataset.replace(" ","_")].find(d=>d.cardLabel===celltype?.replace(" or ","/"))?.val}/>
+            
+          
+          <SingleCelldegCelltypeDotplot 
+            disease={dataset} 
+            dataset={dataset}
+            degDiseases={degDiseases}
+            handleChange={handleChange}
+            celltype={diseaseCT[dataset.replace(" ","_")].find(d=>d.cardLabel===celltype?.replace(" or ","/"))?.val}
+          />
         
           </>}
           

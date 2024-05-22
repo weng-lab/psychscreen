@@ -2,15 +2,12 @@ import { gql, useQuery } from "@apollo/client";
 import { CircularProgress, Grid } from "@mui/material";
 import * as React from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
-import {
-    Typography,
-    Button,
-    DataTable,
-  } from "@weng-lab/psychscreen-ui-components";
-  import InputLabel from "@mui/material/InputLabel";
-  import MenuItem from "@mui/material/MenuItem";
-  import FormControl from "@mui/material/FormControl";
-  import { Select as MUISelect } from "@mui/material";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import { Select as MUISelect } from "@mui/material";
+
 export const scCtMapping: Map<string, string> = new Map([
     ["Chandelier","InhibitoryNeurons"],
     ["Endo","Misc"],

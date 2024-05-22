@@ -7,8 +7,7 @@ import {
   Divider,
   Grid,
   Box,
-  Tabs,
-  Tab
+  Tabs
 } from "@mui/material";
 
 import { gql, useQuery } from "@apollo/client";

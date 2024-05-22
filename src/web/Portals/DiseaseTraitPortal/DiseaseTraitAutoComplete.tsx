@@ -5,7 +5,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-
 import { DISEASE_CARDS } from "./config/constants";
 import { StyledButton } from "../styles";
 
