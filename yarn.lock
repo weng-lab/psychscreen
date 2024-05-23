@@ -4652,23 +4652,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visx/event@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "@visx/event@npm:3.3.0"
-  dependencies:
-    "@types/react": "*"
-    "@visx/point": 3.3.0
-  checksum: 3cdb86848d9ae7cc8b6a14a0cc4efd7fc2186fca582ee374bb1f2dfe104ec5cd04dbdbbfc41ccb8c94e1885e2b6e6060a488f3a0a0554ad9e831ecc1b28339de
-  languageName: node
-  linkType: hard
-
-"@visx/point@npm:3.3.0":
-  version: 3.3.0
-  resolution: "@visx/point@npm:3.3.0"
-  checksum: 79950f49828d12c67c856ac0b345292df03a154b50f739aab3dbab37abb73ba40f9cbdaa46d698b50691984e81b94afdafe64dd4fa18c6d2895298cf25f1a450
-  languageName: node
-  linkType: hard
-
 "@visx/tooltip@npm:^3.3.0":
   version: 3.3.0
   resolution: "@visx/tooltip@npm:3.3.0"
@@ -15608,7 +15591,6 @@ __metadata:
     "@types/node": ^16.11.47
     "@types/react": ^18.0.15
     "@types/react-dom": ^18.0.6
-    "@visx/event": ^3.3.0
     "@visx/tooltip": ^3.3.0
     "@weng-lab/psychscreen-ui-components": ^0.8.8
     "@weng-lab/ts-ztable": latest
