@@ -121,8 +121,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 441,502 eQTLs, sQTLs,
-            caQTLs, and fQTLs
+            <CheckIcon style={{ marginRight: "9px" }} /> 161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs
           </Typography>
           <Typography
             type="body"
@@ -136,8 +135,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 13,336 variants
-            associated with complex traits
+            <CheckIcon style={{ marginRight: "9px" }} /> 127,265 variants associated with complex traits
           </Typography>
           <Typography
             type="body"
@@ -151,8 +149,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in
-            b-cCREs
+            <CheckIcon style={{ marginRight: "9px" }} /> 510,062 variants in b-cCREs
           </Typography>
           <br />
           <br />
