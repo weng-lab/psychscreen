@@ -178,7 +178,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
         <g
           transform={`translate(${transform(
             inViewCoordinates.get(props.anchor)?.end || -10000
-          )},0)`}
+          )},40)`}
         >
           <text
             textAnchor={

@@ -19,8 +19,9 @@ export function riskLoci(
   trait?: string
   
 ): ( GenomicRange & { count: number; minimump: number })[] {
-  const expandedCoordinates = snps
-   
+  
+  console.log("snps",snps)
+  const expandedCoordinates = snps   
     .map((x) => ({
       chromosome: x.chromosome,
       start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,

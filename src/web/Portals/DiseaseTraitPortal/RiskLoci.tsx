@@ -77,6 +77,8 @@ const RiskLocusView: React.FC<{
       ),
     [props.loci]
   );
+  console.log("props.Loci",groupedLoci)
+  console.log("groupedLoci",groupedLoci)
   const { data: cytobands } = useCytobands();
   const groupedCytobands = useMemo(
     () =>
@@ -159,6 +161,8 @@ const RiskLocusView: React.FC<{
                       .get(chromosome)
                       ?.map((x) => ({
                         ...x,
+                        //start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
+                        //end: x.end + 1500000,
                         color: colorGradient(-Math.log10(x.minimump)),
                       }))}
                     width={(950 * maxes.get(chromosome!)!) / maxes.get("chr1")!}
@@ -211,13 +215,13 @@ const RiskLocusView: React.FC<{
                   fontSize="18px"
                 >
                   {groupedLoci.get(selected[0])![selected[1]].chromosome}:
-                  {groupedLoci
+                  {(groupedLoci
                     .get(selected[0])!
-                    [selected[1]].start.toLocaleString()}
+                    [selected[1]].start + 1500000).toLocaleString()}
                   -
-                  {groupedLoci
+                  {(groupedLoci
                     .get(selected[0])!
-                    [selected[1]].end.toLocaleString()}
+                    [selected[1]].end - 1500000).toLocaleString()}
                 </text>
                 <text x={28} y={48} fontFamily="roboto" fontSize="18px">
                   {groupedLoci.get(selected[0])![selected[1]].count} significant

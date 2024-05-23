@@ -191,6 +191,9 @@ console.log("props.data mn", props.data)
             <defs>
                 <ClipPath id={id} width={props.width} height={props.height} />
             </defs>
+            <text x={40} y={y(props.threshold || 7.3)}>
+              {"5e-8"}
+            </text>
             <line stroke="#ff0000" strokeDasharray="2 4" strokeWidth={1} x1={0} x2={props.width} y1={y(props.threshold || 7.3)} y2={y(props.threshold || 7.3)} />
             { rendered.map( (snp, i) => (
                 <circle

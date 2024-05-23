@@ -17,7 +17,7 @@ import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { CoordinatesSearch } from "./CoordinatesSearch";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
 
-type GenomicRange = {
+export type GenomicRange = {
   chromosome?: string;
   start: number;
   end: number;
@@ -170,6 +170,7 @@ const Browser: React.FC<{
      
       <br />
       <br />
+      
       <CytobandView
         innerWidth={1000}
         height={15}

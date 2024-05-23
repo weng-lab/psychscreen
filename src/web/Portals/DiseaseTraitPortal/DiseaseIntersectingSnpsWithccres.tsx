@@ -6,6 +6,7 @@ import Tabs from "@mui/material/Tabs";
 
 import { StyledButton, StyledTab } from "../../Portals/styles";
 import { DataTable } from "@weng-lab/psychscreen-ui-components"
+import { GenomicRange } from "./Browser";
 
 export type GwasIntersectingSnpsWithCcres = {
   snpid: string;
@@ -28,6 +29,7 @@ type GwasIntersectingSnpsWithBcres = GwasIntersectingSnpsWithCcres & {
 export type DiseaseIntersectingSnpsWithccresProps = GridProps & {
   disease: string;
   ccredata: GwasIntersectingSnpsWithCcres[];
+  coordinates: GenomicRange;
   adult_bcredata: GwasIntersectingSnpsWithBcres[];
   fetal_bcredata: GwasIntersectingSnpsWithBcres[];
 };
@@ -96,6 +98,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
         const q = x.split("\n");
         const bcres = q.filter(a => !a.includes("variant id")).filter((x) => x !== "").map((a) => {
           let r = a.split("\t");
+          let pval = r[4].split(".")
+          let d = r[4]=="0.0" ? 0 : pval.length>1 ? pval[0]+"."+pval[1][0]+"e"+ r[4].split("e")[1] : pval[0]
           return {            
             snpid: r[0],
             snp_chrom: r[1].split(":")[0],
@@ -104,10 +108,10 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
             associated_gene: r[5],
             referenceallele: r[2],
             effectallele: r[3],
-            association_p_val: +r[4],  
+            association_p_val: d,
             ccreid: r[6],
             ccre_class: r[7],
-            bcre_class:  r[8].replace(" b-cCRE","")
+            bcre_class:  r[8].replace(" b-cCRE","").replace("shared-fetal-adult","adult/fetal-shared")
           };
         });
         setintersectingSnps(bcres);
@@ -124,10 +128,14 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
   return (
     <Grid container {...props}>
       <Grid item sm={12}>
+        
         <Container style={{ marginTop: "30px", marginLeft: "100px" }}>
+        {`Showing Significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start}- ${props.coordinates.end}`}
+        <br/>
+        <br/>
           <Box>
             <Tabs value={tabIndex} onChange={handleTabChange}>
-              <StyledTab label="SNPs Intersecting any cCREs"></StyledTab>
+              <StyledTab label="Significant SNPs"></StyledTab>
               {
                 (intersectingSnps.filter(i=>i.bcre_class!==".").length > 0 ) && (
                   <StyledTab label="SNPs Intersecting brain cCREs (b-cCREs)" />
@@ -138,7 +146,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
           {intersectingSnps && tabIndex === 0 && (
             <DataTable
              columns={formatEntry}
-             rows = { intersectingSnps}
+             rows = { intersectingSnps.filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end ))}
+            searchable
              itemsPerPage={10}
              sortColumn={6}
             />
@@ -182,25 +191,28 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                 {page === 0 && (
                 <DataTable
                 columns={bcreformatEntry}
-                    rows={intersectingSnps.filter(i=>i.bcre_class==="adult-only") }
+                    rows={intersectingSnps.filter(i=>i.bcre_class==="adult-only").filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end )) }
                     itemsPerPage={10}
+                    searchable
                     sortColumn={6}
                   />
                 )}
                 {page === 1 && (
                   <DataTable
                   columns={bcreformatEntry}
-                    rows={intersectingSnps.filter(i=>i.bcre_class==="fetal-only") }
+                    rows={intersectingSnps.filter(i=>i.bcre_class==="fetal-only").filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end )) }
                     itemsPerPage={10}
+                    searchable
                     sortColumn={6}
                   />
                 )}
                 {page === 2 && (
                   <DataTable
-                  columns={bcreformatEntry}
-                    rows={intersectingSnps.filter(i=>i.bcre_class==="shared-fetal-adult") }
+                   columns={bcreformatEntry}
+                    rows={intersectingSnps.filter(i=>i.bcre_class==="adult/fetal-shared").filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end )) }
                     itemsPerPage={10}
                     sortColumn={6}
+                    searchable
                   />
                 )}
               </>

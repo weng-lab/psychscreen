@@ -44,10 +44,10 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "predeploy": "react-scripts --openssl-legacy-provider build",
+    "predeploy": "react-scripts build",
     "deploy": "env-cmd -f .env.github yarn build && gh-pages -d build",
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write src"

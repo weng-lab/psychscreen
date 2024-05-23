@@ -197,9 +197,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     ? state
     : { searchvalue: "", diseaseDesc: "" };
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
-    chromosome: "chr12",
-    start: 5219427,
-    end: 5234775,
+    chromosome: "chr1",
+    start: 161033654,
+    end: 161317875,
   });
   const navigateBrowser = useCallback((coordinates: GenomicRange) => {
     setBrowserCoordinates(coordinates);
@@ -388,6 +388,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
           gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
             .length > 0 ? (
           <DiseaseIntersectingSnpsWithccres
+            coordinates={browserCoordinates}
             disease={disease || ""}
             ccredata={
               gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
