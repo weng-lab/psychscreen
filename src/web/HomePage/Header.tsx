@@ -12,7 +12,6 @@ const Header: React.FC = () => {
             onPortalClicked={(index) =>
                 navigate(`/psychscreen${PORTALS[index][0]}`)
             }
-            style={{ marginBottom: "63px" }}
             onAboutClicked={() => navigate("/psychscreen/aboutus")}
         />
     );
