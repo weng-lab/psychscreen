@@ -10,14 +10,17 @@ import { BIG_QUERY, BigQueryResponse } from "./EpigeneticTracks";
 import { Header, Loader } from "semantic-ui-react";
 import { BigBedData } from "bigwig-reader";
 import {
-//  ManhattanTrack,
+  //  ManhattanTrack,
   //ManhattanTrackProps,
   LDTrack,
   EmptyTrack,
 } from "umms-gb";
 
-
-import { ManhattanSNP, ManhattanTrack, ManhattanTrackProps } from "./ManhattanTrack";
+import {
+  ManhattanSNP,
+  ManhattanTrack,
+  ManhattanTrackProps,
+} from "./ManhattanTrack";
 import { linearTransform } from "../web/Portals/GenePortal/violin/utils";
 import { associateBy } from "queryz";
 //import { ManhattanSNP } from "umms-gb/dist/components/tracks/manhattan/types";
@@ -67,7 +70,7 @@ const tracks = (urls: string[], pos: GenomicRange) =>
     chr1: pos.chromosome!,
     start: pos.start,
     end: pos.end,
-    url //: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
+    url, //: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
   }));
 
 const Tooltip: React.FC<ManhattanSNP> = (snp) => (
@@ -103,16 +106,13 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
     [props]
   );
 
-  let f = linearTransform( [0.1, 1],[0, 12])
-
-  console.log("calculated val",f(0.5))
   // merge GWAS SNPs and QTLs in viewport
   const inView = useMemo(
     () => [
       ...(data?.bigRequests || []).flatMap((x, i) =>
         ((x?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
           rsId: xx.name?.split("_")[0] || "",
-          [i]: (+(xx.name?.split("_")[1] || "0")),
+          [i]: +(xx.name?.split("_")[1] || "0"),
           coordinates: {
             start: xx.start,
             end: xx.end,
@@ -137,8 +137,6 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
       ),
     [inView]
   );
-
-  
 
   const allQTLs = useMemo(
     () =>
@@ -192,28 +190,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
           </text>
         </g>
       )}
-      {props.titles.map((title, i) => { 
-     
-        let maxScore = Math.max(...inView.map((v) => ({
-          coordinates: v.coordinates,
-          rsId: v.rsId,
-          score: v[i] || 1,
-        })).map(d=>d.score))
-
-        let minScore = Math.min(...inView.map((v) => ({
-          coordinates: v.coordinates,
-          rsId: v.rsId,
-          score: v[i] || 1,
-        })).map(d=>d.score))
-
-        let fs = linearTransform( [0, 12],[0, maxScore])
-        console.log(minScore, maxScore, "threshold", fs(4))
-        console.log("mantattan data", inView.map((v) => ({
-          coordinates: v.coordinates,
-          rsId: v.rsId,
-          score: v[i] || 1,
-        })),maxScore)
-        return(
+      {props.titles.map((title, i) => (
         <g transform={`translate(0,${200 * i})`}>
           <EmptyTrack
             height={40}
@@ -272,7 +249,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
             max={12}
           />
         </g>
-      )} )}
+      ))}
       <EmptyTrack
         height={25}
         text={
@@ -315,7 +292,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
           })
         }
         ldThreshold={0.1}
-     //   highlighted={new Set(allQTLs.map((x) => x.rsId))}
+        //   highlighted={new Set(allQTLs.map((x) => x.rsId))}
         highlightColor="#ff0000"
         transform={`translate(0,${200 * props.urls.length + 40})`}
       />

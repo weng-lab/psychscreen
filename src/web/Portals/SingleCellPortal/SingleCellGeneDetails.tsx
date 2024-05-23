@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  Typography
-} from "@weng-lab/psychscreen-ui-components";
-import {
-  Divider,
-  Grid,
-  Box,
-  Tabs
-} from "@mui/material";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { Divider, Grid, Box, Tabs } from "@mui/material";
 
 import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
@@ -38,15 +31,12 @@ export const SingleCellGeneDetails = (props) => {
     : { geneid: "", chromosome: "", start: null, end: null, tabind: 0 };
   const [tabIndex, setTabIndex] = useState(tabind || 0);
 
-
-
   const [gid, setGid] = useState(geneid);
   const [region, setRegion] = useState({
     chromosome: chromosome,
     start: start,
     end: end,
   });
-
 
   useEffect(() => {
     setTabIndex(0);
@@ -86,7 +76,7 @@ export const SingleCellGeneDetails = (props) => {
           />
           &nbsp;Gene Details: {gene}
         </Typography>
-        <br/>
+        <br />
         <div
           style={{
             display: "flex",
@@ -95,7 +85,10 @@ export const SingleCellGeneDetails = (props) => {
           }}
         >
           <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
-          <GeneAutoComplete navigateto="/psychscreen/single-cell/gene/" gridsize={3.5} />
+          <GeneAutoComplete
+            navigateto="/psychscreen/single-cell/gene/"
+            gridsize={3.5}
+          />
         </div>
       </Grid>
       <Grid item sm={1} lg={1.5} />
@@ -111,8 +104,8 @@ export const SingleCellGeneDetails = (props) => {
         </Box>
         <Box sx={{ padding: 2 }}>
           {tabIndex === 0 &&
-            (geneCoords ||
-              (region.chromosome !== "" && region.start && region.end)) ? (
+          (geneCoords ||
+            (region.chromosome !== "" && region.start && region.end)) ? (
             <Box>
               <SingleCellBrowser
                 name={gene?.toUpperCase()}
@@ -130,14 +123,20 @@ export const SingleCellGeneDetails = (props) => {
                       ? +geneCoords.gene[0].coordinates.end
                       : +region.end,
                 }}
-              // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
+                // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
               />
             </Box>
-          ) : <Box>
-            <SingleCell gene={gene || "APOE"} pedataset={"SZBDMulti-Seq"} selectDatasets />
-          </Box>}
+          ) : (
+            <Box>
+              <SingleCell
+                gene={gene || "APOE"}
+                pedataset={"SZBDMulti-Seq"}
+                selectDatasets
+              />
+            </Box>
+          )}
         </Box>
       </Grid>
     </Grid>
-  )
-}
+  );
+};

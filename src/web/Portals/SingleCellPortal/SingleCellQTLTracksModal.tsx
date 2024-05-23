@@ -6,7 +6,7 @@ import {
   AccordionSummary,
   Checkbox,
   FormControlLabel,
-  FormGroup  
+  FormGroup,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -51,33 +51,33 @@ const TRACKS = {
       "Chandelier",
       "https://downloads.wenglab.org/Chandelier__Pvalb_sig_QTLs.dat.bb",
     ],
-  
+
     ["Vip", "https://downloads.wenglab.org/Vip_sig_QTLs.dat.bb"],
-  
+
     ["Sst", "https://downloads.wenglab.org/Sst__Sst.Chodl_sig_QTLs.dat.bb"],
-  
+
     ["Pericytes", "https://downloads.wenglab.org/PC_sig_QTLs.dat.bb"],
-  
+
     [
       "Layer 2/3 Intratelencephalic projecting",
       "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat.bb",
     ],
-  
+
     [
       "Layer 4 Intratelencephalic projecting ",
       "https://downloads.wenglab.org/L4.IT_sig_QTLs.dat.bb",
     ],
-  
+
     [
       "Layer 5/6 Near projecting ",
       "https://downloads.wenglab.org/L5.6.NP_sig_QTLs.dat.bb",
     ],
-  
+
     [
       "Layer 5 Intratelencephalic projecting",
       "https://downloads.wenglab.org/L5.IT_sig_QTLs.dat.bb",
     ],
-  
+
     [
       "Layer 6 Corticothalamic projecting ",
       "https://downloads.wenglab.org/L6.CT_sig_QTLs.dat.bb",
@@ -86,9 +86,9 @@ const TRACKS = {
       "Layer 6 Intratelencephalic projecting ",
       "https://downloads.wenglab.org/L6.IT_sig_QTLs.dat.bb",
     ],
-  
+
     ["L6b", "https://downloads.wenglab.org/L6b_sig_QTLs.dat.bb"],
-  
+
     ["Lamp5.Lhx6", "https://downloads.wenglab.org/Lamp5.Lhx6_sig_QTLs.dat.bb"],
     ["Lamp5", "https://downloads.wenglab.org/Lamp5_sig_QTLs.dat.bb"],
     ["Microglia", "https://downloads.wenglab.org/Micro.PVM_sig_QTLs.dat.bb"],
@@ -96,12 +96,13 @@ const TRACKS = {
     [
       "Oligodendrocyte Precursor Cells",
       "https://downloads.wenglab.org/OPC_sig_QTLs.dat.bb",
-    ]
+    ],
   ],
-  
 };
 
-const SingleCellQTLTracksModal: React.FC<SingleCellQTLTracksModalProps> = (props) => {
+const SingleCellQTLTracksModal: React.FC<SingleCellQTLTracksModalProps> = (
+  props
+) => {
   const [expanded, setExpanded] = useState(
     new Map(Object.keys(TRACKS).map((k) => [k, false]))
   );
@@ -136,7 +137,7 @@ const SingleCellQTLTracksModal: React.FC<SingleCellQTLTracksModalProps> = (props
         ...TRACKS["Celltype specific eQTLS"].filter(
           (track) =>
             (selectedTracks.find((x) => x === track[0])?.length || 0) > 0
-        )
+        ),
       ] as [string, string][]),
     [selectedTracks, props]
   );
@@ -148,7 +149,6 @@ const SingleCellQTLTracksModal: React.FC<SingleCellQTLTracksModalProps> = (props
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-    
       <Box sx={style} style={style}>
         <Typography
           type="headline"
@@ -165,33 +165,35 @@ const SingleCellQTLTracksModal: React.FC<SingleCellQTLTracksModalProps> = (props
             id="panel1a-header"
           >
             <Typography type="title" size="medium">
-            Celltype specific eQTL Tracks
+              Celltype specific eQTL Tracks
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-          <Paper elevation={3}
-                          style={{
-                            maxHeight: 500,
-                            width: 800,
-                            overflow: "auto",
-                          }}>
-            <FormGroup style={{ marginLeft: "3em" }}>
-              {TRACKS["Celltype specific eQTLS"].map((track) => (
-                <FormControlLabel
-                  key={track[0]}
-                  control={
-                    <Checkbox
-                      checked={
-                        (selectedTracks.find((x) => x === track[0])?.length ||
-                          0) > 0
-                      }
-                    />
-                  }
-                  label={track[0]}
-                  onChange={() => toggleTrack(track)}
-                />
-              ))}
-            </FormGroup>
+            <Paper
+              elevation={3}
+              style={{
+                maxHeight: 500,
+                width: 800,
+                overflow: "auto",
+              }}
+            >
+              <FormGroup style={{ marginLeft: "3em" }}>
+                {TRACKS["Celltype specific eQTLS"].map((track) => (
+                  <FormControlLabel
+                    key={track[0]}
+                    control={
+                      <Checkbox
+                        checked={
+                          (selectedTracks.find((x) => x === track[0])?.length ||
+                            0) > 0
+                        }
+                      />
+                    }
+                    label={track[0]}
+                    onChange={() => toggleTrack(track)}
+                  />
+                ))}
+              </FormGroup>
             </Paper>
           </AccordionDetails>
         </Accordion>
@@ -212,7 +214,6 @@ const SingleCellQTLTracksModal: React.FC<SingleCellQTLTracksModalProps> = (props
           </Button>
         </div>
       </Box>
-      
     </Modal>
   );
 };

@@ -10,15 +10,13 @@ import { ValuedPoint } from "umms-gb/dist/utils/types";
 import CCRETooltip from "../../../web/cCREDetails/CCRETooltip";
 import AtacSeaPeaksTrackModal from "./AtacSeaPeaksTrackModal";
 
-export const DEFAULT_TRACKS = (
-  
-): Map<string, { url: string }> =>
+export const DEFAULT_TRACKS = (): Map<string, { url: string }> =>
   new Map([
     [
       "Astrocytes",
       {
         url: "https://downloads.wenglab.org/Astro.PeakCalls.bb",
-      }
+      },
     ],
     [
       "Endothelial Cells",
@@ -31,14 +29,13 @@ export const DEFAULT_TRACKS = (
       {
         url: "https://downloads.wenglab.org/OPC.PeakCalls.bb",
       },
-    ]
+    ],
   ]);
 
 export const TRACK_ORDER = [
-    "Astrocytes",
-    "Endothelial Cells",
-    "Oligodendrocyte Precursor Cells"
-  
+  "Astrocytes",
+  "Endothelial Cells",
+  "Oligodendrocyte Precursor Cells",
 ];
 
 export const tracks = (assembly: string, pos: GenomicRange) =>
@@ -84,7 +81,7 @@ export type BigQueryResponse = {
 };
 
 type AtacSeqPeaksTracksProps = {
-  tracks: BigRequest[];
+  tracks?: [string, string][],
   domain: GenomicRange;
   onHeightChanged?: (i: number) => void;
   cCREHighlight?: GenomicRange;
@@ -131,7 +128,9 @@ export const TitledTrack: React.FC<{
         id=""
         text={title}
       />
-      {(url.endsWith(".bigBed") || url.endsWith(".bb") || url.endsWith(".bigbed")) ? (
+      {url.endsWith(".bigBed") ||
+      url.endsWith(".bb") ||
+      url.endsWith(".bigbed") ? (
         <DenseBigBed
           width={1400}
           height={height}
@@ -159,19 +158,13 @@ export const TitledTrack: React.FC<{
 };
 
 const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
-  const [cTracks, setTracks] = useState<[string, string][]>([
+  const [cTracks, setTracks] = useState<[string, string][]>( props.tracks || [
+    ["Astrocytes", "https://downloads.wenglab.org/Astro.PeakCalls.bb"],
+    ["Endothelial Cells", "https://downloads.wenglab.org/Endo.PeakCalls.bb"],
     [
-        "Astrocytes",
-        "https://downloads.wenglab.org/Astro.PeakCalls.bb",
-      ],
-      [
-        "Endothelial Cells",
-        "https://downloads.wenglab.org/Endo.PeakCalls.bb",
-      ],
-      [
-        "Oligodendrocyte Precursor Cells",
-        "https://downloads.wenglab.org/OPC.PeakCalls.bb",
-      ]
+      "Oligodendrocyte Precursor Cells",
+      "https://downloads.wenglab.org/OPC.PeakCalls.bb",
+    ],
   ]);
   const height = useMemo(() => cTracks.length * 80, [cTracks]);
   const bigRequests = useMemo(
@@ -195,7 +188,7 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
   const [settingsMousedOver, setSettingsMousedOver] = useState(false);
   const [settingsModalShown, setSettingsModalShown] = useState(false);
 
-  return loading || (data?.bigRequests.length || 0) < 2 ? (
+  return loading || (data?.bigRequests.length || 0) === 0  ? (
     <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." />
   ) : (
     <>

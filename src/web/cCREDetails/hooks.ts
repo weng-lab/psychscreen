@@ -1,9 +1,4 @@
-import {  
-  ApolloClient,
-  gql,
-  InMemoryCache,
-  useQuery,
-} from "@apollo/client";
+import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 import { useMemo } from "react";
 
 export type BiosampleEntry = {

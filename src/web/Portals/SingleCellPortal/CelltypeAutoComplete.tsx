@@ -13,7 +13,7 @@ export const CelltypeAutoComplete = (props) => {
   const [value, setValue] = React.useState<any>(null);
   const [inputValue, setInputValue] = React.useState("");
   const navigate = useNavigate();
- 
+
   return (
     <Grid container alignItems="center">
       {props.showTitle && (
@@ -22,7 +22,13 @@ export const CelltypeAutoComplete = (props) => {
           <br />
         </Grid>
       )}
-      <Grid item sm={props.gridsize || 5.5} md={props.gridsize || 5.5} lg={props.gridsize || 5.5} xl={props.gridsize || 5.5}>
+      <Grid
+        item
+        sm={props.gridsize || 5.5}
+        md={props.gridsize || 5.5}
+        lg={props.gridsize || 5.5}
+        xl={props.gridsize || 5.5}
+      >
         <Autocomplete
           sx={{ width: 300, paper: { height: 200 } }}
           options={OPTIONS}
@@ -31,13 +37,14 @@ export const CelltypeAutoComplete = (props) => {
               maxHeight: "180px",
             },
           }}
-          
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
 
-              const val = CELLTYPE_CARDS.find((d) => d.cardLabel === value)?.cardLabel;
-            
+              const val = CELLTYPE_CARDS.find(
+                (d) => d.cardLabel === value
+              )?.cardLabel;
+
               if (value)
                 navigate(props.navigateto + val, {
                   state: { searchvalue: val },
@@ -96,8 +103,10 @@ export const CelltypeAutoComplete = (props) => {
           bvariant="filled"
           btheme="light"
           onClick={() => {
-            const val = CELLTYPE_CARDS.find((d) => d.cardLabel === value)?.cardLabel;
-          
+            const val = CELLTYPE_CARDS.find(
+              (d) => d.cardLabel === value
+            )?.cardLabel;
+
             if (value)
               navigate(props.navigateto + val, {
                 state: { searchvalue: val },

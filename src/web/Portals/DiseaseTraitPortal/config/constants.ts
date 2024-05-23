@@ -139,101 +139,103 @@ export const DISEASE_CARDS = [
   },
 ];
 
-export const URL_CHROM_MAP  = {
+export const URL_CHROM_MAP = {
   ADHD: "chr20",
   AgeFirstBirth: "chr22",
-  Alzheimers:
-    "chr21",
+  Alzheimers: "chr21",
   Anorexia: "chr11",
   ASD: "chr20",
-  BipolarDisorder:
-  "chr22",
+  BipolarDisorder: "chr22",
   BMI: "chr22",
-  CigsPerDay:  "chr21",
-  "Major Depressive Disorder":
-  "chr20",
-  "Attention deficit hyperactive disorder":
-  "chr20",
-  Depression:
-    "chr20",
+  CigsPerDay: "chr21",
+  "Major Depressive Disorder": "chr20",
+  "Attention deficit hyperactive disorder": "chr20",
+  Depression: "chr20",
   //Dyslexia: "chr22",
-  EverSmoked:
-  "chr22",
-  Insomnia:
-  "chr18",
-  Intelligence:
-  "chr22",
+  EverSmoked: "chr22",
+  Insomnia: "chr18",
+  Intelligence: "chr22",
   Parkinsons: "chr18",
   ReactionTime: "chr18",
-  Schizophrenia:
-  "chr22",
+  Schizophrenia: "chr22",
   SleepDuration: "chr20",
   YearsEducation: "chr22",
 };
 
-
 export const URL_MAP = {
   ADHD: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/ADHD_meta_PGC.filtered.bigBed",
-  AgeFirstBirth: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/AgeFirstBirth_Mills_meta.filtered.bigBed",
+  AgeFirstBirth:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/AgeFirstBirth_Mills_meta.filtered.bigBed",
   Alzheimers:
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Alzheimers_Bellenguez_meta.filtered.bigBed",
   Anorexia:
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Anorexia_meta_PGC.filtered.bigBed",
   ASD: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/ASD_Matoba2021.filtered.bigBed",
   BipolarDisorder:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Bipolar_PGC_meta.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Bipolar_PGC_meta.filtered.bigBed",
   BMI: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/BMI_meta_Yengo.filtered.bigBed",
-  CigsPerDay:  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/CigarettesPerDay_meta_Koskeridis.filtered.bigBed",
+  CigsPerDay:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/CigarettesPerDay_meta_Koskeridis.filtered.bigBed",
   "Major Depressive Disorder":
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/MDD_PGC_meta.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/MDD_PGC_meta.filtered.bigBed",
   "Attention deficit hyperactive disorder":
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/ADHD_meta_PGC.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/ADHD_meta_PGC.filtered.bigBed",
   Depression:
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/MDD_PGC_meta.filtered.bigBed",
   Dyslexia: "dyslexia",
   EverSmoked:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/EverSmoked_meta_Karlsson.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/EverSmoked_meta_Karlsson.filtered.bigBed",
   Insomnia:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Insomnia_UKB_Backman.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Insomnia_UKB_Backman.filtered.bigBed",
   Intelligence:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Intelligence_meta_Savage.filtered.bigBed",
-  Parkinsons: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Parkinson_Nalls_meta.filtered.bigBed",
-  ReactionTime: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/ReactionTime_Davies.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Intelligence_meta_Savage.filtered.bigBed",
+  Parkinsons:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/Parkinson_Nalls_meta.filtered.bigBed",
+  ReactionTime:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/ReactionTime_Davies.filtered.bigBed",
   Schizophrenia:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/SCZ_meta_PGC.filtered.bigBed",
-  SleepDuration: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/SleepDuration_meta_Dashti.filtered.bigBed",
-  YearsEducation: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/YearsOfEducation_meta_Okbay.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/SCZ_meta_PGC.filtered.bigBed",
+  SleepDuration:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/SleepDuration_meta_Dashti.filtered.bigBed",
+  YearsEducation:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_filteredsumstats/YearsOfEducation_meta_Okbay.filtered.bigBed",
 };
 
-export const FULLSUMSTAT_URL_MAP =  {
+export const FULLSUMSTAT_URL_MAP = {
   ADHD: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ADHD_meta_PGC.formatted.bigBed",
-  AgeFirstBirth: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/AgeFirstBirth_Mills_meta.formatted.bigBed",
+  AgeFirstBirth:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/AgeFirstBirth_Mills_meta.formatted.bigBed",
   Alzheimers:
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
   Anorexia:
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Anorexia_meta_PGC.formatted.bigBed",
   ASD: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ASD_Matoba2021.formatted.bigBed",
   BipolarDisorder:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Bipolar_PGC_meta.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Bipolar_PGC_meta.formatted.bigBed",
   BMI: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/BMI_meta_Yengo.formatted.bigBed",
-  CigsPerDay:  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/CigarettesPerDay_meta_Koskeridis.formatted.bigBed",
+  CigsPerDay:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/CigarettesPerDay_meta_Koskeridis.formatted.bigBed",
   "Major Depressive Disorder":
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.formatted.bigBed",
   "Attention deficit hyperactive disorder":
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ADHD_meta_PGC.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ADHD_meta_PGC.formatted.bigBed",
   Depression:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.filtered.bigBed",
   //Dyslexia: "dyslexia",
   EverSmoked:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/EverSmoked_meta_Karlsson.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/EverSmoked_meta_Karlsson.formatted.bigBed",
   Insomnia:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Insomnia_UKB_Backman.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Insomnia_UKB_Backman.formatted.bigBed",
   Intelligence:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Intelligence_meta_Savage.formatted.bigBed",
-  Parkinsons: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Parkinson_Nalls_meta.formatted.bigBed",
-  ReactionTime: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ReactionTime_Davies.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Intelligence_meta_Savage.formatted.bigBed",
+  Parkinsons:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Parkinson_Nalls_meta.formatted.bigBed",
+  ReactionTime:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ReactionTime_Davies.formatted.bigBed",
   Schizophrenia:
-  "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SCZ_meta_PGC.formatted.bigBed",
-  SleepDuration: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SleepDuration_meta_Dashti.formatted.bigBed",
-  YearsEducation: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/YearsOfEducation_meta_Okbay.formatted.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SCZ_meta_PGC.formatted.bigBed",
+  SleepDuration:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SleepDuration_meta_Dashti.formatted.bigBed",
+  YearsEducation:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/YearsOfEducation_meta_Okbay.formatted.bigBed",
 };

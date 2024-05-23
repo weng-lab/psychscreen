@@ -152,7 +152,7 @@ const ImportantRegions: React.FC<ImportantRegionTrackProps> = (props) => {
     [props.domain.start, props.domain.end],
     [0, props.width]
   );
-  
+
   return (
     <g transform="translate(0,115)">
       {props.neutralRegions.map((r, i) => (
@@ -214,7 +214,7 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = (props) => {
     positiveRegionURL,
     onImportantRegionsLoaded,
   } = props;
-  
+
   useEffect(
     () => props.onHeightChanged && props.onHeightChanged(height),
     [height, props.onHeightChanged]
@@ -324,7 +324,14 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = (props) => {
         url: positiveRegionURL,
       },
     ];
-  }, [domain.chromosome, domain.start, domain.end, negativeRegionURL, positiveRegionURL, imputedSignalURL]);
+  }, [
+    domain.chromosome,
+    domain.start,
+    domain.end,
+    negativeRegionURL,
+    positiveRegionURL,
+    imputedSignalURL,
+  ]);
   const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
     variables: { bigRequests },
     skip: imputedSignalURL === undefined,

@@ -17,11 +17,8 @@ function compare(a: GenomicRange, b: GenomicRange): number {
 export function riskLoci(
   snps: (GenomicRange & { p: number })[],
   trait?: string
-  
-): ( GenomicRange & { count: number; minimump: number })[] {
-  
-  console.log("snps",snps)
-  const expandedCoordinates = snps   
+): (GenomicRange & { count: number; minimump: number })[] {
+  const expandedCoordinates = snps
     .map((x) => ({
       chromosome: x.chromosome,
       start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
@@ -29,7 +26,7 @@ export function riskLoci(
       p: x.p,
     }))
     .sort(compare);
-    
+
   const riskLoci: (GenomicRange & { count: number; minimump: number })[] = [];
   expandedCoordinates.forEach((r, i) => {
     if (i === 0) {

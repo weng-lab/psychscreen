@@ -83,19 +83,25 @@ const App: React.FC = () => {
           </div>
           <div className="main">
             <Routes>
-              <Route path="/" element={<Navigate replace to="/psychscreen" />} />
+              <Route
+                path="/"
+                element={<Navigate replace to="/psychscreen" />}
+              />
               <Route path="/psychscreen" element={<WebHomePage />} />
               {/* <Route path="/psychscreen" element={<HomePage />} /> */}
-              <Route path="/psychscreen/downloads" element={<DownloadsPage />} />
+              <Route
+                path="/psychscreen/downloads"
+                element={<DownloadsPage />}
+              />
               <Route path="/psychscreen/aboutus" element={<AboutUsPage />} />
               <Route
                 path="/psychscreen/traits/:disease"
                 element={<DiseaseTraitDetails />}
               />
-               <Route
+              <Route
                 path="/psychscreen/single-cell/celltype/:celltype"
                 element={<SingleCellCellTypeDetails />}
-          />
+              />
               <Route
                 path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease"
                 element={<SingleCelldegdisease />}

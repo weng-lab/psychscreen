@@ -3,12 +3,7 @@ import { ValuedPoint } from "umms-gb/dist/utils/types";
 import { RequestError } from "umms-gb/dist/components/tracks/trackset/types";
 
 import { GridProps } from "@mui/material";
-import {
-  GenomeBrowser,
-  RulerTrack,
-  UCSCControls,
-  EmptyTrack
-} from "umms-gb";
+import { GenomeBrowser, RulerTrack, UCSCControls, EmptyTrack } from "umms-gb";
 import CytobandView from "../GenePortal/Browser/Explorer/Cytobands";
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
@@ -109,7 +104,7 @@ const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
     start: 6169295,
     end: 6215251,
   });
-  
+
   const onDomainChanged = useCallback((d: GenomicRange) => {
     const chr =
       d.chromosome === undefined ? coordinates.chromosome : d.chromosome;
@@ -122,10 +117,12 @@ const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
     }
   }, []);
   return (
-    <>      
-      <br/>
-      <div style={{ marginTop: "1em", width: "100%", textAlign: "center" }}>{`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`} </div>
-      <br/>
+    <>
+      <br />
+      <div style={{ marginTop: "1em", width: "100%", textAlign: "center" }}>
+        {`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}{" "}
+      </div>
+      <br />
       <CytobandView
         innerWidth={1000}
         height={15}
@@ -192,17 +189,19 @@ const BBTrack: React.FC<{
   );
 
   const re = data as BigBedData[];
-  let linkdata = re && re.map((r) => {
-    return {
-      regionA: { chromosome: r.chr, start: +r.start, end: +r.end + 1 },
-      regionB: {
-        chromosome: r.name?.split(":")[0]!!,
-        start: +r.name?.split(":")[1].split("-")[0]!!,
-        end: +r.name?.split(":")[1].split("-")[1]!! + 1,
-      },
-      score: 30,
-    };
-  });
+  let linkdata =
+    re &&
+    re.map((r) => {
+      return {
+        regionA: { chromosome: r.chr, start: +r.start, end: +r.end + 1 },
+        regionB: {
+          chromosome: r.name?.split(":")[0]!!,
+          start: +r.name?.split(":")[1].split("-")[0]!!,
+          end: +r.name?.split(":")[1].split("-")[1]!! + 1,
+        },
+        score: 30,
+      };
+    });
 
   return (
     <g transform={transform}>

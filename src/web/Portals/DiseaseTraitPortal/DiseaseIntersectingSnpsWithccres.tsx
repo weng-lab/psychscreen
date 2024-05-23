@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
 import { StyledButton, StyledTab } from "../../Portals/styles";
-import { DataTable } from "@weng-lab/psychscreen-ui-components"
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { GenomicRange } from "./Browser";
 
 export type GwasIntersectingSnpsWithCcres = {
@@ -40,7 +40,7 @@ const formatEntry = [
   { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
-  { header: "Nearest Gene", value:  (d) =>d.associated_gene },
+  { header: "Nearest Gene", value: (d) => d.associated_gene },
   { header: "GWAS p-value", value: (d) => d.association_p_val },
   {
     header: "cCRE ID",
@@ -55,7 +55,7 @@ const formatEntry = [
       </Link>
     ),
   },
-  { header: "cCRE class", value:  (d) => d.ccre_class }
+  { header: "cCRE class", value: (d) => d.ccre_class },
 ];
 
 const bcreformatEntry = [
@@ -64,7 +64,7 @@ const bcreformatEntry = [
   { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
-  { header: "Nearest Gene", value:  (d) =>d.associated_gene },
+  { header: "Nearest Gene", value: (d) => d.associated_gene },
   { header: "GWAS p-value", value: (d) => d.association_p_val },
   {
     header: "bCRE ID",
@@ -79,8 +79,8 @@ const bcreformatEntry = [
       </Link>
     ),
   },
-  { header: "bCRE class", value:  (d) => d.ccre_class },
-  { header: "bCRE group", value:  (d) => d.bcre_class },
+  { header: "bCRE class", value: (d) => d.ccre_class },
+  { header: "bCRE group", value: (d) => d.bcre_class },
 ];
 
 const DiseaseIntersectingSnpsWithccres: React.FC<
@@ -89,75 +89,87 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
   const [tabIndex, setTabIndex] = useState(0);
   const [page, setPage] = useState<number>(0);
   const [intersectingSnps, setintersectingSnps] = useState<any>([]);
-  
 
   useEffect(() => {
     fetch(`https://downloads.wenglab.org/${props.disease}.cCREs.txt`)
       .then((x) => x.text())
       .then((x: string) => {
         const q = x.split("\n");
-        const bcres = q.filter(a => !a.includes("variant id")).filter((x) => x !== "").map((a) => {
-          let r = a.split("\t");
-          let pval = r[4].split(".")
-          let d = r[4]=="0.0" ? 0 : pval.length>1 ? pval[0]+"."+pval[1][0]+"e"+ r[4].split("e")[1] : pval[0]
-          return {            
-            snpid: r[0],
-            snp_chrom: r[1].split(":")[0],
-            snp_start:r[1].split(":")[1],
-            snp_stop:r[1].split(":")[1],
-            associated_gene: r[5],
-            referenceallele: r[2],
-            effectallele: r[3],
-            association_p_val: d,
-            ccreid: r[6],
-            ccre_class: r[7],
-            bcre_class:  r[8].replace(" b-cCRE","").replace("shared-fetal-adult","adult/fetal-shared")
-          };
-        });
+        const bcres = q
+          .filter((a) => !a.includes("variant id"))
+          .filter((x) => x !== "")
+          .map((a) => {
+            let r = a.split("\t");
+            let pval = r[4].split(".");
+            let d =
+              r[4] == "0.0"
+                ? 0
+                : pval.length > 1
+                ? pval[0] + "." + pval[1][0] + "e" + r[4].split("e")[1]
+                : pval[0];
+            return {
+              snpid: r[0],
+              snp_chrom: r[1].split(":")[0],
+              snp_start: r[1].split(":")[1],
+              snp_stop: r[1].split(":")[1],
+              associated_gene: r[5],
+              referenceallele: r[2],
+              effectallele: r[3],
+              association_p_val: d,
+              ccreid: r[6],
+              ccre_class: r[7],
+              bcre_class: r[8]
+                .replace(" b-cCRE", "")
+                .replace("shared-fetal-adult", "adult/fetal-shared"),
+            };
+          });
         setintersectingSnps(bcres);
       });
   }, [props.disease]);
-
-
 
   const handleTabChange = (_: any, newTabIndex: number) => {
     setTabIndex(newTabIndex);
   };
 
- 
   return (
     <Grid container {...props}>
       <Grid item sm={12}>
-        
         <Container style={{ marginTop: "30px", marginLeft: "100px" }}>
-        {`Showing Significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start}- ${props.coordinates.end}`}
-        <br/>
-        <br/>
+          {`Showing Significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start}- ${props.coordinates.end}`}
+          <br />
+          <br />
           <Box>
             <Tabs value={tabIndex} onChange={handleTabChange}>
               <StyledTab label="Significant SNPs"></StyledTab>
-              {
-                (intersectingSnps.filter(i=>i.bcre_class!==".").length > 0 ) && (
-                  <StyledTab label="SNPs Intersecting brain cCREs (b-cCREs)" />
-                )}
+              {intersectingSnps.filter((i) => i.bcre_class !== ".").length >
+                0 && (
+                <StyledTab label="Significant SNPs Intersecting brain cCREs (b-cCREs)" />
+              )}
             </Tabs>
             <Divider />
           </Box>
           {intersectingSnps && tabIndex === 0 && (
             <DataTable
-             columns={formatEntry}
-             rows = { intersectingSnps.filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end ))}
-            searchable
-             itemsPerPage={10}
-             sortColumn={6}
+              columns={formatEntry}
+              rows={intersectingSnps.filter(
+                (a) =>
+                  a.snp_chrom === props.coordinates.chromosome &&
+                  a.snp_start >= props.coordinates.start &&
+                  a.snp_start <= props.coordinates.end
+              )}
+              searchable
+              itemsPerPage={10}
+              sortColumn={6}
             />
           )}
-          {intersectingSnps.filter(i=>i.bcre_class!==".")  &&
-            (intersectingSnps.filter(i=>i.bcre_class!==".").length > 0) &&
+          {intersectingSnps.filter((i) => i.bcre_class !== ".") &&
+            intersectingSnps.filter((i) => i.bcre_class !== ".").length > 0 &&
             tabIndex === 1 && (
               <>
                 <br />
-                {intersectingSnps.filter(i=>i.bcre_class==="adult-only") && (
+                {intersectingSnps.filter(
+                  (i) => i.bcre_class === "adult-only"
+                ) && (
                   <StyledButton
                     bvariant={page === 0 ? "filled" : "outlined"}
                     btheme="light"
@@ -167,7 +179,9 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                   </StyledButton>
                 )}
                 &nbsp;&nbsp;&nbsp;
-                {intersectingSnps.filter(i=>i.bcre_class==="fetal-only") && (
+                {intersectingSnps.filter(
+                  (i) => i.bcre_class === "fetal-only"
+                ) && (
                   <StyledButton
                     bvariant={page === 1 ? "filled" : "outlined"}
                     btheme="light"
@@ -176,8 +190,10 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                     Fetal
                   </StyledButton>
                 )}
-                   &nbsp;&nbsp;&nbsp;
-                {intersectingSnps.filter(i=>i.bcre_class==="shared-fetal-adult") && (
+                &nbsp;&nbsp;&nbsp;
+                {intersectingSnps.filter(
+                  (i) => i.bcre_class === "shared-fetal-adult"
+                ) && (
                   <StyledButton
                     bvariant={page === 2 ? "filled" : "outlined"}
                     btheme="light"
@@ -186,12 +202,19 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                     Shared
                   </StyledButton>
                 )}
-                <br/>
-                <br/>
+                <br />
+                <br />
                 {page === 0 && (
-                <DataTable
-                columns={bcreformatEntry}
-                    rows={intersectingSnps.filter(i=>i.bcre_class==="adult-only").filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end )) }
+                  <DataTable
+                    columns={bcreformatEntry}
+                    rows={intersectingSnps
+                      .filter((i) => i.bcre_class === "adult-only")
+                      .filter(
+                        (a) =>
+                          a.snp_chrom === props.coordinates.chromosome &&
+                          a.snp_start >= props.coordinates.start &&
+                          a.snp_start <= props.coordinates.end
+                      )}
                     itemsPerPage={10}
                     searchable
                     sortColumn={6}
@@ -199,8 +222,15 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                 )}
                 {page === 1 && (
                   <DataTable
-                  columns={bcreformatEntry}
-                    rows={intersectingSnps.filter(i=>i.bcre_class==="fetal-only").filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end )) }
+                    columns={bcreformatEntry}
+                    rows={intersectingSnps
+                      .filter((i) => i.bcre_class === "fetal-only")
+                      .filter(
+                        (a) =>
+                          a.snp_chrom === props.coordinates.chromosome &&
+                          a.snp_start >= props.coordinates.start &&
+                          a.snp_start <= props.coordinates.end
+                      )}
                     itemsPerPage={10}
                     searchable
                     sortColumn={6}
@@ -208,8 +238,15 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                 )}
                 {page === 2 && (
                   <DataTable
-                   columns={bcreformatEntry}
-                    rows={intersectingSnps.filter(i=>i.bcre_class==="adult/fetal-shared").filter(a=>a.snp_chrom===props.coordinates.chromosome && ( a.snp_start >= props.coordinates.start && a.snp_start <= props.coordinates.end )) }
+                    columns={bcreformatEntry}
+                    rows={intersectingSnps
+                      .filter((i) => i.bcre_class === "adult/fetal-shared")
+                      .filter(
+                        (a) =>
+                          a.snp_chrom === props.coordinates.chromosome &&
+                          a.snp_start >= props.coordinates.start &&
+                          a.snp_start <= props.coordinates.end
+                      )}
                     itemsPerPage={10}
                     sortColumn={6}
                     searchable

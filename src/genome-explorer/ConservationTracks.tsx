@@ -2,9 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import React, { RefObject, useEffect, useMemo, useState } from "react";
 import { EmptyTrack, FullBigWig } from "umms-gb";
-import {
-  RequestError,
-} from "umms-gb/dist/components/tracks/trackset/types";
+import { RequestError } from "umms-gb/dist/components/tracks/trackset/types";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
 import { ConservationTrackModal } from "./SettingsModals";
 export const BIG_QUERY = gql`
@@ -89,7 +87,7 @@ export const TitledTrack: React.FC<{
           width={1400}
           height={height}
           domain={domain}
-          range={{min:-2, max: 9}}
+          range={{ min: -2, max: 9 }}
           id="NeuN+"
           color={color}
           data={data as BigWigData[]}
@@ -104,7 +102,6 @@ const ConservationTracks: React.FC<ConservationTrackProps> = (props) => {
   const [cTracks, setTracks] = useState<[string, string][]>([
     //        [ "100-vertebrate phyloP conservation score", "https://downloads.wenglab.org/hg38.phyloP100way.bw" ],
     [
-      
       "240-mammal phyloP conservation score (Vertical Viewing Range (-2 to 9))",
       "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig",
     ],

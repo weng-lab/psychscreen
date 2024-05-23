@@ -1,14 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  Typography,
-} from "@weng-lab/psychscreen-ui-components";
-import {
-  Divider,
-  Grid,
-  Box,
-  Tabs  
-} from "@mui/material";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { Divider, Grid, Box, Tabs } from "@mui/material";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
 import { groupBy } from "queryz";
@@ -211,7 +204,7 @@ const GeneDetails: React.FC = (props) => {
           />
           &nbsp;Gene Details: {gene}
         </Typography>
-        <br/>
+        <br />
         <div
           style={{
             display: "flex",
@@ -265,7 +258,7 @@ const GeneDetails: React.FC = (props) => {
                       ? +geneCoords.gene[0].coordinates.end
                       : +region.end,
                 }}
-              // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
+                // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
               />
             </Box>
           ) : tabIndex === 3 && 0 > 1 ? (
@@ -278,7 +271,9 @@ const GeneDetails: React.FC = (props) => {
             <Box>
               <AssociatedxQTL
                 name={gene?.toUpperCase()}
-                geneid={gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])}
+                geneid={
+                  gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])
+                }
                 coordinates={{
                   chromosome:
                     region.chromosome === ""
@@ -293,12 +288,14 @@ const GeneDetails: React.FC = (props) => {
                       ? +geneCoords.gene[0].coordinates.end
                       : +region.end,
                 }}
-              //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
+                //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
               />
             </Box>
-          ) : tabIndex === 4 ? (<Box>
-            <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
-          </Box>) : tabIndex === 5 ? (
+          ) : tabIndex === 4 ? (
+            <Box>
+              <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
+            </Box>
+          ) : tabIndex === 5 ? (
             <Box>
               <Typography type="body" size="small">
                 <OpenTarget id={geneid} />
@@ -306,7 +303,11 @@ const GeneDetails: React.FC = (props) => {
             </Box>
           ) : tabIndex === 1 ? (
             <Box>
-              <SingleCell gene={gene || "APOE"} pedataset={"SZBDMulti-Seq"} selectDatasets />
+              <SingleCell
+                gene={gene || "APOE"}
+                pedataset={"SZBDMulti-Seq"}
+                selectDatasets
+              />
             </Box>
           ) : tabIndex === 2 ? (
             <Box>

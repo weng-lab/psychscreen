@@ -23,13 +23,13 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
   >(
     searchvalue !== ""
       ? DISEASE_CARDS.filter(
-        (d) =>
-          d.cardLabel.toLowerCase().includes(val.toLowerCase()) ||
-          (d.aliases &&
-            d.aliases.find((el) =>
-              el.toLowerCase().includes(val.toLowerCase())
-            ))
-      )
+          (d) =>
+            d.cardLabel.toLowerCase().includes(val.toLowerCase()) ||
+            (d.aliases &&
+              d.aliases.find((el) =>
+                el.toLowerCase().includes(val.toLowerCase())
+              ))
+        )
       : undefined
   );
   const theme = useTheme();
@@ -73,11 +73,10 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
               width: "414px",
             }}
           >
-            Explore heritability enrichment for {DISEASE_CARDS.length}{" "}
-            distinct psychiatric, behavioral, and neuronal traits within gene
-            regulatory features, such as b-cCREs and quantitative trait loci
-            (QTLs). Search genes associated with complex traits based on
-            PsychENCODE TWAS.
+            Explore heritability enrichment for {DISEASE_CARDS.length} distinct
+            psychiatric, behavioral, and neuronal traits within gene regulatory
+            features, such as b-cCREs and quantitative trait loci (QTLs). Search
+            genes associated with complex traits based on PsychENCODE TWAS.
           </Typography>
           <Typography
             type="body"
@@ -91,8 +90,8 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} />{" "}
-            {DISEASE_CARDS.length} total traits cataloged
+            <CheckIcon style={{ marginRight: "9px" }} /> {DISEASE_CARDS.length}{" "}
+            total traits cataloged
           </Typography>
           <Typography
             type="body"
@@ -149,9 +148,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
                 <HorizontalCard
                   width={500}
                   onCardClick={(v?: string) => {
-                    let d = DISEASE_CARDS.find(
-                      (d) => d.val === v
-                    )?.diseaseDesc;
+                    let d = DISEASE_CARDS.find((d) => d.val === v)?.diseaseDesc;
                     navigate(`/psychscreen/traits/${v}`, {
                       state: { searchvalue: val, diseaseDesc: d },
                     });

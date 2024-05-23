@@ -67,7 +67,6 @@ const RiskLocusView: React.FC<{
   }[];
   onLocusClick?: (locus: GenomicRange) => void;
 }> = (props) => {
-    
   const groupedLoci = useMemo(
     () =>
       groupBy(
@@ -77,8 +76,6 @@ const RiskLocusView: React.FC<{
       ),
     [props.loci]
   );
-  console.log("props.Loci",groupedLoci)
-  console.log("groupedLoci",groupedLoci)
   const { data: cytobands } = useCytobands();
   const groupedCytobands = useMemo(
     () =>
@@ -128,7 +125,7 @@ const RiskLocusView: React.FC<{
         <Container
           style={{ marginTop: "30px", marginLeft: "150px", width: "750px" }}
         >
-          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size*30+100}`}>
+          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size * 30 + 100}`}>
             {[...groupedLoci.keys()]
               .filter((x) => x && groupedCytobands.get(x))
               .sort(
@@ -157,14 +154,12 @@ const RiskLocusView: React.FC<{
                   <Cytobands
                     transform={`translate(50,${i * 30})`}
                     data={groupedCytobands.get(chromosome!)!}
-                    highlights={groupedLoci
-                      .get(chromosome)
-                      ?.map((x) => ({
-                        ...x,
-                        //start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
-                        //end: x.end + 1500000,
-                        color: colorGradient(-Math.log10(x.minimump)),
-                      }))}
+                    highlights={groupedLoci.get(chromosome)?.map((x) => ({
+                      ...x,
+                      //start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
+                      //end: x.end + 1500000,
+                      color: colorGradient(-Math.log10(x.minimump)),
+                    }))}
                     width={(950 * maxes.get(chromosome!)!) / maxes.get("chr1")!}
                     height={20}
                     id=""
@@ -215,13 +210,13 @@ const RiskLocusView: React.FC<{
                   fontSize="18px"
                 >
                   {groupedLoci.get(selected[0])![selected[1]].chromosome}:
-                  {(groupedLoci
-                    .get(selected[0])!
-                    [selected[1]].start + 1500000).toLocaleString()}
+                  {(
+                    groupedLoci.get(selected[0])![selected[1]].start + 1500000
+                  ).toLocaleString()}
                   -
-                  {(groupedLoci
-                    .get(selected[0])!
-                    [selected[1]].end - 1500000).toLocaleString()}
+                  {(
+                    groupedLoci.get(selected[0])![selected[1]].end - 1500000
+                  ).toLocaleString()}
                 </text>
                 <text x={28} y={48} fontFamily="roboto" fontSize="18px">
                   {groupedLoci.get(selected[0])![selected[1]].count} significant

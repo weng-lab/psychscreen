@@ -2,12 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { ValuedPoint } from "umms-gb/dist/utils/types";
 import { RequestError } from "umms-gb/dist/components/tracks/trackset/types";
 import { GridProps } from "@mui/material";
-import {
-  GenomeBrowser,
-  RulerTrack,
-  UCSCControls,
-  EmptyTrack
-} from "umms-gb";
+import { GenomeBrowser, RulerTrack, UCSCControls, EmptyTrack } from "umms-gb";
 import CytobandView from "../GenePortal/Browser/Explorer/Cytobands";
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
@@ -55,9 +50,7 @@ const grns = [
     "Endothelial cells Enhancer and Promoter",
     "https://downloads.wenglab.org/End_GRN.bb",
   ],
-  ["Vip  Enhancer and Promoter",
-   "https://downloads.wenglab.org/Vip_GRN.bb"
-  ],
+  ["Vip  Enhancer and Promoter", "https://downloads.wenglab.org/Vip_GRN.bb"],
   [
     "Oligodendrocytes Enhancer and Promoter",
     "https://downloads.wenglab.org/Oli_GRN.bb",
@@ -77,13 +70,19 @@ const grns = [
   ],
   ["Sncg Enhancer and Promoter", "https://downloads.wenglab.org/Sncg_GRN.bb"],
   ["Sst  Enhancer and Promoter", "https://downloads.wenglab.org/Sst_GRN.bb"],
-  ["Pvalb  Enhancer and Promoter", "https://downloads.wenglab.org/Pvalb_GRN.bb"],
+  [
+    "Pvalb  Enhancer and Promoter",
+    "https://downloads.wenglab.org/Pvalb_GRN.bb",
+  ],
   ["Pax6  Enhancer and Promoter", "https://downloads.wenglab.org/Pax6_GRN.bb"],
   [
     "Oligodendrocyte Precursor Cells  Enhancer and Promoter",
     "https://downloads.wenglab.org/OPC_GRN.bb",
   ],
-  ["Microglia Enhancer and Promoter", "https://downloads.wenglab.org/Mic_GRN.bb"],
+  [
+    "Microglia Enhancer and Promoter",
+    "https://downloads.wenglab.org/Mic_GRN.bb",
+  ],
   [
     "Lamp5.Lhx6  Enhancer and Promoter",
     "https://downloads.wenglab.org/Lamp5.Lhx6_GRN.bb",

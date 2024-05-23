@@ -6,7 +6,7 @@ import {
   Tab,
   ToggleButton,
   ToggleButtonGroup,
-  Paper
+  Paper,
 } from "@mui/material";
 import {
   Typography,
@@ -26,12 +26,10 @@ import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
 import { StyledTab } from "../../Portals/styles";
 
-const COLUMNS  = 
-   [
+const COLUMNS = [
   {
     header: "Cell Type",
     headerRender: () => {
-      
       return <b>Cell Type</b>;
     },
     value: (row) => row.celltype,
@@ -53,7 +51,6 @@ const COLUMNS  =
     render: (row) => row.avgexp.toFixed(3),
   },
 ];
-
 
 export type SingleCellGeneQueryItem = {
   sampleid: string;
@@ -205,27 +202,27 @@ const subClassColors = {
   "L6 IT Car3": "#ba9c66",
   "L5 ET": "#d388b1",
   "L5/6 NP": "#7b4c1e",
-  "L6b": "#004d45",
+  L6b: "#004d45",
   "L6 CT": "#29348c",
-  "Sst": "#6b6a64",
+  Sst: "#6b6a64",
   "Sst Chodl": "#bc2025",
-  "Pvalb": "#5066b0",
-  "Chandelier": "#64cce9",
+  Pvalb: "#5066b0",
+  Chandelier: "#64cce9",
   "Lamp5 Lhx6": "#ae98a1",
-  "Lamp5": "#a1b6de",
-  "Sncg": "#f175aa",
-  "Vip": "#35bba0",
-  "Pax6": "#67be62",
-  "Astro": "#f5ed1f",
-  "Oligo": "#99994e",
-  "OPC": "#869c98",
-  "Micro": "#92575d",
-  "Endo": "#d490bf",
-  "VLMC": "#717c33",
-  "PC": "#29471f",
-  "SMC": "#413c42",
-  "Immune": "#f15c5a",
-  "RB": "#050304",
+  Lamp5: "#a1b6de",
+  Sncg: "#f175aa",
+  Vip: "#35bba0",
+  Pax6: "#67be62",
+  Astro: "#f5ed1f",
+  Oligo: "#99994e",
+  OPC: "#869c98",
+  Micro: "#92575d",
+  Endo: "#d490bf",
+  VLMC: "#717c33",
+  PC: "#29471f",
+  SMC: "#413c42",
+  Immune: "#f15c5a",
+  RB: "#050304",
 };
 
 function useSingleCellData(dataset: string, gene: string, ctClass: string) {
@@ -373,7 +370,11 @@ export const DATASETS: Map<
   ],
 ]);
 
-const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: boolean }> = ({ gene, pedataset, selectDatasets }) => {
+const SingleCell: React.FC<{
+  gene: string;
+  pedataset: string;
+  selectDatasets: boolean;
+}> = ({ gene, pedataset, selectDatasets }) => {
   const [dataset, setDataset] = useState(pedataset);
   const [ctClass, setCtClass] = useState("by SubClass");
   const { loading, data, colors, maximumValue } = useSingleCellData(
@@ -485,7 +486,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
             render: (groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length).toFixed(3)
         }]).sort((a, b) => -(+a[2].value - +b[2].value));
     }, [ points ]);*/
-  
+
   const domain = useMemo(
     () =>
       points.length === 0
@@ -503,7 +504,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
     [points]
   );
   const [cttabIndex, setCtTabIndex] = useState(0);
-  
+
   const handleCtTabChange = (_: any, newTabIndex: number) => {
     setCtTabIndex(newTabIndex);
   };
@@ -515,69 +516,72 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
   };
   let keys = Array.from(DATASETS.keys());
 
-  
   return (
     <Grid container>
-        {selectDatasets && <>
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        style={{ marginBottom: "2em" }}
-      >
-        <Typography
-          style={{ marginLeft: "1em", marginTop: "0.1em" }}
-          type="body"
-          size="large"
-        >
-          Select PsychEncode Dataset:
-        </Typography>
-
-        {
-          <FormControl
-            sx={{ m: 1, minWidth: 400 }}
-            style={{ marginLeft: "1em", marginTop: "1em" }}
+      {selectDatasets && (
+        <>
+          <Grid
+            item
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            style={{ marginBottom: "2em" }}
           >
-            <InputLabel id="simple-select-helper-label">Dataset:</InputLabel>
-            <MUISelect
-              labelId="simple-select-helper-label"
-              id="simple-select-helper"
-              value={dataset}
-              label="Dataset"
-              onChange={handleChange}
+            <Typography
+              style={{ marginLeft: "1em", marginTop: "0.1em" }}
+              type="body"
+              size="large"
             >
-              {keys.map((d) => {
-                return (
-                  <MenuItem value={DATASETS.get(d)!.cohort}>
-                    {d}
-                    {" - "}
-                    {DATASETS.get(d)!.shortdesc}
-                  </MenuItem>
-                );
-              })}
-            </MUISelect>
-          </FormControl>
-        }
-      </Grid>
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        style={{ marginBottom: "2em" }}
-      >
-        <Typography
-          style={{ marginLeft: "1em", marginTop: "0.1em" }}
-          type="body"
-          size="large"
-        >
-          {DATASETS.get(dataset)!.desc}
-        </Typography>
-      </Grid>
-      </>}
+              Select PsychEncode Dataset:
+            </Typography>
+
+            {
+              <FormControl
+                sx={{ m: 1, minWidth: 400 }}
+                style={{ marginLeft: "1em", marginTop: "1em" }}
+              >
+                <InputLabel id="simple-select-helper-label">
+                  Dataset:
+                </InputLabel>
+                <MUISelect
+                  labelId="simple-select-helper-label"
+                  id="simple-select-helper"
+                  value={dataset}
+                  label="Dataset"
+                  onChange={handleChange}
+                >
+                  {keys.map((d) => {
+                    return (
+                      <MenuItem value={DATASETS.get(d)!.cohort}>
+                        {d}
+                        {" - "}
+                        {DATASETS.get(d)!.shortdesc}
+                      </MenuItem>
+                    );
+                  })}
+                </MUISelect>
+              </FormControl>
+            }
+          </Grid>
+          <Grid
+            item
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            style={{ marginBottom: "2em" }}
+          >
+            <Typography
+              style={{ marginLeft: "1em", marginTop: "0.1em" }}
+              type="body"
+              size="large"
+            >
+              {DATASETS.get(dataset)!.desc}
+            </Typography>
+          </Grid>
+        </>
+      )}
       <Grid item sm={12}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
           <StyledTab label="Detailed Expression Profile" />
@@ -705,8 +709,10 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
                       columns={COLUMNS}
                       rows={
                         ctClass === "by SubClass"
-                          ? scrows.filter((s) => s.celltype !== "RB").filter(e=>e.dataset===dataset)
-                          : ctrows.filter(e=>e.dataset===dataset)
+                          ? scrows
+                              .filter((s) => s.celltype !== "RB")
+                              .filter((e) => e.dataset === dataset)
+                          : ctrows.filter((e) => e.dataset === dataset)
                       }
                       itemsPerPage={ctClass === "by SubClass" ? 30 : 10}
                       searchable

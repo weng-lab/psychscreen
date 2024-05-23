@@ -13,16 +13,14 @@ import RegulatoryElements from "./RegulatoryElements";
 import { CAQTL } from "./caQTL";
 import { StyledTab } from "../../Portals/styles";
 
-
-
 export const CAQTL_QUERY = gql`
-query caqtls($snpid: String!) {
-  caqtls(snpid: $snpid){
-    snpid
-    type
+  query caqtls($snpid: String!) {
+    caqtls(snpid: $snpid) {
+      snpid
+      type
+    }
   }
-}
-`
+`;
 export const QUERY = gql`
   query SNP(
     $coordinates: [GenomicRangeInput]
@@ -146,8 +144,6 @@ export function expandCoordinates(
   };
 }
 
-
-
 const SNPDetails: React.FC<GridProps> = (props) => {
   const { snpid } = useParams();
   const [tabIndex, setTabIndex] = useState(0);
@@ -155,7 +151,7 @@ const SNPDetails: React.FC<GridProps> = (props) => {
 
   const { data: caqtlData, loading: loadingData } = useQuery(CAQTL_QUERY, {
     variables: {
-      snpid
+      snpid,
     },
   });
 

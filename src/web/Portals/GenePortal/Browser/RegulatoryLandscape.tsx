@@ -20,8 +20,6 @@ export type EGeneTrackProps = {
   squish?: boolean;
 };
 
-
-
 const RegulatoryLandscape: React.FC<EGeneTrackProps> = (props) => {
   const [settingsMousedOver, setSettingsMousedOver] = useState(false);
   const [height, setHeight] = useState(60);

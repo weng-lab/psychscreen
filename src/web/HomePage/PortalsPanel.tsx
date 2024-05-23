@@ -13,24 +13,23 @@ import { StyledButton } from "../Portals/styles";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { ExpandMore } from "@mui/icons-material";
 
-
 type PortalPanelProps = {
-  title: string
-  description: string
-  stats?: string[]
-  buttonText: string
-  buttonLink: string
-  imageSRC: string
+  title: string;
+  description: string;
+  stats?: string[];
+  buttonText: string;
+  buttonLink: string;
+  imageSRC: string;
   /**
    * Placement of image on large screen width. On small width will always be on top of button
    */
-  imagePlacement: "right" | "left"
-  imgAltText: string
-}
+  imagePlacement: "right" | "left";
+  imgAltText: string;
+};
 
 /**
- * 
- * @param props 
+ *
+ * @param props
  * Generates homepage panel with given info
  */
 export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
@@ -39,7 +38,12 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
   return (
     <div>
       <Grid2 container xs={12} justifyContent={"space-between"} spacing={10}>
-        <Grid2 xs={12} md={6} order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }} alignSelf={"center"}>
+        <Grid2
+          xs={12}
+          md={6}
+          order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }}
+          alignSelf={"center"}
+        >
           <Stack spacing={2} alignItems={"flex-start"}>
             <Typography
               type="body"
@@ -66,7 +70,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               {props.description}
             </Typography>
             <div>
-              {props.stats?.map((stat) =>
+              {props.stats?.map((stat) => (
                 <Typography
                   type="body"
                   size="large"
@@ -82,7 +86,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                   <CheckIcon style={{ marginRight: "9px" }} />
                   {stat}
                 </Typography>
-              )}
+              ))}
             </div>
             <StyledButton
               bvariant="filled"
@@ -95,24 +99,28 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
             </StyledButton>
           </Stack>
         </Grid2>
-        <Grid2 xs={12} md={6} 
+        <Grid2
+          xs={12}
+          md={6}
           order={{ xs: 1, md: props.imagePlacement === "right" ? 2 : 1 }}
           minHeight={300}
         >
-          <Box 
-            position={"relative"} 
-            height={"100%"} 
-            width={'100%'} 
-            sx={{ 
-              objectPosition: props.imagePlacement === "right" ? 
-              { md: "right center", xs: "left center" } 
-              : { md: "left center", xs: "left center" } 
-            }}>
+          <Box
+            position={"relative"}
+            height={"100%"}
+            width={"100%"}
+            sx={{
+              objectPosition:
+                props.imagePlacement === "right"
+                  ? { md: "right center", xs: "left center" }
+                  : { md: "left center", xs: "left center" },
+            }}
+          >
             <img
-              style={{ 
-                objectFit: "contain", 
+              style={{
+                objectFit: "contain",
                 objectPosition: "inherit",
-                position: "absolute"
+                position: "absolute",
               }}
               height={"100%"}
               width={"100%"}
@@ -123,8 +131,8 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         </Grid2>
       </Grid2>
     </div>
-  )
-}
+  );
+};
 
 export const PortalsPanel: React.FC<GridProps> = (props) => (
   <Grid2 container rowSpacing={10}>
@@ -134,11 +142,14 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           alignItems={"center"}
           onClick={() => {
             var element = document.getElementById("Portals");
-            element && element.scrollIntoView({ behavior: "smooth", block: "start" });
+            element &&
+              element.scrollIntoView({ behavior: "smooth", block: "start" });
           }}
-          sx={{ cursor: 'pointer' }}
+          sx={{ cursor: "pointer" }}
         >
-          <Typography id="Portals" type={"display"} size={"small"}>Portals</Typography>
+          <Typography id="Portals" type={"display"} size={"small"}>
+            Portals
+          </Typography>
           <ExpandMore />
         </Stack>
       </Divider>
@@ -152,10 +163,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           such as b-cCREs and quantitative trait loci (QTLs). Search genes
           associated with complex traits based on PsychENCODE TWAS.
         `}
-        stats={[
-          "18 total traits cataloged",
-          "1,103 b-cCRE/trait associations"
-        ]}
+        stats={["18 total traits cataloged", "1,103 b-cCRE/trait associations"]}
         buttonText={"Explore Diseases/Traits"}
         buttonLink={"/psychscreen/traits"}
         imageSRC={DiseaseTrait}
@@ -178,7 +186,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         stats={[
           "Gene expression in 11 brain regions",
           "23 fetal, adolescent, and adult time points covered",
-          "761,984 brain regulatory elements"
+          "761,984 brain regulatory elements",
         ]}
         buttonText={"Explore Genes/b-cCREs"}
         buttonLink={"/psychscreen/gene"}
@@ -202,7 +210,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         stats={[
           "441,502 eQTLs, sQTLs, caQTLs, and fQTLs",
           "13,336 variants associated with complex traits",
-          "510,062 variants in b-cCREs"
+          "510,062 variants in b-cCREs",
         ]}
         buttonText={"Explore SNPs/QTLs"}
         buttonLink={"/psychscreen/snp"}
@@ -225,7 +233,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         `}
         stats={[
           "Transcriptomes for 1,391,772 single cells",
-          "Chromatin accessibility for 1,009,942 single cells"
+          "Chromatin accessibility for 1,009,942 single cells",
         ]}
         buttonText={"Explore Single Cells"}
         buttonLink={"/psychscreen/single-cell"}

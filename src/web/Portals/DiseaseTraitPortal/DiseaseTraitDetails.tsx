@@ -6,7 +6,12 @@ import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import { DISEASE_CARDS, FULLSUMSTAT_URL_MAP, URL_CHROM_MAP, URL_MAP } from "./config/constants";
+import {
+  DISEASE_CARDS,
+  FULLSUMSTAT_URL_MAP,
+  URL_CHROM_MAP,
+  URL_MAP,
+} from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
@@ -128,9 +133,7 @@ const GwasIntersectingSnpswithBcresQuery = gql`
 
 const locusQuery = gql`
   query q($bigRequests: [BigRequest!]!) {
-    bigRequests(
-      requests:  $bigRequests 
-    ) {
+    bigRequests(requests: $bigRequests) {
       data
       error {
         message
@@ -146,18 +149,18 @@ function useLoci(trait: string) {
   >(!URL_MAP[trait].startsWith("https") ? AssociatedSnpQuery : locusQuery, {
     variables: {
       disease: trait || "",
-      bigRequests: [{
-        chr1: "chr1",
-        chr2: URL_CHROM_MAP[trait],
-        start: 0,
-        end: 300000000,
-        url: URL_MAP[trait] //.replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
-      }],
-
-
+      bigRequests: [
+        {
+          chr1: "chr1",
+          chr2: URL_CHROM_MAP[trait],
+          start: 0,
+          end: 300000000,
+          url: URL_MAP[trait], //.replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
+        },
+      ],
     },
   });
-  
+
   const loci = useMemo(() => {
     if (!data) return undefined;
     if (!URL_MAP[trait].startsWith("https"))
@@ -180,9 +183,10 @@ function useLoci(trait: string) {
           chromosome: x.chr,
           start: x.start,
           end: x.end,
-          p: Math.exp(- +x.name.split("_")[1]),
+          p: Math.exp(-+x.name.split("_")[1]),
         })
-      ) || [], trait
+      ) || [],
+      trait
     );
   }, [data]);
 
@@ -209,8 +213,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
   const diseaseLabel =
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
   const summaryStatisticsURL = disease
-  ? FULLSUMSTAT_URL_MAP[disease].startsWith("gs") || FULLSUMSTAT_URL_MAP[disease].startsWith("https")
-        ? FULLSUMSTAT_URL_MAP[disease]
+    ? FULLSUMSTAT_URL_MAP[disease].startsWith("gs") ||
+      FULLSUMSTAT_URL_MAP[disease].startsWith("https")
+      ? FULLSUMSTAT_URL_MAP[disease]
       : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
     : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
   const { loci, data } = useLoci(disease || "");

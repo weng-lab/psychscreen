@@ -4,8 +4,6 @@ import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
 
-
-
 export const DOT_PLOT_QUERY = gql`
   query singleCellBoxPlot($disease: String!, $gene: [String]) {
     singleCellBoxPlotQuery(disease: $disease, gene: $gene) {
@@ -39,24 +37,37 @@ type DotPlotProps = {
   celltype?: boolean;
 };
 
-function useGeneData(disease: string, gene: string, dotplotData?: any, celltype?: boolean) {
+function useGeneData(
+  disease: string,
+  gene: string,
+  dotplotData?: any,
+  celltype?: boolean
+) {
   // fetch results from API
   let data: any = dotplotData;
 
   // data = dotplotData && dotplotData.singleCellBoxPlotQuery.length>0 ? dotplotData: data
   // map cell types to radii and color shadings
-  let uniqueCellTypes = new Set(data?.map((c) => celltype ? c.gene : c.celltype));
+  let uniqueCellTypes = new Set(
+    data?.map((c) => (celltype ? c.gene : c.celltype))
+  );
 
   const results = useMemo(
     () =>
       new Map(
         Array.from(uniqueCellTypes).map((x) => {
-          let d = data?.filter((a) => celltype ? a.gene === x : a.celltype === x);
+          let d = data?.filter((a) =>
+            celltype ? a.gene === x : a.celltype === x
+          );
 
           return [
             x,
             d.map((c) => {
-              return { radius: c.expr_frac, colorpercent: c.mean_count, highlighted: c.highlighted ? c.highlighted :  false };
+              return {
+                radius: c.expr_frac,
+                colorpercent: c.mean_count,
+                highlighted: c.highlighted ? c.highlighted : false,
+              };
             }),
           ];
         })
@@ -75,14 +86,17 @@ function useGeneData(disease: string, gene: string, dotplotData?: any, celltype?
 
   return [data, results, keys] as [
     DotPlotQueryResponse | undefined,
-    Map<string, { radius: number; colorpercent: number, highlighted: boolean }[]>,
+    Map<
+      string,
+      { radius: number; colorpercent: number; highlighted: boolean }[]
+    >,
     string[]
   ];
 }
 
 function split(left: number, right: number, parts: number) {
   var result: number[] = [],
-    delta = (right - left) / (parts-1);
+    delta = (right - left) / (parts - 1);
   while (left < right) {
     result.push(left);
     left += delta;
@@ -92,7 +106,16 @@ function split(left: number, right: number, parts: number) {
 }
 
 const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
-  { disease, yaxistitle, dotplotData, title1, title2, showTooltip ,deg, celltype },
+  {
+    disease,
+    yaxistitle,
+    dotplotData,
+    title1,
+    title2,
+    showTooltip,
+    deg,
+    celltype,
+  },
   ref
 ) => {
   // SVG-related parameters
@@ -100,31 +123,40 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   const height = width / 3;
 
   // Fetch and format expression data
-  const [data, results, keys] = useGeneData(disease, yaxistitle, dotplotData, celltype);
+  const [data, results, keys] = useGeneData(
+    disease,
+    yaxistitle,
+    dotplotData,
+    celltype
+  );
 
-  
   let uniqueDatasets = new Set(dotplotData?.map((c) => c.dataset));
   // Compute dimension factors
   const radiusDomain: [number, number] = React.useMemo(() => {
     const radii = keys.map((k) => results.get(k)!.map((e) => e.radius)).flat();
-    let min = Math.min(...radii) 
-    let max = Math.max(...radii)===Math.min(...radii) ? Math.max(...radii)*2  :Math.max(...radii)
+    let min = Math.min(...radii);
+    let max =
+      Math.max(...radii) === Math.min(...radii)
+        ? Math.max(...radii) * 2
+        : Math.max(...radii);
     return [min, max];
   }, [results, keys]);
   const colorDomain: [number, number] = React.useMemo(() => {
     const cp = keys
       .map((k) => results.get(k)!.map((e) => e.colorpercent))
       .flat();
-    let min = Math.min(...cp)
-    let max = Math.max(...cp)===Math.min(...cp) ? Math.max(...cp)*2 : Math.max(...cp)
+    let min = Math.min(...cp);
+    let max =
+      Math.max(...cp) === Math.min(...cp)
+        ? Math.max(...cp) * 2
+        : Math.max(...cp);
     return [min, max];
   }, [results, keys]);
-  
+
   const radiusTransform = React.useCallback(
     linearTransform(radiusDomain, [20, 60]),
     radiusDomain
   );
-  console.log(results,radiusTransform(radiusDomain[0]), colorDomain,"datadotplot")
   const verticalTransform = React.useCallback(
     linearTransform([0, 4], [(height / 2) * 0.9, (height / 2) * 0.1]),
     [height]
@@ -140,23 +172,14 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
     return split(colorDomain[0], colorDomain[1], 4);
   }, [colorDomain]);
   const gradient = React.useMemo(() => {
-    return lt(
-      { start: 0, end: colorDomain[1] },
-      { start: 191, end: 0 }
-    );
+    return lt({ start: 0, end: colorDomain[1] }, { start: 191, end: 0 });
   }, [colorDomain]);
 
   const posgradient = React.useMemo(() => {
-    return lt(
-      { start: 0, end: colorDomain[1] },
-      { start: 191, end: 0 }
-    );
+    return lt({ start: 0, end: colorDomain[1] }, { start: 191, end: 0 });
   }, [colorDomain]);
   const neggradient = React.useMemo(() => {
-    return lt(
-      { start: colorDomain[0], end: 0 },
-      { start: 0, end: 191 }
-    );
+    return lt({ start: colorDomain[0], end: 0 }, { start: 0, end: 191 });
   }, [colorDomain]);
 
   // Dot plot for recognized genes
@@ -176,7 +199,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         return (
           <text
             fontSize="140px"
-            fill="#000000"            
+            fill="#000000"
             x={
               ((keys.length - 1 + 2.1) * width) / length +
               (width / length) * 0.8 +
@@ -199,7 +222,21 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               <React.Fragment key={`${x}_${i}_${j}`}>
                 <g>
                   <circle
-                    fill={ !deg ? `rgb(${gradient(s.colorpercent).toFixed(0)},${gradient(s.colorpercent).toFixed(0)},255)` :  s.colorpercent === 0  ? 'rgb(232, 223, 221)' : s.colorpercent > 0 ? `rgb(${posgradient(s.colorpercent)},${posgradient(s.colorpercent)},255)` : `rgb(255,${neggradient(s.colorpercent)},${neggradient(s.colorpercent)})`}                    
+                    fill={
+                      !deg
+                        ? `rgb(${gradient(s.colorpercent).toFixed(
+                            0
+                          )},${gradient(s.colorpercent).toFixed(0)},255)`
+                        : s.colorpercent === 0
+                        ? "rgb(232, 223, 221)"
+                        : s.colorpercent > 0
+                        ? `rgb(${posgradient(s.colorpercent)},${posgradient(
+                            s.colorpercent
+                          )},255)`
+                        : `rgb(255,${neggradient(s.colorpercent)},${neggradient(
+                            s.colorpercent
+                          )})`
+                    }
                     cy={
                       results.get(x)!!.length === 1
                         ? verticalTransform(2)
@@ -208,13 +245,18 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                     r={radiusTransform(s.radius)}
                     cx={((i + 2.5) * width) / length}
                     stroke="#000000"
-                    strokeWidth={s.highlighted ? 4: 0}
+                    strokeWidth={s.highlighted ? 4 : 0}
                     strokeOpacity={4}
                   >
                     <title>
-                    {showTooltip? "p-adjusted: " + s.radius.toFixed(2) +"\nexpression fold change: " + s.colorpercent.toFixed(2)  :"" }
+                      {showTooltip
+                        ? "p-adjusted: " +
+                          s.radius.toFixed(2) +
+                          "\nexpression fold change: " +
+                          s.colorpercent.toFixed(2)
+                        : ""}
                     </title>
-                    </circle>
+                  </circle>
                 </g>
               </React.Fragment>
             );
@@ -237,7 +279,9 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               fontSize="140px"
               transform="rotate(-90)"
               textAnchor="end"
-              fontWeight={deg ? results!!.get(x)!![0].highlighted ? "bold": "" : ""}
+              fontWeight={
+                deg ? (results!!.get(x)!![0].highlighted ? "bold" : "") : ""
+              }
               y={((i + 2.5) * width) / length}
               x={-height / 2}
               height={width / (length - 1)}
@@ -252,25 +296,24 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       <text
         fontSize="140px"
         fill="#000000"
-        x={(keys.length * (keys.length<=2  ? 1.3 : 0.8)) * (width / length)}
+        x={keys.length * (keys.length <= 2 ? 1.3 : 0.8) * (width / length)}
         y={height * 0.78}
       >
-        {title1 ||  "Percent Expressed"}
-        
+        {title1 || "Percent Expressed"}
       </text>
-      { radiusRange.map((r, i) => (
+      {radiusRange.map((r, i) => (
         <>
           <circle
             r={radiusTransform(r)}
-            cx={(keys.length * (keys.length<=2  ? 1.4 : 0.83)* width) / length}
+            cx={
+              (keys.length * (keys.length <= 2 ? 1.4 : 0.83) * width) / length
+            }
             cy={i * 150 + height * 0.82}
             fill="#000000"
-          
-            
           />
           <text
             fontSize="140px"
-            x={(keys.length * (keys.length<=2  ? 1.5 : 0.85) * width) / length}
+            x={(keys.length * (keys.length <= 2 ? 1.5 : 0.85) * width) / length}
             y={i * 150 + height * 0.83}
             fill="#000000"
           >
@@ -284,7 +327,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         x={keys.length * 0.4 * (width / length)}
         y={height * 0.78}
       >
-        {title2  || "Mean Expression"}
+        {title2 || "Mean Expression"}
       </text>
       {colorPercent.map((r, i) => (
         <>
@@ -293,8 +336,17 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             height={100}
             x={(keys.length * 0.4 * width) / length}
             y={i * 150 + height * 0.81}
-            //fill={`rgb(${pickHex([20,20,255],[235,235,255], r).join(",")})`}
-            fill={ !deg ? `rgb(${gradient(r).toFixed(0)},${gradient(r).toFixed(0)},255)` :  r > 0 ? `rgb(${posgradient(r).toFixed(0)},${posgradient(r).toFixed(0)},255)` : `rgb(255,${neggradient(r).toFixed(0)},${neggradient(r).toFixed(0)})`}
+            fill={
+              !deg
+                ? `rgb(${gradient(r).toFixed(0)},${gradient(r).toFixed(0)},255)`
+                : r > 0
+                ? `rgb(${posgradient(r).toFixed(0)},${posgradient(r).toFixed(
+                    0
+                  )},255)`
+                : `rgb(255,${neggradient(r).toFixed(0)},${neggradient(
+                    r
+                  ).toFixed(0)})`
+            }
           />
           <text
             fontSize="140px"
@@ -302,7 +354,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
             y={i * 150 + height * 0.83}
             fill="#000000"
           >
-            { r.toFixed(2)}
+            {r.toFixed(2)}
           </text>
         </>
       ))}

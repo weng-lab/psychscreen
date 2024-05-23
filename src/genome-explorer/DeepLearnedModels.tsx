@@ -49,7 +49,7 @@ const TRACKSETS = {
     [
       "VLPFC neurons ATAC signal",
       "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons",
-    ]
+    ],
     //  [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
     //        [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
   ],

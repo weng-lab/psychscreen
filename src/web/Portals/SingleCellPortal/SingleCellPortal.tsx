@@ -2,7 +2,7 @@
  * SingleCellPortal.tsx: the single cell portal page.
  */
 
- import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Container, GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
@@ -13,7 +13,7 @@ import SingleCell from "../../../assets/single-cell.png";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { CelltypeAutoComplete} from "./CelltypeAutoComplete";
+import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 
 export const DISEASE_CARDS = [
@@ -47,7 +47,7 @@ export const DISEASE_CARDS = [
 const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
- const [selectedPortal, setSelectedPortal] = useState<string>("Celltypes");
+  const [selectedPortal, setSelectedPortal] = useState<string>("Celltypes");
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedPortal(event.target.value);
   };
@@ -124,54 +124,53 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
               marginBottom: "40px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> Chromatin
-            accessibility for 1,009,942 single cells
+            <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility
+            for 1,009,942 single cells
           </Typography>
           <br />
           <br />
           {/*<GeneAutoComplete navigateto="/psychscreen/single-cell/gene/" showTitle />*/}
           <FormControl variant="standard">
-              <Select
-                id="simple-select-search"
-                value={selectedPortal}
-                // defaultValue={10}
-                onChange={handleChange}
-              >
-                <MenuItem value={"Celltypes"}>Celltypes</MenuItem>
-                <MenuItem value={"Genes"}>Genes</MenuItem>
-
-              </Select>
+            <Select
+              id="simple-select-search"
+              value={selectedPortal}
+              // defaultValue={10}
+              onChange={handleChange}
+            >
+              <MenuItem value={"Celltypes"}>Celltypes</MenuItem>
+              <MenuItem value={"Genes"}>Genes</MenuItem>
+            </Select>
           </FormControl>
-             <br />
-            <br/>
-            { selectedPortal === "Genes" ? (
+          <br />
+          <br />
+          {selectedPortal === "Genes" ? (
             <GeneAutoComplete navigateto="/psychscreen/gene/" />
           ) : (
             <CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" />
           )}
           <br />
         </Container>
-        {0 > 1 &&
+        {0 > 1 && (
           <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
             <HorizontalCard
               width={500}
               onCardClick={(v?: string) => {
                 v!!.includes("Dataset")
                   ? navigate(
-                    `/psychscreen/single-cell/datasets/${v?.replace(
-                      "Dataset:",
-                      ""
-                    )}`,
-                    { state: { searchvalue: v?.replace("Dataset:", "") } }
-                  )
+                      `/psychscreen/single-cell/datasets/${v?.replace(
+                        "Dataset:",
+                        ""
+                      )}`,
+                      { state: { searchvalue: v?.replace("Dataset:", "") } }
+                    )
                   : navigate(`/psychscreen/single-cell/${v}`, {
-                    state: { searchvalue: v },
-                  });
+                      state: { searchvalue: v },
+                    });
               }}
               cardContentText={DISEASE_CARDS}
             />
           </Container>
-        }
+        )}
       </Grid>
       {useMediaQuery(theme.breakpoints.up("md")) && (
         <Grid item sm={4} md={4} lg={3} xl={3}>

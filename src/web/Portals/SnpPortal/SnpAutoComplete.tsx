@@ -58,7 +58,6 @@ export const SnpAutoComplete = (props) => {
       setOptions([]);
       setSnpIds([]);
     }
-    
   };
 
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);

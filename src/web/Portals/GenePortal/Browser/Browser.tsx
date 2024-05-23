@@ -462,8 +462,7 @@ const Browser: React.FC<any> = (props) => {
           domain={coordinates || expandedCoordinates}
           trait="MDD"
         />
-        {<PseudobulkAtacTracks domain={coordinates || expandedCoordinates}/>
-        }
+        {<PseudobulkAtacTracks domain={coordinates || expandedCoordinates} />}
         <VariantTracks
           coordinates={coordinates || expandedCoordinates}
           resolvedTranscript={props.resolvedTranscript}

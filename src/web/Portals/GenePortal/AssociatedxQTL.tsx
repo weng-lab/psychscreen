@@ -308,35 +308,31 @@ export function useGenePageData(
   };
 }
 const DECONQTL_QUERY = gql`
-  query deconqtlsQuery(
-    $geneid: String, $snpid: String
-  ) {
+  query deconqtlsQuery($geneid: String, $snpid: String) {
     deconqtlsQuery(geneid: $geneid, snpid: $snpid) {
-        celltype
-        snpid
-        slope
-        nom_val
-        geneid
-        adj_beta_pval
-        r_squared
-        snp_chrom
-        snp_start
+      celltype
+      snpid
+      slope
+      nom_val
+      geneid
+      adj_beta_pval
+      r_squared
+      snp_chrom
+      snp_start
     }
   }
 `;
 
 const QTLSIGASSOC_QUERY = gql`
-  query qtlsigassocQuery(
-    $geneid: String, $snpid: String
-  ) {
+  query qtlsigassocQuery($geneid: String, $snpid: String) {
     qtlsigassocQuery(geneid: $geneid, snpid: $snpid) {
-        snpid
-    slope
-    qtltype
-    dist
-    geneid
-    npval
-    fdr
+      snpid
+      slope
+      qtltype
+      dist
+      geneid
+      npval
+      fdr
     }
   }
 `;
@@ -358,68 +354,78 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     props.resolvedTranscript
   );
 
-  const {data: eqtlData, loading: eqtlLoading} = useQuery(DECONQTL_QUERY, {variables: {
-    geneid: props.geneid
-  }})
+  const { data: eqtlData, loading: eqtlLoading } = useQuery(DECONQTL_QUERY, {
+    variables: {
+      geneid: props.geneid,
+    },
+  });
 
-  const {data: qtlsigassocData, loading: qtlsigassocLoading} = useQuery(QTLSIGASSOC_QUERY, {variables: {
-    geneid: props.geneid
-  }})
-  
-  const qtlsigData  = qtlsigassocData && qtlsigassocData.qtlsigassocQuery.map((x)=>[
+  const { data: qtlsigassocData, loading: qtlsigassocLoading } = useQuery(
+    QTLSIGASSOC_QUERY,
     {
-        header: "SNP ID",
-        value: x.snpid
-    },
-    {
-        header: "Dist",
-        value: x.dist
-    },
-    {
-        header: "Slope",
-        value: x.slope.toFixed(3)
-    },
-    {
-        header: "FDR",
-        value: x.fdr.toFixed(3)
-    },
-    {
-        header: "Npval",
-        value: x.npval.toFixed(3)
+      variables: {
+        geneid: props.geneid,
+      },
     }
-   
-  ])
+  );
 
-  const deconqtlData  = eqtlData && eqtlData.deconqtlsQuery.map((x)=>[
-    {
+  const qtlsigData =
+    qtlsigassocData &&
+    qtlsigassocData.qtlsigassocQuery.map((x) => [
+      {
         header: "SNP ID",
-        value: x.snpid
-    },
-    {
+        value: x.snpid,
+      },
+      {
+        header: "Dist",
+        value: x.dist,
+      },
+      {
         header: "Slope",
-        value: x.slope.toFixed(2)
-    },
-    {
+        value: x.slope.toFixed(3),
+      },
+      {
+        header: "FDR",
+        value: x.fdr.toFixed(3),
+      },
+      {
+        header: "Npval",
+        value: x.npval.toFixed(3),
+      },
+    ]);
+
+  const deconqtlData =
+    eqtlData &&
+    eqtlData.deconqtlsQuery.map((x) => [
+      {
+        header: "SNP ID",
+        value: x.snpid,
+      },
+      {
+        header: "Slope",
+        value: x.slope.toFixed(2),
+      },
+      {
         header: "eQTL nominal p-value",
         value: x.nom_val.toExponential(2),
-    },    
-    {
+      },
+      {
         header: "Adjusted beta pvalue",
-        value: x.adj_beta_pval.toFixed(2)
-    },
-    {
+        value: x.adj_beta_pval.toFixed(2),
+      },
+      {
         header: "r Squared",
-        value: x.r_squared.toFixed(2)
-    },
-    {
+        value: x.r_squared.toFixed(2),
+      },
+      {
         header: "coordinates",
-        value: "chr"+ x.snp_chrom +":"+ x.snp_start
-    },
-    {
+        value: "chr" + x.snp_chrom + ":" + x.snp_start,
+      },
+      {
         header: "Cell Type",
-        value: x.celltype
-    },
-    ])
+        value: x.celltype,
+      },
+    ]);
 
   const groupedQTLs = useMemo(
     () =>
@@ -535,55 +541,48 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     <>
       {loading || eqtlLoading || qtlsigassocLoading ? (
         <CircularProgress />
-      ) : 
-      <>
-        {
-        allQTLsData &&
-        allQTLsData.length > 0 && (
-          <>
-            <Typography type="headline" size="small">
-              {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
-            </Typography>
-            <CustomizedTable
-              style={{ width: "max-content" }}
-              tabledata={allQTLsData}
-            />
-            <Typography type={"label"} size="small">
-              {`cCREs prefixed with an asterisk are b-cCREs`}
-            </Typography>
-            <br/>
-            <br/>
-          </>
-        )}
-        {deconqtlData && deconqtlData.length>0 && (
+      ) : (
+        <>
+          {allQTLsData && allQTLsData.length > 0 && (
             <>
-            <Typography type="headline" size="small">
-            {`The following decon-eQTLs (Liu) have been identified for ${props.name} by PsychENCODE:`}
-          </Typography>
-          <CustomizedTable
-            style={{ width: "max-content" }}
-            tabledata={deconqtlData}
-          />
-          </>
-        )
-
-        }
-        {qtlsigData && qtlsigData.length>0 && (
+              <Typography type="headline" size="small">
+                {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
+              </Typography>
+              <CustomizedTable
+                style={{ width: "max-content" }}
+                tabledata={allQTLsData}
+              />
+              <Typography type={"label"} size="small">
+                {`cCREs prefixed with an asterisk are b-cCREs`}
+              </Typography>
+              <br />
+              <br />
+            </>
+          )}
+          {deconqtlData && deconqtlData.length > 0 && (
             <>
-            <Typography type="headline" size="small">
-            {`The following eQTLs (Gandal Lab) have been identified for ${props.name} by PsychENCODE:`}
-          </Typography>
-          <CustomizedTable
-            style={{ width: "max-content" }}
-            tabledata={qtlsigData}
-          />
-          </>
-        )
-
-        }
-
+              <Typography type="headline" size="small">
+                {`The following decon-eQTLs (Liu) have been identified for ${props.name} by PsychENCODE:`}
+              </Typography>
+              <CustomizedTable
+                style={{ width: "max-content" }}
+                tabledata={deconqtlData}
+              />
+            </>
+          )}
+          {qtlsigData && qtlsigData.length > 0 && (
+            <>
+              <Typography type="headline" size="small">
+                {`The following eQTLs (Gandal Lab) have been identified for ${props.name} by PsychENCODE:`}
+              </Typography>
+              <CustomizedTable
+                style={{ width: "max-content" }}
+                tabledata={qtlsigData}
+              />
+            </>
+          )}
         </>
-      }
+      )}
     </>
   );
 };
