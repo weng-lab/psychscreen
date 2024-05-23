@@ -152,6 +152,7 @@ const SNP_QUERY = gql`
       start: $start
       end: $end
       assembly: $assembly
+      version: 40
     ) {
       name
       strand
@@ -196,7 +197,7 @@ export type SNPQueryResponse = {
 const QUERY = gql`
   ${CCRE_FIELDS}
   query q($assembly: String!, $name: [String]) {
-    queriedGene: gene(name: $name, assembly: $assembly) {
+    queriedGene: gene(name: $name, assembly: $assembly, version: 40) {
       transcripts {
         associated_ccres_pls {
           intersecting_ccres {

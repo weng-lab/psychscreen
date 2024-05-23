@@ -113,7 +113,7 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
         textAnchor="middle"
         fill="#ab3f00"
       >
-        Pseudo Bulk ATAC Tracks
+        Pseudo Bulk ATAC
       </text>
     </>
   );

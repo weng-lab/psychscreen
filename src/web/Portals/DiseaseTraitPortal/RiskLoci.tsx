@@ -7,6 +7,7 @@ import { Cytobands } from "umms-gb";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
+import { DISEASE_CARDS } from "./config/constants";
 
 type Cytoband = {
   coordinates: {
@@ -65,6 +66,7 @@ const RiskLocusView: React.FC<{
     count: number;
     minimump: number;
   }[];
+  disease: string;
   onLocusClick?: (locus: GenomicRange) => void;
 }> = (props) => {
   const groupedLoci = useMemo(
@@ -118,7 +120,8 @@ const RiskLocusView: React.FC<{
             (v, c) => v + groupedLoci.get(c)!.length,
             0
           )}{" "}
-          risk loci have been identified by GWAS (orange boxes below). Mouse
+          risk loci have been identified by <a target={"_blank"}
+                rel={"noreferrer noopener"} href={DISEASE_CARDS.find((d) => d.val === props.disease)?.link}>{DISEASE_CARDS.find((d) => d.val === props.disease)?.cardDesc}</a> (orange boxes below). Mouse
           over or click a locus to explore PsychENCODE epigenetic and
           transcriptomic data in that region.
         </Typography>
@@ -225,7 +228,7 @@ const RiskLocusView: React.FC<{
                     ? "s"
                     : ""}{" "}
                   at locus
-                </text>
+                </text>                
                 <text x={28} y={68} fontFamily="roboto" fontSize="18px">
                   lowest p-value at locus:{" "}
                   {groupedLoci

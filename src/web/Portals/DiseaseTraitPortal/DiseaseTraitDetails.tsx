@@ -357,7 +357,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               Brain epi Genome Browser
             </StyledButton>
           )}
-          {significantSNPs && significantSNPs.length > 0 && (
+          {significantSNPs && significantSNPs.length > 0 && 0>1 && (
             <StyledButton
               bvariant={page === 4 ? "filled" : "outlined"}
               btheme="light"
@@ -372,7 +372,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
       <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
       <Grid sm={10} md={10} lg={9} xl={9}>
         {page === -1 ? (
-          <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
+          <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} disease={disease || ""} />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
           <GeneAssociations disease={disease || ""} data={gassoc} />
         ) : page === 1 &&
@@ -413,7 +413,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               trait={diseaseLabel || "Autism Spectrum Disorder"}
             />
           </div>
-        ) : page === 4 && significantSNPs && significantSNPs.length > 0 ? (
+        ) : page === 4 && significantSNPs && significantSNPs.length > 0 && 0>1 ?  (
           <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
         ) : null}
       </Grid>

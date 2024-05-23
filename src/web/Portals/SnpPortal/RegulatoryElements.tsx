@@ -89,12 +89,20 @@ export const COLORS: Map<string, string> = new Map([
 ]);
 
 export const GROUPS: Map<string, string> = new Map([
-  ["PLS", "promoter-like"],
-  ["pELS", "proximal enhancer-like"],
-  ["dELS", "distal enhancer-like"],
-  ["DNase-H3K4me3", "DNase-H3K4me3"],
-  ["CTCF-only", "CTCF-only"],
-]);
+  ["CA-CTCF", "Chromatin Accessible with CTCF"],
+  ["CA-TF", "Chromatin Accessible with TF"],
+  ["CA-H3K4me3", "Chromatin Accessible with H3K4me3"],
+  ["TF", "TF"],
+  ["CA", "Chromatin Accessible Only"],
+  ["pELS","Proximal Enhancer-Like Signature"],
+  ["dELS","Distal Enhancer-Like Signature"],
+  ["PLS","Promoter-Like Signature"],    
+  ["ylowdnase","Low DNase"],
+  ["zunclassified","zunclassified"]  
+])
+
+
+
 
 const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
   const { data, loading } = useQuery<SearchQueryResponse>(SEARCH_QUERY, {
@@ -118,9 +126,9 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
 
   const tableData = combinedResults.map((d) => {
     return [
-      { header: "Accession", value: d.accession },
+      { header: "cCRE ID", value: d.accession },
       {
-        header: "Group",
+        header: "cCRE class",
         value: GROUPS.get(d.group || "") || d.group || "rDHS",
         render: (
           <svg height={18}>

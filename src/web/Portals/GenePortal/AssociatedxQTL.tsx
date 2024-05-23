@@ -119,6 +119,7 @@ const SNP_QUERY = gql`
       start: $start
       end: $end
       assembly: $assembly
+      version: 40
     ) {
       name
       strand
@@ -163,7 +164,7 @@ export type SNPQueryResponse = {
 const QUERY = gql`
   ${CCRE_FIELDS}
   query q($assembly: String!, $name: [String]) {
-    queriedGene: gene(name: $name, assembly: $assembly) {
+    queriedGene: gene(name: $name, assembly: $assembly, version: 40) {
       transcripts {
         associated_ccres_pls {
           intersecting_ccres {
@@ -490,7 +491,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               <Link
                 rel="noopener noreferrer"
                 target="_blank"
-                href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}
+                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
+                //href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}
               >
                 {"*" + x.intersecting_ccres.intersecting_ccres[0]?.accession}
               </Link>
@@ -498,7 +500,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               <Link
                 rel="noopener noreferrer"
                 target="_blank"
-                href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}
+                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
+                
               >
                 {x.intersecting_ccres.intersecting_ccres[0]?.accession}
               </Link>

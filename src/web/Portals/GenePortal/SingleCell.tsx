@@ -279,7 +279,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
   const colors = useMemo(() => {
     const unique_celltypes = new Set(
       [...results.values()].map((x) =>
-        ctClass === "by SubClass" ? x.subclass : x.celltype
+        ctClass === "by Cell type" ? x.subclass : x.celltype
       )
     );
 
@@ -287,7 +287,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
     return new Map(
       [...unique_celltypes].map((x, i) => [
         x,
-        ctClass === "by SubClass" ? subClassColors[x] : celltypeColors[x],
+        ctClass === "by Cell type" ? subClassColors[x] : celltypeColors[x],
       ])
     );
   }, [results, ctClass]);
@@ -376,7 +376,7 @@ const SingleCell: React.FC<{
   selectDatasets: boolean;
 }> = ({ gene, pedataset, selectDatasets }) => {
   const [dataset, setDataset] = useState(pedataset);
-  const [ctClass, setCtClass] = useState("by SubClass");
+  const [ctClass, setCtClass] = useState("by Cell type");
   const { loading, data, colors, maximumValue } = useSingleCellData(
     dataset,
     gene,
@@ -448,17 +448,17 @@ const SingleCell: React.FC<{
       [...data.values()].slice(6000).map((x) => ({
         x: x.umap_1,
         y: x.umap_2,
-        data: ctClass === "by SubClass" ? x.subclass : x.celltype,
+        data: ctClass === "by Cell type" ? x.subclass : x.celltype,
         val: x.val,
         svgProps: {
           fill:
             colorScheme === "expression"
               ? x.expressionColor
-              : colors.get(ctClass === "by SubClass" ? x.subclass : x.celltype),
+              : colors.get(ctClass === "by Cell type" ? x.subclass : x.celltype),
           fillOpacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
           r: 8,
           strokeWidth:
-            ctClass === "by SubClass"
+            ctClass === "by Cell type"
               ? x.subclass === highlighted
                 ? 4
                 : 0
@@ -597,21 +597,21 @@ const SingleCell: React.FC<{
               <br />
               <StyledButton
                 btheme="light"
-                bvariant={ctClass === "by SubClass" ? "filled" : "outlined"}
-                key={"by SubClass"}
-                onClick={() => setCtClass("by SubClass")}
+                bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                key={"by Cell type"}
+                onClick={() => setCtClass("by Cell type")}
               >
-                by SubClass
+                by Cell type
               </StyledButton>
               &nbsp;
               {
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by Celltype" ? "filled" : "outlined"}
-                  key={"by Celltype"}
-                  onClick={() => setCtClass("by Celltype")}
+                  bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
+                  key={"by Broader Cell type"}
+                  onClick={() => setCtClass("by Broader Cell type")}
                 >
-                  by Celltype
+                  by Broader Cell type
                 </StyledButton>
               }
               &nbsp;
@@ -630,8 +630,8 @@ const SingleCell: React.FC<{
               {ctClass === "All Datasets" ? (
                 <>
                   <Tabs value={cttabIndex} onChange={handleCtTabChange}>
-                    <StyledTab label="by SubClass" />
-                    <StyledTab label="by Celltype" />
+                    <StyledTab label="by Cell type" />
+                    <StyledTab label="by Broader Cell type" />
                   </Tabs>
                   <br />
                   <DotPlot
@@ -648,7 +648,7 @@ const SingleCell: React.FC<{
                   disease={dataset}
                   yaxistitle={gene}
                   dotplotData={
-                    ctClass === "by SubClass"
+                    ctClass === "by Cell type"
                       ? dotplotDataSc.filter((d) => d.dataset === dataset)
                       : dotplotDataCt.filter((d) => d.dataset === dataset)
                   }
@@ -683,20 +683,20 @@ const SingleCell: React.FC<{
                 <br />
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by SubClass" ? "filled" : "outlined"}
-                  key={"by SubClass"}
-                  onClick={() => setCtClass("by SubClass")}
+                  bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                  key={"by Cell type"}
+                  onClick={() => setCtClass("by Cell type")}
                 >
-                  by SubClass
+                  by Cell type
                 </StyledButton>
                 &nbsp;
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by Celltype" ? "filled" : "outlined"}
-                  key={"by Celltype"}
-                  onClick={() => setCtClass("by Celltype")}
+                  bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
+                  key={"by Broader Cell type"}
+                  onClick={() => setCtClass("by Broader Cell type")}
                 >
-                  by Celltype
+                  by Broader Cell type
                 </StyledButton>
                 <br />
                 <br />
@@ -708,13 +708,13 @@ const SingleCell: React.FC<{
                     <DataTable
                       columns={COLUMNS}
                       rows={
-                        ctClass === "by SubClass"
+                        ctClass === "by Cell type"
                           ? scrows
                               .filter((s) => s.celltype !== "RB")
                               .filter((e) => e.dataset === dataset)
                           : ctrows.filter((e) => e.dataset === dataset)
                       }
-                      itemsPerPage={ctClass === "by SubClass" ? 30 : 10}
+                      itemsPerPage={ctClass === "by Cell type" ? 30 : 10}
                       searchable
                       sortColumn={2}
                       onRowMouseEnter={(row: any) =>

@@ -43,7 +43,7 @@ export type BigQueryResponse = {
 
 const grns = [
   [
-    "Astrocytes Enhancer and Promoter ",
+    "Astrocytes Enhancer and Promoter",
     "https://downloads.wenglab.org/Ast_GRN.bb",
   ],
   [

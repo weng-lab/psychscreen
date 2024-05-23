@@ -125,22 +125,15 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
             </Tabs>
             <Divider />
           </Box>
-          {tabIndex === 0 && celltype && ATACTRACKS["ATAC Seq Peaks"].find(d=>d[0].toLowerCase()===celltype!!.replace(" or ", "/").toLowerCase() ) && (
+          {tabIndex === 0 && celltype && (
             <SingleCellBrowser
               coordinates={coordinates}
               assembly={"hg38"}
               atactracks
-              defaultatactracks = { [
-                ATACTRACKS["ATAC Seq Peaks"].find(d=>d[0].toLowerCase()===celltype!!.replace(" or ", "/").toLowerCase() )
-              ]
-              }
+             
             />
           ) }
-          {tabIndex === 0 && celltype && !ATACTRACKS["ATAC Seq Peaks"].find(d=>d[0].toLowerCase()===celltype!!.replace(" or ", "/").toLowerCase() ) && (
-             <><br/>{"No scATAC-Seq peaks tracks available for " + celltype?.replace(" or ", "/")}</>
-          )
-
-          }
+     
           {tabIndex == 1 &&
             (GRN_cellType_Cards.find(
               (c) => c.cardLabel === celltype?.replace(" or ", "/")

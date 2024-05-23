@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 const QUERY = gql`
   query q($id: [String!]) {
-    gene(name_prefix: $id, assembly: "GRCh38") {
+    gene(name_prefix: $id, assembly: "GRCh38", version: 40) {
       name
       id
     }
@@ -55,7 +55,7 @@ const QTLSIGASSOC_QUERY = gql`
 
 const GENE_NAME_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
-    gene(assembly: $assembly, name_prefix: $name_prefix) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, version: 40) {
       name
       id
     }

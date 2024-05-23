@@ -11,7 +11,7 @@ import { StyledButton } from "../styles";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit, version: 40) {
       name
       id
       coordinates {

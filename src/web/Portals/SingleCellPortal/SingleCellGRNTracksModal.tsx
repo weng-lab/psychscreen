@@ -98,7 +98,7 @@ const TRACKS = {
       "Lamp5 Enhancer and Promoter",
       "https://downloads.wenglab.org/Lamp5_GRN.bb",
     ],
-    ["L6b  Enhancer and Promoter", "https://downloads.wenglab.org/L6b_GRN.bb"],
+    ["L6b Enhancer and Promoter", "https://downloads.wenglab.org/L6b_GRN.bb"],
     [
       "Layer 6 Intratelencephalic projecting  Enhancer and Promoter",
       "https://downloads.wenglab.org/L6.IT_GRN.bb",

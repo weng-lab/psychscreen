@@ -151,7 +151,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
                   ? dotplotData
                       .sort((a, b) =>
                         value === "log2(fold change)"
-                          ? b.mean_count - a.mean_count
+                          ? Math.abs(b.mean_count) - Math.abs(a.mean_count)
                           : b.expr_frac - a.expr_frac
                       )
                       .slice(0, 50)

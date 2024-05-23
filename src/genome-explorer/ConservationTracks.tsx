@@ -102,7 +102,7 @@ const ConservationTracks: React.FC<ConservationTrackProps> = (props) => {
   const [cTracks, setTracks] = useState<[string, string][]>([
     //        [ "100-vertebrate phyloP conservation score", "https://downloads.wenglab.org/hg38.phyloP100way.bw" ],
     [
-      "240-mammal phyloP conservation score (Vertical Viewing Range (-2 to 9))",
+      "240-mammal phyloP conservation score (Vertical Viewing Range [-2 to 9])",
       "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig",
     ],
     //  [ "43-primate conservation score", "https://downloads.wenglab.org/hg38_43primates_phastCons.bw" ]
@@ -192,7 +192,7 @@ const ConservationTracks: React.FC<ConservationTrackProps> = (props) => {
         textAnchor="middle"
         fill="#4c1f8f"
       >
-        Conservation Tracks
+        Evo. Conservation 
       </text>
     </>
   );

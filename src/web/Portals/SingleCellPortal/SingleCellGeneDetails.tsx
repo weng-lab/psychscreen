@@ -12,7 +12,7 @@ import { StyledTab } from "../../Portals/styles";
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
-    gene(assembly: $assembly, name_prefix: $name_prefix) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, version: 40) {
       name
       id
       coordinates {

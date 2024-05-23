@@ -41,7 +41,7 @@ const GTEX_GENES_QUERY = gql`
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
-    gene(assembly: $assembly, name_prefix: $name_prefix) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, version: 40) {
       name
       id
       coordinates {
@@ -341,7 +341,7 @@ const GeneDetails: React.FC = (props) => {
                   >
                     <ViolinPlot
                       data={toPlot}
-                      title="log10 TPM"
+                      title="log10(gene expression[TPM])"
                       width={width}
                       height={width / 2}
                       colors={tissueColors}

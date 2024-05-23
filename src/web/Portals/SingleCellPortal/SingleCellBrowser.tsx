@@ -20,6 +20,7 @@ const SNP_QUERY = gql`
       start: $start
       end: $end
       assembly: $assembly
+      version: 40
     ) {
       name
       strand
@@ -244,7 +245,7 @@ export const SingleCellBrowser = (props) => {
           <AtacSeqPeaksTracks
             assembly="GRCh38"
             //tracks={atacseqpeaksTracks}
-            tracks = { props.defaultatactracks }
+        //    tracks = { props.defaultatactracks }
             domain={coordinates || eexpandedCoordinates}
           />
         )}

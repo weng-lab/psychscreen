@@ -7,6 +7,7 @@ import Tabs from "@mui/material/Tabs";
 import { StyledButton, StyledTab } from "../../Portals/styles";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { GenomicRange } from "./Browser";
+import { GROUPS } from "../SnpPortal/RegulatoryElements";
 
 export type GwasIntersectingSnpsWithCcres = {
   snpid: string;
@@ -40,22 +41,27 @@ const formatEntry = [
   { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
-  { header: "Nearest Gene", value: (d) => d.associated_gene },
+  { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene },
   { header: "GWAS p-value", value: (d) => d.association_p_val },
   {
     header: "cCRE ID",
     value: (d) => d.ccreid,
-    render: (d) => (
+    render: (d) => {  
+      if(d.ccreid==".")
+      {
+        return <>{"NA"}</>
+      }
+      return(
       <Link
         rel="noopener noreferrer"
         target="_blank"
-        href={`https://screen.beta.wenglab.org/search/?q=${d.ccreid}&assembly=GRCh38`}
+        href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${d.ccreid}&page=2`}
       >
         {d.ccreid}
       </Link>
-    ),
+    )},
   },
-  { header: "cCRE class", value: (d) => d.ccre_class },
+  { header: "cCRE class", value: (d) => GROUPS.get(d.ccre_class) },
 ];
 
 const bcreformatEntry = [
@@ -64,8 +70,8 @@ const bcreformatEntry = [
   { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
-  { header: "Nearest Gene", value: (d) => d.associated_gene },
-  { header: "GWAS p-value", value: (d) => d.association_p_val },
+  { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene },
+  { header: "GWAS pe", value: (d) => d.association_p_val  },
   {
     header: "bCRE ID",
     value: (d) => d.ccreid,
@@ -73,7 +79,7 @@ const bcreformatEntry = [
       <Link
         rel="noopener noreferrer"
         target="_blank"
-        href={`https://screen.beta.wenglab.org/search/?q=${d.ccreid}&assembly=GRCh38`}
+        href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${d.ccreid}&page=2`}
       >
         {d.ccreid}
       </Link>

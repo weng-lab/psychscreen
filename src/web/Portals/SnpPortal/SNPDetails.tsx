@@ -64,6 +64,7 @@ export const QUERY = gql`
       start: $start
       end: $end
       assembly: "GRCh38"
+      version: 40
     ) {
       name
       strand

@@ -23,9 +23,9 @@ export const CAQTL = ({ caqtls, loading }) => {
           <Link
             rel="noopener noreferrer"
             target="_blank"
-            href={`https://doi.org/10.1101/2023.03.02.530826`}
+            href={`https://doi.org/10.1126/science.adh4265`}
           >
-            10.1101/2023.03.02.530826
+            10.1126/science.adh4265
           </Link>
           ).
         </Typography>
