@@ -1,4 +1,5 @@
-import React, { useRef, useMemo, useCallback, useContext } from "react";
+import React, { useRef, useMemo } from "react";
+import { useTooltip, useTooltipInPortal, defaultStyles as defaultTooltipStyles } from '@visx/tooltip';
 
 export interface Domain {
   chromosome?: string;
@@ -10,6 +11,8 @@ export type Link = {
   regionA: Domain;
   regionB: Domain;
   score: number;
+  targetTF?: string;
+  targetGene: string;
 };
 
 export type ClickedLink = {
@@ -23,7 +26,6 @@ export type ArcProps = {
   height: number;
   id?: string;
   transform?: string;
-  color?: string;
   arcOpacity?: number;
   domain: Domain;
   scoreThreshold?: number;
@@ -35,7 +37,6 @@ export type ArcProps = {
   onLinkMouseOver?: (link: Link) => void;
   onLinkMouseOut?: (link: Link) => void;
   svgRef?: React.RefObject<SVGSVGElement>;
-  tooltipContent?: React.FC<any>;
 };
 
 /**
@@ -85,10 +86,14 @@ export function linearTransform(
   const owidth = outDomain.end - outDomain.start;
   return (i) => ((i - inDomain.start) * owidth) / iwidth + outDomain.start;
 }
+
 export type Rectangle = {
   start: number;
   end: number;
   fill: string;
+  trueCoordinates: Domain;
+  targetTF?: string;
+  targetGene: string;
 };
 
 /**
@@ -143,9 +148,8 @@ export function renderSimpleLinks(
       const gg = Math.floor(g(score));
       const bb = Math.floor(b(score));
       return {
-        d: `M ${firstC} ${(height * 7) / 8} Q ${
-          (firstC + lastC) / 2
-        } 0 ${lastC} ${(height * 7) / 8}`,
+        d: `M ${firstC} ${(height * 7) / 8} Q ${(firstC + lastC) / 2
+          } 0 ${lastC} ${(height * 7) / 8}`,
         stroke: "#" + p(rr) + p(gg) + p(bb),
       };
     });
@@ -154,20 +158,34 @@ export function renderSimpleLinks(
 export function renderRegions(
   links: Link[],
   x: (value: number) => number,
-  color: string
 ): Rectangle[] {
   return links.reduce<Rectangle[]>(
     (clist, link) => [
+      //This takes each link and extracts two points from it
       ...clist,
+      //First is Enhancer
       {
         start: x(link.regionA.start),
         end: x(link.regionA.end),
-        fill: color,
+        fill: '#FFCD00',
+        trueCoordinates: {
+          start: link.regionA.start,
+          end:link.regionA.end
+        },
+        targetTF: link.targetTF,
+        targetGene: link.targetGene
       },
+      //Second is Promoter
       {
         start: x(link.regionB.start),
         end: x(link.regionB.end),
-        fill: color,
+        fill: '#FF0000',
+        trueCoordinates: {
+          start: link.regionB.start,
+          end:link.regionB.end
+        },
+        targetTF: link.targetTF,
+        targetGene: link.targetGene
       },
     ],
     []
@@ -195,120 +213,14 @@ const deepEqual = function (x, y) {
   } else return false;
 };
 
-const STYLE = {
-  fontSize: "12px",
-  backgroundColor: "#ffffff",
-  border: "1px solid",
-  padding: "1em",
-};
-
-export const TooltipContent: React.FC<any> = (rect) => (
-  <div style={STYLE}>
-    {rect.name ? `name: ${rect.name}` : ""}
-    <br />
-    {rect.score !== undefined ? `score: ${rect.score}` : ""}
-  </div>
-);
-type MouseOverEvent<T> = (
-  event: React.MouseEvent<SVGRectElement>,
-  v: T
-) => void;
-type MouseOutEvent = () => void;
-type TooltipCallbacks<T> = [MouseOverEvent<T>, MouseOutEvent];
-const svgPoint = (svg: SVGSVGElement, event: React.MouseEvent<SVGElement>) => {
-  if (svg.createSVGPoint && svg) {
-    let point = svg.createSVGPoint();
-    point.x = event.clientX;
-    point.y = event.clientY;
-    point = point.matrixTransform(svg!.getScreenCTM()!.inverse());
-    return [point.x, point.y];
-  }
-  const rect = svg.getBoundingClientRect();
-  return [
-    event.clientX - rect.left - svg.clientLeft,
-    event.clientY - rect.top - svg.clientTop,
-  ];
-};
-export type TooltipProps = {
-  width: number;
-  height: number;
-};
-
-export type TooltipData = {
-  show: boolean;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  content?: React.ReactElement;
-  setTooltip: (tooltip: {
-    show: boolean;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    content?: React.ReactElement;
-  }) => void;
-};
-
-const TooltipContext = React.createContext<TooltipData>({
-  show: false,
-  x: 0,
-  y: 0,
-  width: 0,
-  height: 0,
-  content: undefined,
-  setTooltip: () => {},
-});
-
-export function useTooltip<T>(
-  Tooltip: React.FC<T>,
-  width: number,
-  svgRef?: React.RefObject<SVGSVGElement>,
-  onMouseOver?: MouseOverEvent<T>,
-  onMouseOut?: MouseOutEvent
-): TooltipCallbacks<T> {
-  const tooltipContext = useContext(TooltipContext);
-  const mouseOver = useCallback(
-    (event: React.MouseEvent<SVGRectElement>, v: T) => {
-      if (!svgRef || !svgRef.current) return;
-      const [x, y] = svgPoint(svgRef.current, event);
-      tooltipContext!.setTooltip({
-        show: true,
-        x: x > width - 100 ? x - 90 : x + 10,
-        y: y + 10,
-        width: 100,
-        height: 50,
-        content: React.createElement(Tooltip as any, v as any),
-      });
-      onMouseOver && onMouseOver(event, v);
-    },
-    [Tooltip, width, svgRef, tooltipContext]
-  );
-  const mouseOut = useCallback(() => {
-    tooltipContext!.setTooltip({
-      show: false,
-      x: 0,
-      y: 0,
-      content: undefined,
-      width: 0,
-      height: 0,
-    });
-    onMouseOut && onMouseOut();
-  }, [tooltipContext]);
-  return [mouseOver, mouseOut];
-}
-
 export const Arcs: React.FC<ArcProps> = (props) => {
   const uuid = useRef("nsdcheuvcbudruecvubv");
-  //const [ mouseOver, mouseOut ] = useTooltip(props.tooltipContent || TooltipContent, props.width, props.svgRef);
-  const color = props.color || "#000000";
   const x = xtransform(props.domain, props.width);
   const scoreThreshold = props.scoreThreshold || 0;
   const colorMax = props.colorMax || 0;
   const renderedRegions = useMemo(
-    () => renderRegions(props.data, x, color),
-    [props.data, props.domain, props.width, props.color]
+    () => renderRegions(props.data, x),
+    [props.data, props.domain, props.width]
   );
   const linksData = props.data.filter((d) => !deepEqual(d.regionA, d.regionB));
 
@@ -319,42 +231,95 @@ export const Arcs: React.FC<ArcProps> = (props) => {
       props.width,
       props.domain,
       props.height,
-      props.color,
       linksData,
       props.scoreThreshold,
       props.colorMax,
     ]
   );
 
+  interface TooltipData {
+    coordinates: Domain,
+    targetTF?: string,
+    targetGene: string,
+  }
+
+  const {
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+    tooltipOpen,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip<TooltipData>();
+
+  const { TooltipInPortal } = useTooltipInPortal({
+    // use TooltipWithBounds
+    detectBounds: true,
+    // when tooltip containers are scrolled, this will correctly update the Tooltip position
+    scroll: true,
+  })
+
   return (
-    <g
-      width={props.width}
-      height={props.height}
-      transform={props.transform}
-      clipPath={`url(#${uuid.current})`}
-    >
-      <defs>
-        <ClipPath id={uuid.current} width={props.width} height={props.height} />
-      </defs>
-      {renderedRegions.map((rect, i) => (
-        <rect
-          key={`${props.id}_${i}`}
-          height={props.height / 4}
-          width={rect.end - rect.start < 2 ? 2 : rect.end - rect.start}
-          x={rect.start}
-          y={(props.height * 3) / 4}
-          fill={rect.fill}
-        />
-      ))}
-      {renderedLinks.map((path, i) => (
-        <path
-          d={path.d}
-          stroke={color}
-          strokeOpacity={props.arcOpacity || 0.7}
-          key={`${props.id}_path_${i}`}
-          fill="none"
-        />
-      ))}
-    </g>
+    <>
+      <g
+        width={props.width}
+        height={props.height}
+        transform={props.transform}
+        clipPath={`url(#${uuid.current})`}
+      >
+        <defs>
+          <ClipPath id={uuid.current} width={props.width} height={props.height} />
+        </defs>
+        {renderedLinks.map((path, i) => (
+          <path
+            d={path.d}
+            stroke="black"
+            strokeOpacity={props.arcOpacity || 0.7}
+            key={`${props.id}_path_${i}`}
+            fill="none"
+          />
+        ))}
+        {renderedRegions.map((rect, i) => (
+          <rect
+            key={`${props.id}_${i}`}
+            id={'rect' + i}
+            height={props.height / 4}
+            width={rect.end - rect.start < 2 ? 2 : rect.end - rect.start}
+            x={rect.start}
+            y={(props.height * 3) / 4}
+            fill={rect.fill}
+            onMouseEnter={(event) => {
+              showTooltip({
+                tooltipLeft: event.clientX, 
+                tooltipTop: event.clientY,
+                tooltipData: {
+                  coordinates: rect.trueCoordinates,
+                  targetGene: rect.targetGene,
+                  targetTF: rect.targetTF
+                }
+              });
+            }}
+            onMouseLeave={(event) => {
+              hideTooltip()
+            }}
+          />
+        ))}
+      </g>
+      {tooltipOpen && (
+        <TooltipInPortal
+          // set this to random so it correctly updates with parent bounds
+          key={Math.random()}
+          top={tooltipTop}
+          left={tooltipLeft}
+          style={{ ...defaultTooltipStyles, backgroundColor: '#283238', color: 'white' }}
+        >
+          <p><strong>{props.domain.chromosome}</strong></p>
+          <p>Start: <strong>{tooltipData?.coordinates.start.toLocaleString()}</strong></p>
+          <p>End: <strong>{tooltipData?.coordinates.end.toLocaleString()}</strong></p>
+          <p>Target Gene: <strong>{tooltipData?.targetGene}</strong></p>
+          {tooltipData?.targetTF && <p>Target TF: <strong>{tooltipData?.targetTF}</strong></p>}
+        </TooltipInPortal>
+      )}
+    </>
   );
 };
