@@ -91,7 +91,7 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
           <Typography
             type="headline"
             size="large"
-            style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
+            style={{ marginTop: "1em", marginBottom: "0.2em" }}
           >
             Celltype Details: {celltype?.replace(" or ", "/")}
           </Typography>

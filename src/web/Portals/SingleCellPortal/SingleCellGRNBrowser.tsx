@@ -253,11 +253,14 @@ export const BBTrack: React.FC<{
 
   const re = data as BigBedData[];
   let linkdata = re.map((r) => {
+    const isGRNData: boolean = !!r.name?.split(":")[3] //If two items appear
     if (r.name?.includes("NA:")) {
       return {
         regionA: { chromosome: r.chr, start: r.start, end: r.end },
         regionB: { chromosome: r.chr, start: +r.start, end: +r.end },
         score: 30,
+        targetTF: isGRNData ? r.name?.split(":")[2] || 'Target TF not identified' : undefined,
+        targetGene: isGRNData ? r.name?.split(":")[3] || 'Target Gene not identified' : r.name?.split(":")[2] || 'Target Gene not identified' //If it's eQTL data the target gene data will be in spot 2 instead
       };
     } else {
       return {
@@ -268,6 +271,8 @@ export const BBTrack: React.FC<{
           end: +r.name?.split(":")[1].split("-")[1]!!,
         },
         score: 30,
+        targetTF: isGRNData ? r.name?.split(":")[2] || 'Target TF not identified' : undefined,
+        targetGene: isGRNData ? r.name?.split(":")[3] || 'Target Gene not identified' : r.name?.split(":")[2] || 'Target Gene not identified' //If it's eQTL data the target gene data will be in spot 2 instead
       };
     }
   });
@@ -289,7 +294,7 @@ export const BBTrack: React.FC<{
         arcOpacity={1}
         transform="translate(0,40)"
         data={linkdata}
-        color="black"
+        // color="black"
         svgRef={svgRef}
       />
     </g>

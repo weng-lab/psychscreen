@@ -12,8 +12,8 @@ const AboutUsPanel: React.FC = () => {
           description={`
             PsychSCREEN is a comprehensive catalog of genetic and epigenetic
             knowledge about the human brain. It was designed and built by Dr.
-            Zhiping Weng's lab at UMass Chan Medical School as a product of the
-            PsychENCODE Consortium.
+            Zhiping Weng's lab in collaboration with the Moore Lab and Colubri Lab 
+            at UMass Chan Medical School as a product of the PsychENCODE Consortium.
           `}
           buttonText={"Learn More"}
           buttonLink={"/psychscreen/aboutus"}

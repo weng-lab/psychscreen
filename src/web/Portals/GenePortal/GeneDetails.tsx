@@ -195,7 +195,7 @@ const GeneDetails: React.FC = (props) => {
         <Typography
           type="headline"
           size="large"
-          style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
+          style={{ marginTop: "1em", marginBottom: "0.2em" }}
         >
           <img
             alt="DNA"

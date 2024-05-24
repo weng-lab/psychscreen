@@ -265,7 +265,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     <Grid container {...props}>
       <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
       <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+        <Container style={{ marginTop: "20px", marginLeft: "100px" }}>
           <Typography
             type="display"
             size="medium"

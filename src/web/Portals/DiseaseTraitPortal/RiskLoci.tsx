@@ -230,7 +230,7 @@ const RiskLocusView: React.FC<{
                   at locus
                 </text>                
                 <text x={28} y={68} fontFamily="roboto" fontSize="18px">
-                  lowest p-value at locus:{" "}
+                  lowest <tspan fontFamily="cursive">P</tspan>-value at locus:{" "}
                   {groupedLoci
                     .get(selected[0])!
                     [selected[1]].minimump.toExponential(1)}

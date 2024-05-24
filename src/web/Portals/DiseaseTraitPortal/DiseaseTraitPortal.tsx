@@ -90,8 +90,8 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> {DISEASE_CARDS.length}{" "}
-            total traits cataloged
+            <CheckIcon style={{ marginRight: "9px" }} />{" "}
+            18 total traits cataloged
           </Typography>
           <Typography
             type="body"
@@ -106,7 +106,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
               marginBottom: "40px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 1,103 b-cCRE/trait
+            <CheckIcon style={{ marginRight: "9px" }} /> 5,848 b-cCRE/trait
             associations
           </Typography>
           <DiseaseTraitAutoComplete

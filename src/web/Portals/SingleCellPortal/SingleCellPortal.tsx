@@ -108,8 +108,7 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} />
-            Transcriptomes for 1,391,772 single cells
+            <CheckIcon style={{ marginRight: "9px" }} /> Transcriptomes for 2,040,943 single cells
           </Typography>
           <Typography
             type="body"
@@ -124,8 +123,7 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
               marginBottom: "40px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility
-            for 1,009,942 single cells
+            <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility for 344,135 single cells
           </Typography>
           <br />
           <br />

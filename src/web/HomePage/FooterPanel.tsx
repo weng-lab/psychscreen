@@ -35,7 +35,12 @@ const FooterPanel = () => {
             {", "}
             <MuiLink color="inherit" href="https://www.moore-lab.org/">
               Moore Lab
-            </MuiLink>{" "}
+            </MuiLink>
+            {", and "}
+            <MuiLink color="inherit" href="https://co-labo.org/">
+              Colubri Lab
+            </MuiLink>
+            {" "}
             {new Date().getFullYear()}.
           </Typography>
           <Typography variant="body2">

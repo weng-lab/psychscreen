@@ -8,6 +8,7 @@ import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
 import { QueryResponse } from "./GeneOverview";
 import { StyledButton } from "../styles";
+import { Stack } from "@mui/material";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
@@ -104,22 +105,24 @@ export const GeneAutoComplete = (props) => {
 
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
   const gridsize = props.gridsize || 5.5;
+
   return (
-    <Grid container alignItems="center">
+    <Stack>
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
           <Typography>Search gene:</Typography>
           <br />
         </Grid>
       )}
-      <Grid item sm={gridsize} md={gridsize} lg={gridsize} xl={gridsize}>
+      <Grid container alignItems="center" wrap="nowrap" gap={2}>
+      <Grid item>
         <Autocomplete
           id="gene-autocomplete"
           sx={{ width: 300, paper: { height: 200 } }}
           options={options}
           ListboxProps={{
             style: {
-              maxHeight: "180px",
+              maxHeight: "250px",
             },
           }}
           onKeyDown={(event) => {
@@ -187,14 +190,7 @@ export const GeneAutoComplete = (props) => {
         />
       </Grid>
       {!props.hideSearchButton && (
-        <Grid
-          item
-          sm={1}
-          md={1}
-          lg={1}
-          xl={1}
-          sx={{ verticalAlign: "middle", textAlign: "center" }}
-        >
+          <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
           <StyledButton
             bvariant="filled"
             btheme="light"
@@ -228,5 +224,6 @@ export const GeneAutoComplete = (props) => {
         </Grid>
       )}
     </Grid>
+    </Stack>
   );
 };
