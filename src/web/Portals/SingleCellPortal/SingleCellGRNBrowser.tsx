@@ -184,7 +184,7 @@ const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
         </div>
         <br />
         <CytobandView
-          innerWidth={1000}
+          innerWidth={1400}
           height={15}
           chromosome={coordinates.chromosome!}
           assembly="hg38"
@@ -197,6 +197,8 @@ const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
             domain={coordinates}
             withInput={false}
           />
+           <br/>
+          {"Hold shift and drag to select a region"}
         </div>
         <br />
         <GenomeBrowser

@@ -74,7 +74,7 @@ export const SingleCellGeneDetails = (props) => {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
             width="1.7%"
           />
-          &nbsp;Gene Details: {gene}
+          &nbsp;Gene Details: <em>{gene}</em>
         </Typography>
         <br />
         <div

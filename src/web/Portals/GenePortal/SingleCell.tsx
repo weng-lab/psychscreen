@@ -40,7 +40,7 @@ const COLUMNS = [
       return <b>Fraction Cells Non-Zero</b>;
     },
     value: (row) => row.pctexp,
-    render: (row) => row.pctexp.toFixed(3),
+    render: (row) => row.pctexp.toFixed(2),
   },
   {
     header: "Average Expression",
@@ -48,7 +48,7 @@ const COLUMNS = [
       return <b>Average Expression</b>;
     },
     value: (row) => row.avgexp,
-    render: (row) => row.avgexp.toFixed(3),
+    render: (row) => row.avgexp.toFixed(2),
   },
 ];
 

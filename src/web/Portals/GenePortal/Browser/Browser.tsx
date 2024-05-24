@@ -404,7 +404,7 @@ const Browser: React.FC<any> = (props) => {
   return (
     <>
       <CytobandView
-        innerWidth={1000}
+        innerWidth={1400}
         height={15}
         chromosome={props.coordinates.chromosome!}
         assembly={"hg38"}
@@ -416,7 +416,9 @@ const Browser: React.FC<any> = (props) => {
           onDomainChanged={onDomainChanged}
           domain={coordinates || eexpandedCoordinates}
           withInput={false}
-        />
+        /> 
+        <br/>
+        {"Hold shift and drag to select a region"}
       </div>
       <br />
       <GenomeBrowser

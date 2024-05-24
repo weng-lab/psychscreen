@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback, ReactElement } from "react";
 import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
@@ -32,8 +32,8 @@ type DotPlotProps = {
   deg?: boolean;
   yaxistitle: string;
   dotplotData?: any;
-  title1?: React.ReactElement;
-  title2?: React.ReactElement;
+  title1?: ReactElement;
+  title2?: ReactElement;
   celltype?: boolean;
 };
 
@@ -132,7 +132,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
 
   let uniqueDatasets = new Set(dotplotData?.map((c) => c.dataset));
   // Compute dimension factors
-  const radiusDomain: [number, number] = React.useMemo(() => {
+  const radiusDomain: [number, number] = useMemo(() => {
     const radii = keys.map((k) => results.get(k)!.map((e) => e.radius)).flat();
     let min = Math.min(...radii);
     let max =
@@ -141,7 +141,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         : Math.max(...radii);
     return [min, max];
   }, [results, keys]);
-  const colorDomain: [number, number] = React.useMemo(() => {
+  const colorDomain: [number, number] = useMemo(() => {
     const cp = keys
       .map((k) => results.get(k)!.map((e) => e.colorpercent))
       .flat();
@@ -153,32 +153,32 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
     return [min, max];
   }, [results, keys]);
 
-  const radiusTransform = React.useCallback(
+  const radiusTransform = useCallback(
     linearTransform(radiusDomain, [20, 60]),
     radiusDomain
   );
-  const verticalTransform = React.useCallback(
+  const verticalTransform = useCallback(
     linearTransform([0, 4], [(height / 2) * 0.9, (height / 2) * 0.1]),
     [height]
   );
 
   // Compute radius and color scaling factors
   const length = keys.length + 20;
-  const radiusRange = React.useMemo(() => {
+  const radiusRange = useMemo(() => {
     const diff = +((+radiusDomain[1] - +radiusDomain[0]) / 4);
     return [0, 1, 2, 3].map((x) => radiusDomain[0] + diff * x);
   }, [radiusDomain]);
-  const colorPercent = React.useMemo(() => {
+  const colorPercent = useMemo(() => {
     return split(colorDomain[0], colorDomain[1], 4);
   }, [colorDomain]);
-  const gradient = React.useMemo(() => {
+  const gradient = useMemo(() => {
     return lt({ start: 0, end: colorDomain[1] }, { start: 191, end: 0 });
   }, [colorDomain]);
 
-  const posgradient = React.useMemo(() => {
+  const posgradient = useMemo(() => {
     return lt({ start: 0, end: colorDomain[1] }, { start: 191, end: 0 });
   }, [colorDomain]);
-  const neggradient = React.useMemo(() => {
+  const neggradient = useMemo(() => {
     return lt({ start: colorDomain[0], end: 0 }, { start: 0, end: 191 });
   }, [colorDomain]);
 
@@ -194,6 +194,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         width={(width / length) * 2}
         height={height / 2}
         range={[0, 1]}
+        fontStyle={ celltype ? "normal": "italic"}
       />
       {Array.from(uniqueDatasets).map((n, i) => {
         return (
@@ -279,6 +280,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               fontSize="140px"
               transform="rotate(-90)"
               textAnchor="end"
+              fontStyle={!celltype ? "normal":"italic"}
               fontWeight={
                 deg ? (results!!.get(x)!![0].highlighted ? "bold" : "") : ""
               }

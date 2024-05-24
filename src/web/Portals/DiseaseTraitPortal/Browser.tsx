@@ -170,7 +170,7 @@ const Browser: React.FC<{
       <br />
 
       <CytobandView
-        innerWidth={1000}
+        innerWidth={1400}
         height={15}
         chromosome={coordinates.chromosome!}
         assembly="hg38"
@@ -183,7 +183,10 @@ const Browser: React.FC<{
           domain={coordinates}
           withInput={false}
         />
+        <br/>
+        {"Hold shift and drag to select a region"}
       </div>
+      
       <br />
 
       <GenomeBrowser

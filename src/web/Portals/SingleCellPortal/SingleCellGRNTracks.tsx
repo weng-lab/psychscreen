@@ -108,12 +108,12 @@ export const SingleCellGRNTracks: React.FC<any> = (props) => {
       <rect
         transform="translate(0,0)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#194023"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

@@ -90,6 +90,7 @@ const AdultFetalScatterPlot: React.FC<any> = ({
           width={width * 0.1}
           height={height * 0.9}
           range={range}
+          fontStyle={"normal"}
         />
       </g>
       <g transform={`translate(${width * 0.08},${height * 0.7})`}>

@@ -63,7 +63,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps> = (props) => {
     <>
       {props.initialPosition.chromosome && (
         <CytobandView
-          innerWidth={1000}
+          innerWidth={2000}
           height={15}
           chromosome={props.initialPosition.chromosome}
           assembly={props.assembly === "GRCh38" ? "hg38" : "mm10"}

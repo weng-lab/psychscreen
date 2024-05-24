@@ -90,12 +90,12 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
       <rect
         transform="translate(0,0)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#ab3f00"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

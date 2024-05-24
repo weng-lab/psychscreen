@@ -17,6 +17,7 @@ const YAxis: React.FC<AxisProps> = (props) => {
         y={props.width * 0.2 + 100}
         dominantBaseline="center"
         fontSize="150px"
+        fontStyle={props.fontStyle}
       >
         {props.title}
       </text>

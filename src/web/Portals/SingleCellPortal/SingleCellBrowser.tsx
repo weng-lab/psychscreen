@@ -200,7 +200,7 @@ export const SingleCellBrowser = (props) => {
       <br />
       <br />
       <CytobandView
-        innerWidth={1000}
+        innerWidth={1400}
         height={15}
         chromosome={(coordinates || eexpandedCoordinates).chromosome!}
         assembly={"hg38"}
@@ -213,6 +213,8 @@ export const SingleCellBrowser = (props) => {
           domain={coordinates || eexpandedCoordinates}
           withInput={false}
         />
+         <br/>
+        {"Hold shift and drag to select a region"}
       </div>
       <br />
       <GenomeBrowser

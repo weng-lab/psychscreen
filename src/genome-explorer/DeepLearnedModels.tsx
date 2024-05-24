@@ -96,12 +96,12 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
   );
   const height = useMemo(
     () =>
-      90 +
+      130 +
       (domain.end - domain.start <= 10000 &&
       displayedTracks.find((x) => x[0] === "241-way mammalian phylo-P")?.length
-        ? 90 + displayedTracks.length * 90 - 130
-        : displayedTracks.length * 90) -
-      90,
+        ? 130 + displayedTracks.length * 130 - 130
+        : displayedTracks.length * 130) -
+        130,
     [displayedTracks, domain]
   );
   useEffect(() => {
@@ -183,9 +183,9 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
         .map((x, i) => (
           <TitledImportanceTrack
             key={`${i}_${domain.start}`}
-            transform={`translate(0,${90 * i})`}
+            transform={`translate(0,${130 * i})`}
             title={x[0]}
-            height={90}
+            height={130}
             width={1400}
             signalURL={`${x[1]}/${CELL_TYPES.get(x[0])!}.profile_scores.bw`}
             imputedSignalURL={`${x[1]}/predictions_${CELL_TYPES.get(
@@ -220,12 +220,12 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
       <rect
         transform="translate(0,0)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#194023"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

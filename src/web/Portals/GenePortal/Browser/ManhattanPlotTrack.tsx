@@ -194,12 +194,12 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
       <rect
         transform="translate(0,-40)"
         height={300}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={300}
-        width={15}
+        width={10}
         fill="#24529c"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}
