@@ -10,14 +10,20 @@ import { BIG_QUERY, BigQueryResponse } from "./EpigeneticTracks";
 import { Header, Loader } from "semantic-ui-react";
 import { BigBedData } from "bigwig-reader";
 import {
-  ManhattanTrack,
-  ManhattanTrackProps,
+  //  ManhattanTrack,
+  //ManhattanTrackProps,
   LDTrack,
   EmptyTrack,
 } from "umms-gb";
-import { ManhattanSNP } from "umms-gb/dist/components/tracks/manhattan/types";
+
+import {
+  ManhattanSNP,
+  ManhattanTrack,
+  ManhattanTrackProps,
+} from "./ManhattanTrack";
 import { linearTransform } from "../web/Portals/GenePortal/violin/utils";
 import { associateBy } from "queryz";
+//import { ManhattanSNP } from "umms-gb/dist/components/tracks/manhattan/types";
 export type LDEntry = {
   id: string;
   rSquared: number;
@@ -64,7 +70,7 @@ const tracks = (urls: string[], pos: GenomicRange) =>
     chr1: pos.chromosome!,
     start: pos.start,
     end: pos.end,
-    url,
+    url, //: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
   }));
 
 const Tooltip: React.FC<ManhattanSNP> = (snp) => (
@@ -106,7 +112,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
       ...(data?.bigRequests || []).flatMap((x, i) =>
         ((x?.data || []) as BigBedData[]).map((xx: BigBedData) => ({
           rsId: xx.name?.split("_")[0] || "",
-          [i]: Math.exp(-+(xx.name?.split("_")[1] || "0")),
+          [i]: +(xx.name?.split("_")[1] || "0"),
           coordinates: {
             start: xx.start,
             end: xx.end,
@@ -114,13 +120,13 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
           },
         }))
       ),
-      ...props.allQTLs.map((xx) => ({
+      /*...props.allQTLs.map((xx) => ({
         rsId: xx.id,
         score: 1,
         coordinates: xx.coordinates,
-      })),
+      })),*/
     ],
-    [data, props.allQTLs]
+    [data]
   );
   const inViewCoordinates = useMemo(
     () =>
@@ -132,6 +138,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
     [inView]
   );
 
+  
   const allQTLs = useMemo(
     () =>
       inView
@@ -170,7 +177,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
         <g
           transform={`translate(${transform(
             inViewCoordinates.get(props.anchor)?.end || -10000
-          )},0)`}
+          )},40)`}
         >
           <text
             textAnchor={
@@ -180,7 +187,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
                 : "start"
             }
           >
-            {props.anchor}
+            {props.anchor}{props.ld.find(d=> d.id===props.anchor)?.rSquared}
           </text>
         </g>
       )}
@@ -239,7 +246,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
             sortOrder={props.sortOrder}
             svgRef={props.svgRef}
             transform={`translate(0,${props.importantRegions ? 60 : 40})`}
-            threshold={4}
+            //threshold={(5e-8)}
             max={12}
           />
         </g>
@@ -286,7 +293,7 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
           })
         }
         ldThreshold={0.1}
-        highlighted={new Set(allQTLs.map((x) => x.rsId))}
+        //   highlighted={new Set(allQTLs.map((x) => x.rsId))}
         highlightColor="#ff0000"
         transform={`translate(0,${200 * props.urls.length + 40})`}
       />
@@ -302,12 +309,12 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
       <rect
         transform="translate(0,-30)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#24529c"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

@@ -12,12 +12,13 @@ import { useTheme, useMediaQuery, Paper } from "@material-ui/core";
 import GeneBCRE from "../../../assets/gene-bcre.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { QueryResponse } from "./GeneOverview";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+
 import { GeneAutoComplete } from "./GeneAutocomplete";
+import { StyledButton } from "../styles";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit, version: 40) {
       name
       id
       coordinates {
@@ -81,7 +82,7 @@ const GenePortal: React.FC = (props) => {
             // do something with this response like parsing to JSON
             fetch(
               "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" +
-              gene.toUpperCase()
+                gene.toUpperCase()
             )
               .then((x) => x.json())
               .then((x) => {
@@ -147,10 +148,10 @@ const GenePortal: React.FC = (props) => {
               width: "414px",
             }}
           >
-            Explore gene expression and regulatory element activity in the
-            fetal and adult brain at bulk and single-cell resolution.
-            Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
-            cell co-expression analyses.
+            Explore gene expression and regulatory element activity in the fetal
+            and adult brain at bulk and single-cell resolution. Visualize
+            gene/b-cCRE links based on PsychENCODE QTLs and single cell
+            co-expression analyses.
           </Typography>
           <Typography
             type="body"
@@ -280,9 +281,7 @@ const GenePortal: React.FC = (props) => {
             <>
               {0 > 1 && geneCards!.length > 0 && geneDesc && (
                 <Slide direction="up" in timeout={1000}>
-                  <Container
-                    style={{ marginLeft: "12px", marginTop: "150px" }}
-                  >
+                  <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
                     {
                       <Paper
                         elevation={0}
@@ -313,8 +312,8 @@ const GenePortal: React.FC = (props) => {
                                 (h) => h.name === d.cardLabel
                               )
                                 ? geneDesc!!.find(
-                                  (h) => h.name === d.cardLabel
-                                )!!.desc
+                                    (h) => h.name === d.cardLabel
+                                  )!!.desc
                                 : "(no description available)",
                             };
                           })}

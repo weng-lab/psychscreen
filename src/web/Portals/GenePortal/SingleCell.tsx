@@ -6,7 +6,7 @@ import {
   Tab,
   ToggleButton,
   ToggleButtonGroup,
-  Paper
+  Paper,
 } from "@mui/material";
 import {
   Typography,
@@ -19,19 +19,17 @@ import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
-import styled from "@emotion/styled";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../../Portals/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
+import { StyledTab } from "../../Portals/styles";
 
-const COLUMNS  = 
-   [
+const COLUMNS = [
   {
     header: "Cell Type",
     headerRender: () => {
-      
       return <b>Cell Type</b>;
     },
     value: (row) => row.celltype,
@@ -42,7 +40,7 @@ const COLUMNS  =
       return <b>Fraction Cells Non-Zero</b>;
     },
     value: (row) => row.pctexp,
-    render: (row) => row.pctexp.toFixed(3),
+    render: (row) => row.pctexp.toFixed(2),
   },
   {
     header: "Average Expression",
@@ -50,13 +48,10 @@ const COLUMNS  =
       return <b>Average Expression</b>;
     },
     value: (row) => row.avgexp,
-    render: (row) => row.avgexp.toFixed(3),
+    render: (row) => row.avgexp.toFixed(2),
   },
 ];
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
 export type SingleCellGeneQueryItem = {
   sampleid: string;
   featureid: string;
@@ -207,27 +202,27 @@ const subClassColors = {
   "L6 IT Car3": "#ba9c66",
   "L5 ET": "#d388b1",
   "L5/6 NP": "#7b4c1e",
-  "L6b": "#004d45",
+  L6b: "#004d45",
   "L6 CT": "#29348c",
-  "Sst": "#6b6a64",
+  Sst: "#6b6a64",
   "Sst Chodl": "#bc2025",
-  "Pvalb": "#5066b0",
-  "Chandelier": "#64cce9",
+  Pvalb: "#5066b0",
+  Chandelier: "#64cce9",
   "Lamp5 Lhx6": "#ae98a1",
-  "Lamp5": "#a1b6de",
-  "Sncg": "#f175aa",
-  "Vip": "#35bba0",
-  "Pax6": "#67be62",
-  "Astro": "#f5ed1f",
-  "Oligo": "#99994e",
-  "OPC": "#869c98",
-  "Micro": "#92575d",
-  "Endo": "#d490bf",
-  "VLMC": "#717c33",
-  "PC": "#29471f",
-  "SMC": "#413c42",
-  "Immune": "#f15c5a",
-  "RB": "#050304",
+  Lamp5: "#a1b6de",
+  Sncg: "#f175aa",
+  Vip: "#35bba0",
+  Pax6: "#67be62",
+  Astro: "#f5ed1f",
+  Oligo: "#99994e",
+  OPC: "#869c98",
+  Micro: "#92575d",
+  Endo: "#d490bf",
+  VLMC: "#717c33",
+  PC: "#29471f",
+  SMC: "#413c42",
+  Immune: "#f15c5a",
+  RB: "#050304",
 };
 
 function useSingleCellData(dataset: string, gene: string, ctClass: string) {
@@ -284,7 +279,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
   const colors = useMemo(() => {
     const unique_celltypes = new Set(
       [...results.values()].map((x) =>
-        ctClass === "by SubClass" ? x.subclass : x.celltype
+        ctClass === "by Cell type" ? x.subclass : x.celltype
       )
     );
 
@@ -292,7 +287,7 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
     return new Map(
       [...unique_celltypes].map((x, i) => [
         x,
-        ctClass === "by SubClass" ? subClassColors[x] : celltypeColors[x],
+        ctClass === "by Cell type" ? subClassColors[x] : celltypeColors[x],
       ])
     );
   }, [results, ctClass]);
@@ -375,9 +370,13 @@ export const DATASETS: Map<
   ],
 ]);
 
-const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: boolean }> = ({ gene, pedataset, selectDatasets }) => {
+const SingleCell: React.FC<{
+  gene: string;
+  pedataset: string;
+  selectDatasets: boolean;
+}> = ({ gene, pedataset, selectDatasets }) => {
   const [dataset, setDataset] = useState(pedataset);
-  const [ctClass, setCtClass] = useState("by SubClass");
+  const [ctClass, setCtClass] = useState("by Cell type");
   const { loading, data, colors, maximumValue } = useSingleCellData(
     dataset,
     gene,
@@ -449,17 +448,17 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
       [...data.values()].slice(6000).map((x) => ({
         x: x.umap_1,
         y: x.umap_2,
-        data: ctClass === "by SubClass" ? x.subclass : x.celltype,
+        data: ctClass === "by Cell type" ? x.subclass : x.celltype,
         val: x.val,
         svgProps: {
           fill:
             colorScheme === "expression"
               ? x.expressionColor
-              : colors.get(ctClass === "by SubClass" ? x.subclass : x.celltype),
+              : colors.get(ctClass === "by Cell type" ? x.subclass : x.celltype),
           fillOpacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
           r: 8,
           strokeWidth:
-            ctClass === "by SubClass"
+            ctClass === "by Cell type"
               ? x.subclass === highlighted
                 ? 4
                 : 0
@@ -487,7 +486,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
             render: (groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length).toFixed(3)
         }]).sort((a, b) => -(+a[2].value - +b[2].value));
     }, [ points ]);*/
-  
+
   const domain = useMemo(
     () =>
       points.length === 0
@@ -505,7 +504,7 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
     [points]
   );
   const [cttabIndex, setCtTabIndex] = useState(0);
-  
+
   const handleCtTabChange = (_: any, newTabIndex: number) => {
     setCtTabIndex(newTabIndex);
   };
@@ -517,69 +516,72 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
   };
   let keys = Array.from(DATASETS.keys());
 
-  
   return (
     <Grid container>
-        {selectDatasets && <>
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        style={{ marginBottom: "2em" }}
-      >
-        <Typography
-          style={{ marginLeft: "1em", marginTop: "0.1em" }}
-          type="body"
-          size="large"
-        >
-          Select PsychEncode Dataset:
-        </Typography>
-
-        {
-          <FormControl
-            sx={{ m: 1, minWidth: 400 }}
-            style={{ marginLeft: "1em", marginTop: "1em" }}
+      {selectDatasets && (
+        <>
+          <Grid
+            item
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            style={{ marginBottom: "2em" }}
           >
-            <InputLabel id="simple-select-helper-label">Dataset:</InputLabel>
-            <MUISelect
-              labelId="simple-select-helper-label"
-              id="simple-select-helper"
-              value={dataset}
-              label="Dataset"
-              onChange={handleChange}
+            <Typography
+              style={{ marginLeft: "1em", marginTop: "0.1em" }}
+              type="body"
+              size="large"
             >
-              {keys.map((d) => {
-                return (
-                  <MenuItem value={DATASETS.get(d)!.cohort}>
-                    {d}
-                    {" - "}
-                    {DATASETS.get(d)!.shortdesc}
-                  </MenuItem>
-                );
-              })}
-            </MUISelect>
-          </FormControl>
-        }
-      </Grid>
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        style={{ marginBottom: "2em" }}
-      >
-        <Typography
-          style={{ marginLeft: "1em", marginTop: "0.1em" }}
-          type="body"
-          size="large"
-        >
-          {DATASETS.get(dataset)!.desc}
-        </Typography>
-      </Grid>
-      </>}
+              Select PsychEncode Dataset:
+            </Typography>
+
+            {
+              <FormControl
+                sx={{ m: 1, minWidth: 400 }}
+                style={{ marginLeft: "1em", marginTop: "1em" }}
+              >
+                <InputLabel id="simple-select-helper-label">
+                  Dataset:
+                </InputLabel>
+                <MUISelect
+                  labelId="simple-select-helper-label"
+                  id="simple-select-helper"
+                  value={dataset}
+                  label="Dataset"
+                  onChange={handleChange}
+                >
+                  {keys.map((d) => {
+                    return (
+                      <MenuItem value={DATASETS.get(d)!.cohort}>
+                        {d}
+                        {" - "}
+                        {DATASETS.get(d)!.shortdesc}
+                      </MenuItem>
+                    );
+                  })}
+                </MUISelect>
+              </FormControl>
+            }
+          </Grid>
+          <Grid
+            item
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            style={{ marginBottom: "2em" }}
+          >
+            <Typography
+              style={{ marginLeft: "1em", marginTop: "0.1em" }}
+              type="body"
+              size="large"
+            >
+              {DATASETS.get(dataset)!.desc}
+            </Typography>
+          </Grid>
+        </>
+      )}
       <Grid item sm={12}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
           <StyledTab label="Detailed Expression Profile" />
@@ -595,21 +597,21 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
               <br />
               <StyledButton
                 btheme="light"
-                bvariant={ctClass === "by SubClass" ? "filled" : "outlined"}
-                key={"by SubClass"}
-                onClick={() => setCtClass("by SubClass")}
+                bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                key={"by Cell type"}
+                onClick={() => setCtClass("by Cell type")}
               >
-                by SubClass
+                by Cell type
               </StyledButton>
               &nbsp;
               {
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by Celltype" ? "filled" : "outlined"}
-                  key={"by Celltype"}
-                  onClick={() => setCtClass("by Celltype")}
+                  bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
+                  key={"by Broader Cell type"}
+                  onClick={() => setCtClass("by Broader Cell type")}
                 >
-                  by Celltype
+                  by Broader Cell type
                 </StyledButton>
               }
               &nbsp;
@@ -628,13 +630,13 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
               {ctClass === "All Datasets" ? (
                 <>
                   <Tabs value={cttabIndex} onChange={handleCtTabChange}>
-                    <StyledTab label="by SubClass" />
-                    <StyledTab label="by Celltype" />
+                    <StyledTab label="by Cell type" />
+                    <StyledTab label="by Broader Cell type" />
                   </Tabs>
                   <br />
                   <DotPlot
                     disease={dataset}
-                    gene={gene}
+                    yaxistitle={gene}
                     dotplotData={
                       cttabIndex === 0 ? dotplotDataSc : dotplotDataCt
                     }
@@ -644,9 +646,9 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
               ) : (
                 <DotPlot
                   disease={dataset}
-                  gene={gene}
+                  yaxistitle={gene}
                   dotplotData={
-                    ctClass === "by SubClass"
+                    ctClass === "by Cell type"
                       ? dotplotDataSc.filter((d) => d.dataset === dataset)
                       : dotplotDataCt.filter((d) => d.dataset === dataset)
                   }
@@ -681,20 +683,20 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
                 <br />
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by SubClass" ? "filled" : "outlined"}
-                  key={"by SubClass"}
-                  onClick={() => setCtClass("by SubClass")}
+                  bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                  key={"by Cell type"}
+                  onClick={() => setCtClass("by Cell type")}
                 >
-                  by SubClass
+                  by Cell type
                 </StyledButton>
                 &nbsp;
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by Celltype" ? "filled" : "outlined"}
-                  key={"by Celltype"}
-                  onClick={() => setCtClass("by Celltype")}
+                  bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
+                  key={"by Broader Cell type"}
+                  onClick={() => setCtClass("by Broader Cell type")}
                 >
-                  by Celltype
+                  by Broader Cell type
                 </StyledButton>
                 <br />
                 <br />
@@ -706,11 +708,13 @@ const SingleCell: React.FC<{ gene: string, pedataset: string, selectDatasets: bo
                     <DataTable
                       columns={COLUMNS}
                       rows={
-                        ctClass === "by SubClass"
-                          ? scrows.filter((s) => s.celltype !== "RB").filter(e=>e.dataset===dataset)
-                          : ctrows.filter(e=>e.dataset===dataset)
+                        ctClass === "by Cell type"
+                          ? scrows
+                              .filter((s) => s.celltype !== "RB")
+                              .filter((e) => e.dataset === dataset)
+                          : ctrows.filter((e) => e.dataset === dataset)
                       }
-                      itemsPerPage={ctClass === "by SubClass" ? 30 : 10}
+                      itemsPerPage={ctClass === "by Cell type" ? 30 : 10}
                       searchable
                       sortColumn={2}
                       onRowMouseEnter={(row: any) =>

@@ -6,7 +6,7 @@ import {
   AccordionSummary,
   Checkbox,
   FormControlLabel,
-  FormGroup
+  FormGroup,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -43,47 +43,31 @@ const style = {
     ["all_types", "All Types"],
 
 */
-const TRACKS = {
+
+export const ATACTRACKS = {
   "ATAC Seq Peaks": [
-      [
-        "Astrocytes",
-        "https://downloads.wenglab.org/Astro.PeakCalls.bb",
-      ],
-      [
-        "Endothelial Cells",
-        "https://downloads.wenglab.org/Endo.PeakCalls.bb",
-      ],
-      [
-        "Oligodendrocyte Precursor Cells",
-        "https://downloads.wenglab.org/OPC.PeakCalls.bb",
-      ],
-      [
-        "Excitatory Neurons",
-        "https://downloads.wenglab.org/Exc.PeakCalls.bb",
-      ],
-      [
-        "Oligodendrocytes",
-        "https://downloads.wenglab.org/Oligo.PeakCalls.bb",
-      ],
-      [
-        "Inhibitory Neurons",
-        "https://downloads.wenglab.org/Inh.PeakCalls.bb",
-      ],
-      [
-        "Microglia",
-        "https://downloads.wenglab.org/Micro.PeakCalls.bb",
-      ],
-      [
-        "All CellTypes",
-        "https://downloads.wenglab.org/All.celltypes.Union.PeakCalls.bb",
-      ],
+    ["Astrocytes", "https://downloads.wenglab.org/Astro.PeakCalls.bb"],
+    ["Endothelial Cells", "https://downloads.wenglab.org/Endo.PeakCalls.bb"],
+    [
+      "Oligodendrocyte Precursor Cells",
+      "https://downloads.wenglab.org/OPC.PeakCalls.bb",
+    ],
+    ["Excitatory Neurons", "https://downloads.wenglab.org/Exc.PeakCalls.bb"],
+    ["Oligodendrocytes", "https://downloads.wenglab.org/Oligo.PeakCalls.bb"],
+    ["Inhibitory Neurons", "https://downloads.wenglab.org/Inh.PeakCalls.bb"],
+    ["Microglia", "https://downloads.wenglab.org/Micro.PeakCalls.bb"],
+    [
+      "All CellTypes",
+      "https://downloads.wenglab.org/All.celltypes.Union.PeakCalls.bb",
+    ],
   ],
-  
 };
 
-const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (props) => {
+const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (
+  props
+) => {
   const [expanded, setExpanded] = useState(
-    new Map(Object.keys(TRACKS).map((k) => [k, false]))
+    new Map(Object.keys(ATACTRACKS).map((k) => [k, false]))
   );
   const [selectedTracks, setSelectedTracks] = useState(
     props.initialSelection.map((x) => x[0])
@@ -100,7 +84,7 @@ const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (props) =>
     (key: string) =>
       setExpanded(
         new Map(
-          Object.keys(TRACKS).map((k) => [
+          Object.keys(ATACTRACKS).map((k) => [
             k,
             k === key ? !expanded.get(k) : !!expanded.get(k),
           ])
@@ -113,10 +97,10 @@ const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (props) =>
     () =>
       props.onAccept &&
       props.onAccept([
-        ...TRACKS["ATAC Seq Peaks"].filter(
+        ...ATACTRACKS["ATAC Seq Peaks"].filter(
           (track) =>
             (selectedTracks.find((x) => x === track[0])?.length || 0) > 0
-        )
+        ),
       ] as [string, string][]),
     [selectedTracks, props]
   );
@@ -128,7 +112,6 @@ const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (props) =>
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      
       <Box sx={style} style={style}>
         <Typography
           type="headline"
@@ -145,12 +128,12 @@ const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (props) =>
             id="panel1a-header"
           >
             <Typography type="title" size="medium">
-            ATAC Seq Peaks
+              ATAC Seq Peaks
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <FormGroup style={{ marginLeft: "3em" }}>
-              {TRACKS["ATAC Seq Peaks"].map((track) => (
+              {ATACTRACKS["ATAC Seq Peaks"].map((track) => (
                 <FormControlLabel
                   key={track[0]}
                   control={
@@ -185,7 +168,6 @@ const AtacSeaPeaksTrackModal: React.FC<AtacSeaPeaksTrackModalProps> = (props) =>
           </Button>
         </div>
       </Box>
-      
     </Modal>
   );
 };

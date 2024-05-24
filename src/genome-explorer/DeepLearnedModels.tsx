@@ -49,7 +49,7 @@ const TRACKSETS = {
     [
       "VLPFC neurons ATAC signal",
       "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/VLPFC_neurons",
-    ]
+    ],
     //  [ "putamen glia", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_glia" ],
     //        [ "putamen neurons", "gs://gcp.wenglab.org/projects/chrombpnet/psychencode/PTM_neurons" ]
   ],
@@ -101,7 +101,7 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
       displayedTracks.find((x) => x[0] === "241-way mammalian phylo-P")?.length
         ? 130 + displayedTracks.length * 130 - 130
         : displayedTracks.length * 130) -
-      130,
+        130,
     [displayedTracks, domain]
   );
   useEffect(() => {
@@ -220,12 +220,12 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
       <rect
         transform="translate(0,0)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#194023"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

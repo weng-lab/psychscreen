@@ -57,7 +57,7 @@ export type ClipPathProps = {
   id: string;
 };
 
-const ClipPath: React.FC<ClipPathProps> = ({ width, height, id }) => (
+export const ClipPath: React.FC<ClipPathProps> = ({ width, height, id }) => (
   <clipPath id={id}>
     <rect x={0} y={0} width={width} height={height} />
   </clipPath>

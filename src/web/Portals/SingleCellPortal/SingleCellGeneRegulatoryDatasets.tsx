@@ -50,22 +50,25 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
       .then((x) => x.text())
       .then((x: string) => {
         const q = x.split("\n");
-        const bcres = q.filter(a => !a.includes("edgeWeight")).filter((x) => x !== "").map((a) => {
-          let r = a.split("\t");
+        const bcres = q
+          .filter((a) => !a.includes("edgeWeight"))
+          .filter((x) => x !== "")
+          .map((a) => {
+            let r = a.split("\t");
 
-          return {
-            //TF      enhancer        promoter        TG      edgeWeight      method  celltype        Correlation     Regulation
-            tf: r[0],
-            enhancer: r[1],
-            promoter: r[2],
-            tg: r[3],
-            edgeweight: +r[4],
-            method: r[5],
+            return {
+              //TF      enhancer        promoter        TG      edgeWeight      method  celltype        Correlation     Regulation
+              tf: r[0],
+              enhancer: r[1],
+              promoter: r[2],
+              tg: r[3],
+              edgeweight: +r[4],
+              method: r[5],
 
-            correlation: +r[7],
-            regulation: r[8]
-          };
-        });
+              correlation: +r[7],
+              regulation: r[8],
+            };
+          });
         setGrn(bcres);
       });
   }, [celltype]);

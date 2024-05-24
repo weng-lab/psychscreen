@@ -152,6 +152,7 @@ const ViolinPlot: React.FC<ViolinPlotProps> = (props) => {
         width={(props.width / length) * 2}
         height={props.height / 2}
         range={props.domain}
+        fontStyle={"normal"}
       />
       {keys.map((x, i) => (
         <React.Fragment key={`${x}_${i}`}>

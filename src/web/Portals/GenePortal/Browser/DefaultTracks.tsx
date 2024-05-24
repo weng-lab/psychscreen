@@ -216,12 +216,12 @@ const DefaultTracks: React.FC<DefaultTrackProps> = (props) => {
       <rect
         transform="translate(0,-20)"
         height={210}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={210}
-        width={15}
+        width={10}
         fill="#4c1f8f"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

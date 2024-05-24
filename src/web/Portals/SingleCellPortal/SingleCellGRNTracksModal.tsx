@@ -47,85 +47,96 @@ const style = {
 const TRACKS = {
   "Gene Regulatory Network Tracks": [
     [
-        "Astrocytes Enhancer and Promoter",
-        "https://downloads.wenglab.org/Ast_GRN.bb",
-      ],
-      [
-        "Endothelial cells Enhancer and Promoter",
-        "https://downloads.wenglab.org/End_GRN.bb",
-      ],
-      ["Vip  Enhancer and Promoter",
-       "https://downloads.wenglab.org/Vip_GRN.bb"
-      ],
-      [
-        "Oligodendrocytes Enhancer and Promoter",
-        "https://downloads.wenglab.org/Oli_GRN.bb",
-      ],
-      [
-        "Chandelier Enhancer and Promoter",
-        "https://downloads.wenglab.org/Chandelier_GRN.bb",
-      ],
-      [
-        "Immune Cells  Enhancer and Promoter",
-        "https://downloads.wenglab.org/Immune_GRN.bb",
-      ],
-    
-      [
-        "Vascular Leptomeningeal Cells Enhancer and Promoter",
-        "https://downloads.wenglab.org/VLMC_GRN.bb",
-      ],
-      ["Sncg Enhancer and Promoter", "https://downloads.wenglab.org/Sncg_GRN.bb"],
-      ["Sst  Enhancer and Promoter", "https://downloads.wenglab.org/Sst_GRN.bb"],
-      ["Pvalb  Enhancer and Promoter", "https://downloads.wenglab.org/Pvalb_GRN.bb"],
-      ["Pax6  Enhancer and Promoter", "https://downloads.wenglab.org/Pax6_GRN.bb"],
-      [
-        "Oligodendrocyte Precursor Cells  Enhancer and Promoter",
-        "https://downloads.wenglab.org/OPC_GRN.bb",
-      ],
-      ["Microglia Enhancer and Promoter", "https://downloads.wenglab.org/Mic_GRN.bb"],
-      [
-        "Lamp5.Lhx6  Enhancer and Promoter",
-        "https://downloads.wenglab.org/Lamp5.Lhx6_GRN.bb",
-      ],
-      ["Lamp5 Enhancer and Promoter", "https://downloads.wenglab.org/Lamp5_GRN.bb"],
-      ["L6b  Enhancer and Promoter", "https://downloads.wenglab.org/L6b_GRN.bb"],
-      [
-        "Layer 6 Intratelencephalic projecting  Enhancer and Promoter",
-        "https://downloads.wenglab.org/L6.IT_GRN.bb",
-      ],
-      [
-        "Layer 5 Intratelencephalic projecting Enhancer and Promoter",
-        "https://downloads.wenglab.org/L5.IT_GRN.bb",
-      ],
-      [
-        "Layer 4 Intratelencephalic projecting Enhancer and Promoter",
-        "https://downloads.wenglab.org/L4.IT_GRN.bb",
-      ],
-      [
-        "Layer 2/3 Intratelencephalic projecting Enhancer and Promoter",
-        "https://downloads.wenglab.org/L2.3.IT_GRN.bb",
-      ],
-      [
-        "Layer 5 Extratelencephalic projecting Enhancer and Promoter",
-        "https://downloads.wenglab.org/L5.ET_GRN.bb",
-      ],
-      [
-        "Layer 5/6 Near projecting Enhancer and Promoter",
-        "https://downloads.wenglab.org/L5.6.NP_GRN.bb",
-      ],
-      [
-        "Layer 6 Intratelencephalic projecting Car3 Enhancer and Promoter",
-        "https://downloads.wenglab.org/L6.IT.Car3_GRN.bb",
-      ],
-      [
-        "Layer 6 Corticothalamic projecting  Enhancer and Promoter",
-        "https://downloads.wenglab.org/L6.CT_GRN.bb",
-      ]
+      "Astrocytes Enhancer and Promoter",
+      "https://downloads.wenglab.org/Ast_GRN.bb",
+    ],
+    [
+      "Endothelial cells Enhancer and Promoter",
+      "https://downloads.wenglab.org/End_GRN.bb",
+    ],
+    ["Vip  Enhancer and Promoter", "https://downloads.wenglab.org/Vip_GRN.bb"],
+    [
+      "Oligodendrocytes Enhancer and Promoter",
+      "https://downloads.wenglab.org/Oli_GRN.bb",
+    ],
+    [
+      "Chandelier Enhancer and Promoter",
+      "https://downloads.wenglab.org/Chandelier_GRN.bb",
+    ],
+    [
+      "Immune Cells  Enhancer and Promoter",
+      "https://downloads.wenglab.org/Immune_GRN.bb",
+    ],
+
+    [
+      "Vascular Leptomeningeal Cells Enhancer and Promoter",
+      "https://downloads.wenglab.org/VLMC_GRN.bb",
+    ],
+    ["Sncg Enhancer and Promoter", "https://downloads.wenglab.org/Sncg_GRN.bb"],
+    ["Sst  Enhancer and Promoter", "https://downloads.wenglab.org/Sst_GRN.bb"],
+    [
+      "Pvalb  Enhancer and Promoter",
+      "https://downloads.wenglab.org/Pvalb_GRN.bb",
+    ],
+    [
+      "Pax6  Enhancer and Promoter",
+      "https://downloads.wenglab.org/Pax6_GRN.bb",
+    ],
+    [
+      "Oligodendrocyte Precursor Cells  Enhancer and Promoter",
+      "https://downloads.wenglab.org/OPC_GRN.bb",
+    ],
+    [
+      "Microglia Enhancer and Promoter",
+      "https://downloads.wenglab.org/Mic_GRN.bb",
+    ],
+    [
+      "Lamp5.Lhx6  Enhancer and Promoter",
+      "https://downloads.wenglab.org/Lamp5.Lhx6_GRN.bb",
+    ],
+    [
+      "Lamp5 Enhancer and Promoter",
+      "https://downloads.wenglab.org/Lamp5_GRN.bb",
+    ],
+    ["L6b Enhancer and Promoter", "https://downloads.wenglab.org/L6b_GRN.bb"],
+    [
+      "Layer 6 Intratelencephalic projecting  Enhancer and Promoter",
+      "https://downloads.wenglab.org/L6.IT_GRN.bb",
+    ],
+    [
+      "Layer 5 Intratelencephalic projecting Enhancer and Promoter",
+      "https://downloads.wenglab.org/L5.IT_GRN.bb",
+    ],
+    [
+      "Layer 4 Intratelencephalic projecting Enhancer and Promoter",
+      "https://downloads.wenglab.org/L4.IT_GRN.bb",
+    ],
+    [
+      "Layer 2/3 Intratelencephalic projecting Enhancer and Promoter",
+      "https://downloads.wenglab.org/L2.3.IT_GRN.bb",
+    ],
+    [
+      "Layer 5 Extratelencephalic projecting Enhancer and Promoter",
+      "https://downloads.wenglab.org/L5.ET_GRN.bb",
+    ],
+    [
+      "Layer 5/6 Near projecting Enhancer and Promoter",
+      "https://downloads.wenglab.org/L5.6.NP_GRN.bb",
+    ],
+    [
+      "Layer 6 Intratelencephalic projecting Car3 Enhancer and Promoter",
+      "https://downloads.wenglab.org/L6.IT.Car3_GRN.bb",
+    ],
+    [
+      "Layer 6 Corticothalamic projecting  Enhancer and Promoter",
+      "https://downloads.wenglab.org/L6.CT_GRN.bb",
+    ],
   ],
-  
 };
 
-const SingleCellGRNTracksModal: React.FC<SingleCellGRNTracksModalProps> = (props) => {
+const SingleCellGRNTracksModal: React.FC<SingleCellGRNTracksModalProps> = (
+  props
+) => {
   const [expanded, setExpanded] = useState(
     new Map(Object.keys(TRACKS).map((k) => [k, false]))
   );
@@ -160,7 +171,7 @@ const SingleCellGRNTracksModal: React.FC<SingleCellGRNTracksModalProps> = (props
         ...TRACKS["Gene Regulatory Network Tracks"].filter(
           (track) =>
             (selectedTracks.find((x) => x === track[0])?.length || 0) > 0
-        )
+        ),
       ] as [string, string][]),
     [selectedTracks, props]
   );
@@ -172,7 +183,6 @@ const SingleCellGRNTracksModal: React.FC<SingleCellGRNTracksModalProps> = (props
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-    
       <Box sx={style} style={style}>
         <Typography
           type="headline"
@@ -189,33 +199,35 @@ const SingleCellGRNTracksModal: React.FC<SingleCellGRNTracksModalProps> = (props
             id="panel1a-header"
           >
             <Typography type="title" size="medium">
-            Gene Regulatory Network Tracks
+              Gene Regulatory Network Tracks
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-          <Paper elevation={3}
-                          style={{
-                            maxHeight: 500,
-                            width: 800,
-                            overflow: "auto",
-                          }}>
-            <FormGroup style={{ marginLeft: "3em" }}>
-              {TRACKS["Gene Regulatory Network Tracks"].map((track) => (
-                <FormControlLabel
-                  key={track[0]}
-                  control={
-                    <Checkbox
-                      checked={
-                        (selectedTracks.find((x) => x === track[0])?.length ||
-                          0) > 0
-                      }
-                    />
-                  }
-                  label={track[0]}
-                  onChange={() => toggleTrack(track)}
-                />
-              ))}
-            </FormGroup>
+            <Paper
+              elevation={3}
+              style={{
+                maxHeight: 500,
+                width: 800,
+                overflow: "auto",
+              }}
+            >
+              <FormGroup style={{ marginLeft: "3em" }}>
+                {TRACKS["Gene Regulatory Network Tracks"].map((track) => (
+                  <FormControlLabel
+                    key={track[0]}
+                    control={
+                      <Checkbox
+                        checked={
+                          (selectedTracks.find((x) => x === track[0])?.length ||
+                            0) > 0
+                        }
+                      />
+                    }
+                    label={track[0]}
+                    onChange={() => toggleTrack(track)}
+                  />
+                ))}
+              </FormGroup>
             </Paper>
           </AccordionDetails>
         </Accordion>
@@ -236,7 +248,6 @@ const SingleCellGRNTracksModal: React.FC<SingleCellGRNTracksModalProps> = (props
           </Button>
         </div>
       </Box>
-      
     </Modal>
   );
 };

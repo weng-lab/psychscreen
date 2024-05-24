@@ -178,7 +178,7 @@ export const TitledTrack: React.FC<{
 const EpigeneticTracks: React.FC<EpigeneticTrackProps> = (props) => {
   const [cTracks, setTracks] = useState<[string, string][]>([
     [
-      "Adult brain b-cCREs",
+      "Adult brain cis-Regulatory Elements (b-cCREs)",
       "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed",
     ],
     [
@@ -254,12 +254,12 @@ const EpigeneticTracks: React.FC<EpigeneticTrackProps> = (props) => {
       <rect
         transform="translate(0,0)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#4c1f8f"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}

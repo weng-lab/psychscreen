@@ -152,6 +152,7 @@ const SNP_QUERY = gql`
       start: $start
       end: $end
       assembly: $assembly
+      version: 40
     ) {
       name
       strand
@@ -196,7 +197,7 @@ export type SNPQueryResponse = {
 const QUERY = gql`
   ${CCRE_FIELDS}
   query q($assembly: String!, $name: [String]) {
-    queriedGene: gene(name: $name, assembly: $assembly) {
+    queriedGene: gene(name: $name, assembly: $assembly, version: 40) {
       transcripts {
         associated_ccres_pls {
           intersecting_ccres {
@@ -403,7 +404,7 @@ const Browser: React.FC<any> = (props) => {
   return (
     <>
       <CytobandView
-        innerWidth={1000}
+        innerWidth={1400}
         height={15}
         chromosome={props.coordinates.chromosome!}
         assembly={"hg38"}
@@ -415,7 +416,9 @@ const Browser: React.FC<any> = (props) => {
           onDomainChanged={onDomainChanged}
           domain={coordinates || eexpandedCoordinates}
           withInput={false}
-        />
+        /> 
+        <br/>
+        {"Hold shift and drag to select a region"}
       </div>
       <br />
       <GenomeBrowser
@@ -462,8 +465,7 @@ const Browser: React.FC<any> = (props) => {
           domain={coordinates || expandedCoordinates}
           trait="MDD"
         />
-        {<PseudobulkAtacTracks domain={coordinates || expandedCoordinates}/>
-        }
+        {<PseudobulkAtacTracks domain={coordinates || expandedCoordinates} />}
         <VariantTracks
           coordinates={coordinates || expandedCoordinates}
           resolvedTranscript={props.resolvedTranscript}

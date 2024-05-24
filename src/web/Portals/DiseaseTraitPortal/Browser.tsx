@@ -15,9 +15,9 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { CoordinatesSearch } from "./CoordinatesSearch";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
-type GenomicRange = {
+export type GenomicRange = {
   chromosome?: string;
   start: number;
   end: number;
@@ -105,73 +105,72 @@ const Browser: React.FC<{
   );
   return (
     <>
-
-<Stack direction={"row"} sx={{ mt: "1em", display: "flex", flexGrow: 1 }}>
-      <Grid2 container>
-        <Grid2>
-        <FormControl
-            variant="standard"
-            sx={{ marginLeft: "410px", verticalAlign: "middle" }}
-          >
-            <Select
-              id="search"
-              value={selectedSearch}
-              // defaultValue={10}
-              onChange={handleChange}
+      <Stack direction={"row"} sx={{ mt: "1em", display: "flex", flexGrow: 1 }}>
+        <Grid2 container>
+          <Grid2>
+            <FormControl
+              variant="standard"
+              sx={{ marginLeft: "410px", verticalAlign: "middle" }}
             >
-              <MenuItem value={"Genes"}>Genes</MenuItem>
-              <MenuItem value={"SNPs"}>SNPs</MenuItem>
-              <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
-            </Select>
-          </FormControl>
+              <Select
+                id="search"
+                value={selectedSearch}
+                // defaultValue={10}
+                onChange={handleChange}
+              >
+                <MenuItem value={"Genes"}>Genes</MenuItem>
+                <MenuItem value={"SNPs"}>SNPs</MenuItem>
+                <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid2>
+          <Grid2 sx={{ marginLeft: "1rem", verticalAlign: "middle" }}>
+            {selectedSearch === "Genes" ? (
+              <GeneAutoComplete
+                gridsize={3.5}
+                hideSearchButton
+                onSelected={(value) => {
+                  setCoordinates({
+                    chromosome: value.chromosome,
+                    start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
+                    end: +value.end + 20000,
+                  });
+                }}
+              />
+            ) : selectedSearch === "SNPs" ? (
+              <SnpAutoComplete
+                gridsize={3.5}
+                hideSearchButton
+                onSelected={(value) => {
+                  setCoordinates({
+                    chromosome: value.chromosome,
+                    start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
+                    end: +value.end + 20000,
+                  });
+                }}
+              />
+            ) : (
+              <CoordinatesSearch
+                onSelected={(value) => {
+                  setCoordinates({
+                    chromosome: value.chromosome,
+                    start: +value.start < 0 ? 1 : +value.start,
+                    end: +value.end,
+                  });
+                }}
+                hideSearchButton
+                defaultText={`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}
+              />
+            )}
+          </Grid2>
         </Grid2>
-        <Grid2 sx={{ marginLeft: "1rem", verticalAlign: "middle" }}>
-        {selectedSearch === "Genes" ? (
-            <GeneAutoComplete
-              gridsize={3.5}
-              hideSearchButton
-              onSelected={(value) => {
-                setCoordinates({
-                  chromosome: value.chromosome,
-                  start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
-                  end: +value.end + 20000,
-                });
-              }}
-            />
-          ) : selectedSearch === "SNPs" ? (
-            <SnpAutoComplete
-              gridsize={3.5}
-              hideSearchButton
-              onSelected={(value) => {
-                setCoordinates({
-                  chromosome: value.chromosome,
-                  start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
-                  end: +value.end + 20000,
-                });
-              }}
-            />
-          ) : (
-            <CoordinatesSearch
-              onSelected={(value) => {
-                setCoordinates({
-                  chromosome: value.chromosome,
-                  start: +value.start < 0 ? 1 : +value.start,
-                  end: +value.end,
-                });
-              }}
-              hideSearchButton
-              defaultText={`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}
-            />
-          )}
-        </Grid2>
-      </Grid2>
-    </Stack>
+      </Stack>
 
-     
       <br />
       <br />
+
       <CytobandView
-        innerWidth={1000}
+        innerWidth={1400}
         height={15}
         chromosome={coordinates.chromosome!}
         assembly="hg38"
@@ -184,10 +183,12 @@ const Browser: React.FC<{
           domain={coordinates}
           withInput={false}
         />
-        
+        <br/>
+        {"Hold shift and drag to select a region"}
       </div>
-      <br />
       
+      <br />
+
       <GenomeBrowser
         svgRef={svgRef}
         domain={coordinates}

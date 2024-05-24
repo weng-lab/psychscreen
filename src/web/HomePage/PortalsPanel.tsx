@@ -7,28 +7,29 @@ import GeneBCRE from "../../assets/gene-bcre.png";
 import SNPQTL from "../../assets/snp-qtl.png";
 import SingleCell from "../../assets/single-cell.png";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme, useMediaQuery } from "@material-ui/core";
+import { StyledButton } from "../Portals/styles";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { ExpandMore } from "@mui/icons-material";
 
-
 type PortalPanelProps = {
-  title: string
-  description: string
-  stats?: string[]
-  buttonText: string
-  buttonLink: string
-  imageSRC: string
+  title: string;
+  description: string;
+  stats?: string[];
+  buttonText: string;
+  buttonLink: string;
+  imageSRC: string;
   /**
    * Placement of image on large screen width. On small width will always be on top of button
    */
-  imagePlacement: "right" | "left"
-  imgAltText: string
-}
+  imagePlacement: "right" | "left";
+  imgAltText: string;
+};
 
 /**
- * 
- * @param props 
+ *
+ * @param props
  * Generates homepage panel with given info
  */
 export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
@@ -37,7 +38,12 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
   return (
     <div>
       <Grid2 container xs={12} justifyContent={"space-between"} spacing={10}>
-        <Grid2 xs={12} md={6} order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }} alignSelf={"center"}>
+        <Grid2
+          xs={12}
+          md={6}
+          order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }}
+          alignSelf={"center"}
+        >
           <Stack spacing={2} alignItems={"flex-start"}>
             <Typography
               type="body"
@@ -64,7 +70,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               {props.description}
             </Typography>
             <div>
-              {props.stats?.map((stat) =>
+              {props.stats?.map((stat) => (
                 <Typography
                   type="body"
                   size="large"
@@ -79,7 +85,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                   <CheckIcon style={{ marginRight: "9px" }} />
                   {stat}
                 </Typography>
-              )}
+              ))}
             </div>
             <StyledButton
               bvariant="filled"
@@ -92,24 +98,28 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
             </StyledButton>
           </Stack>
         </Grid2>
-        <Grid2 xs={12} md={6} 
+        <Grid2
+          xs={12}
+          md={6}
           order={{ xs: 1, md: props.imagePlacement === "right" ? 2 : 1 }}
           minHeight={300}
         >
-          <Box 
-            position={"relative"} 
-            height={"100%"} 
-            width={'100%'} 
-            sx={{ 
-              objectPosition: props.imagePlacement === "right" ? 
-              { md: "right center", xs: "left center" } 
-              : { md: "left center", xs: "left center" } 
-            }}>
+          <Box
+            position={"relative"}
+            height={"100%"}
+            width={"100%"}
+            sx={{
+              objectPosition:
+                props.imagePlacement === "right"
+                  ? { md: "right center", xs: "left center" }
+                  : { md: "left center", xs: "left center" },
+            }}
+          >
             <img
-              style={{ 
-                objectFit: "contain", 
+              style={{
+                objectFit: "contain",
                 objectPosition: "inherit",
-                position: "absolute"
+                position: "absolute",
               }}
               height={"100%"}
               width={"100%"}
@@ -120,8 +130,8 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         </Grid2>
       </Grid2>
     </div>
-  )
-}
+  );
+};
 
 export const PortalsPanel: React.FC<GridProps> = (props) => (
   <Grid2 container rowSpacing={10}>
@@ -131,11 +141,14 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           alignItems={"center"}
           onClick={() => {
             var element = document.getElementById("Portals");
-            element && element.scrollIntoView({ behavior: "smooth", block: "start" });
+            element &&
+              element.scrollIntoView({ behavior: "smooth", block: "start" });
           }}
-          sx={{ cursor: 'pointer' }}
+          sx={{ cursor: "pointer" }}
         >
-          <Typography id="Portals" type={"display"} size={"small"}>Portals</Typography>
+          <Typography id="Portals" type={"display"} size={"small"}>
+            Portals
+          </Typography>
           <ExpandMore />
         </Stack>
       </Divider>

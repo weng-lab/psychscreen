@@ -1,14 +1,7 @@
-
-import React, {
-  RefObject,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { RefObject, useEffect, useMemo, useState } from "react";
 import { GenomicRange } from "../web/Portals/GenePortal/AssociatedxQTL";
 import TitledImportanceTrack from "./TitledImportanceTrack";
 import { BigBedData } from "bigwig-reader";
-
 
 type PseudobulkAtacTrackProps = {
   trait?: string;
@@ -20,39 +13,33 @@ type PseudobulkAtacTrackProps = {
   defaultTrackset?: string;
 };
 
-const TRACKSETS:[string, string][] = 
+const TRACKSETS: [string, string][] = [
   [
-    
-    [
-      "Microglia",
-      "https://downloads.wenglab.org/pseudobulkatac/Microglia.bigWig",
-    ],
-    [
-        "Astrocytes",
-        "https://downloads.wenglab.org/pseudobulkatac/Astrocytes.bigWig",
-      ],
-      [
-        "ExcitatoryNeurons",
-        "https://downloads.wenglab.org/pseudobulkatac/ExcitatoryNeurons.bigWig",
-      ],
-      [
-        "Oligodendrocytes",
-        "https://downloads.wenglab.org/pseudobulkatac/Oligodendrocytes.bigWig",
-      ],
-      [
-        "InhibitoryNeurons",
-        "https://downloads.wenglab.org/pseudobulkatac/InhibitoryNeurons.bigWig",
-      ],
-      [
-        "OPCs",
-        "https://downloads.wenglab.org/pseudobulkatac/OPCs.bigWig",
-      ],
-      [
-        "NigralNeurons",
-        "https://downloads.wenglab.org/pseudobulkatac/NigralNeurons.bigWig",
-      ]
-  ];
-
+    "Microglia",
+    "https://downloads.wenglab.org/pseudobulkatac/Microglia.bigWig",
+  ],
+  [
+    "Astrocytes",
+    "https://downloads.wenglab.org/pseudobulkatac/Astrocytes.bigWig",
+  ],
+  [
+    "ExcitatoryNeurons",
+    "https://downloads.wenglab.org/pseudobulkatac/ExcitatoryNeurons.bigWig",
+  ],
+  [
+    "Oligodendrocytes",
+    "https://downloads.wenglab.org/pseudobulkatac/Oligodendrocytes.bigWig",
+  ],
+  [
+    "InhibitoryNeurons",
+    "https://downloads.wenglab.org/pseudobulkatac/InhibitoryNeurons.bigWig",
+  ],
+  ["OPCs", "https://downloads.wenglab.org/pseudobulkatac/OPCs.bigWig"],
+  [
+    "NigralNeurons",
+    "https://downloads.wenglab.org/pseudobulkatac/NigralNeurons.bigWig",
+  ],
+];
 
 export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
   domain,
@@ -62,11 +49,10 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
   defaultTrackset,
 }) => {
   // manage displayed tracks, compute height, and pass height back to parent
-  const [displayedTracks, setDisplayedTracks] = useState<[string, string][]>(TRACKSETS);
+  const [displayedTracks, setDisplayedTracks] =
+    useState<[string, string][]>(TRACKSETS);
   const height = useMemo(
-    () =>
-      130 +
-      (displayedTracks.length * 130) - 130,
+    () => 90 + displayedTracks.length * 90 - 90,
     [displayedTracks, domain]
   );
   useEffect(() => {
@@ -79,20 +65,19 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
 
   return (
     <>
-      {displayedTracks
-        .map((x, i) => (
-            <TitledImportanceTrack            
-            key={`${i}_${domain.start}`}
-            transform={`translate(0,${130 * i})`}
-            title={x[0]}
-            height={130}
-            width={1400}
-            signalURL={`https://downloads.wenglab.org/pseudobulkatac/${x[0]}.profile_scores.bw`}
-            imputedSignalURL={x[1]}
-            domain={domain}            
-            neutralRegions={[]}
-          />
-        ))}
+      {displayedTracks.map((x, i) => (
+        <TitledImportanceTrack
+          key={`${i}_${domain.start}`}
+          transform={`translate(0,${90 * i})`}
+          title={x[0]}
+          height={90}
+          width={1400}
+          signalURL={`https://downloads.wenglab.org/pseudobulkatac/${x[0]}.profile_scores.bw`}
+          imputedSignalURL={x[1]}
+          domain={domain}
+          neutralRegions={[]}
+        />
+      ))}
       {settingsMousedOver && (
         <rect
           width={1400}
@@ -105,12 +90,12 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
       <rect
         transform="translate(0,0)"
         height={height}
-        width={40}
+        width={30}
         fill="#ffffff"
       />
       <rect
         height={height}
-        width={15}
+        width={10}
         fill="#ab3f00"
         stroke="#000000"
         fillOpacity={settingsMousedOver ? 1 : 0.6}
@@ -128,7 +113,7 @@ export const PseudobulkAtacTracks: React.FC<PseudobulkAtacTrackProps> = ({
         textAnchor="middle"
         fill="#ab3f00"
       >
-        Pseudo Bulk ATAC Tracks
+        Pseudo Bulk ATAC
       </text>
     </>
   );

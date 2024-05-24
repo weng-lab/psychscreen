@@ -10,9 +10,10 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
 import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
 import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
 
 const MainPanel: React.FC = () => {
   const [selectedPortal, setSelectedPortal] = useState<string>("Disease/Trait");
@@ -34,7 +35,13 @@ const MainPanel: React.FC = () => {
 
   return (
     <div>
-      <Grid2 container xs={12} justifyContent={"space-between"} spacing={3} mb={4}>
+      <Grid2
+        container
+        xs={12}
+        justifyContent={"space-between"}
+        spacing={3}
+        mb={4}
+      >
         <Grid2 display={betweenSmLg ? "block" : "none"}>
           <Typography
             type="display"
@@ -46,70 +53,74 @@ const MainPanel: React.FC = () => {
               letterSpacing: "0.5px",
             }}
           >
-            Explore the genetics and epigenetics of human brain development, function, and pathophysiology.
+            Explore the genetics and epigenetics of human brain development,
+            function, and pathophysiology.
           </Typography>
         </Grid2>
         <Grid2 xs={12} sm={6} order={{ xs: 2, sm: 1 }} alignSelf={"flex-start"}>
           <Stack spacing={3} alignItems={"flex-start"}>
-          {!betweenSmLg && <Typography
-            type="display"
-            size="medium"
-            style={{
-              fontWeight: 700,
-              fontSize: "44px",
-              lineHeight: "54px",
-              letterSpacing: "0.5px",
-            }}
-          >
-            Explore the genetics and epigenetics of human brain development, function, and pathophysiology.
-          </Typography>}
-          <div>
-            <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-            }}
-          >
-            <BoltIcon style={{ marginRight: "9px" }} />
-            Powered by the PsychENCODE Consortium
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-            }}
-          >
-            <AccessibilityNewIcon style={{ marginRight: "9px" }} />
-            Accessible to all
-          </Typography>
-          </div>
-          <FormControl variant="standard">
-            <Select
-              value={selectedPortal}
-              onChange={handleChange}
-            >
-              <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
-              <MenuItem value={"Gene/b-cCRE"}>Gene/b-cCRE</MenuItem>
-              <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
-            </Select>
-          </FormControl>
-          {selectedPortal === "Disease/Trait" ? (
-            <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" />
-          ) : selectedPortal === "Gene/b-cCRE" ? (
-            <GeneAutoComplete navigateto="/psychscreen/gene/" />
-          ) : (
-            <SnpAutoComplete navigateto="/psychscreen/snp/" />
-          )}
+            {!betweenSmLg && (
+              <Typography
+                type="display"
+                size="medium"
+                style={{
+                  fontWeight: 700,
+                  fontSize: "44px",
+                  lineHeight: "54px",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                Explore the genetics and epigenetics of human brain development,
+                function, and pathophysiology.
+              </Typography>
+            )}
+            <div>
+              <Typography
+                type="body"
+                size="large"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "19px",
+                }}
+              >
+                <BoltIcon style={{ marginRight: "9px" }} />
+                Powered by the PsychENCODE Consortium
+              </Typography>
+              <Typography
+                type="body"
+                size="large"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "19px",
+                }}
+              >
+                <AccessibilityNewIcon style={{ marginRight: "9px" }} />
+                Accessible to all
+              </Typography>
+            </div>
+            <FormControl variant="standard">
+              <Select value={selectedPortal} onChange={handleChange}>
+                <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
+                <MenuItem value={"Gene/b-cCRE"}>Gene/b-cCRE</MenuItem>
+                <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
+                <MenuItem value={"Single-Cell"}>Single-Cell</MenuItem>
+              </Select>
+            </FormControl>
+            {selectedPortal === "Disease/Trait" ? (
+              <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" />
+            ) : selectedPortal === "Gene/b-cCRE" ? (
+              <GeneAutoComplete navigateto="/psychscreen/gene/" />
+            ) : selectedPortal === "Single-Cell" ? (
+              <CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" />
+            ) : (
+              <SnpAutoComplete navigateto="/psychscreen/snp/" />
+            )}
           </Stack>
         </Grid2>
         <Grid2 xs={12} sm={6} 
@@ -125,8 +136,8 @@ const MainPanel: React.FC = () => {
               objectPosition: { lg: 'right center',  md: "center center", xs: "right center" }
             }}>
             <img
-              style={{ 
-                objectFit: "contain", 
+              style={{
+                objectFit: "contain",
                 objectPosition: "inherit",
                 position: "absolute",
               }}
@@ -139,7 +150,6 @@ const MainPanel: React.FC = () => {
         </Grid2>
       </Grid2>
     </div>
-       
   );
 };
 export default MainPanel;

@@ -6,20 +6,17 @@ import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { gql, useQuery } from "@apollo/client";
 
-
 const DEG_BYCT_QUERY = gql`
-  query degQuery(
-    $gene: String, $disease: String!,$celltype: String
-  ) {
+  query degQuery($gene: String, $disease: String!, $celltype: String) {
     degQuery(gene: $gene, disease: $disease, celltype: $celltype) {
-        padj
-        base_mean
-        lfc_se
-        stat
-        pvalue
-        gene
-        celltype
-        log2_fc
+      padj
+      base_mean
+      lfc_se
+      stat
+      pvalue
+      gene
+      celltype
+      log2_fc
     }
   }
 `;
@@ -35,7 +32,6 @@ const COLUMNS = [
   {
     header: "log2(fc)",
     value: (row) => row.log2_fc.toFixed(2),
-
   },
   {
     header: "Std Error",
@@ -59,13 +55,12 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
   const { celltype } = useParams();
 
-
   const { data, loading } = useQuery(DEG_BYCT_QUERY, {
     variables: {
       celltype,
-      disease
-    }
-  })
+      disease,
+    },
+  });
 
   return (
     <Grid>

@@ -7,12 +7,12 @@ import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
 import { QueryResponse } from "./GeneOverview";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../styles";
 import { Stack } from "@mui/material";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit, version: 40) {
       name
       id
       coordinates {
@@ -145,7 +145,7 @@ export const GeneAutoComplete = (props) => {
                     geneid: geneids
                       .find((g) => g.name === value)
                       ?.id.split(".")[0],
-                    
+
                     chromosome: geneids.find((g) => g.name === value)?.chrom,
                     start: geneids.find((g) => g.name === value)?.start,
                     end: geneids.find((g) => g.name === value)?.end,
@@ -173,10 +173,7 @@ export const GeneAutoComplete = (props) => {
             return (
               <li {...props} key={props.id}>
                 <Grid container alignItems="center">
-                  <Grid
-                    item
-                    sx={{ width: "calc(100% - 44px)"}}
-                  >
+                  <Grid item sx={{ width: "calc(100% - 44px)" }}>
                     <Box component="span" sx={{ fontWeight: "regular" }}>
                       {option}
                     </Box>

@@ -1,15 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import {
-  Typography,
-} from "@weng-lab/psychscreen-ui-components";
-import {
-  Divider,
-  Grid,
-  Box,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { Divider, Grid, Box, Tabs } from "@mui/material";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
 import { groupBy } from "queryz";
@@ -21,13 +13,10 @@ import Browser from "./Browser/Browser";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import SingleCell from "./SingleCell";
-import styled from "@emotion/styled";
+import { StyledTab } from "../../Portals/styles";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 
-export const StyledTab = styled(Tab)(() => ({
-  textTransform: "none",
-}));
 type GTExGeneQueryResponse = {
   gtex_genes: {
     val: number;
@@ -52,7 +41,7 @@ const GTEX_GENES_QUERY = gql`
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
-    gene(assembly: $assembly, name_prefix: $name_prefix) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, version: 40) {
       name
       id
       coordinates {
@@ -200,21 +189,22 @@ const GeneDetails: React.FC = (props) => {
   }, [toPlot]);
 
   return (
-    <Grid container {...props} style={{ marginTop: "6em" }}>
+    <Grid container {...props} style={{ marginTop: "0.5em" }}>
       <Grid item sm={1} lg={1.5} />
       <Grid item sm={9}>
         <Typography
           type="headline"
           size="large"
-          style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
+          style={{ marginTop: "1em", marginBottom: "0.2em" }}
         >
           <img
             alt="DNA"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
             width="1.7%"
           />
-          &nbsp;Gene Details: {gene}
+          &nbsp;Gene Details: <em>{gene}</em>
         </Typography>
+        <br />
         <div
           style={{
             display: "flex",
@@ -268,7 +258,7 @@ const GeneDetails: React.FC = (props) => {
                       ? +geneCoords.gene[0].coordinates.end
                       : +region.end,
                 }}
-              // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
+                // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
               />
             </Box>
           ) : tabIndex === 3 && 0 > 1 ? (
@@ -281,7 +271,9 @@ const GeneDetails: React.FC = (props) => {
             <Box>
               <AssociatedxQTL
                 name={gene?.toUpperCase()}
-                geneid={gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])}
+                geneid={
+                  gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])
+                }
                 coordinates={{
                   chromosome:
                     region.chromosome === ""
@@ -296,12 +288,14 @@ const GeneDetails: React.FC = (props) => {
                       ? +geneCoords.gene[0].coordinates.end
                       : +region.end,
                 }}
-              //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
+                //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
               />
             </Box>
-          ) : tabIndex === 4 ? (<Box>
-            <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
-          </Box>) : tabIndex === 5 ? (
+          ) : tabIndex === 4 ? (
+            <Box>
+              <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
+            </Box>
+          ) : tabIndex === 5 ? (
             <Box>
               <Typography type="body" size="small">
                 <OpenTarget id={geneid} />
@@ -309,7 +303,11 @@ const GeneDetails: React.FC = (props) => {
             </Box>
           ) : tabIndex === 1 ? (
             <Box>
-              <SingleCell gene={gene || "APOE"} pedataset={"SZBDMulti-Seq"} selectDatasets />
+              <SingleCell
+                gene={gene || "APOE"}
+                pedataset={"SZBDMulti-Seq"}
+                selectDatasets
+              />
             </Box>
           ) : tabIndex === 2 ? (
             <Box>
@@ -343,7 +341,7 @@ const GeneDetails: React.FC = (props) => {
                   >
                     <ViolinPlot
                       data={toPlot}
-                      title="log10 TPM"
+                      title="log10(gene expression[TPM])"
                       width={width}
                       height={width / 2}
                       colors={tissueColors}

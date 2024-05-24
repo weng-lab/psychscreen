@@ -4,12 +4,10 @@
 
 import React from "react";
 import { Grid } from "@mui/material";
-import {
-  Typography
-} from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { Container } from "@mui/system";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
-import { StyledButton } from "../Portals/DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../Portals/styles";
 
 function createData(
   name: string,
@@ -23,137 +21,147 @@ function createData(
 
 const eqtls = {
   colorGroups: {
-    all: "#fafafa"
+    all: "#fafafa",
   },
   defaultRows: [
-
     createData(
       "Astrocytes",
       "all",
       75616,
       9159977,
-      "https://downloads.wenglab.org/Astro_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Astro_sig_QTLs.dat"
+    ),
 
     createData(
       "Chandelier",
       "all",
       122979,
       14900515,
-      "https://downloads.wenglab.org/Chandelier__Pvalb_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Chandelier__Pvalb_sig_QTLs.dat"
+    ),
 
     createData(
       "Layer 2/3 Intratelencephalic projecting",
       "all",
       368686,
       9159977,
-      "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat"
+    ),
     createData(
       "Layer 4 Intratelencephalic projecting",
       "all",
       149884,
       18170994,
-      "https://downloads.wenglab.org/L4.IT_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/L4.IT_sig_QTLs.dat"
+    ),
 
     createData(
       "Layer 5/6 Near projecting",
       "all",
       1128,
       128574,
-      "https://downloads.wenglab.org/L5.6.NP_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/L5.6.NP_sig_QTLs.dat"
+    ),
 
     createData(
       "Layer 5 Intratelencephalic projecting",
       "all",
       200390,
       24259466,
-      "https://downloads.wenglab.org/L5.IT_sig_QTLs.dat"),
-
+      "https://downloads.wenglab.org/L5.IT_sig_QTLs.dat"
+    ),
   ],
   extraRows: [
-
-
     createData(
       "L6b",
       "all",
       5067,
       600035,
-      "https://downloads.wenglab.org/L6b_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/L6b_sig_QTLs.dat"
+    ),
 
     createData(
       "Layer 6 Corticothalamic projecting",
       "all",
       24254,
       2932574,
-      "https://downloads.wenglab.org/L6.CT_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/L6.CT_sig_QTLs.dat"
+    ),
 
     createData(
       "Layer 6 Intratelencephalic projecting",
       "all",
       178645,
       21604986,
-      "https://downloads.wenglab.org/L6.IT_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/L6.IT_sig_QTLs.dat"
+    ),
 
     createData(
       "Lamp5.Lhx6",
       "all",
       139,
       16614,
-      "https://downloads.wenglab.org/Lamp5.Lhx6_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Lamp5.Lhx6_sig_QTLs.dat"
+    ),
 
     createData(
       "Lamp5",
       "all",
       34653,
       4187511,
-      "https://downloads.wenglab.org/Lamp5_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Lamp5_sig_QTLs.dat"
+    ),
 
     createData(
       "Microglia",
       "all",
       7334,
       876091,
-      "https://downloads.wenglab.org/Micro.PVM_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Micro.PVM_sig_QTLs.dat"
+    ),
     createData(
       "Oligodendrocytes",
       "all",
       113473,
       13738363,
-      "https://downloads.wenglab.org/Oligo_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Oligo_sig_QTLs.dat"
+    ),
 
     createData(
       "Oligodendrocyte Precursor Cells",
       "all",
       44567,
       5406474,
-      "https://downloads.wenglab.org/OPC_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/OPC_sig_QTLs.dat"
+    ),
 
     createData(
       "Pericytes",
       "all",
       520,
       61819,
-      "https://downloads.wenglab.org/PC_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/PC_sig_QTLs.dat"
+    ),
     createData(
       "Sst",
       "all",
       48602,
       5883595,
-      "https://downloads.wenglab.org/Sst__Sst.Chodl_sig_QTLs.dat"),
+      "https://downloads.wenglab.org/Sst__Sst.Chodl_sig_QTLs.dat"
+    ),
 
     createData(
       "Vip",
       "all",
       78316,
       9513653,
-      "https://downloads.wenglab.org/Vip_sig_QTLs.dat"),
-
-
-
-  ]
-}
+      "https://downloads.wenglab.org/Vip_sig_QTLs.dat"
+    ),
+  ],
+};
 const deg = {
   colorGroups: {
-    all: "#fafafa"
+    all: "#fafafa",
   },
   defaultRows: [
     createData(
@@ -162,7 +170,6 @@ const deg = {
       281936,
       23330766,
       "https://downloads.wenglab.org/ASD_DEGcombined.csv"
-
     ),
     createData(
       "Age",
@@ -170,30 +177,28 @@ const deg = {
       333486,
       28216020,
       "https://downloads.wenglab.org/Age_DEGcombined.csv"
-
-    )
-
+    ),
   ],
-  extraRows: [createData(
-    "Bipolar",
-    "all",
-    333486,
-    27890177,
-    "https://downloads.wenglab.org/Bipolar_DEGcombined.csv"
-
-  ),
-  createData(
-    "Schizophrenia",
-    "all",
-    333486,
-    28152425,
-    "https://downloads.wenglab.org/Schizophrenia_DEGcombined.csv"
-
-  )]
-}
+  extraRows: [
+    createData(
+      "Bipolar",
+      "all",
+      333486,
+      27890177,
+      "https://downloads.wenglab.org/Bipolar_DEGcombined.csv"
+    ),
+    createData(
+      "Schizophrenia",
+      "all",
+      333486,
+      28152425,
+      "https://downloads.wenglab.org/Schizophrenia_DEGcombined.csv"
+    ),
+  ],
+};
 const grns = {
   colorGroups: {
-    all: "#fafafa"
+    all: "#fafafa",
   },
   defaultRows: [
     createData(
@@ -202,7 +207,6 @@ const grns = {
       119371,
       10167596,
       "https://downloads.wenglab.org/Ast_GRN.txt"
-
     ),
     createData(
       "Chandelier",
@@ -210,7 +214,6 @@ const grns = {
       111593,
       10621216,
       "https://downloads.wenglab.org/Chandelier_GRN.txt"
-
     ),
     createData(
       "Endothelial cells",
@@ -218,8 +221,7 @@ const grns = {
       147187,
       11474071,
       "https://downloads.wenglab.org/End_GRN.txt"
-
-    )
+    ),
   ],
   extraRows: [
     createData(
@@ -228,7 +230,6 @@ const grns = {
       365163,
       30909389,
       "https://downloads.wenglab.org/Immune_GRN.txt"
-
     ),
     createData(
       "Layer 2/3 Intratelencephalic projecting",
@@ -236,7 +237,6 @@ const grns = {
       1121326,
       93844103,
       "https://downloads.wenglab.org/L2.3.IT_GRN.txt"
-
     ),
     createData(
       "Layer 4 Intratelencephalic projecting",
@@ -244,14 +244,13 @@ const grns = {
       1118974,
       91304745,
       "https://downloads.wenglab.org/L4.IT_GRN.txt"
-
-    ), createData(
+    ),
+    createData(
       "Layer 5/6 Near projecting",
       "all",
       1120861,
       93893001,
       "https://downloads.wenglab.org/L5.6.NP_GRN.txt"
-
     ),
     createData(
       "Layer 5 Extratelencephalic projecting",
@@ -259,7 +258,6 @@ const grns = {
       1123716,
       92134774,
       "https://downloads.wenglab.org/L5.ET_GRN.txt"
-
     ),
     createData(
       "Layer 5 Intratelencephalic projecting",
@@ -267,7 +265,6 @@ const grns = {
       1119683,
       91416944,
       "https://downloads.wenglab.org/L5.IT_GRN.txt"
-
     ),
     createData(
       "Layer 6 Corticothalamic projecting",
@@ -275,7 +272,6 @@ const grns = {
       1123628,
       91987391,
       "https://downloads.wenglab.org/L6.CT_GRN.txt"
-
     ),
     createData(
       "Layer 6 Intratelencephalic projecting Car3",
@@ -283,7 +279,6 @@ const grns = {
       1125599,
       97944193,
       "https://downloads.wenglab.org/L6.IT.Car3_GRN.txt"
-
     ),
     createData(
       "Layer 6 Intratelencephalic projecting",
@@ -291,7 +286,6 @@ const grns = {
       1123520,
       91958291,
       "https://downloads.wenglab.org/L6.IT_GRN.txt"
-
     ),
     createData(
       "L6b",
@@ -299,7 +293,6 @@ const grns = {
       159900,
       1124341,
       "https://downloads.wenglab.org/L6b_GRN.txt"
-
     ),
     createData(
       "Lamp5.Lhx6",
@@ -307,7 +300,6 @@ const grns = {
       159900,
       115918,
       "https://downloads.wenglab.org/Lamp5.Lhx6_GRN.txt"
-
     ),
     createData(
       "Lamp5",
@@ -315,7 +307,6 @@ const grns = {
       114228,
       10377377,
       "https://downloads.wenglab.org/Lamp5_GRN.txt"
-
     ),
     createData(
       "Microglia",
@@ -323,7 +314,6 @@ const grns = {
       363592,
       29463266,
       "https://downloads.wenglab.org/Mic_GRN.txt"
-
     ),
     createData(
       "Oligodendrocyte Precursor Cells",
@@ -331,7 +321,6 @@ const grns = {
       75433,
       5000000,
       "https://downloads.wenglab.org/OPC_GRN.txt"
-
     ),
     createData(
       "Oligodendrocytes",
@@ -339,7 +328,6 @@ const grns = {
       386903,
       31752688,
       "https://downloads.wenglab.org/Oli_GRN.txt"
-
     ),
     createData(
       "Pax6",
@@ -347,7 +335,6 @@ const grns = {
       115494,
       10431360,
       "https://downloads.wenglab.org/Pax6_GRN.txt"
-
     ),
     createData(
       "Pvalb",
@@ -355,7 +342,6 @@ const grns = {
       114769,
       10430956,
       "https://downloads.wenglab.org/Pvalb_GRN.txt"
-
     ),
     createData(
       "Sncg",
@@ -363,7 +349,6 @@ const grns = {
       114459,
       10320486,
       "https://downloads.wenglab.org/Sncg_GRN.txt"
-
     ),
     createData(
       "Sst",
@@ -371,7 +356,6 @@ const grns = {
       115462,
       10313395,
       "https://downloads.wenglab.org/Sst_GRN.txt"
-
     ),
     createData(
       "Vascular Leptomeningeal Cells",
@@ -379,7 +363,6 @@ const grns = {
       146108,
       11546374,
       "https://downloads.wenglab.org/VLMC_GRN.txt"
-
     ),
     createData(
       "Vip",
@@ -387,12 +370,9 @@ const grns = {
       114088,
       10145653,
       "https://downloads.wenglab.org/Vip_GRN.txt"
-
-    )
-
-
-  ]
-}
+    ),
+  ],
+};
 
 const atacPeaks = {
   defaultRows: [
@@ -416,11 +396,9 @@ const atacPeaks = {
       157885,
       3770493,
       "https://downloads.wenglab.org/Micro.PeakCalls.bed"
-    )
-
+    ),
   ],
   extraRows: [
-
     //"Inhibitory Neurons",
     createData(
       "Inhibitory Neurons",
@@ -459,12 +437,11 @@ const atacPeaks = {
       4267561,
       "https://downloads.wenglab.org/Oligo.PeakCalls.bed"
     ),
-
   ],
   colorGroups: {
-    all: "#fafafa"
+    all: "#fafafa",
   },
-}
+};
 const bCREDownloads = {
   defaultRows: [
     createData(
@@ -843,7 +820,15 @@ const gwasMetaDownloads = {
   },
 };
 
-const pages = ["Regulatory Elements", "TF Binding Sites", "GWAS meta analysis", "ATAC-Seq Peaks", "Gene Regulatory Networks", "Differentially expressed genes", "Cell type specific eQTLs"];
+const pages = [
+  "Regulatory Elements",
+  "TF Binding Sites",
+  "GWAS meta analysis",
+  "ATAC-Seq Peaks",
+  "Gene Regulatory Networks",
+  "Differentially expressed genes",
+  "Cell type specific eQTLs",
+];
 
 const DownloadsPage: React.FC = () => {
   // page and navigation controls
@@ -916,36 +901,26 @@ const DownloadsPage: React.FC = () => {
               </>
             )}
             {page === 3 && (
-              <BEDFileDownloadTable
-                title="Atac seq peaks"
-                {...atacPeaks}
-              />
-            )
-
-            }
+              <BEDFileDownloadTable title="Atac seq peaks" {...atacPeaks} />
+            )}
             {page === 4 && (
               <BEDFileDownloadTable
                 title="Gene Regulatory Networks"
                 {...grns}
               />
-            )
-
-            }
+            )}
             {page === 5 && (
               <BEDFileDownloadTable
                 title="Differentially expressed genes "
                 {...deg}
               />
-            )
-
-            }
+            )}
             {page === 6 && (
               <BEDFileDownloadTable
                 title="Cell type specific eQTLs"
                 {...eqtls}
               />
-            )
-            }
+            )}
           </div>
         </Grid>
         <Grid item sm={0} md={0} lg={1} xl={2} />

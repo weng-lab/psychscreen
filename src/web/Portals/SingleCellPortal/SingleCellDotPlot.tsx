@@ -22,19 +22,20 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
           type="body"
           size="large"
         >
-          {DATASETS.get(disease === "DevBrain" ? "DevBrain-snRNAseq" : disease!!)!.desc}
+          {
+            DATASETS.get(
+              disease === "DevBrain" ? "DevBrain-snRNAseq" : disease!!
+            )!.desc
+          }
         </Typography>
       </Grid>
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        style={{ marginLeft: "15em" }}
-      >
+      <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginLeft: "15em" }}>
         {disease && gene && (
-          <SingleCell selectDatasets={false} gene={gene || "APOE"} pedataset={disease === "DevBrain" ? "DevBrain-snRNAseq" : disease} />
+          <SingleCell
+            selectDatasets={false}
+            gene={gene || "APOE"}
+            pedataset={disease === "DevBrain" ? "DevBrain-snRNAseq" : disease}
+          />
         )}
       </Grid>
     </Grid>

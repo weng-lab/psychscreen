@@ -7,9 +7,8 @@ import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
 
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../../Portals/styles";
 import { Stack } from "@mui/material";
-
 const SNP_AUTOCOMPLETE_QUERY = `
 query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
     snpAutocompleteQuery(snpid: $snpid, assembly: $assembly) {
@@ -59,7 +58,6 @@ export const SnpAutoComplete = (props) => {
       setOptions([]);
       setSnpIds([]);
     }
-    
   };
 
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);

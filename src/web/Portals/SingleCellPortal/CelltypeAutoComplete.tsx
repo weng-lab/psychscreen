@@ -5,44 +5,49 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { DISEASE_CARDS } from "./config/constants";
+import { CELLTYPE_CARDS } from "./consts";
 import { StyledButton } from "../styles";
-import { Stack } from "@mui/material";
-const OPTIONS = DISEASE_CARDS.map((d) => d.cardLabel).sort();
-export const DiseaseTraitAutoComplete = (props) => {
+
+const OPTIONS = CELLTYPE_CARDS.map((d) => d.cardLabel).sort();
+export const CelltypeAutoComplete = (props) => {
   const [value, setValue] = React.useState<any>(null);
   const [inputValue, setInputValue] = React.useState("");
   const navigate = useNavigate();
 
   return (
-    <Stack>
+    <Grid container alignItems="center">
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
-          <Typography>Search trait:</Typography>
+          <Typography>Search Celltype:</Typography>
           <br />
         </Grid>
       )}
-      <Grid container alignItems="center" wrap="nowrap" gap={2}>
-      <Grid item>
+      <Grid
+        item
+        sm={props.gridsize || 5.5}
+        md={props.gridsize || 5.5}
+        lg={props.gridsize || 5.5}
+        xl={props.gridsize || 5.5}
+      >
         <Autocomplete
-          sx={{ width: 270 }}
+          sx={{ width: 300, paper: { height: 200 } }}
           options={OPTIONS}
           ListboxProps={{
             style: {
-              maxHeight: "250px",
+              maxHeight: "180px",
             },
           }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
 
-              const val = DISEASE_CARDS.find((d) => d.cardLabel === value)?.val;
-              const diseaseDesc = DISEASE_CARDS.find(
+              const val = CELLTYPE_CARDS.find(
                 (d) => d.cardLabel === value
-              )?.diseaseDesc;
+              )?.cardLabel;
+
               if (value)
                 navigate(props.navigateto + val, {
-                  state: { searchvalue: val, diseaseDesc },
+                  state: { searchvalue: val },
                 });
             }
           }}
@@ -54,11 +59,11 @@ export const DiseaseTraitAutoComplete = (props) => {
           onInputChange={(_, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          noOptionsText="e.g. schizophrenia, Insomnia"
+          noOptionsText="e.g. Astrocytes, Chandelier"
           renderInput={(params) => (
             <TextField
               {...params}
-              label="e.g. schizophrenia, Insomnia"
+              label="e.g. Astrocytes, Chandelier"
               fullWidth
             />
           )}
@@ -75,7 +80,7 @@ export const DiseaseTraitAutoComplete = (props) => {
                     </Box>
                     <Typography variant="body2" color="text.secondary">
                       {
-                        DISEASE_CARDS.find((d) => d.cardLabel === option)
+                        CELLTYPE_CARDS.find((d) => d.cardLabel === option)
                           ?.cardDesc
                       }
                     </Typography>
@@ -86,18 +91,25 @@ export const DiseaseTraitAutoComplete = (props) => {
           }}
         />
       </Grid>
-      <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
+      <Grid
+        item
+        sm={1}
+        md={1}
+        lg={1}
+        xl={1}
+        sx={{ verticalAlign: "middle", textAlign: "center" }}
+      >
         <StyledButton
           bvariant="filled"
           btheme="light"
           onClick={() => {
-            const val = DISEASE_CARDS.find((d) => d.cardLabel === value)?.val;
-            const diseaseDesc = DISEASE_CARDS.find(
+            const val = CELLTYPE_CARDS.find(
               (d) => d.cardLabel === value
-            )?.diseaseDesc;
+            )?.cardLabel;
+
             if (value)
               navigate(props.navigateto + val, {
-                state: { searchvalue: val, diseaseDesc },
+                state: { searchvalue: val },
               });
           }}
         >
@@ -105,6 +117,5 @@ export const DiseaseTraitAutoComplete = (props) => {
         </StyledButton>
       </Grid>
     </Grid>
-    </Stack>
   );
 };

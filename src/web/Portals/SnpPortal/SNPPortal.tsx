@@ -103,11 +103,11 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
               width: "414px",
             }}
           >
-            Search SNPs of interest and explore their impact on gene
-            expression, chromatin accessibility, transcription factor (TF)
-            binding and other molecular traits in the human brain based on
-            PsychENCODE QTLs and sequence analysis of b-cCREs. Link SNPs to
-            complex traits using GWAS annotations.
+            Search SNPs of interest and explore their impact on gene expression,
+            chromatin accessibility, transcription factor (TF) binding and other
+            molecular traits in the human brain based on PsychENCODE QTLs and
+            sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS
+            annotations.
           </Typography>
           <Typography
             type="body"
@@ -206,9 +206,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
             <>
               {snpCards!.length > 0 && (
                 <Slide direction="up" in timeout={1000}>
-                  <Container
-                    style={{ marginLeft: "12px", marginTop: "150px" }}
-                  >
+                  <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
                     {
                       <Paper
                         elevation={0}

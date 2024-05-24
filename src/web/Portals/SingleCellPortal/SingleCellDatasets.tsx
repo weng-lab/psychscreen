@@ -10,18 +10,14 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Container, Slide } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-import {
-  EmptyTrack,
-  DenseBigBed,
-} from "umms-gb";
+import { EmptyTrack, DenseBigBed } from "umms-gb";
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import { DataTable } from "@weng-lab/ts-ztable";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
 import { SingleCellBrowser } from "./SingleCellBrowser";
-import { StyledTab } from "../GenePortal/SingleCell";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import { StyledTab, StyledButton } from "../../Portals/styles";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
@@ -273,7 +269,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const { disease } = useParams();
-  const [gene, setGene] = useState("SNX31")
+  const [gene, setGene] = useState("SNX31");
 
   const [page, setPage] = useState<number>(-1);
   const [grnpage, setGrnPage] = useState<number>(-1);
@@ -330,7 +326,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 lineHeight: "57.6px",
                 letterSpacing: "0.5px",
                 marginBottom: "16px",
-                marginLeft: "40px"
+                marginLeft: "40px",
               }}
             >
               {"Diff. expressed genes"}
@@ -344,7 +340,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               <StyledTab label="Data Table" />
             </Tabs>
           </Box>
-          {tabIndex === 1 &&
+          {tabIndex === 1 && (
             <Slide direction="up" in timeout={1000}>
               <Container style={{ marginLeft: "80px", marginTop: "100px" }}>
                 <HorizontalCard
@@ -358,8 +354,9 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                   cardContentText={degCards}
                 />
               </Container>
-            </Slide>}
-          {tabIndex === 0 &&
+            </Slide>
+          )}
+          {tabIndex === 0 && (
             <Container style={{ marginTop: "10px", marginLeft: "100px" }}>
               <Typography
                 type="display"
@@ -367,22 +364,27 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 style={{
                   display: "inline-block",
                   fontSize: "28px",
-                  marginTop: "0.5em", marginBottom: "0.5em"
+                  marginTop: "0.5em",
+                  marginBottom: "0.5em",
                 }}
               >
                 Gene: {gene}
               </Typography>
               <br />
-              <span style={{ marginRight: "10px" }}>Switch to another gene:</span><br />
+              <span style={{ marginRight: "10px" }}>
+                Switch to another gene:
+              </span>
+              <br />
               <br />
               <GeneAutoComplete
                 onSelected={(value) => {
-                  setGene(value.name)
+                  setGene(value.name);
                 }}
-                gridsize={3.5} />
+                gridsize={3.5}
+              />
               <DegExpression gene={gene} disease={"Schizophrenia"} />
             </Container>
-          }
+          )}
         </Grid>
       )}
       {disease === "scATAC-Seq-peaks" && (
@@ -487,7 +489,13 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                     </>
                     */}
                 {
-                  <SingleCellBrowser coordinates={coordinates} assembly={"hg38"} atactracks grntracks qtltracks />
+                  <SingleCellBrowser
+                    coordinates={coordinates}
+                    assembly={"hg38"}
+                    atactracks
+                    grntracks
+                    qtltracks
+                  />
                 }
               </Grid>
             )}
@@ -519,9 +527,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
             <Grid sm={10} md={10} lg={9} xl={9}>
               {grnpage === 0 && (
                 <Slide direction="up" in timeout={1000}>
-                  <Container
-                    style={{ marginLeft: "30px", marginTop: "10px" }}
-                  >
+                  <Container style={{ marginLeft: "30px", marginTop: "10px" }}>
                     <HorizontalCard
                       width={500}
                       onCardClick={(v?: string) => {
@@ -538,8 +544,11 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
 
               {grnpage === -1 && (
                 <>
-                  <SingleCellBrowser coordinates={coordinates} assembly={"hg38"} grntracks />
-
+                  <SingleCellBrowser
+                    coordinates={coordinates}
+                    assembly={"hg38"}
+                    grntracks
+                  />
                 </>
               )}
             </Grid>
@@ -592,7 +601,11 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
 
               {qtlpage === -1 && (
                 <>
-                  <SingleCellBrowser coordinates={coordinates} assembly={"hg38"} qtltracks />
+                  <SingleCellBrowser
+                    coordinates={coordinates}
+                    assembly={"hg38"}
+                    qtltracks
+                  />
                 </>
               )}
             </Grid>
@@ -602,13 +615,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
       {disease === "Indiv-cohort-expression-data" && (
         <Grid item sm={10} md={10} lg={9} xl={9}>
           <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-            <Grid
-              sm={10}
-              md={10}
-              lg={9}
-              xl={9}
-              style={{ marginLeft: "25rem" }}
-            >
+            <Grid sm={10} md={10} lg={9} xl={9} style={{ marginLeft: "25rem" }}>
               <Slide direction="up" in timeout={1000}>
                 <Container style={{ marginLeft: "30px", marginTop: "10px" }}>
                   <HorizontalCard
@@ -651,39 +658,31 @@ const BBTrack: React.FC<{
   svgRef,
   color,
 }) => {
-    useEffect(
-      () => onHeightChanged && onHeightChanged(height + 40),
-      [height, onHeightChanged]
-    );
-    return (
-      <g transform={transform}>
-        <EmptyTrack
-          height={40}
-          width={1400}
-          transform="translate(0,8)"
-          id=""
-          text={title}
-        />
-        <DenseBigBed
-          width={1400}
-          height={height}
-          domain={domain}
-          id="atc"
-          transform="translate(0,40)"
-          data={data as BigBedData[]}
-          svgRef={svgRef}
-        /*tooltipContent={rect => { 
-                            console.log(rect)
-                            return (
-                                <div style={{ border: "1px solid", borderColor: "#000000", backgroundColor: "#ffffff", padding: "5px" }}>
-                                  {'Nidji'}
-                                </div>
-                              )
-                        }}*/
-        />
-      </g>
-    );
-  };
+  useEffect(
+    () => onHeightChanged && onHeightChanged(height + 40),
+    [height, onHeightChanged]
+  );
+  return (
+    <g transform={transform}>
+      <EmptyTrack
+        height={40}
+        width={1400}
+        transform="translate(0,8)"
+        id=""
+        text={title}
+      />
+      <DenseBigBed
+        width={1400}
+        height={height}
+        domain={domain}
+        id="atc"
+        transform="translate(0,40)"
+        data={data as BigBedData[]}
+        svgRef={svgRef}
+      />
+    </g>
+  );
+};
 
 const Trackset: React.FC<any> = (props) => {
   const height = useMemo(

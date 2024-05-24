@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
+import { StyledButton } from "../../Portals/styles";
 
 export const CoordinatesSearch = (props) => {
   const [value, setValue] = React.useState<any>(null);

@@ -25,7 +25,6 @@ export const GROUPS: Map<string, string> = new Map([
   ["CTCF-only", "CTCF-only"],
 ]);
 
-
 function useBrainBiosamples() {
   const { data, loading } = useBiosamples();
   const brainBiosamples = useMemo(

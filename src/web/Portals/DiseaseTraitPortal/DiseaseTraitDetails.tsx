@@ -2,22 +2,24 @@ import { useParams } from "react-router-dom";
 import React, { useCallback, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Container, GridProps } from "@mui/material";
-import { Typography, Button } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import { DISEASE_CARDS, URL_MAP } from "./config/constants";
+import {
+  DISEASE_CARDS,
+  FULLSUMSTAT_URL_MAP,
+  URL_CHROM_MAP,
+  URL_MAP,
+} from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
-import styled from "@emotion/styled";
+import { StyledButton } from "../../Portals/styles";
 
-export const StyledButton = styled(Button)(() => ({
-  textTransform: "none",
-}));
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
     $disease: String!
@@ -131,9 +133,7 @@ const GwasIntersectingSnpswithBcresQuery = gql`
 
 const locusQuery = gql`
   query q($bigRequests: [BigRequest!]!) {
-    bigRequests(
-      requests:  $bigRequests 
-    ) {
+    bigRequests(requests: $bigRequests) {
       data
       error {
         message
@@ -149,17 +149,18 @@ function useLoci(trait: string) {
   >(!URL_MAP[trait].startsWith("https") ? AssociatedSnpQuery : locusQuery, {
     variables: {
       disease: trait || "",
-      bigRequests: [{
-        chr1: "chr1",
-        chr2: trait === "Anorexia" ? "chr5" : "chr22",
-        start: 0,
-        end: 300000000,
-        url: URL_MAP[trait].replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
-      }],
-
-
+      bigRequests: [
+        {
+          chr1: "chr1",
+          chr2: URL_CHROM_MAP[trait],
+          start: 0,
+          end: 300000000,
+          url: URL_MAP[trait], //.replace(/\/snps\//g, "/bed/significant/bb/") + ".bed.bb",
+        },
+      ],
     },
   });
+
   const loci = useMemo(() => {
     if (!data) return undefined;
     if (!URL_MAP[trait].startsWith("https"))
@@ -182,9 +183,10 @@ function useLoci(trait: string) {
           chromosome: x.chr,
           start: x.start,
           end: x.end,
-          p: Math.exp(- +x.name.split("_")[1]),
+          p: Math.exp(-+x.name.split("_")[1]),
         })
-      ) || [], trait
+      ) || [],
+      trait
     );
   }, [data]);
 
@@ -200,8 +202,8 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     : { searchvalue: "", diseaseDesc: "" };
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
     chromosome: "chr1",
-    start: 1000000,
-    end: 2000000,
+    start: 161033654,
+    end: 161317875,
   });
   const navigateBrowser = useCallback((coordinates: GenomicRange) => {
     setBrowserCoordinates(coordinates);
@@ -211,8 +213,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
   const diseaseLabel =
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
   const summaryStatisticsURL = disease
-    ? URL_MAP[disease].startsWith("gs") || URL_MAP[disease].startsWith("https")
-      ? URL_MAP[disease]
+    ? FULLSUMSTAT_URL_MAP[disease].startsWith("gs") ||
+      FULLSUMSTAT_URL_MAP[disease].startsWith("https")
+      ? FULLSUMSTAT_URL_MAP[disease]
       : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
     : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
   const { loci, data } = useLoci(disease || "");
@@ -262,7 +265,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
     <Grid container {...props}>
       <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
       <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+        <Container style={{ marginTop: "20px", marginLeft: "100px" }}>
           <Typography
             type="display"
             size="medium"
@@ -354,7 +357,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               Brain epi Genome Browser
             </StyledButton>
           )}
-          {significantSNPs && significantSNPs.length > 0 && (
+          {significantSNPs && significantSNPs.length > 0 && 0>1 && (
             <StyledButton
               bvariant={page === 4 ? "filled" : "outlined"}
               btheme="light"
@@ -369,7 +372,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
       <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
       <Grid sm={10} md={10} lg={9} xl={9}>
         {page === -1 ? (
-          <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} />
+          <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} disease={disease || ""} />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
           <GeneAssociations disease={disease || ""} data={gassoc} />
         ) : page === 1 &&
@@ -390,6 +393,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
           gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
             .length > 0 ? (
           <DiseaseIntersectingSnpsWithccres
+            coordinates={browserCoordinates}
             disease={disease || ""}
             ccredata={
               gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
@@ -409,7 +413,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               trait={diseaseLabel || "Autism Spectrum Disorder"}
             />
           </div>
-        ) : page === 4 && significantSNPs && significantSNPs.length > 0 ? (
+        ) : page === 4 && significantSNPs && significantSNPs.length > 0 && 0>1 ?  (
           <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
         ) : null}
       </Grid>

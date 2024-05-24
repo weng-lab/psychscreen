@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Grid, Container, CircularProgress } from "@mui/material";
-import { CustomizedTable } from "@weng-lab/psychscreen-ui-components";
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { GridProps } from "@mui/material";
 
 type GeneAssociation = {
@@ -18,39 +18,29 @@ export type GeneAssociationsProps = GridProps & {
   data: GeneAssociation[];
 };
 
-/*const GENE_ASSOCIATION_DATA = Array(10).fill({
-    Symbol: 'DRD2',
-    'Overall Association Score': 0.60,
-    'Genetic Associations': 'No Data',
-    'Text Mining': 0.08,
-    'RNA Expression': 'No data'
-});*/
-
-const GeneAssociations: React.FC<GeneAssociationsProps> = (props) => {
-  const tabledata = useMemo(
-    () =>
-      props.data &&
-      [...props.data]
-        .sort((a, b) => a.twas_bonferroni - b.twas_bonferroni)
-        .map((d) => [
-          { header: "Gene ID", value: d.gene_id },
-          { header: "Gene Name", value: d.gene_name },
-          { header: "Hsq", value: d.hsq.toFixed(3) },
+const formatEntry = [
+  { header: "Gene ID", value: (d)=> d.gene_id },
+          { header: "Gene Name", value:(d)=> d.gene_name },
+          { header: "Hsq", value:(d)=> d.hsq.toFixed(2) },
           {
             header: "p-value",
-            value:
-              d.twas_p < 0.01 ? d.twas_p.toExponential(3) : d.twas_p.toFixed(3),
+            value:(d)=>
+              d.twas_p < 0.01 ? d.twas_p.toExponential(2) : d.twas_p.toFixed(2),
           },
           {
             header: "q-value",
-            value:
+            value:(d)=>
               d.twas_bonferroni < 0.01
-                ? d.twas_bonferroni.toExponential(3)
-                : d.twas_bonferroni.toFixed(3),
+                ? d.twas_bonferroni.toExponential(2)
+                : d.twas_bonferroni.toFixed(2),
           },
-          { header: "FDR", value: d.dge_fdr.toFixed(3) },
-          { header: "log2 fold change", value: d.dge_log2fc.toFixed(3) },
-        ]),
+          { header: "FDR", value: (d)=> d.dge_fdr.toFixed(2) },
+          { header: "log2 fold change", value: (d)=> d.dge_log2fc.toFixed(2) },
+];
+
+const GeneAssociations: React.FC<GeneAssociationsProps> = (props) => {
+  const tabledata = useMemo(
+    () => props.data && [...props.data].sort((a, b) => a.twas_bonferroni - b.twas_bonferroni),
     [props.data]
   );
 
@@ -58,11 +48,15 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = (props) => {
     <Grid container {...props}>
       <Grid item sm={12}>
         <Container style={{ marginTop: "30px", marginLeft: "150px" }}>
-          {props.data ? (
-            <CustomizedTable
-              style={{ width: "max-content" }}
-              tabledata={tabledata}
-            />
+          {props.data && tabledata ? (
+             <DataTable
+             columns={formatEntry}
+             rows={tabledata}
+             itemsPerPage={10}
+             
+             searchable
+           />
+           
           ) : (
             <CircularProgress color="inherit" />
           )}

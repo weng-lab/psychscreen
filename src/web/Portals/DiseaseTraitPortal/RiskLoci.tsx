@@ -7,6 +7,7 @@ import { Cytobands } from "umms-gb";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
+import { DISEASE_CARDS } from "./config/constants";
 
 type Cytoband = {
   coordinates: {
@@ -65,9 +66,9 @@ const RiskLocusView: React.FC<{
     count: number;
     minimump: number;
   }[];
+  disease: string;
   onLocusClick?: (locus: GenomicRange) => void;
 }> = (props) => {
-    
   const groupedLoci = useMemo(
     () =>
       groupBy(
@@ -119,14 +120,15 @@ const RiskLocusView: React.FC<{
             (v, c) => v + groupedLoci.get(c)!.length,
             0
           )}{" "}
-          risk loci have been identified by GWAS (orange boxes below). Mouse
+          risk loci have been identified by <a target={"_blank"}
+                rel={"noreferrer noopener"} href={DISEASE_CARDS.find((d) => d.val === props.disease)?.link}>{DISEASE_CARDS.find((d) => d.val === props.disease)?.cardDesc}</a> (orange boxes below). Mouse
           over or click a locus to explore PsychENCODE epigenetic and
           transcriptomic data in that region.
         </Typography>
         <Container
           style={{ marginTop: "30px", marginLeft: "150px", width: "750px" }}
         >
-          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size*30+100}`}>
+          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size * 30 + 100}`}>
             {[...groupedLoci.keys()]
               .filter((x) => x && groupedCytobands.get(x))
               .sort(
@@ -155,12 +157,12 @@ const RiskLocusView: React.FC<{
                   <Cytobands
                     transform={`translate(50,${i * 30})`}
                     data={groupedCytobands.get(chromosome!)!}
-                    highlights={groupedLoci
-                      .get(chromosome)
-                      ?.map((x) => ({
-                        ...x,
-                        color: colorGradient(-Math.log10(x.minimump)),
-                      }))}
+                    highlights={groupedLoci.get(chromosome)?.map((x) => ({
+                      ...x,
+                      //start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
+                      //end: x.end + 1500000,
+                      color: colorGradient(-Math.log10(x.minimump)),
+                    }))}
                     width={(950 * maxes.get(chromosome!)!) / maxes.get("chr1")!}
                     height={20}
                     id=""
@@ -211,13 +213,13 @@ const RiskLocusView: React.FC<{
                   fontSize="18px"
                 >
                   {groupedLoci.get(selected[0])![selected[1]].chromosome}:
-                  {groupedLoci
-                    .get(selected[0])!
-                    [selected[1]].start.toLocaleString()}
+                  {(
+                    groupedLoci.get(selected[0])![selected[1]].start + 1500000
+                  ).toLocaleString()}
                   -
-                  {groupedLoci
-                    .get(selected[0])!
-                    [selected[1]].end.toLocaleString()}
+                  {(
+                    groupedLoci.get(selected[0])![selected[1]].end - 1500000
+                  ).toLocaleString()}
                 </text>
                 <text x={28} y={48} fontFamily="roboto" fontSize="18px">
                   {groupedLoci.get(selected[0])![selected[1]].count} significant
@@ -226,7 +228,7 @@ const RiskLocusView: React.FC<{
                     ? "s"
                     : ""}{" "}
                   at locus
-                </text>
+                </text>                
                 <text x={28} y={68} fontFamily="roboto" fontSize="18px">
                   lowest <tspan fontFamily="cursive">P</tspan>-value at locus:{" "}
                   {groupedLoci

@@ -34,21 +34,19 @@ export const scCtMapping: Map<string, string> = new Map([
   ["RB", "Misc"],
   ["Immune", "Misc"],
   ["Astro", "Astrocytes"],
-  ["Vip", "InhibitoryNeurons"]
+  ["Vip", "InhibitoryNeurons"],
 ]);
 
 const DEG_QUERY = gql`
-  query degQuery(
-    $gene: String, $disease: String!
-  ) {
+  query degQuery($gene: String, $disease: String!) {
     degQuery(gene: $gene, disease: $disease) {
-        padj
-        base_mean
-        lfc_se
-        stat
-        pvalue
-        celltype
-        log2_fc
+      padj
+      base_mean
+      lfc_se
+      stat
+      pvalue
+      celltype
+      log2_fc
     }
   }
 `;
@@ -87,10 +85,8 @@ export const DATASETS: Map<
       shortdesc: "CMC&SZBD cohorts, >70 y.o. (n=40) versus <70 y.o. (n=36)",
       desc: "Age",
     },
-  ]
+  ],
 ]);
-
-
 
 export const DegExpression = (props) => {
   const [dataset, setDataset] = React.useState(props.disease);
@@ -98,9 +94,9 @@ export const DegExpression = (props) => {
   const { data, loading } = useQuery(DEG_QUERY, {
     variables: {
       gene: props.gene,
-      disease: dataset
-    }
-  })
+      disease: dataset,
+    },
+  });
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
@@ -108,92 +104,111 @@ export const DegExpression = (props) => {
   let keys = Array.from(DATASETS.keys());
   const dotplotData =
     !loading && data
-      ? data.degQuery.filter(d => d.padj != 0).map((k) => {
-        return {
-          expr_frac: -Math.log10(k.padj),
+      ? data.degQuery
+          .filter((d) => d.padj != 0)
+          .map((k) => {
+            return {
+              expr_frac: -Math.log10(k.padj),
 
-          highlighted: (k.padj) < 0.05 ? true : false,
-          mean_count: k.log2_fc,
-          dataset,
-          gene: props.gene,
-          celltype: k.celltype,
-        };
-      })
+              highlighted: k.padj < 0.05 ? true : false,
+              mean_count: k.log2_fc,
+              dataset,
+              gene: props.gene,
+              celltype: k.celltype,
+            };
+          })
       : [];
-  return (<>
-    <Grid container>
-      <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        style={{ marginBottom: "2em", marginTop: "2em" }}
-      >
-
-        {<>
-          <Grid
-            item
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-            style={{ marginBottom: "2em" }}
-          >
-            <Typography
-              style={{ marginLeft: "1em", marginTop: "0.1em" }}
-              type="body"
-              size="large"
-            >
-              Select PsychEncode Dataset:
-            </Typography>
-
-            {
-              <FormControl
-                sx={{ m: 1, minWidth: 400 }}
-                style={{ marginLeft: "1em", marginTop: "1em" }}
+  return (
+    <>
+      <Grid container>
+        <Grid
+          item
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+          style={{ marginBottom: "2em", marginTop: "2em" }}
+        >
+          {
+            <>
+              <Grid
+                item
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ marginBottom: "2em" }}
               >
-                <InputLabel id="simple-select-helper-label">Dataset:</InputLabel>
-                <MUISelect
-                  labelId="simple-select-helper-label"
-                  id="simple-select-helper"
-                  value={dataset}
-                  label="Dataset"
-                  onChange={handleChange}
+                <Typography
+                  style={{ marginLeft: "1em", marginTop: "0.1em" }}
+                  type="body"
+                  size="large"
                 >
-                  {keys.map((d) => {
-                    return (
-                      <MenuItem value={DATASETS.get(d)!.cohort}>
-                        {d}
-                        {" - "}
-                        {DATASETS.get(d)!.shortdesc}
-                      </MenuItem>
-                    );
-                  })}
-                </MUISelect>
-              </FormControl>
-            }
-          </Grid>
-        </>}
-        {
-          loading || !dotplotData ? (
-            <CircularProgress />
-          ) : dotplotData.length === 0 ? (<>
-            {'No data available for ' + props.gene}
-          </>) : (<>
+                  Select PsychEncode Dataset:
+                </Typography>
 
-            <DotPlot
-              deg={true}
-              disease={dataset}
-              gene={props.gene}
-              showTooltip={true}
-              dotplotData={
-                dotplotData
-              }
-              title1={"-log10(P-adj)"}
-              title2={"log2(fc)"}
-              ref={dotPlotRef} /></>)
-        }
+                {
+                  <FormControl
+                    sx={{ m: 1, minWidth: 400 }}
+                    style={{ marginLeft: "1em", marginTop: "1em" }}
+                  >
+                    <InputLabel id="simple-select-helper-label">
+                      Dataset:
+                    </InputLabel>
+                    <MUISelect
+                      labelId="simple-select-helper-label"
+                      id="simple-select-helper"
+                      value={dataset}
+                      label="Dataset"
+                      onChange={handleChange}
+                    >
+                      {keys.map((d) => {
+                        return (
+                          <MenuItem value={DATASETS.get(d)!.cohort}>
+                            {d}
+                            {" - "}
+                            {DATASETS.get(d)!.shortdesc}
+                          </MenuItem>
+                        );
+                      })}
+                    </MUISelect>
+                  </FormControl>
+                }
+              </Grid>
+            </>
+          }
+          {loading || !dotplotData ? (
+            <CircularProgress />
+          ) : dotplotData.length == 0 ? (
+            <>{"No data available for " + props.gene}</>
+          ) : (
+            <>
+              <DotPlot
+                deg={true}
+                disease={dataset}
+                yaxistitle={props.gene}
+                showTooltip={true}
+                dotplotData={dotplotData}
+                title1={
+                  <>
+                    {"-log"}
+                    <tspan baseline-shift="sub">10</tspan>
+                    {"(p-adj)"}
+                  </>
+                }
+                title2={
+                  <>
+                    {"log"}
+                    <tspan baseline-shift="sub">2</tspan>
+                    {"(fold change)"}
+                  </>
+                }
+                ref={dotPlotRef}
+              />
+            </>
+          )}
+        </Grid>
       </Grid>
-    </Grid></>)
-}
+    </>
+  );
+};

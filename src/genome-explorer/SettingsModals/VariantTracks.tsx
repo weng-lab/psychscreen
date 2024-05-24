@@ -11,6 +11,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { URL_MAP } from "../../web/Portals/DiseaseTraitPortal/config/constants";
+import { DISEASE_CARDS } from "../../web/Portals/DiseaseTraitPortal/config/constants";
 
 type EpigeneticTrackModalProps = {
   open?: boolean;
@@ -121,7 +122,8 @@ const VariantTrackModal: React.FC<EpigeneticTrackModalProps> = (props) => {
                       }
                     />
                   }
-                  label={track[0]}
+                  label={DISEASE_CARDS.find(d=>d.val===track[0])?.cardLabel || track[0]}
+                
                   onChange={() => toggleTrack(track)}
                 />
               ))}

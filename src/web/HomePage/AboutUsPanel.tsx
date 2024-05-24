@@ -1,6 +1,6 @@
 import React from "react";
 import { PortalPanel } from "./PortalsPanel";
-import logo from "../../assets/umass.png"
+import logo from "../../assets/umass.png";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
 const AboutUsPanel: React.FC = () => {
@@ -23,6 +23,6 @@ const AboutUsPanel: React.FC = () => {
         />
       </Grid2>
     </Grid2>
-  )
+  );
 };
 export default AboutUsPanel;

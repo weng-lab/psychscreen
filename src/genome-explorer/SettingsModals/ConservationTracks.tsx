@@ -114,7 +114,7 @@ const ConservationTrackModal: React.FC<ConservationTrackModalProps> = (
             id="panel1a-header"
           >
             <Typography type="title" size="medium">
-              Conservation Tracks
+              Evo. Conservation
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
