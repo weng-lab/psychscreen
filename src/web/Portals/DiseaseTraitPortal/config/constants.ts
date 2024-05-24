@@ -237,7 +237,7 @@ export const FULLSUMSTAT_URL_MAP = {
   "Attention deficit hyperactive disorder":
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ADHD_meta_PGC.formatted.bigBed",
   Depression:
-    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.filtered.bigBed",
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.formatted.bigBed",
   //Dyslexia: "dyslexia",
   EverSmoked:
     "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/EverSmoked_meta_Karlsson.formatted.bigBed",
