@@ -27,7 +27,7 @@ const AboutUsPage: React.FC<GridProps> = (props) => {
       Disease and Trait Portal:
       </Typography>
       <Typography variant="body1">
-      This portal allows users to search for specific psychiatric traits or disorders, such as schizophrenia or neuroticism, and visualize associated risk loci. It integrates GWAS summary statistics and provides interactive genome browser views for detailed exploration of significant SNPs and their annotations.
+      This portal allows users to search for specific psychiatric traits or disorders, such as schizophrenia or alzheimer’s disease., and visualize associated risk loci. It integrates GWAS summary statistics and provides interactive genome browser views for detailed exploration of significant SNPs and their annotations.
       </Typography>
       <Typography variant="h5">
       Gene Portal:

@@ -751,13 +751,6 @@ const gwasMetaDownloads = {
       "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Depression1.tsv.snps.bed.bb.bed"
     ),
     createData(
-      "neuroticism (3 studies)",
-      "brain",
-      1187150,
-      63157541,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Neuroticism1.tsv.snps.bed.bb.bed"
-    ),
-    createData(
       "number of children (4 studies)",
       "brain",
       1186976,
