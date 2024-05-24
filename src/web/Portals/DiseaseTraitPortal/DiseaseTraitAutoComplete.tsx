@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../DiseaseTraitPortal/DiseaseTraitDetails";
 import { DISEASE_CARDS } from "./config/constants";
+import { Stack } from "@mui/material";
 
 const OPTIONS = DISEASE_CARDS.map((d) => d.cardLabel).sort();
 export const DiseaseTraitAutoComplete = (props) => {
@@ -15,20 +16,21 @@ export const DiseaseTraitAutoComplete = (props) => {
   const navigate = useNavigate();
 
   return (
-    <Grid container alignItems="center">
+    <Stack>
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
           <Typography>Search trait:</Typography>
           <br />
         </Grid>
       )}
-      <Grid item sm={5.5} md={5.5} lg={5.5} xl={5.5}>
+      <Grid container alignItems="center" wrap="nowrap" gap={2}>
+      <Grid item>
         <Autocomplete
-          sx={{ width: 300, paper: { height: 200 } }}
+          sx={{ width: 270 }}
           options={OPTIONS}
           ListboxProps={{
             style: {
-              maxHeight: "180px",
+              maxHeight: "250px",
             },
           }}
           
@@ -86,14 +88,7 @@ export const DiseaseTraitAutoComplete = (props) => {
           }}
         />
       </Grid>
-      <Grid
-        item
-        sm={1}
-        md={1}
-        lg={1}
-        xl={1}
-        sx={{ verticalAlign: "middle", textAlign: "center" }}
-      >
+      <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
         <StyledButton
           bvariant="filled"
           btheme="light"
@@ -112,5 +107,6 @@ export const DiseaseTraitAutoComplete = (props) => {
         </StyledButton>
       </Grid>
     </Grid>
+    </Stack>
   );
 };

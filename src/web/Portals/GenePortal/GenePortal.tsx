@@ -164,8 +164,7 @@ const GenePortal: React.FC = (props) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> Gene expression in 11
-            brain regions
+            <CheckIcon style={{ marginRight: "9px" }} /> Gene expression from 294 donors, including 7 psychiatric disorders
           </Typography>
           <Typography
             type="body"
@@ -179,8 +178,7 @@ const GenePortal: React.FC = (props) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 23 fetal, adolescent,
-            and adult time points covered
+            <CheckIcon style={{ marginRight: "9px" }} /> 923,942 brain regulatory elements cataloged
           </Typography>
           <Typography
             type="body"
@@ -194,8 +192,21 @@ const GenePortal: React.FC = (props) => {
               lineHeight: "19px",
             }}
           >
-            <CheckIcon style={{ marginRight: "9px" }} /> 761,984 brain
-            regulatory elements
+            <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility in 13 brain regions
+          </Typography>
+          <Typography
+            type="body"
+            size="large"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
+            }}
+          >
+            <CheckIcon style={{ marginRight: "9px" }} /> Gene expression and gene regulatory networks across 27 cell types
           </Typography>
           <br />
           <br />

@@ -71,7 +71,6 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    flexWrap: "wrap",
                     fontSize: "16px",
                     fontWeight: 400,
                     lineHeight: "19px",
@@ -152,7 +151,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         `}
         stats={[
           "18 total traits cataloged",
-          "1,103 b-cCRE/trait associations"
+          "5,848 b-cCRE/trait associations"
         ]}
         buttonText={"Explore Diseases/Traits"}
         buttonLink={"/psychscreen/traits"}
@@ -174,9 +173,10 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           cell co-expression analyses.
         `}
         stats={[
-          "Gene expression in 11 brain regions",
-          "23 fetal, adolescent, and adult time points covered",
-          "761,984 brain regulatory elements"
+          "Gene expression from 294 donors, including 7 psychiatric disorders",
+          "923,942 brain regulatory elements cataloged",
+          "Chromatin accessibility in 13 brain regions",
+          "Gene expression and gene regulatory networks across 27 cell types"
         ]}
         buttonText={"Explore Genes/b-cCREs"}
         buttonLink={"/psychscreen/gene"}
@@ -195,11 +195,11 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           Search SNPs of interest and explore their impact on gene expression,
           chromatin accessibility, transcription factor (TF) binding and other
           molecular traits in the human brain based on PsychENCODE QTLs and
-          sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS
+          sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS anotations.
         `}
         stats={[
-          "441,502 eQTLs, sQTLs, caQTLs, and fQTLs",
-          "13,336 variants associated with complex traits",
+          "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
+          "127,265 variants associated with complex traits",
           "510,062 variants in b-cCREs"
         ]}
         buttonText={"Explore SNPs/QTLs"}
@@ -222,8 +222,8 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           cell types and states.
         `}
         stats={[
-          "Transcriptomes for 1,391,772 single cells",
-          "Chromatin accessibility for 1,009,942 single cells"
+          "Transcriptomes for 2,040,943 single cells",
+          "Chromatin accessibility for 344,135 single cells"
         ]}
         buttonText={"Explore Single Cells"}
         buttonLink={"/psychscreen/single-cell"}
