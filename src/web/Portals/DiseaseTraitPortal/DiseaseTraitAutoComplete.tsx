@@ -25,7 +25,7 @@ export const DiseaseTraitAutoComplete = (props) => {
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
       <Grid item>
         <Autocomplete
-          sx={{ width: 270 }}
+          sx={{ width: 300, paper: { height: 200 } }}
           options={OPTIONS}
           ListboxProps={{
             style: {

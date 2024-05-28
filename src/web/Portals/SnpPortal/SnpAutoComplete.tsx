@@ -6,9 +6,9 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
-
 import { StyledButton } from "../../Portals/styles";
 import { Stack } from "@mui/material";
+
 const SNP_AUTOCOMPLETE_QUERY = `
 query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
     snpAutocompleteQuery(snpid: $snpid, assembly: $assembly) {
@@ -73,7 +73,6 @@ export const SnpAutoComplete = (props) => {
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
       <Grid item>
         <Autocomplete
-          id="google-map-demo"
           sx={{ width: 300, paper: { height: 200 } }}
           options={options}
           ListboxProps={{
