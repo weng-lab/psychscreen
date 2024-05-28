@@ -117,14 +117,21 @@ const RiskLocusView: React.FC<{
           size="medium"
           style={{ width: "750px", marginLeft: "150px", marginTop: "30px" }}
         >
+          The study
+          {" "}
+          <a target={"_blank"} rel={"noreferrer noopener"} href={DISEASE_CARDS.find((d) => d.val === props.disease)?.link}>
+            {DISEASE_CARDS.find((d) => d.val === props.disease)?.cardDesc}
+          </a>
+          {" "}
+          has identified
+          {" "}
           {[...groupedLoci.keys()].reduce<number>(
             (v, c) => v + groupedLoci.get(c)!.length,
             0
-          )}{" "}
-          risk loci have been identified by <a target={"_blank"}
-                rel={"noreferrer noopener"} href={DISEASE_CARDS.find((d) => d.val === props.disease)?.link}>{DISEASE_CARDS.find((d) => d.val === props.disease)?.cardDesc}</a> (orange boxes below). Mouse
-          over or click a locus to explore PsychENCODE epigenetic and
-          transcriptomic data in that region.
+          )}
+          {" "}
+          risk loci (orange boxes below).
+          Mouse over or click a locus to explore PsychENCODE epigenetic and transcriptomic data in that region.
         </Typography>
         <Container
           style={{ marginTop: "30px", marginLeft: "150px", width: "750px" }}
