@@ -313,9 +313,7 @@ export const Arcs: React.FC<ArcProps> = (props) => {
           left={tooltipLeft}
           style={{ ...defaultTooltipStyles, backgroundColor: '#283238', color: 'white' }}
         >
-          <p><strong>{props.domain.chromosome}</strong></p>
-          <p>Start: <strong>{tooltipData?.coordinates.start.toLocaleString()}</strong></p>
-          <p>End: <strong>{tooltipData?.coordinates.end.toLocaleString()}</strong></p>
+          <p>{props.domain.chromosome}:{tooltipData?.coordinates.start.toLocaleString()}-{tooltipData?.coordinates.end.toLocaleString()}</p>
           <p>Target Gene: <strong>{tooltipData?.targetGene}</strong></p>
           {tooltipData?.targetTF && <p>Target TF: <strong>{tooltipData?.targetTF}</strong></p>}
         </TooltipInPortal>
