@@ -46,3 +46,27 @@ export function riskLoci(
   });
   return riskLoci;
 }
+
+export function toScientificNotation(num: number, sigFigs?: number) {
+  // Convert the number to scientific notation using toExponential
+  let scientific = num.toExponential(sigFigs ?? undefined);
+  
+  // Split the scientific notation into the coefficient and exponent parts
+  let [coefficient, exponent] = scientific.split('e');
+  
+  // Format the exponent part
+  let expSign = exponent[0];
+  exponent = exponent.slice(1);
+  
+  // Convert the exponent to a superscript string
+  let superscriptExponent = exponent
+    .split('')
+    .map(char => '⁰¹²³⁴⁵⁶⁷⁸⁹'[char] || char)
+    .join('');
+  
+  // Add the sign back to the exponent
+  superscriptExponent = (expSign === '-' ? '⁻' : '') + superscriptExponent;
+  
+  // Combine the coefficient with the superscript exponent
+  return coefficient + '×10' + superscriptExponent;
+}

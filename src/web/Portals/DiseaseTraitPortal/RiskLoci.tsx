@@ -8,6 +8,7 @@ import { linearTransform } from "../GenePortal/violin/utils";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { DISEASE_CARDS } from "./config/constants";
+import { toScientificNotation } from "./utils";
 
 type Cytoband = {
   coordinates: {
@@ -194,6 +195,8 @@ const RiskLocusView: React.FC<{
                     ? 700
                     : selected[2] - 150
                 },${selected[3] + (selected[3] >= 550 ? -105 : 30)})`}
+                fontFamily="roboto"
+                fontSize="18px"
               >
                 <rect
                   x={0}
@@ -208,9 +211,7 @@ const RiskLocusView: React.FC<{
                 <text
                   x={12}
                   y={24}
-                  fontFamily="roboto"
                   fontWeight="bold"
-                  fontSize="18px"
                 >
                   {groupedLoci.get(selected[0])![selected[1]].chromosome}:
                   {(
@@ -221,7 +222,7 @@ const RiskLocusView: React.FC<{
                     groupedLoci.get(selected[0])![selected[1]].end - 1500000
                   ).toLocaleString()}
                 </text>
-                <text x={28} y={48} fontFamily="roboto" fontSize="18px">
+                <text x={28} y={48}>
                   {groupedLoci.get(selected[0])![selected[1]].count} significant
                   SNP
                   {groupedLoci.get(selected[0])![selected[1]].count !== 1
@@ -229,20 +230,16 @@ const RiskLocusView: React.FC<{
                     : ""}{" "}
                   at locus
                 </text>                
-                <text x={28} y={68} fontFamily="roboto" fontSize="18px">
-                  lowest <tspan fontFamily="cursive">P</tspan>-value at locus:{" "}
-                  {groupedLoci
-                    .get(selected[0])!
-                    [selected[1]].minimump.toExponential(1)}
+                <text x={28} y={68}>
+                  lowest <tspan fontStyle="italic">p</tspan> at locus:{" "}
+                    {toScientificNotation(groupedLoci.get(selected[0])![selected[1]].minimump, 2) }
                 </text>
                 <text
                   x={12}
                   y={88}
-                  fontFamily="roboto"
-                  fontSize="18px"
                   fill="#0000ff"
                 >
-                  click to explore this locus
+                  Click to explore this locus
                 </text>
               </g>
             ) : null}
