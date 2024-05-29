@@ -11,9 +11,17 @@ import { Stack } from "@mui/material";
 
 const OPTIONS = CELLTYPE_CARDS.map((d) => d.cardLabel).sort();
 export const CelltypeAutoComplete = (props) => {
-  const [value, setValue] = React.useState<any>(null);
   const [inputValue, setInputValue] = React.useState("");
   const navigate = useNavigate();
+
+  const onSubmit = () => {
+    const submittedCell = CELLTYPE_CARDS.find((d) => d.cardLabel.toLowerCase() === inputValue.toLowerCase())
+    if (submittedCell) {
+      navigate(props.navigateto + submittedCell.cardLabel, {
+        state: { searchvalue: submittedCell.cardLabel },
+      });
+    }
+  }
 
   return (
     <Stack>
@@ -26,6 +34,7 @@ export const CelltypeAutoComplete = (props) => {
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
       <Grid item>
         <Autocomplete
+          freeSolo
           sx={{ width: 300, paper: { height: 200 } }}
           options={OPTIONS}
           ListboxProps={{
@@ -36,20 +45,8 @@ export const CelltypeAutoComplete = (props) => {
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
-
-              const val = CELLTYPE_CARDS.find(
-                (d) => d.cardLabel === value
-              )?.cardLabel;
-
-              if (value)
-                navigate(props.navigateto + val, {
-                  state: { searchvalue: val },
-                });
+              onSubmit()
             }
-          }}
-          value={value}
-          onChange={(_: any, newValue: string | null) => {
-            setValue(newValue);
           }}
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => {
@@ -91,16 +88,7 @@ export const CelltypeAutoComplete = (props) => {
         <StyledButton
           bvariant="filled"
           btheme="light"
-          onClick={() => {
-            const val = CELLTYPE_CARDS.find(
-              (d) => d.cardLabel === value
-            )?.cardLabel;
-
-            if (value)
-              navigate(props.navigateto + val, {
-                state: { searchvalue: val },
-              });
-          }}
+          onClick={onSubmit}
         >
           Search
         </StyledButton>
