@@ -171,7 +171,7 @@ export const GeneAutoComplete = (props) => {
                   <Grid container alignItems="center">
                     <Grid item sx={{ width: "calc(100% - 44px)" }}>
                       <Box component="span" sx={{ fontWeight: "regular" }}>
-                        {option}
+                        <i>{option}</i>
                       </Box>
                       {geneDesc && geneDesc.find((g) => g.name === option) && (
                         <Typography variant="body2" color="text.secondary">
