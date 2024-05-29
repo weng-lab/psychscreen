@@ -121,7 +121,7 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
               <StyledTab label="scATAC-Seq Peaks" tabIndex={0} />
               <StyledTab label="Gene Regulatory Networks" tabIndex={1} />
               <StyledTab label="eQTLs" tabIndex={2} />
-              <StyledTab label="Diff. Expressed Genes" tabIndex={3} />
+              <StyledTab label="Differential Gene Expression" tabIndex={3} />
             </Tabs>
             <Divider />
           </Box>

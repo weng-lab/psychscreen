@@ -54,8 +54,8 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
     if (snpSuggestion && snpSuggestion.length > 0) {
       const r = snpSuggestion.map((g: any) => {
         return {
-          val: `${g.id}/${g.coordinates.chromosome}/${g.coordinates.start}/${g.coordinates.end}`,
-          cardDesc: `${g.coordinates.chromosome}:${g.coordinates.start}-${g.coordinates.end}`, //.split(".")[0],
+          val: `${g.id}/${g.coordinates.chromosome}/${g.coordinates.start.toLocaleString()}/${g.coordinates.end.toLocaleString()}`,
+          cardDesc: `${g.coordinates.chromosome}:${g.coordinates.start.toLocaleString()}-${g.coordinates.end.toLocaleString()}`, //.split(".")[0],
           cardLabel: g.id,
         };
       });

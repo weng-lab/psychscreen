@@ -117,7 +117,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     qtlsigassocData &&
     qtlsigassocData.qtlsigassocQuery.map((x) => [
       {
-        header: "Gene Id",
+        header: "Gene ID",
         value: x.geneid.includes("ENSG")
           ? (geneNameData &&
               geneNameData.gene.find((g) => g.id.split(".")[0] === x.geneid)
@@ -130,20 +130,20 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
             x.geneid,
       },
       {
-        header: "Dist",
+        header: "Distance",
         value: x.dist,
       },
       {
         header: "Slope",
-        value: x.slope.toFixed(3),
+        value: x.slope.toFixed(2),
       },
       {
         header: "FDR",
-        value: x.fdr.toFixed(3),
+        value: x.fdr.toFixed(2),
       },
       {
-        header: "Npval",
-        value: x.npval.toFixed(3),
+        header: "p",
+        value: x.npval.toFixed(2),
       },
       {
         header: "Type",
@@ -155,8 +155,26 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     eqtlData &&
     eqtlData.deconqtlsQuery.map((x) => [
       {
-        header: "Gene Id",
+        header: "Gene ID",
         value: x.geneid,
+        render: (
+          <Typography
+            type="body"
+            size="medium"
+            onClick={() => navigate("/psychscreen/gene/" + x.geneid)}
+            style={{
+              color: "#1976d2",
+              textDecoration: "underline",
+              fontSize: "14px",
+              lineHeight: "20px",
+              fontWeight: 400,
+              letterSpacing: "0.1px",
+              marginBottom: "10px",
+            }}
+          >
+            {x.geneid}
+          </Typography>
+        ),
       },
       {
         header: "Slope",
@@ -214,7 +232,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       .map((d) => {
         return [
           {
-            header: "gene",
+            header: "Gene",
             value: d.name,
             render: (
               <Typography
@@ -236,14 +254,14 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
             ),
           },
           {
-            header: "p-value",
+            header: "p",
             value: d.nominal_pval,
             render: (
               <span>
                 {" "}
                 {d.nominal_pval < 0.001
-                  ? d.nominal_pval.toExponential(3)
-                  : d.nominal_pval.toFixed(3)}
+                  ? d.nominal_pval.toExponential(2)
+                  : d.nominal_pval.toFixed(2)}
               </span>
             ),
           },
@@ -252,14 +270,14 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
             value: d.fdr,
             render: (
               <span>
-                {d.fdr < 0.001 ? d.fdr.toExponential(3) : d.fdr.toFixed(3)}
+                {d.fdr < 0.001 ? d.fdr.toExponential(2) : d.fdr.toFixed(2)}
               </span>
             ),
           },
           {
             header: "slope",
             value: d.slope,
-            render: <span>{d.slope.toFixed(3)}</span>,
+            render: <span>{d.slope.toFixed(2)}</span>,
           },
         ];
       });
@@ -288,9 +306,8 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       {egeneData && egeneData.length > 0 ? (
         <>
           <Typography
-            type="display"
-            style={{ fontWeight: 500, fontSize: "28px" }}
-            size="small"
+            type="title"          
+            size="large"
           >
             eGenes for {props.snp}:
           </Typography>
@@ -302,7 +319,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
         </>
       ) : (
         <>
-          <Typography type="headline" size="small">
+          <Typography type="title" size="large">
             {" "}
             No eGenes have been identified for this SNP.
           </Typography>
@@ -312,7 +329,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       )}
       {deconqtlData && deconqtlData.length > 0 && (
         <>
-          <Typography type="headline" size="small">
+          <Typography type="title" size="large">
             {`The following decon-eQTLs have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
           <CustomizedTable
@@ -323,7 +340,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       )}
       {qtlsigData && qtlsigData.length > 0 && (
         <>
-          <Typography type="headline" size="small">
+          <Typography type="title" size="large">
             {`The following eQTLs/isoQTLs (Gandal lab) have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
           <CustomizedTable

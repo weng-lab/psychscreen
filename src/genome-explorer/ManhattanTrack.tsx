@@ -178,7 +178,7 @@ export const defaultManhattanSNPProps = (
 });
 
 export const ManhattanTrack: React.FC<ManhattanTrackProps> = (props) => {
-  console.log("props.data mn", props.data);
+  
   const tooltipContext = useContext(TooltipContext);
   const Tooltip = props.tooltipContent || TooltipContent;
   const mouseOver = useCallback(

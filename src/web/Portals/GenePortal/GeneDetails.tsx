@@ -13,7 +13,7 @@ import Browser from "./Browser/Browser";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import SingleCell from "./SingleCell";
-import { StyledTab } from "../../Portals/styles";
+import { StyledTab, StyledToggleButton } from "../../Portals/styles";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 
@@ -202,7 +202,7 @@ const GeneDetails: React.FC = (props) => {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
             width="1.7%"
           />
-          &nbsp;Gene Details: <em>{gene}</em>
+          &nbsp;Gene Details: <i>{gene}</i>
         </Typography>
         <br />
         <div
@@ -222,12 +222,12 @@ const GeneDetails: React.FC = (props) => {
       <Grid item sm={9}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
-            <StyledTab label="Brain epi Genome Browser" />
+            <StyledTab label="Brain Epigenome Browser" />
             <StyledTab label="Brain Single Cell Expression" />
             <StyledTab label="Tissue Expression (GTEx)" />
             <StyledTab label="Brain eQTLs and b-cCREs" />
 
-            <StyledTab label="Diff. Expressed Genes Expression" />
+            <StyledTab label="Differential Gene Expression" />
             {null && <StyledTab label="Open Target" />}
           </Tabs>
           <Divider />
@@ -327,12 +327,12 @@ const GeneDetails: React.FC = (props) => {
                     exclusive
                     onChange={handleTissueCategory}
                   >
-                    <ToggleButton value="broad">
+                    <StyledToggleButton value="broad">
                       Broad Tissue Category
-                    </ToggleButton>
-                    <ToggleButton value="granular">
+                    </StyledToggleButton>
+                    <StyledToggleButton value="granular">
                       Granular Tissue Category
-                    </ToggleButton>
+                    </StyledToggleButton>
                   </ToggleButtonGroup>
                   <svg
                     viewBox={`0 0 ${width} ${width / 2}`}

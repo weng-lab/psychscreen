@@ -54,9 +54,9 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
           {data?.snpQuery[0]?.genomeWideAssociation.length ? (
             <>
               <Typography
-                type="display"
-                size="small"
-                style={{ fontWeight: 500, fontSize: "28px" }}
+                type="title"
+                size="large"
+                //style={{ fontWeight: 500, fontSize: "28px" }}
               >
                 {" "}
                 {props.id} has been identified in{" "}
@@ -65,9 +65,9 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
             </>
           ) : (
             <Typography
-              type="display"
-              style={{ fontWeight: 500, fontSize: "28px" }}
-              size="small"
+              type="title"
+              
+              size="large"
             >
               {props.id} has not been identified in any GWAS catalogued by
               psychSCREEN.

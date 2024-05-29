@@ -190,6 +190,7 @@ function useLoci(trait: string) {
     );
   }, [data]);
 
+  
   return { loci, loading, data };
 }
 
@@ -200,12 +201,18 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
   const { searchvalue, diseaseDesc } = state
     ? state
     : { searchvalue: "", diseaseDesc: "" };
+
+  const [gwasLocusSNPs, setGwasLocusSNPs] = useState<{SNPCount : number, minimump: number, coordinates: GenomicRange }>()
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
     chromosome: "chr1",
     start: 161033654,
     end: 161317875,
   });
-  const navigateBrowser = useCallback((coordinates: GenomicRange) => {
+  const navigateBrowser = useCallback((coordinates: GenomicRange, gwasLocusSNPs?: { SNPCount : number, minimump: number }) => {
+    
+    if(gwasLocusSNPs){
+      setGwasLocusSNPs({...gwasLocusSNPs, coordinates: coordinates})
+    }
     setBrowserCoordinates(coordinates);
     setPage(3);
   }, []);
@@ -343,7 +350,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                   btheme="light"
                   onClick={() => setPage(2)}
                 >
-                  Regulatory SNP Associations
+                  Associated SNPs in locus
                 </StyledButton>
                 &nbsp;&nbsp;&nbsp;
               </>
@@ -354,7 +361,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               btheme="light"
               onClick={() => setPage(3)}
             >
-              Brain epi Genome Browser
+              Brain Epigenome Browser
             </StyledButton>
           )}
           {significantSNPs && significantSNPs.length > 0 && 0>1 && (
@@ -411,6 +418,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               coordinates={browserCoordinates}
               url={summaryStatisticsURL}
               trait={diseaseLabel || "Autism Spectrum Disorder"}
+              gwasLocusSNPs={gwasLocusSNPs}
             />
           </div>
         ) : page === 4 && significantSNPs && significantSNPs.length > 0 && 0>1 ?  (

@@ -144,7 +144,7 @@ export const DegExpression = (props) => {
                   type="body"
                   size="large"
                 >
-                  Select PsychEncode Dataset:
+                  Select PsychENCODE Dataset:
                 </Typography>
 
                 {

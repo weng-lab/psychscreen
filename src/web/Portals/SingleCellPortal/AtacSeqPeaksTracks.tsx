@@ -94,7 +94,7 @@ type AtacSeqPeaksTracksProps = {
   onSettingsClick?: () => void;
 };
 
-export const TitledTrack: React.FC<{
+const TitledTrack: React.FC<{
   data: BigResponseData;
   url: string;
   title: string;
@@ -139,7 +139,7 @@ export const TitledTrack: React.FC<{
           transform="translate(0,40)"
           data={data as BigBedData[]}
           svgRef={svgRef}
-          tooltipContent={(rect) => <CCRETooltip {...rect} assembly="grch38" />}
+          tooltipContent={() => <></> }
         />
       ) : (
         <FullBigWig

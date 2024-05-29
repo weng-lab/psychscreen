@@ -67,7 +67,7 @@ const RiskLocusView: React.FC<{
     minimump: number;
   }[];
   disease: string;
-  onLocusClick?: (locus: GenomicRange) => void;
+  onLocusClick?: (locus: GenomicRange, gwasLocusSNPs?: { SNPCount : number, minimump: number }) => void;
 }> = (props) => {
   const groupedLoci = useMemo(
     () =>
@@ -172,14 +172,19 @@ const RiskLocusView: React.FC<{
                     }
                     onHighlightMouseOut={() => setSelected(null)}
                     onHighlightClick={(_, __, ii) =>
-                      props.onLocusClick &&
+                      props.onLocusClick && selected &&
                       props.onLocusClick({
                         chromosome: groupedLoci.get(chromosome!)![ii]
                           .chromosome,
                         start:
                           groupedLoci.get(chromosome!)![ii].start + 1400000,
                         end: groupedLoci.get(chromosome!)![ii].end - 1400000,
+                      }, { SNPCount: groupedLoci.get(selected[0])![selected[1]].count, 
+                        minimump: +groupedLoci.get(selected[0])![selected[1]].minimump.toExponential(1) 
                       })
+                      
+                      
+                      
                     }
                     opacity={0.4}
                   />
@@ -230,7 +235,7 @@ const RiskLocusView: React.FC<{
                   at locus
                 </text>                
                 <text x={28} y={68} fontFamily="roboto" fontSize="18px">
-                  lowest <tspan fontFamily="cursive">P</tspan>-value at locus:{" "}
+                  lowest <tspan fontFamily="italic">P</tspan> at locus:{" "}
                   {groupedLoci
                     .get(selected[0])!
                     [selected[1]].minimump.toExponential(1)}

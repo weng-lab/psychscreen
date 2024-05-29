@@ -36,13 +36,22 @@ export type DiseaseIntersectingSnpsWithccresProps = GridProps & {
 };
 
 const formatEntry = [
-  { header: "SNP ID", value: (d) => d.snpid },
+  { header: "SNP ID", value: (d) => d.snpid, render: (d) => 
+   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/snp/${d.snpid}`}>
+  {d.snpid}
+</a> },
   { header: "Chromosome", value: (d) => d.snp_chrom },
-  { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
+  { header: "Position", value: (d) => d.snp_stop.toLocaleString()},
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
-  { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene },
-  { header: "GWAS p-value", value: (d) => d.association_p_val },
+  { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene, render: (d)=> 
+  
+  <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${d.associated_gene}`}>
+  <i>{d.associated_gene}</i> 
+</a>
+  
+   },
+  { header: "GWAS p", value: (d) => d.association_p_val },
   {
     header: "cCRE ID",
     value: (d) => d.ccreid,
@@ -52,26 +61,22 @@ const formatEntry = [
         return <>{"NA"}</>
       }
       return(
-      <Link
-        rel="noopener noreferrer"
-        target="_blank"
-        href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${d.ccreid}&page=2`}
-      >
-        {d.ccreid}
-      </Link>
+        <a target="_blank" rel="noopener noreferrer" href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${d.ccreid}&page=2`}>
+          {d.ccreid}
+        </a>
     )},
   },
-  { header: "cCRE class", value: (d) => GROUPS.get(d.ccre_class) },
+  { header: "cCRE Class", value: (d) => GROUPS.get(d.ccre_class) },
 ];
 
 const bcreformatEntry = [
   { header: "SNP ID", value: (d) => d.snpid },
   { header: "Chromosome", value: (d) => d.snp_chrom },
-  { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
+  { header: "Position", value: (d) => d.snp_stop, render: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
   { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene },
-  { header: "GWAS pe", value: (d) => d.association_p_val  },
+  { header: "GWAS p", value: (d) => d.association_p_val  },
   {
     header: "bCRE ID",
     value: (d) => d.ccreid,
@@ -116,8 +121,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
             return {
               snpid: r[0],
               snp_chrom: r[1].split(":")[0],
-              snp_start: r[1].split(":")[1],
-              snp_stop: r[1].split(":")[1],
+              snp_start: +r[1].split(":")[1],
+              snp_stop: +r[1].split(":")[1],
               associated_gene: r[5],
               referenceallele: r[2],
               effectallele: r[3],
@@ -141,7 +146,7 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
     <Grid container {...props}>
       <Grid item sm={12}>
         <Container style={{ marginTop: "30px", marginLeft: "100px" }}>
-          {`Showing Significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start}- ${props.coordinates.end}`}
+          {`Showing significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start.toLocaleString()}-${props.coordinates.end.toLocaleString()}`}
           <br />
           <br />
           <Box>
@@ -149,7 +154,7 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
               <StyledTab label="Significant SNPs"></StyledTab>
               {intersectingSnps.filter((i) => i.bcre_class !== ".").length >
                 0 && (
-                <StyledTab label="Significant SNPs Intersecting brain cCREs (b-cCREs)" />
+                <StyledTab label="Significant SNPs intersecting brain cCREs (b-cCREs)" />
               )}
             </Tabs>
             <Divider />

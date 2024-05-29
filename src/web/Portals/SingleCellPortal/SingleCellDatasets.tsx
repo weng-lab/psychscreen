@@ -329,14 +329,14 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 marginLeft: "40px",
               }}
             >
-              {"Diff. expressed genes"}
+              {"Differential Gene Expression "}
             </Typography>
           </Container>
           <br />
           <br />
           <Box style={{ marginLeft: "80px" }}>
             <Tabs value={tabIndex} onChange={handleTabChange}>
-              <StyledTab label="Diff. expressed genes expression" />
+              <StyledTab label="Differential Gene Expression " />
               <StyledTab label="Data Table" />
             </Tabs>
           </Box>

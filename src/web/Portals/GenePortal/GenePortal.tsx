@@ -224,7 +224,7 @@ const GenePortal: React.FC = (props) => {
                   onSearchChange(val);
                 }
               }}
-              helperText={"e.g. sox4, gapdh"}
+              helperText={<>e.g. <i>SOX4</i>,<i>GAPDH</i></>}
             />
           )}
 

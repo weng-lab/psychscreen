@@ -165,9 +165,9 @@ export const GeneAutoComplete = (props) => {
 
             setInputValue(newInputValue);
           }}
-          noOptionsText="e.g sox4,gapdh"
+          noOptionsText={<>e.g. <i>SOX4</i>,<i>GAPDH</i></>}
           renderInput={(params) => (
-            <TextField {...params} label="e.g sox4,gapdh" fullWidth />
+            <TextField {...params} label={<>e.g. <i>SOX4</i>,<i>GAPDH</i></>} fullWidth />
           )}
           renderOption={(props, option) => {
             return (

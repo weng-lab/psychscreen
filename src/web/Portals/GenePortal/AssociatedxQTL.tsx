@@ -378,20 +378,20 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         value: x.snpid,
       },
       {
-        header: "Dist",
+        header: "Distance",
         value: x.dist,
       },
       {
         header: "Slope",
-        value: x.slope.toFixed(3),
+        value: x.slope.toFixed(2),
       },
       {
         header: "FDR",
-        value: x.fdr.toFixed(3),
+        value: x.fdr.toFixed(2),
       },
       {
-        header: "Npval",
-        value: x.npval.toFixed(3),
+        header: "p",
+        value: x.npval.toFixed(2),
       },
     ]);
 
