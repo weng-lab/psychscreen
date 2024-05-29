@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Container, GridProps, Divider, Link } from "@mui/material";
+import { Grid, Container, GridProps, Divider, Link, Typography } from "@mui/material";
 
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
 import { StyledButton, StyledTab } from "../../Portals/styles";
-import { DataTable } from "@weng-lab/psychscreen-ui-components";
+import { DataTable, DataTableColumn } from "@weng-lab/psychscreen-ui-components";
 import { GenomicRange } from "./Browser";
 import { GROUPS } from "../SnpPortal/RegulatoryElements";
+import { toScientificNotation } from "./utils";
 
 export type GwasIntersectingSnpsWithCcres = {
   snpid: string;
@@ -35,19 +36,24 @@ export type DiseaseIntersectingSnpsWithccresProps = GridProps & {
   fetal_bcredata: GwasIntersectingSnpsWithBcres[];
 };
 
-const formatEntry = [
+const formatEntry: DataTableColumn<GwasIntersectingSnpsWithCcres>[] = [
   { header: "SNP ID", value: (d) => d.snpid },
   { header: "Chromosome", value: (d) => d.snp_chrom },
   { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
   { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene },
-  { header: "GWAS p-value", value: (d) => d.association_p_val },
+  {
+    header: "GWAS p",
+    HeaderRender: () => <Typography>GWAS <i>p</i></Typography>,
+    value: (d) => d.association_p_val,
+    render: (d) => toScientificNotation(+d.association_p_val, 1)
+  },
   {
     header: "cCRE ID",
     value: (d) => d.ccreid,
     render: (d) => {  
-      if(d.ccreid==".")
+      if(d.ccreid === ".")
       {
         return <>{"NA"}</>
       }
@@ -61,17 +67,22 @@ const formatEntry = [
       </Link>
     )},
   },
-  { header: "cCRE class", value: (d) => GROUPS.get(d.ccre_class) },
+  { header: "cCRE class", value: (d) => GROUPS.get(d.ccre_class) ?? d.ccre_class },
 ];
 
-const bcreformatEntry = [
+const bcreformatEntry: DataTableColumn<GwasIntersectingSnpsWithCcres>[] = [
   { header: "SNP ID", value: (d) => d.snpid },
   { header: "Chromosome", value: (d) => d.snp_chrom },
   { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
   { header: "Reference Allele", value: (d) => d.referenceallele },
   { header: "Effect Allele", value: (d) => d.effectallele },
   { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene },
-  { header: "GWAS pe", value: (d) => d.association_p_val  },
+  {
+    header: "GWAS p",
+    HeaderRender: () => <Typography>GWAS <i>p</i></Typography>,
+    value: (d) => d.association_p_val,
+    render: (d) => toScientificNotation(+d.association_p_val, 1)
+  },
   {
     header: "bCRE ID",
     value: (d) => d.ccreid,

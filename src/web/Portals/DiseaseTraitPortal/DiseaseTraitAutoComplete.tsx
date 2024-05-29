@@ -10,9 +10,17 @@ import { StyledButton } from "../styles";
 import { Stack } from "@mui/material";
 const OPTIONS = DISEASE_CARDS.map((d) => d.cardLabel).sort();
 export const DiseaseTraitAutoComplete = (props) => {
-  const [value, setValue] = React.useState<any>(null);
   const [inputValue, setInputValue] = React.useState("");
   const navigate = useNavigate();
+
+  const onSubmit = () => {
+    const submittedTrait = DISEASE_CARDS.find((d) => d.cardLabel.toLowerCase() ===  inputValue.toLowerCase());
+    if (submittedTrait){
+      navigate(props.navigateto + submittedTrait.val, {
+        state: { searchvalue: submittedTrait.val, diseaseDesc: submittedTrait.diseaseDesc },
+      });
+    }
+  }
 
   return (
     <Stack>
@@ -25,7 +33,8 @@ export const DiseaseTraitAutoComplete = (props) => {
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
       <Grid item>
         <Autocomplete
-          sx={{ width: 270 }}
+          freeSolo
+          sx={{ width: 300, paper: { height: 200 } }}
           options={OPTIONS}
           ListboxProps={{
             style: {
@@ -34,31 +43,18 @@ export const DiseaseTraitAutoComplete = (props) => {
           }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
-              event.defaultPrevented = true;
-
-              const val = DISEASE_CARDS.find((d) => d.cardLabel === value)?.val;
-              const diseaseDesc = DISEASE_CARDS.find(
-                (d) => d.cardLabel === value
-              )?.diseaseDesc;
-              if (value)
-                navigate(props.navigateto + val, {
-                  state: { searchvalue: val, diseaseDesc },
-                });
+              onSubmit()
             }
-          }}
-          value={value}
-          onChange={(_: any, newValue: string | null) => {
-            setValue(newValue);
           }}
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          noOptionsText="e.g. schizophrenia, Insomnia"
+          noOptionsText="No Diseases/Traits Found"
           renderInput={(params) => (
             <TextField
               {...params}
-              label="e.g. schizophrenia, Insomnia"
+              label="e.g. Schizophrenia, Insomnia"
               fullWidth
             />
           )}
@@ -90,16 +86,7 @@ export const DiseaseTraitAutoComplete = (props) => {
         <StyledButton
           bvariant="filled"
           btheme="light"
-          onClick={() => {
-            const val = DISEASE_CARDS.find((d) => d.cardLabel === value)?.val;
-            const diseaseDesc = DISEASE_CARDS.find(
-              (d) => d.cardLabel === value
-            )?.diseaseDesc;
-            if (value)
-              navigate(props.navigateto + val, {
-                state: { searchvalue: val, diseaseDesc },
-              });
-          }}
+          onClick={onSubmit}
         >
           Search
         </StyledButton>

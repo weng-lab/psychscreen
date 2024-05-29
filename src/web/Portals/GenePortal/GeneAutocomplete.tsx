@@ -25,7 +25,6 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
  `;
 
 export const GeneAutoComplete = (props) => {
-  const [value, setValue] = React.useState<any>(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<string[]>([]);
   const [geneids, setGeneIds] = React.useState<
@@ -41,7 +40,7 @@ export const GeneAutoComplete = (props) => {
         options.map((gene) =>
           fetch(
             "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" +
-              gene.toUpperCase()
+            gene.toUpperCase()
           )
             .then((x) => x && x.json())
             .then((x) => {
@@ -103,8 +102,31 @@ export const GeneAutoComplete = (props) => {
     }
   };
 
+  const onSubmit = () => {
+    const inputStr = inputValue.toUpperCase()
+    const submittedGene = geneids.find((g) => g.name === inputStr)
+    if (submittedGene) {
+      props.onSelected &&
+        props.onSelected({
+          geneid: submittedGene?.id.split(".")[0],
+          name: inputValue,
+          chromosome: submittedGene?.chrom,
+          start: submittedGene?.start,
+          end: submittedGene?.end,
+        });
+      props.navigateto &&
+        navigate(props.navigateto + inputStr, {
+          state: {
+            geneid: submittedGene?.id.split(".")[0],
+            chromosome: submittedGene?.chrom,
+            start: submittedGene?.start,
+            end: submittedGene?.end,
+          },
+        });
+    }
+  }
+
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
-  const gridsize = props.gridsize || 5.5;
 
   return (
     <Stack>
@@ -115,115 +137,66 @@ export const GeneAutoComplete = (props) => {
         </Grid>
       )}
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
-      <Grid item>
-        <Autocomplete
-          id="gene-autocomplete"
-          sx={{ width: 300, paper: { height: 200 } }}
-          options={options}
-          ListboxProps={{
-            style: {
-              maxHeight: "250px",
-            },
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.defaultPrevented = true;
-              value &&
-                props.onSelected &&
-                props.onSelected({
-                  geneid: geneids
-                    .find((g) => g.name === value)
-                    ?.id.split(".")[0],
-                  name: value,
-                  chromosome: geneids.find((g) => g.name === value)?.chrom,
-                  start: geneids.find((g) => g.name === value)?.start,
-                  end: geneids.find((g) => g.name === value)?.end,
-                });
-              if (value && props.navigateto)
-                navigate(props.navigateto + value, {
-                  state: {
-                    geneid: geneids
-                      .find((g) => g.name === value)
-                      ?.id.split(".")[0],
-
-                    chromosome: geneids.find((g) => g.name === value)?.chrom,
-                    start: geneids.find((g) => g.name === value)?.start,
-                    end: geneids.find((g) => g.name === value)?.end,
-                  },
-                });
-            }
-          }}
-          value={value}
-          onChange={(_: any, newValue: string | null) => {
-            setValue(newValue);
-          }}
-          inputValue={inputValue}
-          onInputChange={(event, newInputValue) => {
-            if (newInputValue !== "") {
-              debounceFn(newInputValue);
-            }
-
-            setInputValue(newInputValue);
-          }}
-          noOptionsText="e.g sox4,gapdh"
-          renderInput={(params) => (
-            <TextField {...params} label="e.g sox4,gapdh" fullWidth />
-          )}
-          renderOption={(props, option) => {
-            return (
-              <li {...props} key={props.id}>
-                <Grid container alignItems="center">
-                  <Grid item sx={{ width: "calc(100% - 44px)" }}>
-                    <Box component="span" sx={{ fontWeight: "regular" }}>
-                      {option}
-                    </Box>
-                    {geneDesc && geneDesc.find((g) => g.name === option) && (
-                      <Typography variant="body2" color="text.secondary">
-                        {geneDesc.find((g) => g.name === option)?.desc}
-                      </Typography>
-                    )}
-                  </Grid>
-                </Grid>
-              </li>
-            );
-          }}
-        />
-      </Grid>
-      {!props.hideSearchButton && (
-          <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
-          <StyledButton
-            bvariant="filled"
-            btheme="light"
-            onClick={() => {
-              value &&
-                props.onSelected &&
-                props.onSelected({
-                  geneid: geneids
-                    .find((g) => g.name === value)
-                    ?.id.split(".")[0],
-                  name: value,
-                  chromosome: geneids.find((g) => g.name === value)?.chrom,
-                  start: geneids.find((g) => g.name === value)?.start,
-                  end: geneids.find((g) => g.name === value)?.end,
-                });
-              if (value && props.navigateto)
-                navigate(props.navigateto + value, {
-                  state: {
-                    geneid: geneids
-                      .find((g) => g.name === value)
-                      ?.id.split(".")[0],
-                    chromosome: geneids.find((g) => g.name === value)?.chrom,
-                    start: geneids.find((g) => g.name === value)?.start,
-                    end: geneids.find((g) => g.name === value)?.end,
-                  },
-                });
+        <Grid item>
+          <Autocomplete
+            freeSolo
+            id="gene-autocomplete"
+            sx={{ width: 300, paper: { height: 200 } }}
+            options={options}
+            ListboxProps={{
+              style: {
+                maxHeight: "250px",
+              },
             }}
-          >
-            Search
-          </StyledButton>
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.defaultPrevented = true;
+                onSubmit()
+              }
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+              if (newInputValue !== "") {
+                debounceFn(newInputValue);
+              }
+              setInputValue(newInputValue);
+            }}
+            noOptionsText="No Genes Found"
+            renderInput={(params) => (
+              <TextField {...params} label="e.g SOX4, APOE" fullWidth />
+            )}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={props.id}>
+                  <Grid container alignItems="center">
+                    <Grid item sx={{ width: "calc(100% - 44px)" }}>
+                      <Box component="span" sx={{ fontWeight: "regular" }}>
+                        <i>{option}</i>
+                      </Box>
+                      {geneDesc && geneDesc.find((g) => g.name === option) && (
+                        <Typography variant="body2" color="text.secondary">
+                          {geneDesc.find((g) => g.name === option)?.desc}
+                        </Typography>
+                      )}
+                    </Grid>
+                  </Grid>
+                </li>
+              );
+            }}
+          />
         </Grid>
-      )}
-    </Grid>
+        {!props.hideSearchButton && (
+          <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
+            <StyledButton
+              bvariant="filled"
+              btheme="light"
+              onClick={() => onSubmit()}
+            >
+              Search
+            </StyledButton>
+          </Grid>
+        )}
+      </Grid>
     </Stack>
   );
 };
