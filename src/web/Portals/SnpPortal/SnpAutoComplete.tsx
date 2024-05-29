@@ -22,7 +22,6 @@ query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
 }
 `;
 export const SnpAutoComplete = (props) => {
-  const [value, setValue] = React.useState<any>(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<any[]>([]);
   const [snpids, setSnpIds] = React.useState<any[]>([]);
@@ -62,6 +61,26 @@ export const SnpAutoComplete = (props) => {
 
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
 
+  const onSubmit = () => {
+    const submittedSNP = snpids.find((g) => g.id.toLowerCase() === inputValue.toLowerCase())
+    if (submittedSNP) {
+      props.onSelected && props.onSelected({
+        snpid: submittedSNP.id,
+        chromosome: submittedSNP.chrom,
+        start: submittedSNP.start,
+        end: submittedSNP.end,
+      });
+      props.navigateto && navigate(props.navigateto + submittedSNP.id, {
+        state: {
+          snpid: submittedSNP.id,
+          chromosome: submittedSNP.chrom,
+          start: submittedSNP.start,
+          end: submittedSNP.end,
+        },
+      });
+    }
+  }
+
   return (
     <Stack>
       {props.showTitle && (
@@ -73,6 +92,7 @@ export const SnpAutoComplete = (props) => {
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
       <Grid item>
         <Autocomplete
+          freeSolo
           sx={{ width: 300, paper: { height: 200 } }}
           options={options}
           ListboxProps={{
@@ -83,36 +103,14 @@ export const SnpAutoComplete = (props) => {
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.defaultPrevented = true;
-              value &&
-                props.onSelected &&
-                props.onSelected({
-                  snpid: value,
-                  chromosome: snpids.find((g) => g.id === value)?.chrom,
-                  start: snpids.find((g) => g.id === value)?.start,
-                  end: snpids.find((g) => g.id === value)?.end,
-                });
-              if (value && props.navigateto) {
-                navigate(props.navigateto + value, {
-                  state: {
-                    snpid: value,
-                    chromosome: snpids.find((g) => g.id === value)?.chrom,
-                    start: snpids.find((g) => g.id === value)?.start,
-                    end: snpids.find((g) => g.id === value)?.end,
-                  },
-                });
-              }
+              onSubmit()
             }
-          }}
-          value={value}
-          onChange={(_: any, newValue: string | null) => {
-            setValue(newValue);
           }}
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => {
             if (newInputValue !== "") {
               debounceFn(newInputValue);
             }
-
             setInputValue(newInputValue);
           }}
           noOptionsText="e.g. rs11669173"
@@ -149,17 +147,7 @@ export const SnpAutoComplete = (props) => {
           <StyledButton
             bvariant="filled"
             btheme="light"
-            onClick={() => {
-              if (value)
-                navigate(props.navigateto + value, {
-                  state: {
-                    snpid: value,
-                    chromosome: snpids.find((g) => g.id === value)?.chrom,
-                    start: snpids.find((g) => g.id === value)?.start,
-                    end: snpids.find((g) => g.id === value)?.end,
-                  },
-                });
-            }}
+            onClick={onSubmit}
           >
             Search
           </StyledButton>
