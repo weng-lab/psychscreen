@@ -91,7 +91,7 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
             }}
           >
             <CheckIcon style={{ marginRight: "9px" }} />{" "}
-            18 total traits cataloged
+            17 total traits cataloged
           </Typography>
           <Typography
             type="body"
