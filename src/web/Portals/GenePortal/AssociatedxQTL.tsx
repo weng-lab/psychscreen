@@ -7,6 +7,7 @@ import {
 } from "@weng-lab/psychscreen-ui-components";
 import { CircularProgress } from "@material-ui/core";
 import { Link } from "@mui/material";
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
 
 export type GenomicRange = {
   chromosome?: string;
@@ -578,10 +579,11 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               <Typography type="headline" size="small">
                 {`The following eQTLs (Gandal Lab) have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
-              <CustomizedTable
-                style={{ width: "max-content" }}
-                tabledata={qtlsigData}
+              <DataTable
+              columns={qtlsigData}
+              rows={qtlsigData}
               />
+              
             </>
           )}
         </>

@@ -41,7 +41,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
     !loading && data
       ? data.degQuery
           .filter((d) => d.padj != 0)
-          .filter((k) => k.padj < 0.05)
+          .filter((k) => k.padj < 0.1)
           .map((k) => {
             return {
               expr_frac: -Math.log10(k.padj),
@@ -56,7 +56,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
             };
           })
       : [];
-
+console.log(dotplotData,props.celltype)
   return (
     <>
       <Grid container>
