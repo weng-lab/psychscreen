@@ -377,7 +377,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
       </Grid>
       <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
       <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid sm={10} md={10} lg={9} xl={9}>
+      <Grid sm={10} md={10} lg={9} xl={9} mb={8}>
         {page === -1 ? (
           <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} disease={disease || ""} />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (

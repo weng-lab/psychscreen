@@ -16,6 +16,7 @@ import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { CoordinatesSearch } from "./CoordinatesSearch";
 import Grid from "@mui/material/Grid";
+import { toScientificNotation } from "./utils";
 
 export type GenomicRange = {
   chromosome?: string;
@@ -112,7 +113,7 @@ const Browser: React.FC<{
             <Grid item sx={{ marginLeft: "250px", verticalAlign: "middle" }}>
               {props.gwasLocusSNPs.SNPCount} significant SNP {props.gwasLocusSNPs.SNPCount !== 1 ? "s": ""}{" "} at locus {props.gwasLocusSNPs.coordinates.chromosome+":"+props.gwasLocusSNPs.coordinates.start.toLocaleString()+"-"+props.gwasLocusSNPs.coordinates.end.toLocaleString()}         
               <br/>
-              lowest <tspan fontFamily="italic">P</tspan> at this locus:{" "} {props.gwasLocusSNPs.minimump.toExponential(1)}
+              lowest <tspan fontFamily="italic">P</tspan> at this locus:{" "} {toScientificNotation(props.gwasLocusSNPs.minimump, 2)}
             </Grid>
           }
           <Grid item>

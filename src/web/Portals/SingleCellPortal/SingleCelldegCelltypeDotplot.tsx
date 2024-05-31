@@ -7,6 +7,8 @@ import DotPlot from "./DotPlot";
 import { Select as MUISelect } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import { Box,  FormLabel, Slider } from "@mui/material";
+
 
 const DEG_BYCT_QUERY = gql`
   query degQuery($gene: String, $disease: String!, $celltype: String) {
@@ -29,6 +31,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
       disease: props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease,
     },
   });
+  const [pValCutoff, setPValCutoff] = useState<number>(0.05)
 
   const handleValueChange = (event) => {
     setValue(event.target.value);
@@ -37,11 +40,44 @@ const SingleCelldegCelltypeDotplot = (props) => {
 
   const dotPlotRef = useRef<SVGSVGElement>(null);
 
+  
+  // In the slider, the "value" is used to place marks equally on track. The scale function below is used to pull out the true value that we want
+  const pValMarks = [
+    {
+      value: 0,
+      scaledValue: 0.0001,
+      label: 0.0001
+    },
+    {
+      value: 1,
+      scaledValue: 0.001,
+      label: 0.001
+    },
+    {
+      value: 2,
+      scaledValue: 0.01,
+      label: 0.01
+    },
+    {
+      value: 3,
+      scaledValue: 0.05,
+      label: 0.05
+    },
+    {
+      value: 4,
+      scaledValue: 1,
+      label: 1
+    },
+  ]
+
+  const scale = (value: number) => {
+    return pValMarks.find(x => x.value === value)!!.scaledValue
+  };
   const dotplotData =
     !loading && data
       ? data.degQuery
           .filter((d) => d.padj != 0)
-          .filter((k) => k.padj < 0.1)
+          .filter((k) => k.padj <= pValCutoff)
           .map((k) => {
             return {
               expr_frac: -Math.log10(k.padj),
@@ -56,7 +92,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
             };
           })
       : [];
-console.log(dotplotData,props.celltype)
+
   return (
     <>
       <Grid container>
@@ -130,6 +166,25 @@ console.log(dotplotData,props.celltype)
             </FormControl>
           </Grid>
         )}
+      </Grid>
+      <Grid container>
+        <Grid item sm={3} md={3} lg={3} xl={3}>
+        <Box>
+            <FormLabel><i>P</i><sub>adj</sub> Cutoff</FormLabel>
+            <Slider
+              min={0} //Min/Max is 0/4 since that is the true value of the marks above
+              max={4}
+              defaultValue={3}
+              scale={scale} //Allows the slider to access the scaled values which we want displayed
+              aria-label="Restricted values"
+              onChange={(event: Event, value: number | number[], activeThumb: number) => setPValCutoff(scale(value as number))} //Sets p value cutoff to scaled value
+              getAriaValueText={(value: number, index: number) => value.toString()}
+              step={null}
+              valueLabelDisplay="auto"
+              marks={pValMarks}
+            />
+          </Box>
+        </Grid>
       </Grid>
       <Grid container>
         <Grid item sm={12} md={12} lg={12} xl={12}>

@@ -329,7 +329,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 marginLeft: "40px",
               }}
             >
-              {"Differential Gene Expression "}
+              {"Differential Gene Expression"}
             </Typography>
           </Container>
           <br />
