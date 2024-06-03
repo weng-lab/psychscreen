@@ -9,9 +9,9 @@ export const CAQTL = ({ caqtls, loading }) => {
         <CircularProgress />
       ) : (
         <Typography
-          type="display"
-          size="small"
-          style={{ fontWeight: 500, fontSize: "28px" }}
+          type="title"
+          size="large"
+         // style={{ fontWeight: 500, fontSize: "28px" }}
         >
           {caqtls.length === 2
             ? "This SNP was determined to be a chromatin accessibility quantitative trait loci (caQTL) in neurons and glia in a PsychENCODE study by Roussos and colleagues (doi:"

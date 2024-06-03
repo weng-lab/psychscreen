@@ -533,7 +533,7 @@ const SingleCell: React.FC<{
               type="body"
               size="large"
             >
-              Select PsychEncode Dataset:
+              Select PsychENCODE Dataset:
             </Typography>
 
             {
@@ -737,7 +737,7 @@ const SingleCell: React.FC<{
                   type="body"
                   size="large"
                 >
-                  Color Scheme: &nbsp;&nbsp;&nbsp;&nbsp; Gene: {gene}{" "}
+                  Color Scheme: &nbsp;&nbsp;&nbsp;&nbsp; Gene: <i>{gene}</i>{" "}
                 </Typography>
                 <ToggleButtonGroup
                   style={{ marginLeft: "2em" }}
@@ -846,7 +846,8 @@ const SingleCell: React.FC<{
                           fontSize={1.5}
                           textAnchor="middle"
                         >
-                          {gene} Expression
+                          <tspan fontStyle="italic">{gene}</tspan>{"  "} Expression
+                          
                         </text>
                       )}
                       {colorScheme === "expression" && (

@@ -77,7 +77,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps> = ({
             width={l(highlight.end) - l(highlight.start)}
           />
         )}
-        <RulerTrack domain={coordinates} height={30} width={1400} />
+        <RulerTrack domain={coordinates} height={40} width={1400} />
         <GeneTrack assembly="GRCh38" position={coordinates} />
         <EpigeneticTracks
           assembly="GRCh38"

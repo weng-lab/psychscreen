@@ -406,9 +406,9 @@ const Browser: React.FC<any> = (props) => {
       <CytobandView
         innerWidth={1400}
         height={15}
-        chromosome={props.coordinates.chromosome!}
+        chromosome={(coordinates || eexpandedCoordinates).chromosome!}
         assembly={"hg38"}
-        position={props.coordinates}
+        position={coordinates || eexpandedCoordinates}
       />
       <br />
       <div style={{ textAlign: "center" }}>
@@ -418,7 +418,7 @@ const Browser: React.FC<any> = (props) => {
           withInput={false}
         /> 
         <br/>
-        {"Hold shift and drag to select a region"}
+        <b>{(coordinates || eexpandedCoordinates).chromosome+":"+ (coordinates || eexpandedCoordinates).start.toLocaleString()+"-"+(coordinates || eexpandedCoordinates).end.toLocaleString()}</b>{" (Hold shift and drag to select a region)"}
       </div>
       <br />
       <GenomeBrowser
@@ -448,7 +448,7 @@ const Browser: React.FC<any> = (props) => {
         )}
         <RulerTrack
           domain={coordinates || expandedCoordinates}
-          height={30}
+          height={40}
           width={1400}
         />
         <EGeneTracks

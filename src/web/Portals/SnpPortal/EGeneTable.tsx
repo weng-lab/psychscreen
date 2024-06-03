@@ -3,11 +3,13 @@ import { associateBy } from "queryz";
 import React, { useMemo } from "react";
 import { EGene } from "./SNPDetails";
 import CircularProgress from "@mui/material/CircularProgress";
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
+import { Typography as MUITypography } from "@mui/material";
 import {
-  Typography,
-  CustomizedTable,
+  Typography
 } from "@weng-lab/psychscreen-ui-components";
 import { useNavigate } from "react-router-dom";
+import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 const QUERY = gql`
   query q($id: [String!]) {
     gene(name_prefix: $id, assembly: "GRCh38", version: 40) {
@@ -113,76 +115,75 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     skip: qtlsigassocLoading || !qtlsigassocData,
   });
 
-  const qtlsigData =
-    qtlsigassocData &&
-    qtlsigassocData.qtlsigassocQuery.map((x) => [
+ 
+  const qtlsigData = [
       {
-        header: "Gene Id",
-        value: x.geneid.includes("ENSG")
-          ? (geneNameData &&
-              geneNameData.gene.find((g) => g.id.split(".")[0] === x.geneid)
-                ?.name) ||
-            x.geneid
-          : (transcriptNameData &&
-              transcriptNameData.transcript.find(
-                (g) => g.id.split(".")[0] === x.geneid.split(".")[0]
-              )?.name) ||
-            x.geneid,
+        header: "Gene ID",
+        value: (x) => x.geneid,
+        render: (x) => x.qtltype==="eQTL" ?   
+        <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${x.geneid}`}>
+          <i>{x.geneid}</i> 
+        </a> : x.geneid
+        
       },
       {
-        header: "Dist",
-        value: x.dist,
+        header: "Distance",
+        value:(x) =>  x.dist,
       },
       {
         header: "Slope",
-        value: x.slope.toFixed(3),
+        value:(x) =>  x.slope.toFixed(2),
       },
       {
         header: "FDR",
-        value: x.fdr.toFixed(3),
+        value:(x) =>  x.fdr.toFixed(2),
       },
       {
-        header: "Npval",
-        value: x.npval.toFixed(3),
+        header: "P",
+        HeaderRender: () => <MUITypography><i>P</i></MUITypography>,
+        value:(x) =>  x.npval.toFixed(2),
       },
       {
         header: "Type",
-        value: x.qtltype,
-      },
-    ]);
+        value:(x) =>  x.qtltype,
+      }
+    ];
+
+  const deconqtlColumns = [
+    {
+      header: "Gene ID",
+      value:(x) => x.geneid      
+    },
+    {
+      header: "Slope",
+      value:(x) => x.slope.toFixed(2),
+    },
+    {
+      header: "eQTL nominal P",
+      HeaderRender: () => <MUITypography>eQTL nominal <i>P</i></MUITypography>,
+      value:(x) => toScientificNotation(x.nom_val,2),
+    },
+    {
+      header: "Adjusted beta pvalue",
+      value:(x) => x.adj_beta_pval.toFixed(2),
+    },
+    {
+      header: "R Squared",
+      value:(x) => x.r_squared.toFixed(2),
+    },
+    {
+      header: "Coordinates",
+      value:(x) => "chr" + x.snp_chrom + ":" + x.snp_start.toLocaleString(),
+    },
+    {
+      header: "Cell Type",
+      value:(x) => x.celltype,
+    },
+  ];  
 
   const deconqtlData =
     eqtlData &&
-    eqtlData.deconqtlsQuery.map((x) => [
-      {
-        header: "Gene Id",
-        value: x.geneid,
-      },
-      {
-        header: "Slope",
-        value: x.slope.toFixed(2),
-      },
-      {
-        header: "eQTL nominal p-value",
-        value: x.nom_val.toExponential(2),
-      },
-      {
-        header: "Adjusted beta pvalue",
-        value: x.adj_beta_pval.toFixed(2),
-      },
-      {
-        header: "r Squared",
-        value: x.r_squared.toFixed(2),
-      },
-      {
-        header: "coordinates",
-        value: "chr" + x.snp_chrom + ":" + x.snp_start,
-      },
-      {
-        header: "Cell Type",
-        value: x.celltype,
-      },
-    ]);
+    eqtlData.deconqtlsQuery
 
   const genemap = useMemo(
     () =>
@@ -206,63 +207,50 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     [data, genemap]
   );
 
+  const egenesColumns  = [
+    {
+      header: "Gene",
+      value:(d) => d.name,
+      render:(d) => (
+        <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${d.name}`}>
+          <i>{d.name}</i> 
+        </a>
+      ),
+    },
+    {
+      header: "p",
+      value:(d) => d.nominal_pval,
+      render:(d) => (
+        <span>
+          {" "}
+          {d.nominal_pval < 0.001
+            ? d.nominal_pval.toExponential(2)
+            : d.nominal_pval.toFixed(2)}
+        </span>
+      ),
+    },
+    {
+      header: "FDR",
+      value:(d) => d.fdr,
+      render:(d) => (
+        <span>
+          {d.fdr < 0.001 ? d.fdr.toExponential(2) : d.fdr.toFixed(2)}
+        </span>
+      ),
+    },
+    {
+      header: "slope",
+      value:(d) => d.slope,
+      render: (d) => <span>{d.slope.toFixed(2)}</span>,
+    }
+
+  ]
   const egeneData =
     data &&
     data.gene &&
     [...genes.keys()]
       .map((k) => genes.get(k)!)
-      .map((d) => {
-        return [
-          {
-            header: "gene",
-            value: d.name,
-            render: (
-              <Typography
-                type="body"
-                size="medium"
-                onClick={() => navigate("/psychscreen/gene/" + d.name)}
-                style={{
-                  color: "#1976d2",
-                  textDecoration: "underline",
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                  fontWeight: 400,
-                  letterSpacing: "0.1px",
-                  marginBottom: "10px",
-                }}
-              >
-                {d.name}
-              </Typography>
-            ),
-          },
-          {
-            header: "p-value",
-            value: d.nominal_pval,
-            render: (
-              <span>
-                {" "}
-                {d.nominal_pval < 0.001
-                  ? d.nominal_pval.toExponential(3)
-                  : d.nominal_pval.toFixed(3)}
-              </span>
-            ),
-          },
-          {
-            header: "FDR",
-            value: d.fdr,
-            render: (
-              <span>
-                {d.fdr < 0.001 ? d.fdr.toExponential(3) : d.fdr.toFixed(3)}
-              </span>
-            ),
-          },
-          {
-            header: "slope",
-            value: d.slope,
-            render: <span>{d.slope.toFixed(3)}</span>,
-          },
-        ];
-      });
+      
   return loading || !egeneData || qtlsigassocLoading || eqtlLoading ? (
     <>
       <Typography
@@ -288,21 +276,20 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       {egeneData && egeneData.length > 0 ? (
         <>
           <Typography
-            type="display"
-            style={{ fontWeight: 500, fontSize: "28px" }}
-            size="small"
+            type="title"          
+            size="large"
           >
             eGenes for {props.snp}:
           </Typography>
 
-          <CustomizedTable
-            style={{ width: "max-content" }}
-            tabledata={egeneData}
+          <DataTable            
+            columns={egenesColumns}
+            rows={egeneData}
           />
         </>
       ) : (
         <>
-          <Typography type="headline" size="small">
+          <Typography type="title" size="large">
             {" "}
             No eGenes have been identified for this SNP.
           </Typography>
@@ -310,25 +297,43 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
           <br />
         </>
       )}
-      {deconqtlData && deconqtlData.length > 0 && (
+      {deconqtlData && deconqtlData.length > 0  &&(
         <>
-          <Typography type="headline" size="small">
+          <Typography type="title" size="large">
             {`The following decon-eQTLs have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
-          <CustomizedTable
-            style={{ width: "max-content" }}
-            tabledata={deconqtlData}
+          <DataTable
+            rows={deconqtlData}
+            columns={deconqtlColumns}
           />
         </>
       )}
-      {qtlsigData && qtlsigData.length > 0 && (
+      <br/>
+      {qtlsigassocData && qtlsigassocData.qtlsigassocQuery.length > 0 && (
         <>
-          <Typography type="headline" size="small">
+          <Typography type="title" size="large">
             {`The following eQTLs/isoQTLs (Gandal lab) have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
-          <CustomizedTable
-            style={{ width: "max-content" }}
-            tabledata={qtlsigData}
+          <DataTable
+            
+            columns={qtlsigData}
+            rows={qtlsigassocData.qtlsigassocQuery.map(x=>{
+              return {
+                ...x,
+                geneid:  x.geneid.includes("ENSG")
+                ? (geneNameData &&
+                    geneNameData.gene.find((g) => g.id.split(".")[0] === x.geneid)
+                      ?.name) ||
+                  x.geneid
+                : (transcriptNameData &&
+                    transcriptNameData.transcript.find(
+                      (g) => g.id.split(".")[0] === x.geneid.split(".")[0]
+                    )?.name) ||
+                  x.geneid,
+              }
+            })}
+            
+            sortDescending
           />
         </>
       )}

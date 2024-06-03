@@ -136,12 +136,12 @@ export const SingleCellBrowser = (props) => {
   );
   return (
     <>
-      <br />
+      <br/>
       <Grid2 container>
         <Grid2>
           <FormControl
             variant="standard"
-            sx={{ marginLeft: "400px", verticalAlign: "middle" }}
+            sx={{ marginLeft: "500px", verticalAlign: "middle" }}
           >
             <Select
               id="search"
@@ -235,7 +235,7 @@ export const SingleCellBrowser = (props) => {
       >
         <RulerTrack
           domain={coordinates || eexpandedCoordinates}
-          height={30}
+          height={40}
           width={1400}
         />
         <EGeneTracks
