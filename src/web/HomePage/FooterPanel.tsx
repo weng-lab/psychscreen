@@ -76,7 +76,7 @@ const FooterPanel = () => {
           <Typography variant="body2">
             <MuiLink
               color="inherit"
-              href="https://psychencode.synapse.org/"
+              href="https://www.psychencode.org/"
               underline="hover"
             >
               PsychENCODE Consortium
