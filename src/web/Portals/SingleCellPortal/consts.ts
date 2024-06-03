@@ -244,6 +244,70 @@ export const CELLTYPE_CARDS = [
   },
   { val: "PC", cardLabel: "Pericytes", cardDesc: "" },
 ];
+
+export const GENE_CELLTYPE_CARDS = [
+  { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
+  { val: "Chandelier", cardLabel: "Chandelier Inhibitory Neurons", cardDesc: "" },
+  { val: "SMC", cardLabel: "Smooth Muscle Cells", cardDesc: "" },
+  { val: "Endo", cardLabel: "Endothelial Cells", cardDesc: "" },
+  { val: "Misc", cardLabel: "Vasculature-related Cells", cardDesc: "" },
+  { val: "OPCs", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
+  { val: "InhibitoryNeurons", cardLabel: "Inhibitory Neurons", cardDesc: "" },
+  { val: "ExcitatoryNeurons", cardLabel: "Excitatory Neurons", cardDesc: "" },
+  { val: "Immune", cardLabel: "Immune Cells", cardDesc: "" },
+  { val: "VLMC", cardLabel: "Vascular Leptomeningeal Cells", cardDesc: "" },
+  { val: "Sncg", cardLabel: "Sncg-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "Vip", cardLabel: "Vip-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "Sst", cardLabel: "Sst-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "Pvalb", cardLabel: "Pvalb-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "Pax6", cardLabel: "Pax6-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
+  { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
+  { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
+  { val: "Sst Chodl", cardLabel: "Sst/Chodl-expressing Inhibitory Neurons", cardDesc: "" },
+  //
+  { val: "Lamp5 Lhx6", cardLabel: "Lamp5/Lhx6-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "Lamp5", cardLabel: "Lamp5-expressing Inhibitory Neurons", cardDesc: "" },
+  { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
+  {
+    val: "L6 IT",
+    cardLabel: "Layer 6 Intratelencephalic Projecting",
+    cardDesc: "",
+  },
+  {
+    val: "L6 IT Car3",
+    cardLabel: "Layer 6 Intratelencephalic Projecting Car3",
+    cardDesc: "",
+  },
+  {
+    val: "L6 CT",
+    cardLabel: "Layer 6 Corticothalamic Projecting",
+    cardDesc: "",
+  },
+  {
+    val: "L5 IT",
+    cardLabel: "Layer 5 Intratelencephalic Projecting",
+    cardDesc: "",
+  },
+  {
+    val: "L5 ET",
+    cardLabel: "Layer 5 Extratelencephalic Projecting",
+    cardDesc: "",
+  },
+  { val: "L5/6 NP", cardLabel: "Layer 5 or 6 Near Projecting", cardDesc: "" },
+  {
+    val: "L4 IT",
+    cardLabel: "Layer 4 Intratelencephalic Projecting",
+    cardDesc: "",
+  },
+  {
+    val: "L2/3 IT",
+    cardLabel: "Layer 2 or 3 Intratelencephalic Projecting",
+    cardDesc: "",
+  },
+  { val: "PC", cardLabel: "Pericytes", cardDesc: "" },
+];
+
 export const GRN_cellType_Cards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
   { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },

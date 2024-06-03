@@ -3,8 +3,6 @@ import {
   CircularProgress,
   Grid,
   Tabs,
-  Tab,
-  ToggleButton,
   ToggleButtonGroup,
   Paper,
 } from "@mui/material";
@@ -19,20 +17,24 @@ import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
-import { StyledButton } from "../../Portals/styles";
+import { StyledButton, StyledToggleButton } from "../../Portals/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
 import { StyledTab } from "../../Portals/styles";
+import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
+
+
 
 const COLUMNS = [
   {
-    header: "Cell Type",
+    header: "Cell type",
     headerRender: () => {
-      return <b>Cell Type</b>;
+      return <b>Cell type</b>;
     },
-    value: (row) => row.celltype,
+    value: (row) => GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype,
+
   },
   {
     header: "Fraction Cells Non-Zero",
@@ -746,10 +748,10 @@ const SingleCell: React.FC<{
                   exclusive
                   onChange={(_, x) => setColorScheme(x)}
                 >
-                  <ToggleButton value="expression">
+                  <StyledToggleButton value="expression">
                     Gene Expression
-                  </ToggleButton>
-                  <ToggleButton value="cluster">Cell Type Cluster</ToggleButton>
+                  </StyledToggleButton>
+                  <StyledToggleButton value="cluster">Cell Type Cluster</StyledToggleButton>
                 </ToggleButtonGroup>
               </div>
               <div style={{ marginLeft: "-2em", marginTop: "-3em" }}>

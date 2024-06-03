@@ -47,7 +47,7 @@ const formatEntry = [
   { header: "Effect Allele", value: (d) => d.effectallele },
   { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene, render: (d) => 
   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${d.associated_gene}`}>
- {d.associated_gene}
+ <i>{d.associated_gene}</i>
 </a> },
   {
     header: "GWAS p",
@@ -83,8 +83,8 @@ const bcreformatEntry: DataTableColumn<GwasIntersectingSnpsWithCcres>[] = [
   { header: "Effect Allele", value: (d) => d.effectallele },
   { header: "Nearest Protein-Coding Gene", value: (d) => d.associated_gene, render: (d) => 
   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${d.associated_gene}`}>
- {d.associated_gene}
-</a> },
+    <i>{d.associated_gene}</i>
+  </a> },
   {
     header: "GWAS p",
     HeaderRender: () => <Typography>GWAS <i>P</i></Typography>,

@@ -47,7 +47,7 @@ export const DISEASE_CARDS = [
 const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const [selectedPortal, setSelectedPortal] = useState<string>("Celltypes");
+  const [selectedPortal, setSelectedPortal] = useState<string>("Cell types");
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedPortal(event.target.value);
   };
@@ -91,8 +91,8 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
               width: "414px",
             }}
           >
-            Visualize the single cell composition of the human brain based on
-            single cell ATAC-seq and RNA-seq from PsychENCODE and public
+            Visualize the single-cell composition of the human brain based on
+            single-cell ATAC-seq and RNA-seq from PsychENCODE and public
             sources. Identify marker genes and b-cCREs specific to particular
             cell types and states.
           </Typography>
@@ -135,7 +135,7 @@ const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
               // defaultValue={10}
               onChange={handleChange}
             >
-              <MenuItem value={"Celltypes"}>Celltypes</MenuItem>
+              <MenuItem value={"Cell types"}>Cell types</MenuItem>
               <MenuItem value={"Genes"}>Genes</MenuItem>
             </Select>
           </FormControl>

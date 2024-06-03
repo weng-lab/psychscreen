@@ -26,7 +26,7 @@ export const DiseaseTraitAutoComplete = (props) => {
     <Stack>
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
-          <Typography>Search trait:</Typography>
+          <Typography>Search a trait of interest:</Typography>
           <br />
         </Grid>
       )}
