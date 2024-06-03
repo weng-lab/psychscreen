@@ -143,8 +143,9 @@ const App: React.FC = () => {
               >
                 <Route path=":trackset" element={<GenomeExplorerPage />} />
               </Route>
-              {PORTALS.map((portal) => (
+              {PORTALS.map((portal, i) => (
                 <Route
+                  key={i}
                   path={`/psychscreen${portal[0] as string}`}
                   element={React.createElement(portal[1], {})}
                 />

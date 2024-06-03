@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Container, GridProps, Divider, Link, Typography } from "@mui/material";
-
+import { GridProps, Divider, Link, Typography, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
@@ -51,7 +50,7 @@ const formatEntry = [
 </a> },
   {
     header: "GWAS p",
-    HeaderRender: () => <Typography>GWAS <i>P</i></Typography>,
+    HeaderRender: () => <Typography variant="body2">GWAS <i>P</i></Typography>,
     value: (d) => d.association_p_val,
     render: (d) => toScientificNotation(+d.association_p_val, 1)
   },
@@ -87,7 +86,7 @@ const bcreformatEntry: DataTableColumn<GwasIntersectingSnpsWithCcres>[] = [
 </a> },
   {
     header: "GWAS p",
-    HeaderRender: () => <Typography>GWAS <i>P</i></Typography>,
+    HeaderRender: () => <Typography variant="body2">GWAS <i>P</i></Typography>,
     value: (d) => d.association_p_val,
     render: (d) => toScientificNotation(+d.association_p_val, 1)
   },
@@ -157,12 +156,11 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
   };
 
   return (
-    <Grid container {...props}>
-      <Grid item sm={12}>
-        <Container style={{ marginTop: "30px", marginLeft: "100px" }}>
-          {`Showing significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start.toLocaleString()}-${props.coordinates.end.toLocaleString()}`}
-          <br />
-          <br />
+        <Stack direction="column" spacing={2}>
+          <Typography>
+            {`Showing significant SNPs in locus ${props.coordinates.chromosome}: ${props.coordinates.start.toLocaleString()}-${props.coordinates.end.toLocaleString()}`}
+          </Typography>
+          
           <Box>
             <Tabs value={tabIndex} onChange={handleTabChange}>
               <StyledTab label="Significant SNPs"></StyledTab>
@@ -190,8 +188,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
           {intersectingSnps.filter((i) => i.bcre_class !== ".") &&
             intersectingSnps.filter((i) => i.bcre_class !== ".").length > 0 &&
             tabIndex === 1 && (
-              <>
-                <br />
+            <Stack direction="column" spacing={1}>
+              <Stack direction="row" spacing={1}>
                 {intersectingSnps.filter(
                   (i) => i.bcre_class === "adult-only"
                 ) && (
@@ -203,7 +201,6 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                     Adult
                   </StyledButton>
                 )}
-                &nbsp;&nbsp;&nbsp;
                 {intersectingSnps.filter(
                   (i) => i.bcre_class === "fetal-only"
                 ) && (
@@ -215,7 +212,6 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                     Fetal
                   </StyledButton>
                 )}
-                &nbsp;&nbsp;&nbsp;
                 {intersectingSnps.filter(
                   (i) => i.bcre_class === "shared-fetal-adult"
                 ) && (
@@ -227,8 +223,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                     Shared
                   </StyledButton>
                 )}
-                <br />
-                <br />
+              </Stack>
+                
                 {page === 0 && (
                   <DataTable
                     columns={bcreformatEntry}
@@ -277,11 +273,9 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                     searchable
                   />
                 )}
-              </>
-            )}
-        </Container>
-      </Grid>
-    </Grid>
+            </Stack>
+          )}
+        </Stack>
   );
 };
 export default DiseaseIntersectingSnpsWithccres;

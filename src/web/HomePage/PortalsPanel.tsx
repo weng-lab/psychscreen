@@ -169,8 +169,9 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               {portalInfo[props.portal].description}
             </Typography>
             <div>
-              {portalInfo[props.portal].stats?.map((stat) => (
+              {portalInfo[props.portal].stats?.map((stat, i) => (
                 <Typography
+                  key={i}
                   type="body"
                   size="large"
                   style={{

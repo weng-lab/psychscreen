@@ -1,7 +1,12 @@
+/**
+ * @Jonathan 5/3/24 - 
+ */
+
 import { useParams } from "react-router-dom";
 import React, { useCallback, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Grid, Container, GridProps } from "@mui/material";
+import { Stack } from "@mui/material";
+import Grid from '@mui/material/Unstable_Grid2'
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
@@ -194,7 +199,7 @@ function useLoci(trait: string) {
   return { loci, loading, data };
 }
 
-const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
+const DiseaseTraitDetails: React.FC = () => {
   const { disease } = useParams();
   const [page, setPage] = useState<number>(-1);
   const { state }: any = useLocation();
@@ -268,11 +273,10 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
   const gassoc =
     genesdata &&
     genesdata.genesAssociationsQuery.filter((g) => g.dge_fdr <= 0.05);
+
   return (
-    <Grid container {...props}>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "20px", marginLeft: "100px" }}>
+    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+      <Grid xs={12}>
           <Typography
             type="display"
             size="medium"
@@ -281,12 +285,12 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               fontSize: "48px",
               lineHeight: "57.6px",
               letterSpacing: "0.5px",
-              marginBottom: "16px",
             }}
           >
             {diseaseLabel}
           </Typography>
-          <br />
+      </Grid>
+      <Grid xs={12}>
           <Typography
             type="body"
             size="large"
@@ -295,12 +299,13 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               lineHeight: "24px",
               fontWeight: 400,
               letterSpacing: "0.3%",
-              marginBottom: "16px",
             }}
           >
             {diseaseDesc}
           </Typography>
-          <br />
+      </Grid>
+      <Grid xs={12}>
+        <Stack direction="row" spacing={1}>
           <StyledButton
             bvariant={page === -1 ? "filled" : "outlined"}
             btheme="light"
@@ -308,9 +313,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
           >
             GWAS Locus Overview
           </StyledButton>
-          &nbsp;&nbsp;&nbsp;
           {gassoc && gassoc.length > 0 && (
-            <>
               <StyledButton
                 bvariant={page === 0 ? "filled" : "outlined"}
                 btheme="light"
@@ -320,13 +323,10 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               >
                 Gene Associations (TWAS)
               </StyledButton>
-              &nbsp;&nbsp;&nbsp;
-            </>
           )}
           {data &&
             (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
               .gwassnpAssociationsQuery?.length > 0 && (
-              <>
                 <StyledButton
                   bvariant={page === 1 ? "filled" : "outlined"}
                   btheme="light"
@@ -336,15 +336,12 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 >
                   Associated SNPs &amp; QTLs
                 </StyledButton>
-                &nbsp;&nbsp;&nbsp;
-              </>
             )}
           {gwasIntersectingSnpWithCcresData &&
             adultgwasIntersectingSnpWithBcresData &&
             fetalgwasIntersectingSnpWithBcresData &&
             gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
               .length > 0 && (
-              <>
                 <StyledButton
                   bvariant={page === 2 ? "filled" : "outlined"}
                   btheme="light"
@@ -352,8 +349,6 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 >
                   Associated SNPs in locus
                 </StyledButton>
-                &nbsp;&nbsp;&nbsp;
-              </>
             )}
           {browserCoordinates && (
             <StyledButton
@@ -364,6 +359,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               Brain Epigenome Browser
             </StyledButton>
           )}
+          {/* Unused, can I remove? */}
           {significantSNPs && significantSNPs.length > 0 && 0>1 && (
             <StyledButton
               bvariant={page === 4 ? "filled" : "outlined"}
@@ -373,11 +369,9 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               Prioritized risk variants
             </StyledButton>
           )}
-        </Container>
+        </Stack>
       </Grid>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid sm={10} md={10} lg={9} xl={9} mb={8}>
+      <Grid xs={12}>
         {page === -1 ? (
           <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} disease={disease || ""} />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
@@ -386,6 +380,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
           data &&
           (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
             .gwassnpAssociationsQuery?.length > 0 ? (
+          //Which traits have this data
           <AssociatedSnpQtl
             disease={disease || ""}
             data={
@@ -393,6 +388,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
                 .gwassnpAssociationsQuery
             }
           />
+          
         ) : page === 2 &&
           gwasIntersectingSnpWithCcresData &&
           adultgwasIntersectingSnpWithBcresData &&
@@ -413,19 +409,17 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
             }
           />
         ) : page === 3 ? (
-          <div style={{ marginTop: "2em" }}>
             <Browser
               coordinates={browserCoordinates}
               url={summaryStatisticsURL}
               trait={diseaseLabel || "Autism Spectrum Disorder"}
               gwasLocusSNPs={gwasLocusSNPs}
             />
-          </div>
         ) : page === 4 && significantSNPs && significantSNPs.length > 0 && 0>1 ?  (
+          // Unused, can I remove?
           <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
         ) : null}
       </Grid>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
     </Grid>
   );
 };

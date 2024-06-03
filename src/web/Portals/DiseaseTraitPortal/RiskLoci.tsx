@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { Container } from "@mui/system";
-import { CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import { groupBy } from "queryz";
 import React, { useMemo, useState } from "react";
 import { Cytobands } from "umms-gb";
@@ -110,12 +110,10 @@ const RiskLocusView: React.FC<{
   return props.loci.length === 0 ? (
     <CircularProgress />
   ) : (
-    <Grid container {...props}>
-      <Grid item sm={12}>
+    <Stack spacing={3}>
         <Typography
           type="body"
           size="medium"
-          style={{ width: "750px", marginLeft: "150px", marginTop: "30px" }}
         >
           The study
           {" "}
@@ -133,10 +131,8 @@ const RiskLocusView: React.FC<{
           risk loci (orange boxes below).
           Mouse over or click a locus to explore PsychENCODE epigenetic and transcriptomic data in that region.
         </Typography>
-        <Container
-          style={{ marginTop: "30px", marginLeft: "150px", width: "750px" }}
-        >
-          <svg width="100%" viewBox={`0 0 1000 ${groupedLoci.size * 30 + 100}`}>
+        <Box minWidth={'700px'} maxWidth={'1000px'}>
+          <svg viewBox={`0 0 1000 ${groupedLoci.size * 30 + 100}`}>
             {[...groupedLoci.keys()]
               .filter((x) => x && groupedCytobands.get(x))
               .sort(
@@ -151,7 +147,7 @@ const RiskLocusView: React.FC<{
                     .replace(/Y/g, "24")
               )
               .map((chromosome, i) => (
-                <>
+                <g key={i}>
                   <text
                     transform={`translate(40,${i * 30 + 13})`}
                     fontSize="30px"
@@ -196,7 +192,7 @@ const RiskLocusView: React.FC<{
                     }
                     opacity={0.4}
                   />
-                </>
+                </g>
               ))}
             {selected ? (
               <g
@@ -256,9 +252,8 @@ const RiskLocusView: React.FC<{
               </g>
             ) : null}
           </svg>
-        </Container>
-      </Grid>
-    </Grid>
+        </Box>
+    </Stack>
   );
 };
 export default RiskLocusView;
