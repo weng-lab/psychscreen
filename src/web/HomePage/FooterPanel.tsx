@@ -67,7 +67,7 @@ const FooterPanel = () => {
           <Typography variant="body2">
             <MuiLink
               color="inherit"
-              href="https://www.umassmed.edu/wenglab/"
+              href="https://www.umassmed.edu/zlab/"
               underline="hover"
             >
               Weng Lab
@@ -76,7 +76,7 @@ const FooterPanel = () => {
           <Typography variant="body2">
             <MuiLink
               color="inherit"
-              href="https://psychencode.synapse.org/"
+              href="https://www.psychencode.org/"
               underline="hover"
             >
               PsychENCODE Consortium
@@ -121,7 +121,7 @@ const FooterPanel = () => {
               href="/psychscreen/single-cell"
               underline="hover"
             >
-              Single Cell
+              Single-Cell
             </MuiLink>
           </Typography>
         </Grid2>
