@@ -95,7 +95,7 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
                   lineHeight: "19px",
                 }}
               >
-                Loading Diff. Expressed genes for {celltype}...
+                Loading Differential Gene Expression for {celltype}...
               </Typography>
             </Grid>
           )}

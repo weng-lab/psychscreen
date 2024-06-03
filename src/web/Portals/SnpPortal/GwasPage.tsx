@@ -1,9 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Grid, Container } from "@mui/material";
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import {
-  Typography,
-  CustomizedTable,
+  Typography
 } from "@weng-lab/psychscreen-ui-components";
 type GWASPageProps = {
   id: string;
@@ -36,27 +36,25 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
     variables: { id: props.id },
   });
 
-  const gwasData =
-    data &&
-    data.snpQuery[0]?.genomeWideAssociation.length > 0 &&
-    data.snpQuery[0]?.genomeWideAssociation.map((d: GWASEntry) => {
-      return [
-        { header: "PubMed ID", value: d.pubMedId },
-        { header: "Lead Author", value: d.author },
-        { header: "Trait", value: d.name },
+  const gwasColumns = [
+        { header: "PubMed ID", value:(d) => d.pubMedId, render: (d) => 
+        <a target="_blank" rel="noopener noreferrer" href={`https://pubmed.ncbi.nlm.nih.gov/${d.pubMedId}`}>
+        {d.pubMedId}
+      </a> },
+        { header: "Lead Author", value:(d) => d.author },
+        { header: "Trait", value:(d) => d.name },
       ];
-    });
+    
 
   return (
     <Grid container {...props}>
       <Grid item sm={12}>
-        <Container style={{ marginTop: "30px", marginLeft: "0px" }}>
+        <Container style={{ marginTop: "10px", marginLeft: "-30px" }}>
           {data?.snpQuery[0]?.genomeWideAssociation.length ? (
             <>
               <Typography
-                type="display"
-                size="small"
-                style={{ fontWeight: 500, fontSize: "28px" }}
+                type="title"
+                size="large"
               >
                 {" "}
                 {props.id} has been identified in{" "}
@@ -65,18 +63,17 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
             </>
           ) : (
             <Typography
-              type="display"
-              style={{ fontWeight: 500, fontSize: "28px" }}
-              size="small"
+              type="title"              
+              size="large"
             >
               {props.id} has not been identified in any GWAS catalogued by
               psychSCREEN.
             </Typography>
           )}
-          {gwasData && (
-            <CustomizedTable
-              style={{ width: "max-content" }}
-              tabledata={gwasData}
+          {data && data.snpQuery[0]?.genomeWideAssociation.length>0 && (
+            <DataTable
+              columns={gwasColumns}
+              rows={data.snpQuery[0]?.genomeWideAssociation}
             />
           )}
         </Container>

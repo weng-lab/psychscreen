@@ -74,7 +74,7 @@ export const SingleCellGeneDetails = (props) => {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
             width="1.7%"
           />
-          &nbsp;Gene Details: <em>{gene}</em>
+          &nbsp;Gene Details: <i>{gene}</i>
         </Typography>
         <br />
         <div
@@ -97,7 +97,7 @@ export const SingleCellGeneDetails = (props) => {
       <Grid item sm={9}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
-            <StyledTab label="Brain epi Genome Browser" />
+            <StyledTab label="Brain Epigenome Browser" />
             <StyledTab label="Brain Single Cell Expression" />
           </Tabs>
           <Divider />

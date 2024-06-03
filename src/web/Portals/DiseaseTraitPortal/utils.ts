@@ -27,6 +27,7 @@ export function riskLoci(
     }))
     .sort(compare);
 
+    
   const riskLoci: (GenomicRange & { count: number; minimump: number })[] = [];
   expandedCoordinates.forEach((r, i) => {
     if (i === 0) {

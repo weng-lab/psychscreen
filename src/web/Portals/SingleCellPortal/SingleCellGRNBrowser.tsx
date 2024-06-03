@@ -217,7 +217,7 @@ const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
             }
           }}
         >
-          <RulerTrack domain={coordinates} height={30} width={1400} />
+          <RulerTrack domain={coordinates} height={40} width={1400} />
           <Trackset coordinates={coordinates} tracks={grns} />
         </GenomeBrowser>
       </>

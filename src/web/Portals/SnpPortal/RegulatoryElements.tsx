@@ -128,7 +128,7 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
     return [
       { header: "cCRE ID", value: d.accession },
       {
-        header: "cCRE class",
+        header: "cCRE Class",
         value: GROUPS.get(d.group || "") || d.group || "rDHS",
         render: (
           <svg height={18}>
@@ -193,9 +193,9 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
   ) : (
     <>
       <Typography
-        type="display"
-        style={{ fontWeight: 500, fontSize: "28px" }}
-        size="small"
+        type="title"
+        
+        size="large"
       >
         {" "}
         Your search returned {combinedResults.length.toLocaleString() || 0}{" "}

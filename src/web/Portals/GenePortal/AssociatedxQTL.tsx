@@ -7,6 +7,7 @@ import {
 } from "@weng-lab/psychscreen-ui-components";
 import { CircularProgress } from "@material-ui/core";
 import { Link } from "@mui/material";
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
 
 export type GenomicRange = {
   chromosome?: string;
@@ -378,20 +379,20 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         value: x.snpid,
       },
       {
-        header: "Dist",
+        header: "Distance",
         value: x.dist,
       },
       {
         header: "Slope",
-        value: x.slope.toFixed(3),
+        value: x.slope.toFixed(2),
       },
       {
         header: "FDR",
-        value: x.fdr.toFixed(3),
+        value: x.fdr.toFixed(2),
       },
       {
-        header: "Npval",
-        value: x.npval.toFixed(3),
+        header: "p",
+        value: x.npval.toFixed(2),
       },
     ]);
 
@@ -578,10 +579,11 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               <Typography type="headline" size="small">
                 {`The following eQTLs (Gandal Lab) have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
-              <CustomizedTable
-                style={{ width: "max-content" }}
-                tabledata={qtlsigData}
+              <DataTable
+              columns={qtlsigData}
+              rows={qtlsigData}
               />
+              
             </>
           )}
         </>
