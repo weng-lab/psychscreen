@@ -28,7 +28,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
   const { data, loading } = useQuery(DEG_BYCT_QUERY, {
     variables: {
       celltype: props.celltype,
-      disease: props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease,
+      disease: props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease === "Autism Specturm Disorder"  ? "ASD" : props.disease,
     },
   });
   const [pValCutoff, setPValCutoff] = useState<number>(0.05)

@@ -34,6 +34,10 @@ const COLUMNS = [
       return <b>Cell type</b>;
     },
     value: (row) => GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype,
+    render: (row) => {
+      let option = GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype
+      return <>{option.includes("-expressing") ? <><i>{option.split("-expressing")[0]}</i><>{" -expressing"}{option.split("-expressing")[1]}</></> : option}</>
+      },
 
   },
   {

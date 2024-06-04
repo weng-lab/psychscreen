@@ -159,8 +159,8 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         description={`
           Explore heritability enrichment for 17 distinct psychiatric,
           behavioral, and neuronal traits within gene regulatory features,
-          such as brain candidate cis-regulatory elements (b-cCREs) and quantitative trait loci (QTLs). Search genes
-          associated with complex traits based on PsychENCODE TWAS.
+          such as candidate brain cis-Regulatory Elements (b-cCREs) and quantitative trait loci (QTLs). Search genes
+          associated with complex traits based on PsychENCODE transcriptome-wide association studies (TWAS).
         `}
         stats={[
           "17 total traits cataloged",
@@ -207,7 +207,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           Search single nucleotide polymorphisms (SNPs) of interest and explore their impact on gene expression,
           chromatin accessibility, transcription factor (TF) binding and other
           molecular traits in the human brain based on PsychENCODE QTLs and
-          sequence analysis of b-cCREs. Link SNPs to complex traits using genome-wide association studies (GWAS) anotations.
+          sequence analysis of candidate brain cis-Regulatory Elements (b-cCREs). Link SNPs to complex traits using genome-wide association studies (GWAS) anotations.
         `}
         stats={[
           "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
@@ -230,7 +230,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         description={`
           Visualize the single-cell composition of the human brain based
           on single-cell ATAC-seq and RNA-seq from PsychENCODE and public
-          sources. Identify marker genes and b-cCREs specific to particular
+          sources. Identify marker genes and candidate brain cis-Regulatory Elements (b-cCREs) specific to particular
           cell types and states.
         `}
         stats={[

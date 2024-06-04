@@ -106,7 +106,7 @@ const SNPPortal: React.FC<GridProps> = (props: GridProps) => {
             Search single nucleotide polymorphisms (SNPs) of interest and explore their impact on gene expression,
             chromatin accessibility, transcription factor (TF) binding and other
             molecular traits in the human brain based on PsychENCODE QTLs and
-            sequence analysis of b-cCREs. Link SNPs to complex traits using genome-wide association studies (GWAS)
+            sequence analysis of candidate brain cis-Regulatory Elements (b-cCREs). Link SNPs to complex traits using genome-wide association studies (GWAS)
             annotations.
           </Typography>
           <Typography

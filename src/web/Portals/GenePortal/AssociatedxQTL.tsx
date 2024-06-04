@@ -537,7 +537,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
   if (!loading && allQTLsData && allQTLsData.length === 0)
     return (
       <Typography type="body" size="large">
-        No eQTLs or linked b-cCREs were identified for this gene.
+        No eQTLs or linked candidate brain cis-Regulatory Elements (b-cCREs) were identified for this gene.
       </Typography>
     );
 
@@ -557,7 +557,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                 tabledata={allQTLsData}
               />
               <Typography type={"label"} size="small">
-                {`cCREs prefixed with an asterisk are b-cCREs`}
+                {`cCREs prefixed with an asterisk are candidate brain cis-Regulatory Elements (b-cCREs)`}
               </Typography>
               <br />
               <br />

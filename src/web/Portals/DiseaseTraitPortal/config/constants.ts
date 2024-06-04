@@ -26,7 +26,7 @@ export const DISEASE_CARDS = [
     cardDesc: "Bellenguez … Lambert (2022) Nat. Genet.",
     link: "https://doi.org/10.1038/s41588-022-01024-z",
     diseaseDesc:
-      "Alzheimer’s disease is a neurodegenerative disease beginning with mild and progressively worsening memory loss that affects approximately 6% of people over age 65. It is the most common cause of dementia and symptoms include problems with recent memory, language, disorientation, mood swings, self-neglect and behavioral issues. Alzheimer’s disease has complex risk factors, including APOE mutations, advanced age, environmental factors, and common genetic variants. Medications can help with some symptoms and new treatments promising to slow disease progression are emerging, but their efficacy in clinical use remains unclear.",
+      "Alzheimer’s disease is a neurodegenerative disease beginning with mild and progressively worsening memory loss that affects approximately 6% of people over age 65. It is the most common cause of dementia and symptoms include problems with recent memory, language, disorientation, mood swings, self-neglect and behavioral issues. Alzheimer’s disease has complex risk factors, including ~~APOE~~ mutations, advanced age, environmental factors, and common genetic variants. Medications can help with some symptoms and new treatments promising to slow disease progression are emerging, but their efficacy in clinical use remains unclear.",
   },
   {
     aliases: ["Anorexia", "Eating disorder"],

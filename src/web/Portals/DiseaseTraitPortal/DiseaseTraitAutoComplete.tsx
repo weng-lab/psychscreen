@@ -54,7 +54,7 @@ export const DiseaseTraitAutoComplete = (props) => {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="e.g. Schizophrenia, Insomnia"
+              label="e.g., Schizophrenia, Insomnia"
               fullWidth
             />
           )}

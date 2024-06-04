@@ -150,7 +150,7 @@ const GenePortal: React.FC = (props) => {
           >
             Explore gene expression and regulatory element activity in the fetal
             and adult brain at bulk and single-cell resolution. Visualize
-            gene/b-cCRE links based on PsychENCODE QTLs and single cell
+            gene/b-cCRE links based on PsychENCODE QTLs and single-cell
             co-expression analyses.
           </Typography>
           <Typography

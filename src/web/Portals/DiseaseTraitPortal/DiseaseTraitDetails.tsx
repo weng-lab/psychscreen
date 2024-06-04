@@ -298,7 +298,7 @@ const DiseaseTraitDetails: React.FC<GridProps> = (props) => {
               marginBottom: "16px",
             }}
           >
-            {diseaseDesc}
+            {diseaseDesc.split("~~").length>1 ? <>{diseaseDesc.split("~~")[0]}<><i>{diseaseDesc.split("~~")[1]}</i>{diseaseDesc.split("~~")[2]}</></>: diseaseDesc}
           </Typography>
           <br />
           <StyledButton

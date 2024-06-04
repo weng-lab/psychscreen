@@ -75,8 +75,8 @@ const DiseaseTraitPortal: React.FC<GridProps> = (props: GridProps) => {
           >
             Explore heritability enrichment for {DISEASE_CARDS.length} distinct
             psychiatric, behavioral, and neuronal traits within gene regulatory
-            features, such as brain candidate cis-regulatory elements (b-cCREs) and quantitative trait loci (QTLs). Search
-            genes associated with complex traits based on PsychENCODE TWAS.
+            features, such as candidate brain cis-Regulatory Elements (b-cCREs) and quantitative trait loci (QTLs). Search
+            genes associated with complex traits based on PsychENCODE Transcriptome-wide association studies (TWAS).
           </Typography>
           <Typography
             type="body"
