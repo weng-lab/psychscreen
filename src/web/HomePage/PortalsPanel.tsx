@@ -157,13 +157,13 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
       <PortalPanel
         title={"Disease/Trait Portal"}
         description={`
-          Explore heritability enrichment for 18 distinct psychiatric,
+          Explore heritability enrichment for 17 distinct psychiatric,
           behavioral, and neuronal traits within gene regulatory features,
-          such as b-cCREs and quantitative trait loci (QTLs). Search genes
+          such as brain candidate cis-regulatory elements (b-cCREs) and quantitative trait loci (QTLs). Search genes
           associated with complex traits based on PsychENCODE TWAS.
         `}
         stats={[
-          "18 total traits cataloged",
+          "17 total traits cataloged",
           "5,848 b-cCRE/trait associations"
         ]}
         buttonText={"Explore Diseases/Traits"}
@@ -182,8 +182,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
         description={`
           Explore gene expression and regulatory element activity in the
           fetal and adult brain at bulk and single-cell resolution.
-          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
-          cell co-expression analyses.
+          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single-cell co-expression analyses.
         `}
         stats={[
           "Gene expression from 294 donors, including 7 psychiatric disorders",
@@ -205,10 +204,10 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
       <PortalPanel
         title={"SNP/QTL Portal"}
         description={`
-          Search SNPs of interest and explore their impact on gene expression,
+          Search single nucleotide polymorphisms (SNPs) of interest and explore their impact on gene expression,
           chromatin accessibility, transcription factor (TF) binding and other
           molecular traits in the human brain based on PsychENCODE QTLs and
-          sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS anotations.
+          sequence analysis of b-cCREs. Link SNPs to complex traits using genome-wide association studies (GWAS) anotations.
         `}
         stats={[
           "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
@@ -229,8 +228,8 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
       <PortalPanel
         title={"Single-Cell Portal"}
         description={`
-          Visualize the single cell composition of the human brain based
-          on single cell ATAC-seq and RNA-seq from PsychENCODE and public
+          Visualize the single-cell composition of the human brain based
+          on single-cell ATAC-seq and RNA-seq from PsychENCODE and public
           sources. Identify marker genes and b-cCREs specific to particular
           cell types and states.
         `}

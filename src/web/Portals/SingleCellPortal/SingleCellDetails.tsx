@@ -93,7 +93,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                   onSearchChange(val);
                 }
               }}
-              helperText={<>e.g. <i>SOX4</i>,<i>GAPDH</i></>}
+              helperText={<>e.g., <i>SOX4</i>, <i>APOE</i></>}
             />
           )}
         </Container>

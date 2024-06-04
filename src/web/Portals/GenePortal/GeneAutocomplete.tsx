@@ -132,7 +132,7 @@ export const GeneAutoComplete = (props) => {
     <Stack>
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
-          <Typography>Search gene:</Typography>
+          <Typography>Search a gene of interest:</Typography>
           <br />
         </Grid>
       )}
@@ -163,7 +163,7 @@ export const GeneAutoComplete = (props) => {
             }}
             noOptionsText="No Genes Found"
             renderInput={(params) => (
-              <TextField {...params} label={<>e.g. <i>SOX4</i>,<i>GAPDH</i></>} fullWidth />
+              <TextField {...params} label={<>e.g., <i>SOX4</i>, <i>APOE</i></>} fullWidth />
             )}
             renderOption={(props, option) => {
               return (

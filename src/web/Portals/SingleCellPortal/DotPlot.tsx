@@ -3,6 +3,7 @@ import React, { useMemo, useCallback, ReactElement } from "react";
 import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
+import { GENE_CELLTYPE_CARDS } from "./consts";
 
 export const DOT_PLOT_QUERY = gql`
   query singleCellBoxPlot($disease: String!, $gene: [String]) {
@@ -255,7 +256,12 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                           s.radius.toFixed(2) +
                           "\nexpression fold change: " +
                           s.colorpercent.toFixed(2)
-                        : ""}
+                        : "Percent Expressed: " +
+                        s.radius.toFixed(2) +
+                        "\nMean Expression: " +
+                        s.colorpercent.toFixed(2) + 
+                        "\nCell type: " +
+                        GENE_CELLTYPE_CARDS.find(c=>c.val===x)?.cardLabel || x}
                     </title>
                   </circle>
                 </g>

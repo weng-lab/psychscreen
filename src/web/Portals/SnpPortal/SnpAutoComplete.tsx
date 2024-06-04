@@ -85,7 +85,7 @@ export const SnpAutoComplete = (props) => {
     <Stack>
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
-          <Typography>Search snp:</Typography>
+          <Typography>Search a SNP of interest:</Typography>
           <br />
         </Grid>
       )}
