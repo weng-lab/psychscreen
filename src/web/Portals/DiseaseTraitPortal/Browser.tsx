@@ -106,7 +106,7 @@ const Browser: React.FC<{
     [coordinates]
   );
   return (
-    <Stack alignItems={"center"} spacing={3} minWidth={'700px'}>
+    <Stack alignItems={"center"} spacing={3}>
       {props.gwasLocusSNPs && props.gwasLocusSNPs.coordinates.chromosome === coordinates.chromosome && props.gwasLocusSNPs.coordinates.start === coordinates.start && props.gwasLocusSNPs.coordinates.end === coordinates.end &&
         <>
           <Typography alignSelf={"flex-start"}>
