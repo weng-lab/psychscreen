@@ -1,26 +1,16 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
-  AppBar,
   Typography,
-  Button,
 } from "@weng-lab/psychscreen-ui-components";
-import { PORTALS } from "../../../App";
-import { Divider, Grid, Box, Tabs, FormControl } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-
-import { Select as MUISelect } from "@mui/material";
-
+import { Divider, Grid, Box, Tabs } from "@mui/material";
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import {
-  CELLTYPE_CARDS,
   diseaseCT,
   GRN_cellType_Cards,
   Qtl_Celltype_Cards,
 } from "./consts";
-import SingleCellCelltypeQTL from "./SingleCellCelltypeQTL";
 import { SingleCellBrowser } from "./SingleCellBrowser";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
 import { StyledTab } from "../styles";

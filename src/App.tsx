@@ -88,7 +88,6 @@ const App: React.FC = () => {
                 element={<Navigate replace to="/psychscreen" />}
               />
               <Route path="/psychscreen" element={<WebHomePage />} />
-              {/* <Route path="/psychscreen" element={<HomePage />} /> */}
               <Route
                 path="/psychscreen/downloads"
                 element={<DownloadsPage />}
