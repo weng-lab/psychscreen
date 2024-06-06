@@ -206,7 +206,7 @@ const GeneDetails: React.FC = (props) => {
         </Stack>
       </Grid>
       <Grid xs={12}>
-        <Typography type="body" size="medium">Switch to another gene:</Typography>
+        <Typography type="body" size="medium" mb={1}>Switch to another gene:</Typography>
         <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
       </Grid>
       <Grid xs={12}>
@@ -306,10 +306,9 @@ const GeneDetails: React.FC = (props) => {
                 </Typography>
               ) : (
                 <>
-                  <Typography type="body" size="large">
+                  <Typography type="body" size="large" mb={1}>
                     Group By:{" "}
                   </Typography>
-                  <br />
                   <ToggleButtonGroup
                     size={"small"}
                     value={tissueCategory}

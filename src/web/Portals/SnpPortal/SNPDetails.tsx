@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from "react";
-import { GridProps, Grid, Divider } from "@mui/material";
+import { GridProps, Divider } from "@mui/material";
+import Grid from  "@mui/material/Unstable_Grid2"
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import GwasPage from "./GwasPage";
 import { gql, useQuery } from "@apollo/client";
 import EGeneTable from "./EGeneTable";
@@ -145,7 +145,7 @@ export function expandCoordinates(
   };
 }
 
-const SNPDetails: React.FC<GridProps> = (props) => {
+const SNPDetails: React.FC = () => {
   const { snpid } = useParams();
   const [tabIndex, setTabIndex] = useState(0);
   const { state }: any = useLocation();
@@ -188,20 +188,16 @@ const SNPDetails: React.FC<GridProps> = (props) => {
     },
   });
   return (
-    <Grid container {...props}>
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={9}>
+    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+      <Grid xs={12}>
         <Typography
           type="headline"
           size="large"
-          style={{ marginTop: "2em", marginBottom: "0.2em" }}
         >
-          SNP Details: {snpid}
+          SNP details: {snpid}
         </Typography>
       </Grid>
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={9}>
+      <Grid xs={12}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
             <StyledTab label="eGenes" />
