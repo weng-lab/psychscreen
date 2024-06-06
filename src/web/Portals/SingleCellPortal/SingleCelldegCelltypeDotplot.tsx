@@ -95,26 +95,17 @@ const SingleCelldegCelltypeDotplot = (props) => {
 
   return (
     <>
-      <Grid container>
-        <Grid
-          item
-          sm={4}
-          md={4}
-          lg={4}
-          xl={4}
-          style={{ marginBottom: "2em", marginTop: "2em" }}
-        >
+      <Grid container mt={2} mb={2} gap={2}>
+        <Grid item>
           <Typography
-            style={{ marginLeft: "0.1em", marginTop: "0.1em" }}
             type="body"
             size="large"
           >
             Select Disease:
           </Typography>
-
           <FormControl
-            sx={{ m: 1, minWidth: 400 }}
-            style={{ marginLeft: "0.1em", marginTop: "1em" }}
+            sx={{ minWidth: 300 }}
+            style={{ marginTop: "0.5em" }}
           >
             <InputLabel id="simple-select-helper-label">Disease:</InputLabel>
             <MUISelect
@@ -131,32 +122,23 @@ const SingleCelldegCelltypeDotplot = (props) => {
           </FormControl>
         </Grid>
         {dotplotData.length >= 50 && (
-          <Grid
-            item
-            sm={6}
-            md={6}
-            lg={6}
-            xl={6}
-            style={{ marginBottom: "2em", marginTop: "2em" }}
-          >
+          <Grid item>
             <Typography
-              style={{ marginLeft: "0.1em", marginTop: "0.1em" }}
               type="body"
               size="large"
             >
               {`Showing top 50 datasets based on ${value}:`}
             </Typography>
-
             <FormControl
-              sx={{ m: 1, minWidth: 400 }}
-              style={{ marginLeft: "0.1em", marginTop: "1em" }}
+              sx={{ minWidth: 300 }}
+              style={{ marginTop: "0.5em" }}
             >
               <InputLabel id="value-select">Value:</InputLabel>
               <MUISelect
                 labelId="value-select-helper"
                 id="value-select"
                 value={value}
-                label="Dt"
+                label="Value"
                 onChange={handleValueChange}
               >
                 {["log2(fold change)", "-log10(padj)"].map((d) => {
@@ -168,8 +150,8 @@ const SingleCelldegCelltypeDotplot = (props) => {
         )}
       </Grid>
       <Grid container>
-        <Grid item sm={3} md={3} lg={3} xl={3}>
-        <Box>
+        <Grid item>
+        <Box width={300}>
             <FormLabel><i>P</i><sub>adj</sub> Cutoff</FormLabel>
             <Slider
               min={0} //Min/Max is 0/4 since that is the true value of the marks above
@@ -187,10 +169,10 @@ const SingleCelldegCelltypeDotplot = (props) => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item sm={12} md={12} lg={12} xl={12}>
+        <Grid item xs={12} minWidth={700}>
           {loading || !dotplotData ? (
             <CircularProgress />
-          ) : dotplotData.length == 0 ? (
+          ) : dotplotData.length === 0 ? (
             <>{"No data available for " + props.celltype}</>
           ) : (
             <DotPlot

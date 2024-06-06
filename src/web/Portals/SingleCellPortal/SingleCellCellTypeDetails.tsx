@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Typography,
 } from "@weng-lab/psychscreen-ui-components";
-import { Divider, Grid, Box, Tabs } from "@mui/material";
+import { Divider, Box, Tabs } from "@mui/material";
+import Grid from '@mui/material/Unstable_Grid2'
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import {
@@ -20,7 +21,7 @@ type GenomicRange = {
   start: number;
   end: number;
 };
-const SingleCellCellTypeDetails: React.FC = (props) => {
+const SingleCellCellTypeDetails: React.FC = () => {
   const { celltype } = useParams();
 
   const handleChange = (event) => {
@@ -31,7 +32,6 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
     start: 6192271,
     end: 6680547,
   });
-  const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
 
   useEffect(() => {
@@ -72,12 +72,9 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
     setDataset((degDiseases && degDiseases[0]) || null);
   }, [celltype]);
 
-  console.log(celltype, ATACTRACKS["ATAC Seq Peaks"].find(d=>d[0].toLowerCase()===celltype!!.replace(" or ", "/").toLowerCase()),"atac grn")
   return (
-    <>
-      <Grid container {...props} style={{ marginTop: "0.5em" }}>
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={9}>
+      <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+        <Grid xs={12}>
           <Typography
             type="headline"
             size="large"
@@ -100,14 +97,10 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
               gridsize={3.5}
             />
           </div>
-          <br />
         </Grid>
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={12} style={{ marginBottom: "10px" }} />
-        <Grid item sm={1} lg={1.5} />
-        <Grid item sm={9}>
+        <Grid xs={12}>
           <Box>
-            <Tabs value={tabIndex} onChange={handleTabChange}>
+            <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile>
               <StyledTab label="scATAC-Seq Peaks" tabIndex={0} />
               <StyledTab label="Gene Regulatory Networks" tabIndex={1} />
               <StyledTab label="eQTLs" tabIndex={2} />
@@ -123,7 +116,6 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
              
             />
           ) }
-     
           {tabIndex == 1 &&
             (GRN_cellType_Cards.find(
               (c) => c.cardLabel === celltype?.replace(" or ", "/")
@@ -156,7 +148,6 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
             </>
           )}
           {tabIndex == 3 && degDiseases.length > 0 && dataset && (
-            <>
               <SingleCelldegCelltypeDotplot
                 disease={dataset}
                 dataset={dataset}
@@ -168,11 +159,9 @@ const SingleCellCellTypeDetails: React.FC = (props) => {
                   )?.val
                 }
               />
-            </>
           )}
         </Grid>
       </Grid>
-    </>
   );
 };
 export default SingleCellCellTypeDetails;

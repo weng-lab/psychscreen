@@ -137,16 +137,14 @@ export const SingleCellBrowser = (props) => {
   return (
     <>
       <br/>
-      <Grid2 container>
+      <Grid2 container justifyContent={"center"}>
         <Grid2>
           <FormControl
             variant="standard"
-            sx={{ marginLeft: "500px", verticalAlign: "middle" }}
           >
             <Select
               id="search"
               value={selectedSearch}
-              // defaultValue={10}
               onChange={handleChange}
             >
               <MenuItem value={"Genes"}>Genes</MenuItem>
