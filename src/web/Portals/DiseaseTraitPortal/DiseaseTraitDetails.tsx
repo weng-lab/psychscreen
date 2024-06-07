@@ -3,7 +3,7 @@
  */
 
 import { useParams } from "react-router-dom";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2'
@@ -208,6 +208,7 @@ const DiseaseTraitDetails: React.FC = () => {
     : { searchvalue: "", diseaseDesc: "" };
 
   const [gwasLocusSNPs, setGwasLocusSNPs] = useState<{SNPCount : number, minimump: number, coordinates: GenomicRange }>()
+  //This needs to be set to the diseases first risk loci
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
     chromosome: "chr1",
     start: 161033654,
@@ -230,7 +231,18 @@ const DiseaseTraitDetails: React.FC = () => {
       ? FULLSUMSTAT_URL_MAP[disease]
       : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
     : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
+  
   const { loci, data } = useLoci(disease || "");
+
+  useEffect(() => {
+    loci && setBrowserCoordinates(
+      {
+        chromosome: loci[0].chromosome,
+        start: loci[0].start + 1500000,
+        end: loci[0].end - 1500000
+      }
+    )
+  }, [loci])
 
   const { data: genesdata } = useQuery(AssociatedGenesQuery, {
     variables: {

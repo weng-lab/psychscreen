@@ -181,8 +181,8 @@ const RiskLocusView: React.FC<{
                         chromosome: groupedLoci.get(chromosome!)![ii]
                           .chromosome,
                         start:
-                          groupedLoci.get(chromosome!)![ii].start + 1400000,
-                        end: groupedLoci.get(chromosome!)![ii].end - 1400000,
+                          groupedLoci.get(chromosome!)![ii].start + 1500000,
+                        end: groupedLoci.get(chromosome!)![ii].end - 1500000,
                       }, { SNPCount: groupedLoci.get(selected[0])![selected[1]].count, 
                         minimump: +groupedLoci.get(selected[0])![selected[1]].minimump.toExponential(1) 
                       })
