@@ -79,10 +79,9 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   }, [celltype]);*/
 
   return (
-    <Grid {...props}>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+    <Grid container mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+      <Grid item xs={12}>
+        <Container>
           <Typography
             type="display"
             size="medium"
@@ -98,7 +97,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
           </Typography>
           <br />
           {grn.length === 0 && (
-            <Grid sm={10} md={10} lg={9} xl={9}>
+            <Grid xs={12}>
               <Typography
                 type="body"
                 size="large"
@@ -116,7 +115,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
             </Grid>
           )}
           {grn && grn.length > 0 && (
-            <Grid sm={10} md={10} lg={9} xl={9}>
+            <Grid xs={12}>
               <DataTable
                 columns={COLUMNS}
                 rows={grn}

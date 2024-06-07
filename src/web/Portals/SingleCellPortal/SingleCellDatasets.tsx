@@ -8,7 +8,8 @@ import {
   Button,
 } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { Grid, Container, Slide } from "@mui/material";
+import { Container, Slide } from "@mui/material";
+import Grid from '@mui/material/Unstable_Grid2'
 import DownloadIcon from "@mui/icons-material/Download";
 import { EmptyTrack, DenseBigBed } from "umms-gb";
 import { gql, useQuery } from "@apollo/client";
@@ -312,11 +313,9 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
   });
 
   return (
-    <Grid>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
+    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
       {disease === "Diff-expressed-genes" && (
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "20px" }}>
+        <Grid xs={12}>
             <Typography
               type="display"
               size="medium"
@@ -325,24 +324,18 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 fontSize: "40px",
                 lineHeight: "57.6px",
                 letterSpacing: "0.5px",
-                marginBottom: "16px",
-                marginLeft: "40px",
               }}
             >
               {"Differential Gene Expression"}
             </Typography>
-          </Container>
           <br />
-          <br />
-          <Box style={{ marginLeft: "80px" }}>
-            <Tabs value={tabIndex} onChange={handleTabChange}>
+            <Tabs value={tabIndex} onChange={handleTabChange} sx={{mb: 2}}>
               <StyledTab label="Differential Gene Expression " />
               <StyledTab label="Data Table" />
             </Tabs>
-          </Box>
           {tabIndex === 1 && (
             <Slide direction="up" in timeout={1000}>
-              <Container style={{ marginLeft: "80px", marginTop: "100px" }}>
+              <Box>
                 <HorizontalCard
                   width={500}
                   onCardClick={(v?: string) => {
@@ -353,25 +346,24 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                   }}
                   cardContentText={degCards}
                 />
-              </Container>
+              </Box>
             </Slide>
           )}
           {tabIndex === 0 && (
-            <Container style={{ marginTop: "10px", marginLeft: "100px" }}>
+            <Box>
               <Typography
                 type="display"
                 size="small"
                 style={{
                   display: "inline-block",
                   fontSize: "28px",
-                  marginTop: "0.5em",
                   marginBottom: "0.5em",
                 }}
               >
                 Gene: {gene}
               </Typography>
               <br />
-              <span style={{ marginRight: "10px" }}>
+              <span>
                 Switch to another gene:
               </span>
               <br />
@@ -383,27 +375,25 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 gridsize={3.5}
               />
               <DegExpression gene={gene} disease={"Schizophrenia"} />
-            </Container>
+            </Box>
           )}
         </Grid>
       )}
       {disease === "scATAC-Seq-peaks" && (
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+        <Grid xs={12}>
             <Typography
               type="display"
               size="medium"
+              mb={1}
               style={{
                 fontWeight: 700,
                 fontSize: "40px",
                 lineHeight: "57.6px",
                 letterSpacing: "0.5px",
-                marginBottom: "16px",
               }}
             >
               {"scATAC-Seq Peaks"}
             </Typography>
-            <br />
             <StyledButton
               bvariant={page === -1 ? "filled" : "outlined"}
               btheme="light"
@@ -421,15 +411,14 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
             </StyledButton>
             &nbsp;&nbsp;&nbsp;
             {page === 0 && (
-              <Grid sm={10} md={10} lg={9} xl={9}>
-                <br />
+              <Box mt={3}>
                 <DataTable
                   columns={COLUMNS}
                   rows={d}
                   itemsPerPage={10}
                   searchable
                 />
-              </Grid>
+              </Box>
             )}
             {page === -1 && (
               <Grid sm={10} md={10} lg={9} xl={9}>
@@ -499,12 +488,24 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 }
               </Grid>
             )}
-          </Container>
         </Grid>
       )}
       {disease === "Gene-regulatory-networks" && (
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+        <Grid xs={12}>
+          <Container>
+          <Typography
+              type="display"
+              size="medium"
+              mb={1}
+              style={{
+                fontWeight: 700,
+                fontSize: "40px",
+                lineHeight: "57.6px",
+                letterSpacing: "0.5px",
+              }}
+            >
+              Gene Regulatory Networks
+            </Typography>
             <StyledButton
               bvariant={grnpage === -1 ? "filled" : "outlined"}
               btheme="light"
@@ -521,13 +522,11 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               Cell Types
             </StyledButton>
             &nbsp;&nbsp;&nbsp;
-            <br />
-            <br />
-            <br />
-            <Grid sm={10} md={10} lg={9} xl={9}>
+            <br/>
+            <br/>
               {grnpage === 0 && (
                 <Slide direction="up" in timeout={1000}>
-                  <Container style={{ marginLeft: "30px", marginTop: "10px" }}>
+                  <Box>
                     <HorizontalCard
                       width={500}
                       onCardClick={(v?: string) => {
@@ -538,26 +537,35 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                       }}
                       cardContentText={cellTypeCards}
                     />
-                  </Container>
+                  </Box>
                 </Slide>
               )}
 
               {grnpage === -1 && (
-                <>
                   <SingleCellBrowser
                     coordinates={coordinates}
                     assembly={"hg38"}
                     grntracks
                   />
-                </>
               )}
-            </Grid>
           </Container>
         </Grid>
       )}
       {disease === "Cell-type-specific-eQTLs" && (
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+        <Grid xs={12}>
+          <Typography
+              type="display"
+              size="medium"
+              mb={1}
+              style={{
+                fontWeight: 700,
+                fontSize: "40px",
+                lineHeight: "57.6px",
+                letterSpacing: "0.5px",
+              }}
+            >
+              Cell Type Specific eQTLs
+            </Typography>
             <StyledButton
               bvariant={qtlpage === -1 ? "filled" : "outlined"}
               btheme="light"
@@ -576,14 +584,10 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
             &nbsp;&nbsp;&nbsp;
             <br />
             <br />
-            <br />
-            <Grid sm={10} md={10} lg={9} xl={9}>
               {qtlpage === 0 && (
                 <>
                   <Slide direction="up" in timeout={1000}>
-                    <Container
-                      style={{ marginLeft: "30px", marginTop: "10px" }}
-                    >
+                    <Box>
                       <HorizontalCard
                         width={500}
                         onCardClick={(v?: string) => {
@@ -594,11 +598,10 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                         }}
                         cardContentText={qtlcellTypeCards}
                       />
-                    </Container>
+                    </Box>
                   </Slide>
                 </>
               )}
-
               {qtlpage === -1 && (
                 <>
                   <SingleCellBrowser
@@ -608,16 +611,12 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                   />
                 </>
               )}
-            </Grid>
-          </Container>
         </Grid>
       )}
       {disease === "Indiv-cohort-expression-data" && (
-        <Grid item sm={10} md={10} lg={9} xl={9}>
-          <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
-            <Grid sm={10} md={10} lg={9} xl={9} style={{ marginLeft: "25rem" }}>
+        <Grid xs={12}>
               <Slide direction="up" in timeout={1000}>
-                <Container style={{ marginLeft: "30px", marginTop: "10px" }}>
+                <Box>
                   <HorizontalCard
                     width={500}
                     onCardClick={(v?: string) => {
@@ -627,10 +626,8 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                     }}
                     cardContentText={DISEASE_CARDS}
                   />
-                </Container>
+                </Box>
               </Slide>
-            </Grid>
-          </Container>
         </Grid>
       )}
     </Grid>
