@@ -6,7 +6,7 @@ export const DISEASE_CARDS = [
   {
     aliases: ["ADHD"],
     val: "ADHD",
-    cardLabel: "Attention deficit hyperactive disorder",
+    cardLabel: "Attention Deficit Hyperactive Disorder",
     cardDesc: "Demontis… Børglum (2023) Nat. Genet.",
     link: "https://doi.org/10.1038/s41588-022-01285-8",
     diseaseDesc:
@@ -14,7 +14,7 @@ export const DISEASE_CARDS = [
   },
   {
     val: "AgeFirstBirth",
-    cardLabel: "Mother's Age at birth of first child",
+    cardLabel: "Mother's Age At Birth Of First Child",
     cardDesc: "Mills... Day (2021) Nat. Hum. Behav.",
     link: "https://doi.org/10.1038/s41562-021-01135-3",
     diseaseDesc: "The mother’s age when she has her first child.",
@@ -26,7 +26,7 @@ export const DISEASE_CARDS = [
     cardDesc: "Bellenguez … Lambert (2022) Nat. Genet.",
     link: "https://doi.org/10.1038/s41588-022-01024-z",
     diseaseDesc:
-      "Alzheimer’s disease is a neurodegenerative disease beginning with mild and progressively worsening memory loss that affects approximately 6% of people over age 65. It is the most common cause of dementia and symptoms include problems with recent memory, language, disorientation, mood swings, self-neglect and behavioral issues. Alzheimer’s disease has complex risk factors, including APOE mutations, advanced age, environmental factors, and common genetic variants. Medications can help with some symptoms and new treatments promising to slow disease progression are emerging, but their efficacy in clinical use remains unclear.",
+      "Alzheimer’s disease is a neurodegenerative disease beginning with mild and progressively worsening memory loss that affects approximately 6% of people over age 65. It is the most common cause of dementia and symptoms include problems with recent memory, language, disorientation, mood swings, self-neglect and behavioral issues. Alzheimer’s disease has complex risk factors, including ~~APOE~~ mutations, advanced age, environmental factors, and common genetic variants. Medications can help with some symptoms and new treatments promising to slow disease progression are emerging, but their efficacy in clinical use remains unclear.",
   },
   {
     aliases: ["Anorexia", "Eating disorder"],
@@ -75,8 +75,8 @@ export const DISEASE_CARDS = [
   {
     aliases: ["smoking"],
     val: "CigsPerDay",
-    cardLabel: "Cigarettes smoked per day",
-    cardDesc: "",
+    cardLabel: "Cigarettes Smoked Per Day",
+    cardDesc: "Koskeridis… Tzoulaki (2022) Nat. Commun.",
     link: "https://doi.org/10.1038/s41467-022-34688-6",
     diseaseDesc:
       "The number of cigarettes a cigarette smoker has per day. This averages around 15 but is skewed by people who smoke many cigarettes per day.",
@@ -84,7 +84,7 @@ export const DISEASE_CARDS = [
   {
     aliases: ["smoking"],
     val: "EverSmoked",
-    cardLabel: "History of smoking",
+    cardLabel: "History Of Smoking",
     cardDesc: "Karlsson Linnér… Beauchamp (2019)  Nat. Genet.",
     link: "https://doi.org/10.1038/s41588-018-0309-3",
     diseaseDesc:
@@ -139,7 +139,7 @@ export const DISEASE_CARDS = [
   },
   {
     val: "YearsEducation",
-    cardLabel: "Years of Education",
+    cardLabel: "Years Of Education",
     cardDesc: "Okbay… Young (2022) Nat. Genet.",
     link: "https://doi.org/10.1038/s41588-022-01016-z",
     diseaseDesc:

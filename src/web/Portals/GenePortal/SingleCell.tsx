@@ -21,21 +21,29 @@ import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
-import { StyledButton } from "../../Portals/styles";
+import { StyledButton, StyledToggleButton } from "../../Portals/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
 import { StyledTab } from "../../Portals/styles";
 import { Download } from "@mui/icons-material";
+import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
+
+
 
 const COLUMNS = [
   {
-    header: "Cell Type",
+    header: "Cell type",
     headerRender: () => {
-      return <b>Cell Type</b>;
+      return <b>Cell type</b>;
     },
-    value: (row) => row.celltype,
+    value: (row) => GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype,
+    render: (row) => {
+      let option = GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype
+      return <>{option.includes("-expressing") ? <><i>{option.split("-expressing")[0]}</i><>{" -expressing"}{option.split("-expressing")[1]}</></> : option}</>
+      },
+
   },
   {
     header: "Fraction Cells Non-Zero",

@@ -301,7 +301,7 @@ const DiseaseTraitDetails: React.FC = () => {
               letterSpacing: "0.3%",
             }}
           >
-            {diseaseDesc}
+            {diseaseDesc.split("~~").length>1 ? <>{diseaseDesc.split("~~")[0]}<><i>{diseaseDesc.split("~~")[1]}</i>{diseaseDesc.split("~~")[2]}</></>: diseaseDesc}
           </Typography>
       </Grid>
       <Grid xs={12}>

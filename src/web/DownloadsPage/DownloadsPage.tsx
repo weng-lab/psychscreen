@@ -33,7 +33,7 @@ const eqtls = {
     ),
 
     createData(
-      "Chandelier",
+      "Chandelier Inhibitory Neurons",
       "all",
       122979,
       14900515,
@@ -41,14 +41,14 @@ const eqtls = {
     ),
 
     createData(
-      "Layer 2/3 Intratelencephalic projecting",
+      "Layer 2/3 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       368686,
       9159977,
       "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat"
     ),
     createData(
-      "Layer 4 Intratelencephalic projecting",
+      "Layer 4 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       149884,
       18170994,
@@ -56,7 +56,7 @@ const eqtls = {
     ),
 
     createData(
-      "Layer 5/6 Near projecting",
+      "Layer 5/6 Near Projecting Excitatory Neurons",
       "all",
       1128,
       128574,
@@ -64,16 +64,16 @@ const eqtls = {
     ),
 
     createData(
-      "Layer 5 Intratelencephalic projecting",
+      "Layer 5 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       200390,
       24259466,
       "https://downloads.wenglab.org/L5.IT_sig_QTLs.dat"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "L6b",
+      "Layer 6b Excitatory Neurons",
       "all",
       5067,
       600035,
@@ -81,7 +81,7 @@ const eqtls = {
     ),
 
     createData(
-      "Layer 6 Corticothalamic projecting",
+      "Layer 6 Corticothalamic Projecting Excitatory Neurons",
       "all",
       24254,
       2932574,
@@ -89,7 +89,7 @@ const eqtls = {
     ),
 
     createData(
-      "Layer 6 Intratelencephalic projecting",
+      "Layer 6 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       178645,
       21604986,
@@ -97,7 +97,7 @@ const eqtls = {
     ),
 
     createData(
-      "Lamp5.Lhx6",
+      "LAMP5/LHX6-expressing Inhibitory Neurons",
       "all",
       139,
       16614,
@@ -105,7 +105,7 @@ const eqtls = {
     ),
 
     createData(
-      "Lamp5",
+      "LAMP5-expressing Inhibitory Neurons",
       "all",
       34653,
       4187511,
@@ -143,7 +143,7 @@ const eqtls = {
       "https://downloads.wenglab.org/PC_sig_QTLs.dat"
     ),
     createData(
-      "Sst",
+      "SST-expressing Inhibitory Neurons",
       "all",
       48602,
       5883595,
@@ -151,13 +151,13 @@ const eqtls = {
     ),
 
     createData(
-      "Vip",
+      "VIP-expressing Inhibitory Neurons",
       "all",
       78316,
       9513653,
       "https://downloads.wenglab.org/Vip_sig_QTLs.dat"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
 };
 const deg = {
   colorGroups: {
@@ -165,7 +165,7 @@ const deg = {
   },
   defaultRows: [
     createData(
-      "ASD",
+      "Autism Spectrum Disorder",
       "all",
       281936,
       23330766,
@@ -178,10 +178,10 @@ const deg = {
       28216020,
       "https://downloads.wenglab.org/Age_DEGcombined.csv"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "Bipolar",
+      "Bipolar Disorder",
       "all",
       333486,
       27890177,
@@ -194,7 +194,7 @@ const deg = {
       28152425,
       "https://downloads.wenglab.org/Schizophrenia_DEGcombined.csv"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
 };
 const grns = {
   colorGroups: {
@@ -209,100 +209,100 @@ const grns = {
       "https://downloads.wenglab.org/Ast_GRN.txt"
     ),
     createData(
-      "Chandelier",
+      "Chandelier Inhibitory Neurons",
       "all",
       111593,
       10621216,
       "https://downloads.wenglab.org/Chandelier_GRN.txt"
     ),
     createData(
-      "Endothelial cells",
+      "Endothelial Cells",
       "all",
       147187,
       11474071,
       "https://downloads.wenglab.org/End_GRN.txt"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "Immune cells",
+      "Immune Cells",
       "all",
       365163,
       30909389,
       "https://downloads.wenglab.org/Immune_GRN.txt"
     ),
     createData(
-      "Layer 2/3 Intratelencephalic projecting",
+      "Layer 2/3 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       1121326,
       93844103,
       "https://downloads.wenglab.org/L2.3.IT_GRN.txt"
     ),
     createData(
-      "Layer 4 Intratelencephalic projecting",
+      "Layer 4 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       1118974,
       91304745,
       "https://downloads.wenglab.org/L4.IT_GRN.txt"
     ),
     createData(
-      "Layer 5/6 Near projecting",
+      "Layer 5/6 Near Projecting Excitatory Neurons",
       "all",
       1120861,
       93893001,
       "https://downloads.wenglab.org/L5.6.NP_GRN.txt"
     ),
     createData(
-      "Layer 5 Extratelencephalic projecting",
+      "Layer 5 Extratelencephalic Projecting Excitatory Neurons",
       "all",
       1123716,
       92134774,
       "https://downloads.wenglab.org/L5.ET_GRN.txt"
     ),
     createData(
-      "Layer 5 Intratelencephalic projecting",
+      "Layer 5 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       1119683,
       91416944,
       "https://downloads.wenglab.org/L5.IT_GRN.txt"
     ),
     createData(
-      "Layer 6 Corticothalamic projecting",
+      "Layer 6 Corticothalamic Projecting Excitatory Neurons",
       "all",
       1123628,
       91987391,
       "https://downloads.wenglab.org/L6.CT_GRN.txt"
     ),
     createData(
-      "Layer 6 Intratelencephalic projecting Car3",
+      "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
       "all",
       1125599,
       97944193,
       "https://downloads.wenglab.org/L6.IT.Car3_GRN.txt"
     ),
     createData(
-      "Layer 6 Intratelencephalic projecting",
+      "Layer 6 Intratelencephalic Projecting Excitatory Neurons",
       "all",
       1123520,
       91958291,
       "https://downloads.wenglab.org/L6.IT_GRN.txt"
     ),
     createData(
-      "L6b",
+      "Layer 6b Excitatory Neurons",
       "all",
       159900,
       1124341,
       "https://downloads.wenglab.org/L6b_GRN.txt"
     ),
     createData(
-      "Lamp5.Lhx6",
+      "LAMP5/LHX6-expressing Inhibitory Neurons",
       "all",
       159900,
       115918,
       "https://downloads.wenglab.org/Lamp5.Lhx6_GRN.txt"
     ),
     createData(
-      "Lamp5",
+      "LAMP5-expressing Inhibitory Neurons",
       "all",
       114228,
       10377377,
@@ -330,28 +330,28 @@ const grns = {
       "https://downloads.wenglab.org/Oli_GRN.txt"
     ),
     createData(
-      "Pax6",
+      `PAX6-expressing Inhibitory Neurons`,
       "all",
       115494,
       10431360,
       "https://downloads.wenglab.org/Pax6_GRN.txt"
     ),
     createData(
-      "Pvalb",
+      "PVALB-expressing Inhibitory Neurons",
       "all",
       114769,
       10430956,
       "https://downloads.wenglab.org/Pvalb_GRN.txt"
     ),
     createData(
-      "Sncg",
+      "SNCG-expressing Inhibitory Neurons",
       "all",
       114459,
       10320486,
       "https://downloads.wenglab.org/Sncg_GRN.txt"
     ),
     createData(
-      "Sst",
+      "SST-expressing Inhibitory Neurons",
       "all",
       115462,
       10313395,
@@ -365,13 +365,13 @@ const grns = {
       "https://downloads.wenglab.org/VLMC_GRN.txt"
     ),
     createData(
-      "Vip",
+      "VIP-expressing Inhibitory Neurons",
       "all",
       114088,
       10145653,
       "https://downloads.wenglab.org/Vip_GRN.txt"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
 };
 
 const atacPeaks = {
@@ -397,7 +397,7 @@ const atacPeaks = {
       3770493,
       "https://downloads.wenglab.org/Micro.PeakCalls.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     //"Inhibitory Neurons",
     createData(
@@ -416,7 +416,7 @@ const atacPeaks = {
     ),
     //"All CellTypes",
     createData(
-      "All CellTypes",
+      "All Cell types",
       "all",
       562098,
       13430381,
@@ -437,7 +437,7 @@ const atacPeaks = {
       4267561,
       "https://downloads.wenglab.org/Oligo.PeakCalls.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   colorGroups: {
     all: "#fafafa",
   },
@@ -445,50 +445,50 @@ const atacPeaks = {
 const bCREDownloads = {
   defaultRows: [
     createData(
-      "All Human b-cCREs",
+      "All Human candidate brain cis-Regulatory Elements (b-cCREs)",
       "all",
       398100,
       14690395,
       "https://gcp.wenglab.org/psychscreen-downloads/bCREs/all-bCREs.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "Adult b-cCREs, all",
+      "Adult candidate brain cis-Regulatory Elements (b-cCREs), All",
       "adult",
       253638,
       13919707,
       "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-bCREs.bed"
     ),
     createData(
-      "Adult b-cCREs, neuron-specific",
+      "Adult candidate brain cis-Regulatory Elements (b-cCREs), Neuron-specific",
       "adult",
       46194,
       2123419,
       "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-NeuN+-bCREs.bed"
     ),
     createData(
-      "Adult b-cCREs, glia-specific",
+      "Adult candidate brain cis-Regulatory Elements (b-cCREs), Glia-specific",
       "adult",
       43866,
       2013769,
       "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-NeuN--bCREs.bed"
     ),
     createData(
-      "Adult b-cCREs, neuron/glia shared",
+      "Adult candidate brain cis-Regulatory Elements (b-cCREs), Neuron/Glia Shared",
       "adult",
       69899,
       3840658,
       "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-shared-bCREs.bed"
     ),
     createData(
-      "Fetal b-cCREs, all",
+      "Fetal candidate brain cis-Regulatory Elements (b-cCREs), All",
       "fetal",
       230936,
       12677878,
       "https://gcp.wenglab.org/psychscreen-downloads/bCREs/fetal-bCREs.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   colorGroups: {
     all: "#fafafa",
     adult: "#eeeeee",
@@ -499,64 +499,64 @@ const bCREDownloads = {
 const bulkImportantRegionDownloads = {
   defaultRows: [
     createData(
-      "VLPFC neurons ATAC signal, upregulating",
+      "VLPFC Neurons ATAC-seq Signal, Upregulating",
       "VLPFC",
       368895,
       505784897,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_neurons.profile_scores.bw.pos.bb.bed.annotated.bed"
     ),
     createData(
-      "VLPFC glia ATAC signal, upregulating",
+      "VLPFC Glia ATAC-seq Signal, Upregulating",
       "VLPFC",
       309342,
       422733989,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.pos.bb.bed.annotated.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "VLPFC neurons ATAC signal, downregulating",
+      "VLPFC Neurons ATAC-seq signal, Downregulating",
       "VLPFC",
       125881,
       153033684,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_neurons.profile_scores.bw.neg.bb.bed.annotated.bed"
     ),
     createData(
-      "VLPFC glia ATAC signal, downregulating",
+      "VLPFC Glia ATAC-seq signal, Downregulating",
       "VLPFC",
       74863,
       88924905,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.neg.bb.bed.annotated.bed"
     ),
     createData(
-      "putamen neurons, upregulating",
+      "Putamen Neurons, Upregulating",
       "putamen",
       368895,
       499367427,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN+.profile_scores.bw.pos.bb.bed.annotated.bed"
     ),
     createData(
-      "putamen glia, upregulating",
+      "Putamen Glia, Upregulating",
       "putamen",
       309342,
       422733989,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN-.profile_scores.bw.pos.bb.bed.annotated.bed"
     ),
     createData(
-      "putamen neurons, downregulating",
+      "Putamen Neurons, Downregulating",
       "putamen",
       125881,
       175470333,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN+.profile_scores.bw.neg.bb.bed.annotated.bed"
     ),
     createData(
-      "putamen glia, downregulating",
+      "Putamen Glia, Downregulating",
       "putamen",
       74863,
       96898982,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN-.profile_scores.bw.neg.bb.bed.annotated.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   colorGroups: {
     VLPFC: "#fafafa",
     putamen: "#eeeeee",
@@ -566,92 +566,92 @@ const bulkImportantRegionDownloads = {
 const singleCellImportantRegionDownloads = {
   defaultRows: [
     createData(
-      "Microglia, upregulating",
+      "Microglia, Upregulating",
       "microglia",
       257851,
       279454648,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Microglia.profile_scores.bw.pos.bed.annotated.bed"
     ),
     createData(
-      "Microglia, downregulating",
+      "Microglia, Downregulating",
       "microglia",
       44629,
       37124711,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Microglia.profile_scores.bw.neg.bed.annotated.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "Astrocytes, upregulating",
+      "Astrocytes, Upregulating",
       "astrocytes",
       121724,
       87663966,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Astrocyte_1.profile_scores.bw.pos.bed.annotated.bed"
     ),
     createData(
-      "Astrocytes, downregulating",
+      "Astrocytes, Downregulating",
       "astrocytes",
       9624,
       6870613,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Astrocyte_1.profile_scores.bw.neg.bed.annotated.bed"
     ),
     createData(
-      "Oligodendrocyte precursors, upregulating",
+      "Oligodendrocyte Precursors, Upregulating",
       "opcs",
       183446,
       157867921,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Oligodendrocyte_Precursor.profile_scores.bw.pos.bed.annotated.bed"
     ),
     createData(
-      "Oligodendrocyte precursors, downregulating",
+      "Oligodendrocyte Precursors, Downregulating",
       "opcs",
       29434,
       21496793,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Oligodendrocyte_Precursor.profile_scores.bw.neg.bed.annotated.bed"
     ),
     createData(
-      "Oligodendrocytes, upregulating",
+      "Oligodendrocytes, Upregulating",
       "olig",
       312172,
       363360704,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Oligodendrocyte.profile_scores.bw.pos.bed.annotated.bed"
     ),
     createData(
-      "Oligodendrocytes, downregulating",
+      "Oligodendrocytes, Downregulating",
       "olig",
       72775,
       65344684,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Oligodendrocyte.profile_scores.bw.neg.bed.annotated.bed"
     ),
     createData(
-      "Glutaminergic Neurons I, upregulating",
+      "Glutaminergic Neurons I, Upregulating",
       "gluI",
       365861,
       424763761,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Glutaminergic_Neuron_1.profile_scores.bw.pos.bed.annotated.bed"
     ),
     createData(
-      "Glutaminergic Neurons I, downregulating",
+      "Glutaminergic Neurons I, Downregulating",
       "gluI",
       139464,
       129318985,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Glutaminergic_Neuron_1.profile_scores.bw.neg.bed.annotated.bed"
     ),
     createData(
-      "Glutaminergic Neurons II, upregulating",
+      "Glutaminergic Neurons II, Upregulating",
       "gluII",
       357677,
       395951962,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Glutaminergic_Neuron_2.profile_scores.bw.pos.bed.annotated.bed"
     ),
     createData(
-      "Glutaminergic Neurons II, downregulating",
+      "Glutaminergic Neurons II, Downregulating",
       "gluII",
       128745,
       120385750,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Glutaminergic_Neuron_2.profile_scores.bw.neg.bed.annotated.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   colorGroups: {
     microglia: "#fafafa",
     astrocytes: "#eeeeee",
@@ -661,159 +661,165 @@ const singleCellImportantRegionDownloads = {
     gluII: "#eeeeee",
   },
 };
+/*
+  Anorexia:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Anorexia_meta_PGC.formatted.bigBed",
+  ASD: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ASD_Matoba2021.formatted.bigBed",
+  BipolarDisorder:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Bipolar_PGC_meta.formatted.bigBed",
+  BMI: "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/BMI_meta_Yengo.formatted.bigBed",
+  CigsPerDay:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/CigarettesPerDay_meta_Koskeridis.formatted.bigBed",
+  "Major Depressive Disorder":
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.formatted.bigBed",
+  "Attention deficit hyperactive disorder":
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ADHD_meta_PGC.formatted.bigBed",
+  Depression:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.formatted.bigBed",
+  //Dyslexia: "dyslexia",
+  EverSmoked:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/EverSmoked_meta_Karlsson.formatted.bigBed",
+  Insomnia:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Insomnia_UKB_Backman.formatted.bigBed",
+  Intelligence:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Intelligence_meta_Savage.formatted.bigBed",
+  Parkinsons:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Parkinson_Nalls_meta.formatted.bigBed",
+  ReactionTime:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ReactionTime_Davies.formatted.bigBed",
+  Schizophrenia:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SCZ_meta_PGC.formatted.bigBed",
+  SleepDuration:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SleepDuration_meta_Dashti.formatted.bigBed",
+  YearsEducation:
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/YearsOfEducation_meta_Okbay.formatted.bigBed",
 
+*/
 const gwasMetaDownloads = {
   defaultRows: [
     createData(
-      "ADHD (5 studies)",
+      "Attention Deficit Hyperactive Disorder",
       "brain",
       7997741,
       430168632,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/ADHD1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ADHD_meta_PGC.formatted.bed"
     ),
     createData(
-      "alcohol use (2 studies)",
+      "Mother's Age At Birth Of First Child",
       "brain",
       15342055,
       836612757,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/AlcoholUse1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/AgeFirstBirth_Mills_meta.formatted.bed",
     ),
     createData(
-      "Alzheimers (5 studies)",
+      "Alzheimers",
       "brain",
       1185515,
       63141184,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Alzheimers1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bed",
     ),
     createData(
-      "anorexia nervosa (4 studies)",
+      "Anorexia Nervosa",
       "brain",
       8170867,
       441227579,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Anorexia1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Anorexia_meta_PGC.formatted.bed",
     ),
+    
     createData(
-      "anxiety (2 studies)",
-      "brain",
-      6286233,
-      337425172,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Anxiety1.tsv.snps.bed.bb.bed"
-    ),
-    createData(
-      "autism spectrum disorder (4 studies)",
+      "Autism Spectrum Disorder",
       "brain",
       9616178,
       519317164,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Autism1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ASD_Matoba2021.formatted.bed"
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
     createData(
-      "bipolar disorder (8 studies)",
+      "Bipolar Disorder",
       "brain",
       12316354,
       667694563,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Bipolar1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Bipolar_PGC_meta.formatted.bed"
     ),
     createData(
-      "BMI (3 studies)",
+      "Body Mass Index",
       "brain",
       1187064,
       63273621,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/BMI1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/BMI_meta_Yengo.formatted.bed"
     ),
     createData(
-      "cigarette use (2 studies)",
+      "Cigarettes Smoked Per Day",
       "brain",
       1187090,
       63471107,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/CigaretteUse1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/CigarettesPerDay_meta_Koskeridis.formatted.bed",
     ),
     createData(
-      "circadian rhythm (3 studies)",
-      "brain",
-      1187000,
-      63448685,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Circadian1.tsv.snps.bed.bb.bed"
-    ),
-    createData(
-      "intelligence (5 studies)",
+      "Intelligence",
       "brain",
       1187178,
       63063383,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Intelligence1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Intelligence_meta_Savage.formatted.bed"
     ),
     createData(
-      "major depressive disorder (7 studies)",
+      "Major Depressive Disorder",
       "brain",
       13631590,
       739615394,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Depression1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/MDD_PGC_meta.formatted.bed"
     ),
     createData(
-      "neuroticism (3 studies)",
-      "brain",
-      1187150,
-      63157541,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Neuroticism1.tsv.snps.bed.bb.bed"
-    ),
-    createData(
-      "number of children (4 studies)",
-      "brain",
-      1186976,
-      63303784,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Children1.tsv.snps.bed.bb.bed"
-    ),
-    createData(
-      "schizophrenia (9 studies)",
+      "Schizophrenia",
       "brain",
       9538405,
       513791524,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Schizophrenia1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SCZ_meta_PGC.formatted.bed"
     ),
     createData(
-      "allergies/asthma (4 studies)",
+      "History Of Smoking",
       "non-brain",
       1187049,
       63394018,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/AllergyAsthma1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/EverSmoked_meta_Karlsson.formatted.bed"
     ),
     createData(
-      "cancer (7 studies)",
+      "Insomnia",
       "non-brain",
       1187263,
       63405162,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Cancer1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Insomnia_UKB_Backman.formatted.bed"
     ),
     createData(
-      "inflammatory bowel disease (6 studies)",
+      "Reaction Time",
       "non-brain",
       1181256,
       62886677,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/IBD1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ReactionTime_Davies.formatted.bed"
     ),
     createData(
-      "myocardial traits (4 studies)",
+      "Parkinson’s Disease",
       "non-brain",
       1187261,
       63298941,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Myocardial1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Parkinson_Nalls_meta.formatted.bed"
     ),
     createData(
-      "type 2 diabetes (3 studies)",
+      "Sleep Duration",
       "non-brain",
       1187048,
       63268462,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/Type2Diabetes1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SleepDuration_meta_Dashti.formatted.bed",
     ),
     createData(
-      "vascular disease (3 studies)",
+      "Years Of Education",
       "non-brain",
       1172234,
       62735623,
-      "https://downloads.wenglab.org/psychscreen-summary-statistics/meta/bed/VascularDisease1.tsv.snps.bed.bb.bed"
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/YearsOfEducation_meta_Okbay.formatted.bed",
     ),
-  ],
+  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   colorGroups: {
     brain: "#fafafa",
     "non-brain": "#eeeeee",
@@ -823,11 +829,11 @@ const gwasMetaDownloads = {
 const pages = [
   "Regulatory Elements",
   "TF Binding Sites",
-  "GWAS meta analysis",
+  "GWAS Meta Analysis",
   "ATAC-Seq Peaks",
   "Gene Regulatory Networks",
-  "Differentially expressed genes",
-  "Cell type specific eQTLs",
+  "Differentially Expressed Genes",
+  "Cell type Specific eQTLs",
 ];
 
 const DownloadsPage: React.FC = () => {
@@ -875,7 +881,7 @@ const DownloadsPage: React.FC = () => {
           <div style={{ marginTop: "20px" }}>
             {page === 0 && (
               <BEDFileDownloadTable
-                title="Brain cis-Regulatory Elements (b-cCREs)"
+                title="candidate brain cis-Regulatory Elements (b-cCREs)"
                 {...bCREDownloads}
               />
             )}
@@ -894,7 +900,7 @@ const DownloadsPage: React.FC = () => {
             {page === 2 && (
               <>
                 <BEDFileDownloadTable
-                  title="GWAS meta analysis"
+                  title="GWAS Meta Analysis"
                   elementText="SNPs"
                   {...gwasMetaDownloads}
                 />

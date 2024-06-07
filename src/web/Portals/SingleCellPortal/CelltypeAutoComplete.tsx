@@ -27,7 +27,7 @@ export const CelltypeAutoComplete = (props) => {
     <Stack>
       {props.showTitle && (
         <Grid item sm={12} md={12} lg={12} xl={12}>
-          <Typography>Search Celltype:</Typography>
+          <Typography>Search a cell type of interest:</Typography>
           <br />
         </Grid>
       )}
@@ -52,11 +52,11 @@ export const CelltypeAutoComplete = (props) => {
           onInputChange={(_, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          noOptionsText="e.g. Astrocytes, Chandelier"
+          noOptionsText="e.g., Astrocytes, Chandelier"
           renderInput={(params) => (
             <TextField
               {...params}
-              label="e.g. Astrocytes, Chandelier"
+              label="e.g., Astrocytes, Chandelier"
               fullWidth
             />
           )}
@@ -69,13 +69,13 @@ export const CelltypeAutoComplete = (props) => {
                     sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}
                   >
                     <Box component="span" sx={{ fontWeight: "regular" }}>
-                      {option}
+                      {option.includes("-expressing") ? <><i>{option.split("-expressing")[0]}</i><>{" -expressing"}{option.split("-expressing")[1]}</></> : option} 
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      {
+                    { 
                         CELLTYPE_CARDS.find((d) => d.cardLabel === option)
                           ?.cardDesc
-                      }
+                    }
                     </Typography>
                   </Grid>
                 </Grid>

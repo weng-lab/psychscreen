@@ -46,7 +46,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
   if (
     diseaseCT["ASD"].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))
   )
-    degDiseases.push("ASD");
+    degDiseases.push("Autism Specturm Disorder");
   if (
     diseaseCT["Age"].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))
   )
@@ -80,8 +80,9 @@ const SingleCellCellTypeDetails: React.FC = () => {
             size="large"
             style={{ marginTop: "1em", marginBottom: "0.2em" }}
           >
-            Celltype Details: {celltype?.replace(" or ", "/")}
+            Celltype Details: {celltype?.replace(" or ", "/").includes("-expressing") ?  <i>{celltype?.replace(" or ", "/").split("-expressing")[0]}{" expressing"}{celltype?.replace(" or ", "/").split("-expressing")[1]}</i> : celltype?.replace(" or ", "/")} 
           </Typography>
+          <br/>
           <div
             style={{
               display: "flex",
@@ -126,7 +127,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
                 grntracks
               />
             ) : (
-              <>{"No data available for " + celltype?.replace(" or ", "/")}</>
+              <><br/>{"No data available for " + celltype?.replace(" or ", "/")}</>
             ))}
           {tabIndex == 2 &&
             (Qtl_Celltype_Cards.find(
@@ -138,7 +139,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
                 qtltracks
               />
             ) : (
-              <>{"No data available for " + celltype?.replace(" or ", "/")}</>
+              <><br/>{"No data available for " + celltype?.replace(" or ", "/")}</>
             ))}
           {tabIndex == 3 && degDiseases && degDiseases.length == 0 && (
             <>
@@ -154,7 +155,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
                 degDiseases={degDiseases}
                 handleChange={handleChange}
                 celltype={
-                  diseaseCT[dataset.replace(" ", "_")].find(
+                  diseaseCT[dataset === "Autism Specturm Disorder"  ? "ASD"  : dataset.replace(" ", "_")].find(
                     (d) => d.cardLabel === celltype?.replace(" or ", "/")
                   )?.val
                 }
