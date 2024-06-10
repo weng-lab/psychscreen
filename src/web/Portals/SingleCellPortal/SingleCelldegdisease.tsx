@@ -1,5 +1,5 @@
 import React from "react";
-import { GridProps } from "@mui/material";
+import { Box, GridProps } from "@mui/material";
 import {
   HorizontalCard,
   Typography,
@@ -199,10 +199,8 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
 
   return (
-    <Grid {...props}>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+      <Grid item xs={12}>
           <Typography
             type="display"
             size="medium"
@@ -217,9 +215,8 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
             {disease}
           </Typography>
           <br />
-          <Grid sm={10} md={10} lg={9} xl={9}>
             <Slide direction="up" in timeout={1000}>
-              <Container style={{ marginLeft: "30px", marginTop: "10px" }}>
+              <Box>
                 <HorizontalCard
                   width={500}
                   onCardClick={(v?: string) => {
@@ -230,10 +227,8 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
                   }}
                   cardContentText={diseaseCT[disease!]}
                 />
-              </Container>
+              </Box>
             </Slide>
-          </Grid>
-        </Container>
       </Grid>
     </Grid>
   );

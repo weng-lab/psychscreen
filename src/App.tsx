@@ -88,7 +88,6 @@ const App: React.FC = () => {
                 element={<Navigate replace to="/psychscreen" />}
               />
               <Route path="/psychscreen" element={<WebHomePage />} />
-              {/* <Route path="/psychscreen" element={<HomePage />} /> */}
               <Route
                 path="/psychscreen/downloads"
                 element={<DownloadsPage />}
@@ -143,8 +142,9 @@ const App: React.FC = () => {
               >
                 <Route path=":trackset" element={<GenomeExplorerPage />} />
               </Route>
-              {PORTALS.map((portal) => (
+              {PORTALS.map((portal, i) => (
                 <Route
+                  key={i}
                   path={`/psychscreen${portal[0] as string}`}
                   element={React.createElement(portal[1], {})}
                 />

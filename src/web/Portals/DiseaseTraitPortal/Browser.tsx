@@ -10,12 +10,12 @@ import {
 } from "../../../genome-explorer";
 import { useGenePageData } from "../GenePortal/AssociatedxQTL";
 import { DeepLearnedModelTracks } from "../../../genome-explorer/DeepLearnedModels";
-import { FormControl, MenuItem, Stack } from "@mui/material";
+import { Box, Divider, FormControl, MenuItem, Stack, Typography } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { CoordinatesSearch } from "./CoordinatesSearch";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 import { toScientificNotation } from "./utils";
 
 export type GenomicRange = {
@@ -106,25 +106,21 @@ const Browser: React.FC<{
     [coordinates]
   );
   return (
-    <>
-      <Stack>
-        <Grid container alignItems="center">
-          {props.gwasLocusSNPs && props.gwasLocusSNPs.coordinates.chromosome===coordinates.chromosome && props.gwasLocusSNPs.coordinates.start===coordinates.start  && props.gwasLocusSNPs.coordinates.end===coordinates.end &&
-            <Grid item sx={{ marginLeft: "250px", verticalAlign: "middle" }}>
-              {props.gwasLocusSNPs.SNPCount} significant SNP {props.gwasLocusSNPs.SNPCount !== 1 ? "s": ""}{" "} at locus {props.gwasLocusSNPs.coordinates.chromosome+":"+props.gwasLocusSNPs.coordinates.start.toLocaleString()+"-"+props.gwasLocusSNPs.coordinates.end.toLocaleString()}         
-              <br/>
-              lowest <tspan fontFamily="italic">P</tspan> at this locus:{" "} {toScientificNotation(props.gwasLocusSNPs.minimump, 2)}
-            </Grid>
-          }
-          <Grid item>
-            <FormControl
-              variant="standard"
-              sx={{ marginLeft: props.gwasLocusSNPs && props.gwasLocusSNPs.coordinates.chromosome===coordinates.chromosome && props.gwasLocusSNPs.coordinates.start===coordinates.start  && props.gwasLocusSNPs.coordinates.end===coordinates.end  ? "80px" :"500px", verticalAlign: "middle" }}
-            >
+    <Stack alignItems={"center"} spacing={3}>
+      {props.gwasLocusSNPs && props.gwasLocusSNPs.coordinates.chromosome === coordinates.chromosome && props.gwasLocusSNPs.coordinates.start === coordinates.start && props.gwasLocusSNPs.coordinates.end === coordinates.end &&
+        <>
+          <Typography alignSelf={"flex-start"}>
+            {props.gwasLocusSNPs.SNPCount} significant SNP{props.gwasLocusSNPs.SNPCount !== 1 ? "s" : ""}{" "} at locus {props.gwasLocusSNPs.coordinates.chromosome + ":" + props.gwasLocusSNPs.coordinates.start.toLocaleString() + "-" + props.gwasLocusSNPs.coordinates.end.toLocaleString()}. Lowest <i>P</i> at this locus:{" "} {toScientificNotation(props.gwasLocusSNPs.minimump, 2)}
+          </Typography>
+          <Divider sx={{ width: '100%', marginTop: '1rem !important' }} />
+        </>
+      }
+      <Grid container alignItems="center">
+          <Grid>
+            <FormControl variant="standard">
               <Select
                 id="search"
                 value={selectedSearch}
-                // defaultValue={10}
                 onChange={handleChange}
               >
                 <MenuItem value={"Genes"}>Genes</MenuItem>
@@ -133,7 +129,7 @@ const Browser: React.FC<{
               </Select>
             </FormControl>
           </Grid>
-          <Grid item>
+          <Grid>
             {selectedSearch === "Genes" ? (
               <GeneAutoComplete
                 gridsize={3.5}
@@ -173,32 +169,25 @@ const Browser: React.FC<{
             )}
           </Grid>
         </Grid>
-      </Stack>
 
-      <br />
-      <br />
-
-      <CytobandView
-        innerWidth={1400}
-        height={15}
-        chromosome={coordinates.chromosome!}
-        assembly="hg38"
-        position={coordinates}
-      />
-      <br />
-      <div style={{ textAlign: "center" }}>
-        <UCSCControls
-          onDomainChanged={onDomainChanged}
-          domain={coordinates}
-          withInput={false}
+        <CytobandView
+          innerWidth={1400}
+          height={15}
+          chromosome={coordinates.chromosome!}
+          assembly="hg38"
+          position={coordinates}
         />
-        <br/>
-        <b>{coordinates.chromosome+":"+coordinates.start.toLocaleString()+"-"+coordinates.end.toLocaleString()}</b>{" (Hold shift and drag to select a region)"}
-      </div>
-      
-      <br />
-
-      <GenomeBrowser
+        <div>
+          <UCSCControls
+            onDomainChanged={onDomainChanged}
+            domain={coordinates}
+            withInput={false}
+          />
+        </div>
+        <Typography>
+          <b>{coordinates.chromosome + ":" + coordinates.start.toLocaleString() + "-" + coordinates.end.toLocaleString()}</b>{" (Hold shift and drag to select a region)"}
+        </Typography>
+        <GenomeBrowser
         svgRef={svgRef}
         domain={coordinates}
         innerWidth={1400}
@@ -213,7 +202,7 @@ const Browser: React.FC<{
             });
           }
         }}
-      >
+        >
         {highlight && (
           <rect
             fill="#8ec7d1"
@@ -254,7 +243,7 @@ const Browser: React.FC<{
           domain={coordinates}
         />
       </GenomeBrowser>
-    </>
+    </Stack>
   );
 };
 export default Browser;

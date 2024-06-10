@@ -1,11 +1,15 @@
 import { gql, useQuery } from "@apollo/client";
 import {
   CircularProgress,
-  Grid,
   Tabs,
+  ToggleButton,
   ToggleButtonGroup,
-  Paper,
+  Button as MUIButton,
+  Stack,
+  FormLabel,
 } from "@mui/material";
+
+import Grid from '@mui/material/Unstable_Grid2'
 import {
   Typography,
   Button,
@@ -23,6 +27,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect } from "@mui/material";
 import { StyledTab } from "../../Portals/styles";
+import { Download } from "@mui/icons-material";
 import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
 
 
@@ -523,30 +528,20 @@ const SingleCell: React.FC<{
   let keys = Array.from(DATASETS.keys());
 
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       {selectDatasets && (
         <>
           <Grid
-            item
             sm={12}
             md={12}
             lg={12}
             xl={12}
-            style={{ marginBottom: "2em" }}
           >
-            <Typography
-              style={{ marginLeft: "1em", marginTop: "0.1em" }}
-              type="body"
-              size="large"
-            >
+            <Typography type="body" size="large" mb={1}>
               Select PsychENCODE Dataset:
             </Typography>
-
             {
-              <FormControl
-                sx={{ m: 1, minWidth: 400 }}
-                style={{ marginLeft: "1em", marginTop: "1em" }}
-              >
+              <FormControl>
                 <InputLabel id="simple-select-helper-label">
                   Dataset:
                 </InputLabel>
@@ -571,15 +566,12 @@ const SingleCell: React.FC<{
             }
           </Grid>
           <Grid
-            item
             sm={12}
             md={12}
             lg={12}
             xl={12}
-            style={{ marginBottom: "2em" }}
           >
             <Typography
-              style={{ marginLeft: "1em", marginTop: "0.1em" }}
               type="body"
               size="large"
             >
@@ -588,40 +580,35 @@ const SingleCell: React.FC<{
           </Grid>
         </>
       )}
-      <Grid item sm={12}>
+      <Grid xs={12}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
           <StyledTab label="Detailed Expression Profile" />
           <StyledTab label="Expression Summary" />
         </Tabs>
       </Grid>
       {tabIndex === 1 ? (
-        <Grid item sm={12}>
+        <Grid xs={12}>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : dotplotDataSc.length > 0 || dotplotDataCt.length > 0 ? (
             <>
-              <br />
-              <StyledButton
-                btheme="light"
-                bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
-                key={"by Cell type"}
-                onClick={() => setCtClass("by Cell type")}
-              >
-                by Cell type
-              </StyledButton>
-              &nbsp;
-              {
+              <Stack direction={"row"} spacing={1} mb={1}>
+                <StyledButton
+                  btheme="light"
+                  bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                  key={"by Cell type"}
+                  onClick={() => setCtClass("by Cell type")}
+                >
+                  By Cell Type
+                </StyledButton>
                 <StyledButton
                   btheme="light"
                   bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
-                  by Broader Cell type
+                  By Broader Cell Type
                 </StyledButton>
-              }
-              &nbsp;
-              {
                 <StyledButton
                   btheme="light"
                   bvariant={ctClass === "All Datasets" ? "filled" : "outlined"}
@@ -630,16 +617,13 @@ const SingleCell: React.FC<{
                 >
                   All Datasets
                 </StyledButton>
-              }
-              <br />
-              <br />
+              </Stack>
               {ctClass === "All Datasets" ? (
                 <>
                   <Tabs value={cttabIndex} onChange={handleCtTabChange}>
                     <StyledTab label="by Cell type" />
                     <StyledTab label="by Broader Cell type" />
                   </Tabs>
-                  <br />
                   <DotPlot
                     disease={dataset}
                     yaxistitle={gene}
@@ -661,7 +645,8 @@ const SingleCell: React.FC<{
                   ref={dotPlotRef}
                 />
               )}
-              <Button
+              <MUIButton
+                startIcon={<Download />}
                 onClick={() =>
                   dotPlotRef?.current &&
                   downloadSVG(
@@ -669,11 +654,10 @@ const SingleCell: React.FC<{
                     `${gene}-${dataset}-single-cell-dot-plot.svg`
                   )
                 }
-                btheme="dark"
-                bvariant="outlined"
+                sx={{ textTransform: 'none', ml: 1, alignSelf: 'flex-end' }}
               >
                 Download
-              </Button>
+              </MUIButton>
             </>
           ) : (
             <>{"Data Not available"}</>
@@ -684,33 +668,26 @@ const SingleCell: React.FC<{
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : (
-            <Grid item sm={5} md={5} lg={5} xl={5}>
-              <>
-                <br />
+            <Grid xs={12} md={5}>
+              <Stack direction="row" spacing={1} mb={1}>
                 <StyledButton
                   btheme="light"
                   bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
                   key={"by Cell type"}
                   onClick={() => setCtClass("by Cell type")}
                 >
-                  by Cell type
+                  By Cell Type
                 </StyledButton>
-                &nbsp;
                 <StyledButton
                   btheme="light"
                   bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
-                  by Broader Cell type
+                  By Broader Cell Type
                 </StyledButton>
-                <br />
-                <br />
+              </Stack>
                 {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
-                  <Paper
-                    elevation={0}
-                    style={{ maxHeight: 500, width: 450, overflow: "auto" }}
-                  >
                     <DataTable
                       columns={COLUMNS}
                       rows={
@@ -720,7 +697,7 @@ const SingleCell: React.FC<{
                               .filter((e) => e.dataset === dataset)
                           : ctrows.filter((e) => e.dataset === dataset)
                       }
-                      itemsPerPage={ctClass === "by Cell type" ? 30 : 10}
+                      itemsPerPage={10}
                       searchable
                       sortColumn={2}
                       onRowMouseEnter={(row: any) =>
@@ -728,45 +705,21 @@ const SingleCell: React.FC<{
                       }
                       onRowMouseLeave={() => setHighlighted("")}
                     />
-                  </Paper>
                 ) : (
                   <>{"Data Not available"}</>
                 )}
-              </>
             </Grid>
           )}
           {points && points.length > 0 ? (
-            <Grid item sm={6} md={6} lg={6} xl={6}>
-              <div style={{ marginLeft: "8em" }}>
-                <Typography
-                  style={{ marginLeft: "2em", marginBottom: "0.5em" }}
-                  type="body"
-                  size="large"
-                >
-                  Color Scheme: &nbsp;&nbsp;&nbsp;&nbsp; Gene: <i>{gene}</i>{" "}
-                </Typography>
-                <ToggleButtonGroup
-                  style={{ marginLeft: "2em" }}
-                  size={"small"}
-                  value={colorScheme}
-                  exclusive
-                  onChange={(_, x) => setColorScheme(x)}
-                >
-                  <StyledToggleButton value="expression">
-                    Gene Expression
-                  </StyledToggleButton>
-                  <StyledToggleButton value="cluster">Cell Type Cluster</StyledToggleButton>
-                </ToggleButtonGroup>
-              </div>
-              <div style={{ marginLeft: "-2em", marginTop: "-3em" }}>
+            <Grid xs={12} md={7}>
+              <div>
                 {loading ? (
                   <CircularProgress />
                 ) : (
-                  <>
                     <Chart
                       key={dataset}
-                      marginFraction={0.28}
-                      innerSize={{ width: 2100, height: 2000 }}
+                      marginFraction={0.24}
+                      innerSize={{ width: 2000, height: 2000 }}
                       domain={domain}
                       xAxisProps={{
                         ticks: range(domain.x.start, domain.x.end + 1, 5),
@@ -796,7 +749,6 @@ const SingleCell: React.FC<{
                           <stop offset="100%" stop-color="#ffcd00" />
                         </linearGradient>
                       </defs>
-
                       {tooltip > -1 && (
                         <rect
                           x={
@@ -875,22 +827,36 @@ const SingleCell: React.FC<{
                         </text>
                       )}
                     </Chart>
-                    <Button
-                      onClick={() =>
-                        chartRef?.current &&
-                        downloadSVGAsPNG(
-                          chartRef.current,
-                          `${gene}-${dataset}-single-cell-UMAP.png`
-                        )
-                      }
-                      btheme="dark"
-                      bvariant="filled"
-                      style={{ marginLeft: "150px", marginTop: "-100px" }}
-                    >
-                      Download
-                    </Button>
-                  </>
                 )}
+              </div>
+              <div style={{display: 'flex', justifyContent: 'center'}}>
+                <FormControl>
+                  <FormLabel>UMAP Color Scheme:</FormLabel>
+                  <ToggleButtonGroup
+                    size={"small"}
+                    value={colorScheme}
+                    exclusive
+                    onChange={(_, x) => setColorScheme(x)}
+                    sx={{ textTransform: 'none' }}
+                  >
+                    <ToggleButton value="expression" sx={{ textTransform: 'none' }}>Gene Expression</ToggleButton>
+                    <ToggleButton value="cluster" sx={{ textTransform: 'none' }}>Cell Type Cluster</ToggleButton>
+                    
+                  </ToggleButtonGroup>
+                </FormControl>
+                <MUIButton
+                  startIcon={<Download />}
+                  onClick={() =>
+                    chartRef?.current &&
+                    downloadSVGAsPNG(
+                      chartRef.current,
+                      `${gene}-${dataset}-single-cell-UMAP.png`
+                    )
+                  }
+                  sx={{ textTransform: 'none', ml: 1, alignSelf: 'flex-end' }}
+                >
+                  Download
+                </MUIButton>
               </div>
             </Grid>
           ) : (

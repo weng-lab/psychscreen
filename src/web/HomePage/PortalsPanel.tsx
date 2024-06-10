@@ -6,34 +6,134 @@ import DiseaseTrait from "../../assets/disease-trait.png";
 import GeneBCRE from "../../assets/gene-bcre.png";
 import SNPQTL from "../../assets/snp-qtl.png";
 import SingleCell from "../../assets/single-cell.png";
+import UMass from "../../assets/umass.png";
 import { useNavigate } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme, useMediaQuery } from "@material-ui/core";
 import { StyledButton } from "../Portals/styles";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { ExpandMore } from "@mui/icons-material";
+import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
+import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
+import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
+import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
+
+type Portals = 'Disease' | 'Gene' | 'SNP' | 'SingleCell' | 'About'
 
 type PortalPanelProps = {
-  title: string;
-  description: string;
-  stats?: string[];
-  buttonText: string;
-  buttonLink: string;
-  imageSRC: string;
+  portal: Portals,
+  mode: "search" | "button"
   /**
    * Placement of image on large screen width. On small width will always be on top of button
    */
   imagePlacement: "right" | "left";
-  imgAltText: string;
 };
 
 /**
  *
  * @param props
- * Generates homepage panel with given info
+ * Generates homepage/portal panel for specified portal
  */
 export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
   const navigate = useNavigate();
+
+  const portalInfo: Record<Portals, {
+    title: string,
+    description: string,
+    stats?: string[],
+    buttonText: string,
+    buttonLink: string,
+    searchComponent?: JSX.Element,
+    imageSRC: string,
+    imgAltText: string
+  }> = {
+    Disease: {
+      title: "Disease/Trait Portal",
+      description: `
+        Explore heritability enrichment for 17 distinct psychiatric,
+        behavioral, and neuronal traits within gene regulatory features,
+        such as b-cCREs and quantitative trait loci (QTLs). Search genes
+        associated with complex traits based on PsychENCODE TWAS.
+      `,
+      stats: [
+        "17 total traits cataloged",
+        "5,848 b-cCRE/trait associations"
+      ],
+      buttonText: "Explore Diseases/Traits",
+      buttonLink: "/psychscreen/traits",
+      imageSRC: DiseaseTrait,
+      imgAltText: "Disease/Trait Portal",
+      searchComponent: <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" showTitle />
+    },
+    Gene: {
+      title: "Gene/b-cCRE Portal",
+        description: `
+          Explore gene expression and regulatory element activity in the
+          fetal and adult brain at bulk and single-cell resolution.
+          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
+          cell co-expression analyses.
+        `,
+        stats: [
+          "Gene expression from 294 donors, including 7 psychiatric disorders",
+          "923,942 brain regulatory elements cataloged",
+          "Chromatin accessibility in 13 brain regions",
+          "Gene expression and gene regulatory networks across 27 cell types"
+        ],
+        buttonText: "Explore Genes/b-cCREs",
+        buttonLink: "/psychscreen/gene",
+        imageSRC: GeneBCRE,
+        imgAltText: "Gene b-cCRE portal",
+        searchComponent: <GeneAutoComplete navigateto="/psychscreen/gene/" showTitle />
+    },
+    SNP: {
+      title: "SNP/QTL Portal",
+      description: `
+        Search SNPs of interest and explore their impact on gene expression,
+        chromatin accessibility, transcription factor (TF) binding and other
+        molecular traits in the human brain based on PsychENCODE QTLs and
+        sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS anotations.
+      `,
+      stats: [
+        "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
+        "127,265 variants associated with complex traits",
+        "510,062 variants in b-cCREs"
+      ],
+      buttonText: "Explore SNPs/QTLs",
+      buttonLink: "/psychscreen/snp",
+      imageSRC: SNPQTL,
+      imgAltText: "SNP/QTL Portal",
+      searchComponent: <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
+    },
+    SingleCell: {
+      title: "Single-Cell Portal",
+      description: `
+        Visualize the single cell composition of the human brain based
+        on single cell ATAC-seq and RNA-seq from PsychENCODE and public
+        sources. Identify marker genes and b-cCREs specific to particular
+        cell types and states.
+      `,
+      stats: [
+        "Transcriptomes for 2,040,943 single cells",
+        "Chromatin accessibility for 344,135 single cells"
+      ],
+      buttonText: "Explore Single Cells",
+      buttonLink: "/psychscreen/single-cell",
+      imageSRC: SingleCell,
+      imgAltText: "Single cell portal",
+      searchComponent: <CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" showTitle />
+    },
+    About: {
+      title: "About Us",
+      description: `
+        PsychSCREEN is a comprehensive catalog of genetic and epigenetic
+        knowledge about the human brain. It was designed and built by Dr.
+        Zhiping Weng's lab in collaboration with the Moore Lab and Colubri Lab 
+        at UMass Chan Medical School as a product of the PsychENCODE Consortium.
+      `,
+      buttonText: "Learn More",
+      buttonLink: "/psychscreen/aboutus",
+      imageSRC: UMass,
+      imgAltText: "UMass Chan Medical School Logo"
+    }
+  }
 
   return (
     <div>
@@ -54,7 +154,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                 fontWeight: 700,
               }}
             >
-              {props.title}
+              {portalInfo[props.portal].title}
             </Typography>
             <Typography
               type="body"
@@ -63,15 +163,15 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                 fontSize: "16px",
                 lineHeight: "24px",
                 fontWeight: 400,
-                letterSpacing: "0.3%",
-                width: "414px",
+                letterSpacing: "0.3%",                
               }}
             >
-              {props.description}
+              {portalInfo[props.portal].description}
             </Typography>
             <div>
-              {props.stats?.map((stat) => (
+              {portalInfo[props.portal].stats?.map((stat, i) => (
                 <Typography
+                  key={i}
                   type="body"
                   size="large"
                   style={{
@@ -87,22 +187,26 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                 </Typography>
               ))}
             </div>
-            <StyledButton
-              bvariant="filled"
-              btheme="light"
-              onClick={() => {
-                navigate(props.buttonLink);
-              }}
-            >
-              {props.buttonText}
-            </StyledButton>
+            {props.mode === "button" ?
+              <StyledButton
+                bvariant="filled"
+                btheme="light"
+                onClick={() => {
+                  navigate(portalInfo[props.portal].buttonLink);
+                }}
+              >
+                {portalInfo[props.portal].buttonText}
+              </StyledButton>
+              :
+              portalInfo[props.portal].searchComponent
+            }
           </Stack>
         </Grid2>
         <Grid2
           xs={12}
           md={6}
           order={{ xs: 1, md: props.imagePlacement === "right" ? 2 : 1 }}
-          minHeight={300}
+          minHeight={350}
         >
           <Box
             position={"relative"}
@@ -123,8 +227,8 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               }}
               height={"100%"}
               width={"100%"}
-              src={props.imageSRC}
-              alt={props.imgAltText}
+              src={portalInfo[props.portal].imageSRC}
+              alt={portalInfo[props.portal].imgAltText}
             />
           </Box>
         </Grid2>
@@ -155,22 +259,9 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
     </Grid2>
     <Grid2 xs={12}>
       <PortalPanel
-        title={"Disease/Trait Portal"}
-        description={`
-          Explore heritability enrichment for 17 distinct psychiatric,
-          behavioral, and neuronal traits within gene regulatory features,
-          such as candidate brain cis-Regulatory Elements (b-cCREs) and quantitative trait loci (QTLs). Search genes
-          associated with complex traits based on PsychENCODE transcriptome-wide association studies (TWAS).
-        `}
-        stats={[
-          "17 total traits cataloged",
-          "5,848 b-cCRE/trait associations"
-        ]}
-        buttonText={"Explore Diseases/Traits"}
-        buttonLink={"/psychscreen/traits"}
-        imageSRC={DiseaseTrait}
+        portal="Disease"
+        mode="button"
         imagePlacement={"left"}
-        imgAltText={"Disease/Trait Portal"}
       />
     </Grid2>
     <Grid2 xs={12}>
@@ -178,23 +269,9 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
     </Grid2>
     <Grid2 xs={12}>
       <PortalPanel
-        title={"Gene/b-cCRE Portal"}
-        description={`
-          Explore gene expression and regulatory element activity in the
-          fetal and adult brain at bulk and single-cell resolution.
-          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single-cell co-expression analyses.
-        `}
-        stats={[
-          "Gene expression from 294 donors, including 7 psychiatric disorders",
-          "923,942 brain regulatory elements cataloged",
-          "Chromatin accessibility in 13 brain regions",
-          "Gene expression and gene regulatory networks across 27 cell types"
-        ]}
-        buttonText={"Explore Genes/b-cCREs"}
-        buttonLink={"/psychscreen/gene"}
-        imageSRC={GeneBCRE}
+        portal="Gene"
+        mode="button"
         imagePlacement={"right"}
-        imgAltText={"Gene b-cCRE portal"}
       />
     </Grid2>
     <Grid2 xs={12}>
@@ -202,23 +279,9 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
     </Grid2>
     <Grid2 xs={12}>
       <PortalPanel
-        title={"SNP/QTL Portal"}
-        description={`
-          Search single nucleotide polymorphisms (SNPs) of interest and explore their impact on gene expression,
-          chromatin accessibility, transcription factor (TF) binding and other
-          molecular traits in the human brain based on PsychENCODE QTLs and
-          sequence analysis of candidate brain cis-Regulatory Elements (b-cCREs). Link SNPs to complex traits using genome-wide association studies (GWAS) anotations.
-        `}
-        stats={[
-          "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
-          "127,265 variants associated with complex traits",
-          "510,062 variants in b-cCREs"
-        ]}
-        buttonText={"Explore SNPs/QTLs"}
-        buttonLink={"/psychscreen/snp"}
-        imageSRC={SNPQTL}
+        portal="SNP"
+        mode="button"
         imagePlacement={"left"}
-        imgAltText={"SNP/QTL Portal"}
       />
     </Grid2>
     <Grid2 xs={12}>
@@ -226,22 +289,9 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
     </Grid2>
     <Grid2 xs={12}>
       <PortalPanel
-        title={"Single-Cell Portal"}
-        description={`
-          Visualize the single-cell composition of the human brain based
-          on single-cell ATAC-seq and RNA-seq from PsychENCODE and public
-          sources. Identify marker genes and candidate brain cis-Regulatory Elements (b-cCREs) specific to particular
-          cell types and states.
-        `}
-        stats={[
-          "Transcriptomes for 2,040,943 single cells",
-          "Chromatin accessibility for 344,135 single cells"
-        ]}
-        buttonText={"Explore Single Cells"}
-        buttonLink={"/psychscreen/single-cell"}
-        imageSRC={SingleCell}
+        portal="SingleCell"
+        mode="button"
         imagePlacement={"right"}
-        imgAltText={"Single cell portal"}
       />
     </Grid2>
     <Grid2 xs={12} mb={3}>

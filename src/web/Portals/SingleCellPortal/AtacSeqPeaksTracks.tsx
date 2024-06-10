@@ -206,6 +206,7 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
       </g>
       {(data?.bigRequests || []).map((data, i) => (
         <TitledTrack
+          key={i}
           height={40}
           url={cTracks[i][1]}
           domain={props.domain}

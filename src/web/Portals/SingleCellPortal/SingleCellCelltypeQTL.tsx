@@ -94,10 +94,8 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   }, [celltype]);
 
   return (
-    <Grid {...props}>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+    <Grid container mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "95%", lg: "90%", md: "95%", sm: "95%", xs: "95%" }}>
+      <Grid item xs={12}>
           <Typography
             type="display"
             size="medium"
@@ -113,7 +111,6 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
           </Typography>
           <br />
           {qtl.length === 0 && (
-            <Grid sm={10} md={10} lg={9} xl={9}>
               <Typography
                 type="body"
                 size="large"
@@ -128,19 +125,15 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
               >
                 Loading Gene Regulatory Networks data for {celltype}...
               </Typography>
-            </Grid>
           )}
           {qtl && qtl.length > 0 && (
-            <Grid sm={14} md={14} lg={14} xl={14}>
               <DataTable
                 columns={COLUMNS}
                 rows={qtl}
                 itemsPerPage={20}
                 searchable
               />
-            </Grid>
           )}
-        </Container>
       </Grid>
     </Grid>
   );

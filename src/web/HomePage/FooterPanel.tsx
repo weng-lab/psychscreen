@@ -14,6 +14,7 @@ const FooterPanel = () => {
     >
       <Grid2
         container
+        flexDirection={{xs: 'column', md: "row"}}
         pt={5}
         pb={5}
         spacing={3}
@@ -22,12 +23,12 @@ const FooterPanel = () => {
       >
         <Grid2 color="white" textAlign={"left"} flexGrow={1}>
           <Typography variant="h4">psychSCREEN</Typography>
-          <Typography variant="body2" mb={2}>
+          <Typography variant="body2" mb={1}>
             Explore the genetics and epigenetics
             <br />
             of the human brain.
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" mb={1}>
             {"Copyright © "}
             <MuiLink color="inherit" href="https://www.umassmed.edu/wenglab/">
               Weng Lab
@@ -36,7 +37,9 @@ const FooterPanel = () => {
             <MuiLink color="inherit" href="https://www.moore-lab.org/">
               Moore Lab
             </MuiLink>
-            {", and "}
+            {","}
+            <br />
+            {"and "}
             <MuiLink color="inherit" href="https://co-labo.org/">
               Colubri Lab
             </MuiLink>

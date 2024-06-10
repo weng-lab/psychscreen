@@ -52,10 +52,7 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = (props) => {
   );
 
   return (
-    <Grid container {...props}>
-      <Grid item sm={12}>
-        <Container style={{ marginTop: "30px", marginLeft: "150px" }}>
-          {props.data && tabledata ? (
+          props.data && tabledata ? (
              <DataTable
              columns={formatEntry}
              rows={tabledata}
@@ -66,10 +63,7 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = (props) => {
            
           ) : (
             <CircularProgress color="inherit" />
-          )}
-        </Container>
-      </Grid>
-    </Grid>
+          )
   );
 };
 export default GeneAssociations;

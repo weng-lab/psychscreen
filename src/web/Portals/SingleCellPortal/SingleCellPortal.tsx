@@ -2,187 +2,19 @@
  * SingleCellPortal.tsx: the single cell portal page.
  */
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Grid, Container, GridProps } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
-import CheckIcon from "@mui/icons-material/Check";
-import { HorizontalCard } from "@weng-lab/psychscreen-ui-components";
-import { useTheme, useMediaQuery } from "@material-ui/core";
-import SingleCell from "../../../assets/single-cell.png";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
-import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import React from "react";
+import { Box } from "@mui/material";
+import { PortalPanel } from "../../HomePage/PortalsPanel";
 
-export const DISEASE_CARDS = [
-  {
-    val: "Dataset:scATAC-Seq-peaks",
-    cardLabel: "scATAC-Seq peaks",
-    cardDesc: "",
-  },
-  {
-    val: "Dataset:Gene-regulatory-networks",
-    cardLabel: "Gene regulatory networks",
-    cardDesc: "",
-  },
-  {
-    val: "Dataset:Diff-expressed-genes",
-    cardLabel: "Diff. expressed genes",
-    cardDesc: "",
-  },
-  {
-    val: "Dataset:Cell-type-specific-eQTLs",
-    cardLabel: "Cell type specific eQTLs",
-    cardDesc: "",
-  },
-  {
-    val: "Dataset:Indiv-cohort-expression-data",
-    cardLabel: "Indiv. cohort expression data",
-    cardDesc: "",
-  },
-];
-
-const SingleCellPortal: React.FC<GridProps> = (props: GridProps) => {
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const [selectedPortal, setSelectedPortal] = useState<string>("Cell types");
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedPortal(event.target.value);
-  };
+const SingleCellPortal: React.FC = () => {
   return (
-    <Grid container {...props}>
-      <Grid item sm={0} md={1} lg={2} xl={2}></Grid>
-      <Grid item sm={8} md={6} lg={5} xl={4}>
-        {useMediaQuery(theme.breakpoints.down("sm")) && (
-          <Container style={{ marginTop: "130px" }}>
-            <img
-              alt="single cell portal"
-              src={SingleCell}
-              style={{ width: "70%", height: "100%" }}
-            />
-          </Container>
-        )}
-        <Container style={{ width: "741px", marginTop: "147px" }} fixed>
-          <Typography
-            type="display"
-            size="medium"
-            style={{
-              fontWeight: 700,
-              fontSize: "48px",
-              lineHeight: "57.6px",
-              letterSpacing: "0.5px",
-              marginBottom: "16px",
-            }}
-          >
-            Single-Cell Portal
-          </Typography>
-          <br />
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              fontSize: "16px",
-              lineHeight: "24px",
-              fontWeight: 400,
-              letterSpacing: "0.3%",
-              marginBottom: "16px",
-              width: "414px",
-            }}
-          >
-            Visualize the single-cell composition of the human brain based on
-            single-cell ATAC-seq and RNA-seq from PsychENCODE and public
-            sources. Identify marker genes and candidate brain cis-Regulatory Elements (b-cCREs) specific to particular
-            cell types and states.
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> Transcriptomes for 2,040,943 single cells
-          </Typography>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19px",
-              marginBottom: "40px",
-            }}
-          >
-            <CheckIcon style={{ marginRight: "9px" }} /> Chromatin accessibility for 344,135 single cells
-          </Typography>
-          <br />
-          <br />
-          {/*<GeneAutoComplete navigateto="/psychscreen/single-cell/gene/" showTitle />*/}
-          <FormControl variant="standard">
-            <Select
-              id="simple-select-search"
-              value={selectedPortal}
-              // defaultValue={10}
-              onChange={handleChange}
-            >
-              <MenuItem value={"Cell types"}>Cell types</MenuItem>
-              <MenuItem value={"Genes"}>Genes</MenuItem>
-            </Select>
-          </FormControl>
-          <br />
-          <br />
-          {selectedPortal === "Genes" ? (
-            <GeneAutoComplete navigateto="/psychscreen/gene/" />
-          ) : (
-            <CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" />
-          )}
-          <br />
-        </Container>
-        {0 > 1 && (
-          <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
-            <HorizontalCard
-              width={500}
-              onCardClick={(v?: string) => {
-                v!!.includes("Dataset")
-                  ? navigate(
-                      `/psychscreen/single-cell/datasets/${v?.replace(
-                        "Dataset:",
-                        ""
-                      )}`,
-                      { state: { searchvalue: v?.replace("Dataset:", "") } }
-                    )
-                  : navigate(`/psychscreen/single-cell/${v}`, {
-                      state: { searchvalue: v },
-                    });
-              }}
-              cardContentText={DISEASE_CARDS}
-            />
-          </Container>
-        )}
-      </Grid>
-      {useMediaQuery(theme.breakpoints.up("md")) && (
-        <Grid item sm={4} md={4} lg={3} xl={3}>
-          <Container style={{ marginTop: "170px" }}>
-            <img
-              alt="single cell portal"
-              src={SingleCell}
-              style={{ width: "70%", height: "70%" }}
-            />
-          </Container>
-        </Grid>
-      )}
-      <Grid item sm={0} md={1} lg={2} xl={3}></Grid>
-    </Grid>
-  );
+    <Box mt={10} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "55%", lg: "70%", md: "85%", sm: "85%", xs: "90%" }}>
+      <PortalPanel
+        portal="SingleCell"
+        mode="search"
+        imagePlacement={"right"}
+      />
+    </Box>
+  )
 };
 export default SingleCellPortal;

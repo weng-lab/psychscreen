@@ -63,10 +63,8 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
   });
 
   return (
-    <Grid>
-      <Grid item sm={1} md={1} lg={1.5} xl={1.5} />
-      <Grid item sm={10} md={10} lg={9} xl={9}>
-        <Container style={{ marginTop: "-10px", marginLeft: "100px" }}>
+    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+      <Grid item xs={12}>
           <Typography
             type="display"
             size="medium"
@@ -82,7 +80,6 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
           </Typography>
           <br />
           {!data && (
-            <Grid sm={10} md={10} lg={9} xl={9}>
               <Typography
                 type="body"
                 size="large"
@@ -97,10 +94,8 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
               >
                 Loading Differential Gene Expression for {celltype}...
               </Typography>
-            </Grid>
           )}
           {data && data.degQuery.length > 0 && (
-            <Grid sm={10} md={10} lg={9} xl={9}>
               <DataTable
                 columns={COLUMNS}
                 rows={data.degQuery}
@@ -109,9 +104,7 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
                 searchable
                 sortColumn={6}
               />
-            </Grid>
           )}
-        </Container>
       </Grid>
     </Grid>
   );

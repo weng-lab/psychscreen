@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { Divider, Grid, Box, Tabs } from "@mui/material";
+import { Divider, Box, Tabs, Stack } from "@mui/material";
+import Grid from '@mui/material/Unstable_Grid2'
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
 import { groupBy } from "queryz";
@@ -10,7 +11,6 @@ import OpenTarget from "./OpenTarget";
 import AssociatedxQTL from "./AssociatedxQTL";
 import GeneExpressionPage from "./GeneExpression";
 import Browser from "./Browser/Browser";
-import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import SingleCell from "./SingleCell";
 import { StyledTab, StyledToggleButton } from "../../Portals/styles";
@@ -189,44 +189,33 @@ const GeneDetails: React.FC = (props) => {
   }, [toPlot]);
 
   return (
-    <Grid container {...props} style={{ marginTop: "0.5em" }}>
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={9}>
-        <Typography
-          type="headline"
-          size="large"
-          style={{ marginTop: "1em", marginBottom: "0.2em" }}
-        >
+    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+      <Grid xs={12}>
+        <Stack direction="row" alignItems={"center"} gap={1}>
           <img
             alt="DNA"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
-            width="1.7%"
+            height={"25px"}
           />
-          &nbsp;Gene Details: <i>{gene}</i>
-        </Typography>
-        <br />
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            fontWeight: "bold",
-          }}
-        >
-          <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
-          <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
-        </div>
+          <Typography
+            type="headline"
+            size="large"
+          >
+            Gene Details: <i>{gene}</i>
+          </Typography>
+        </Stack>
       </Grid>
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={12} style={{ marginBottom: "10px" }} />
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={9}>
+      <Grid xs={12}>
+        <Typography type="body" size="medium" mb={1}>Switch to another gene:</Typography>
+        <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
+      </Grid>
+      <Grid xs={12}>
         <Box>
-          <Tabs value={tabIndex} onChange={handleTabChange}>
+          <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile>
             <StyledTab label="Brain Epigenome Browser" />
             <StyledTab label="Brain Single Cell Expression" />
             <StyledTab label="Tissue Expression (GTEx)" />
             <StyledTab label="Brain eQTLs and b-cCREs" />
-
             <StyledTab label="Differential Gene Expression" />
             {null && <StyledTab label="Open Target" />}
           </Tabs>
@@ -317,10 +306,9 @@ const GeneDetails: React.FC = (props) => {
                 </Typography>
               ) : (
                 <>
-                  <Typography type="body" size="large">
+                  <Typography type="body" size="large" mb={1}>
                     Group By:{" "}
                   </Typography>
-                  <br />
                   <ToggleButtonGroup
                     size={"small"}
                     value={tissueCategory}
