@@ -213,6 +213,12 @@ const deepEqual = function (x, y) {
   } else return false;
 };
 
+interface TooltipData {
+  coordinates: Domain,
+  targetTF?: string,
+  targetGene: string,
+}
+
 export const Arcs: React.FC<ArcProps> = (props) => {
   const uuid = useRef("nsdcheuvcbudruecvubv");
   const x = xtransform(props.domain, props.width);
@@ -237,11 +243,7 @@ export const Arcs: React.FC<ArcProps> = (props) => {
     ]
   );
 
-  interface TooltipData {
-    coordinates: Domain,
-    targetTF?: string,
-    targetGene: string,
-  }
+ 
 
   const {
     tooltipData,

@@ -114,7 +114,7 @@ export const DegExpression = (props) => {
               mean_count: k.log2_fc,
               dataset,
               gene: props.gene,
-              celltype: k.celltype,
+              celltype: k.celltype.replace("2.3.","2/3 ").replace("5.6.","5/6 ").replaceAll("."," "),
             };
           })
       : [];
@@ -187,13 +187,13 @@ export const DegExpression = (props) => {
                 deg={true}
                 disease={dataset}
                 yaxistitle={props.gene}
-                showTooltip={true}
+                showTooltipData
                 dotplotData={dotplotData}
                 title1={
                   <>
                     {"-log"}
                     <tspan baseline-shift="sub">10</tspan>
-                    {"(p-adj)"}
+                    (<tspan fontStyle="italic">P</tspan><tspan baseline-shift="sub">adj</tspan>)
                   </>
                 }
                 title2={

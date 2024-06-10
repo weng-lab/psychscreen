@@ -4,6 +4,7 @@ import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
 import { GENE_CELLTYPE_CARDS } from "./consts";
+import { useTooltip, useTooltipInPortal, defaultStyles as defaultTooltipStyles } from '@visx/tooltip';
 
 export const DOT_PLOT_QUERY = gql`
   query singleCellBoxPlot($disease: String!, $gene: [String]) {
@@ -17,6 +18,14 @@ export const DOT_PLOT_QUERY = gql`
   }
 `;
 
+interface TooltipData {
+  percentexpressed?: number,
+  meanexpression?: number,
+  foldchange?: number,
+  padj?: number,  
+  label: string
+}
+
 export type DotPlotQueryResponse = {
   singleCellBoxPlotQuery: {
     expr_frac: number;
@@ -29,7 +38,7 @@ export type DotPlotQueryResponse = {
 
 type DotPlotProps = {
   disease: string;
-  showTooltip?: boolean;
+  showTooltipData?: boolean;
   deg?: boolean;
   yaxistitle: string;
   dotplotData?: any;
@@ -113,12 +122,14 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
     dotplotData,
     title1,
     title2,
-    showTooltip,
+    showTooltipData,
     deg,
     celltype,
   },
   ref
 ) => {
+
+  console.log(celltype,"ct")
   // SVG-related parameters
   const width = 15000;
   const height = width / 3;
@@ -183,6 +194,24 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
     return lt({ start: colorDomain[0], end: 0 }, { start: 0, end: 191 });
   }, [colorDomain]);
 
+  
+
+  const {
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+    tooltipOpen,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip<TooltipData>();
+
+  const { TooltipInPortal } = useTooltipInPortal({
+    // use TooltipWithBounds
+    detectBounds: true,
+    // when tooltip containers are scrolled, this will correctly update the Tooltip position
+    scroll: true,
+  })
+
   // Dot plot for recognized genes
   return (
     <svg
@@ -220,6 +249,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       {keys
         .map((x, i) => {
           return results.get(x)!!.map((s, j) => {
+            
             return (
               <React.Fragment key={`${x}_${i}_${j}`}>
                 <g>
@@ -249,8 +279,27 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                     stroke="#000000"
                     strokeWidth={s.highlighted ? 4 : 0}
                     strokeOpacity={4}
+                    onMouseEnter={(event) => {
+                      showTooltip({
+                        tooltipLeft: event.clientX, 
+                        tooltipTop: event.clientY,
+                        tooltipData: !showTooltipData ?  {
+                          meanexpression: +(s.colorpercent.toFixed(2)),
+                          percentexpressed: +(s.radius.toFixed(2)),
+                          label: x
+                          
+                        }: {
+                          padj: +(s.radius.toFixed(2)),
+                          foldchange: +(s.colorpercent.toFixed(2)),
+                          label: x
+                         }
+                      });
+                    }}
+                    onMouseLeave={(event) => {
+                      hideTooltip()
+                    }}
                   >
-                    <title>
+                    {/*<title>
                       {showTooltip
                         ? "p-adjusted: " +
                           s.radius.toFixed(2) +
@@ -262,7 +311,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                         s.colorpercent.toFixed(2) + 
                         "\nCell type: " +
                         GENE_CELLTYPE_CARDS.find(c=>c.val===x)?.cardLabel || x}
-                    </title>
+                      </title>*/}
                   </circle>
                 </g>
               </React.Fragment>
@@ -270,6 +319,19 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
           });
         })
         .flat()}
+       {tooltipOpen && (
+        <TooltipInPortal
+          // set this to random so it correctly updates with parent bounds
+          key={Math.random()}
+          top={tooltipTop}
+          left={tooltipLeft}
+          style={{ ...defaultTooltipStyles, backgroundColor: '#283238', color: 'white' }}
+        >
+          {!showTooltipData ?   <p>Percent Expressed: {tooltipData?.percentexpressed}</p> : <p>-log<sub>10</sub>(<i>P</i><sub>adj</sub>):  {tooltipData?.padj}</p>}         
+          {!showTooltipData ?  <p>Mean Expression: {tooltipData?.meanexpression}</p> : <p>log<sub>2</sub>(fold change): {tooltipData?.foldchange}</p>}          
+          {celltype ? <p><i>{tooltipData?.label}</i></p> : <p>{GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label) ? GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel.includes("-expressing") ? <><i>{GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel.split("-expressing")[0]}</i><>{"-expressing"}{GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel.split("-expressing")[1]}</></> : GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel   :  tooltipData?.label}</p> }
+        </TooltipInPortal>
+      )}
 
       {keys.map((x, i) => (
         <React.Fragment key={`${x}_${i}`}>
