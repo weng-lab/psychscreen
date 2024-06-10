@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { GridProps } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams } from "react-router-dom";
-import { Grid, Container } from "@mui/material";
+import { Grid } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 
 const COLUMNS = [
   {
     header: "Gene",
     value: (row) => row.gene,
+    HeaderRender: (row) => 
+    <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${row.name}`}>
+      <i>{row.name}</i> 
+    </a>
   },
   {
     header: "Gene Chromosome",

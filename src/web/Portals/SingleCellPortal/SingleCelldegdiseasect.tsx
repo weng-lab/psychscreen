@@ -24,6 +24,10 @@ const COLUMNS = [
   {
     header: "Gene",
     value: (row) => row.gene,
+    HeaderRender: (row) => 
+    <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${row.name}`}>
+    <i>{row.name}</i> 
+  </a>
   },
   {
     header: "Base mean",

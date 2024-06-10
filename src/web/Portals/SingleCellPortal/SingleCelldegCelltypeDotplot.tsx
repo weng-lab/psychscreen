@@ -24,6 +24,40 @@ const DEG_BYCT_QUERY = gql`
     }
   }
 `;
+
+// In the slider, the "value" is used to place marks equally on track. The scale function below is used to pull out the true value that we want
+const pValMarks = [
+  {
+    value: 0,
+    scaledValue: 0.0001,
+    label: 0.0001
+  },
+  {
+    value: 1,
+    scaledValue: 0.001,
+    label: 0.001
+  },
+  {
+    value: 2,
+    scaledValue: 0.01,
+    label: 0.01
+  },
+  {
+    value: 3,
+    scaledValue: 0.05,
+    label: 0.05
+  },
+  {
+    value: 4,
+    scaledValue: 1,
+    label: 1
+  },
+]
+
+const scale = (value: number) => {
+  return pValMarks.find(x => x.value === value)!!.scaledValue
+};
+
 const SingleCelldegCelltypeDotplot = (props) => {
   const { data, loading } = useQuery(DEG_BYCT_QUERY, {
     variables: {
@@ -40,39 +74,6 @@ const SingleCelldegCelltypeDotplot = (props) => {
 
   const dotPlotRef = useRef<SVGSVGElement>(null);
 
-  
-  // In the slider, the "value" is used to place marks equally on track. The scale function below is used to pull out the true value that we want
-  const pValMarks = [
-    {
-      value: 0,
-      scaledValue: 0.0001,
-      label: 0.0001
-    },
-    {
-      value: 1,
-      scaledValue: 0.001,
-      label: 0.001
-    },
-    {
-      value: 2,
-      scaledValue: 0.01,
-      label: 0.01
-    },
-    {
-      value: 3,
-      scaledValue: 0.05,
-      label: 0.05
-    },
-    {
-      value: 4,
-      scaledValue: 1,
-      label: 1
-    },
-  ]
-
-  const scale = (value: number) => {
-    return pValMarks.find(x => x.value === value)!!.scaledValue
-  };
   const dotplotData =
     !loading && data
       ? data.degQuery
@@ -127,7 +128,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
               type="body"
               size="large"
             >
-              {`Showing top 50 datasets based on ${value}:`}
+              Showing top 50 datasets based on {value==="log2(fold change)" ? <>log<sub>2</sub>(fold change)</> : <>-log<sub>10</sub>(<i>P</i><sub>adj</sub>)</> }
             </Typography>
             <FormControl
               sx={{ minWidth: 300 }}
@@ -141,8 +142,10 @@ const SingleCelldegCelltypeDotplot = (props) => {
                 label="Value"
                 onChange={handleValueChange}
               >
-                {["log2(fold change)", "-log10(padj)"].map((d) => {
-                  return <MenuItem value={d}>{d}</MenuItem>;
+                {["log2(fold change)", "-log10(p-adj)"].map((d) => {
+                  return <MenuItem value={d}>
+                        {d==="log2(fold change)" ? <>log<sub>2</sub>(fold change)</> : <>-log<sub>10</sub>(<i>P</i><sub>adj</sub>)</> }
+                  </MenuItem>;
                 })}
               </MUISelect>
             </FormControl>
@@ -182,7 +185,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
                 props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease
               }
               yaxistitle={props.celltype}
-              showTooltip={true}
+              showTooltipData={true}
               dotplotData={
                 dotplotData.length >= 50
                   ? dotplotData
@@ -198,7 +201,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
                 <>
                   {"-log"}
                   <tspan baseline-shift="sub">10</tspan>
-                  {"(p-adj)"}
+                  (<tspan fontStyle="italic">P</tspan><tspan baseline-shift="sub">adj</tspan>)
                 </>
               }
               title2={
