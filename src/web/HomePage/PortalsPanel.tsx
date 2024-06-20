@@ -50,8 +50,8 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       description: `
         Explore heritability enrichment for 17 distinct psychiatric,
         behavioral, and neuronal traits within gene regulatory features,
-        such as b-cCREs and quantitative trait loci (QTLs). Search genes
-        associated with complex traits based on PsychENCODE TWAS.
+        such as candidate brain cis-Regulatory Elements (b-cCREs) and quantitative trait loci (QTLs). Search genes
+        associated with complex traits based on PsychENCODE Transcriptome-wide association studies (TWAS).
       `,
       stats: [
         "17 total traits cataloged",
@@ -86,10 +86,10 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
     SNP: {
       title: "SNP/QTL Portal",
       description: `
-        Search SNPs of interest and explore their impact on gene expression,
+        Search Single nucleotide polymorphisms (SNPs) of interest and explore their impact on gene expression,
         chromatin accessibility, transcription factor (TF) binding and other
         molecular traits in the human brain based on PsychENCODE QTLs and
-        sequence analysis of b-cCREs. Link SNPs to complex traits using GWAS anotations.
+        sequence analysis of candidate brain cis-Regulatory Elements (b-cCREs). Link SNPs to complex traits using Genome-wide association studies (GWAS) anotations.
       `,
       stats: [
         "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
@@ -105,9 +105,9 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
     SingleCell: {
       title: "Single-Cell Portal",
       description: `
-        Visualize the single cell composition of the human brain based
-        on single cell ATAC-seq and RNA-seq from PsychENCODE and public
-        sources. Identify marker genes and b-cCREs specific to particular
+        Visualize the single-cell composition of the human brain based
+        on single-cell ATAC-seq and RNA-seq from PsychENCODE and public
+        sources. Identify marker genes and candidate brain cis-Regulatory Elements (b-cCREs) specific to particular
         cell types and states.
       `,
       stats: [

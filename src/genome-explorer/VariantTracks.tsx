@@ -135,7 +135,7 @@ const VariantTracks: React.FC<VariantTrackProps> = (props) => {
         snpProps={(snp) =>
           ldSet.has(snp.data.rsId)
             ? { fill: `rgb(255,${gradient(ldSet.get(snp.data.rsId)!)},0)` }
-            : snp.data.score > 7.4
+            : snp.data.score >= 7.3
             ? { fill: "#000000", fillOpacity: 1 }
             : { fill: "#dddddd", fillOpacity: 0.4 }
         }

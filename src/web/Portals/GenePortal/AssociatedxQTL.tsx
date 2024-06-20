@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { associateBy } from "queryz";
 import {
@@ -8,6 +8,7 @@ import {
 import { CircularProgress } from "@material-ui/core";
 import { Link } from "@mui/material";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
+import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 
 export type GenomicRange = {
   chromosome?: string;
@@ -162,6 +163,8 @@ export type SNPQueryResponse = {
   }[];
 };
 
+
+
 const QUERY = gql`
   ${CCRE_FIELDS}
   query q($assembly: String!, $name: [String]) {
@@ -200,6 +203,29 @@ const QUERY = gql`
   }
 `;
 
+
+const QUERYQTL = gql`
+  ${CCRE_FIELDS}
+  query q($assembly: String!, $name: [String]) {
+    queriedGene: gene(name: $name, assembly: $assembly, version: 40) {
+      transcripts {
+        associated_ccres_pls {
+          intersecting_ccres {
+            ...CCREFields
+          }
+        }
+      }
+    }
+    queriedTranscript: transcript(name: $name, assembly: $assembly) {
+      associated_ccres_pls {
+        intersecting_ccres {
+          ...CCREFields
+        }
+      }
+    }
+  }
+`;
+
 export type EQTL = {
   snp: string;
   fdr: number;
@@ -232,6 +258,7 @@ export type GeneQueryResponse = {
     };
   }[];
 };
+
 
 export function useGenePageData(
   expandedCoordinates: GenomicRange,
@@ -309,6 +336,98 @@ export function useGenePageData(
     expandedCoordinates: coordinates,
   };
 }
+function useGenePageDataWithQTL(
+  expandedCoordinates: GenomicRange,
+  assembly: string,
+  name: string,   
+  resolvedTranscript?: boolean,
+  geneid?: string
+) {
+  const { data, loading } = useQuery<GeneQueryResponse>(QUERYQTL, {
+    variables: {
+      coordinates: expandedCoordinates,
+      ...expandedCoordinates,
+      assembly,
+      name,
+    },
+    context: {
+      clientName: "psychscreen",
+    },
+  });
+
+  const { data: qtlsigassocData, loading: qtlsigassocLoading } = useQuery(
+    QTLSIGASSOC_QUERY,
+    {
+      variables: {
+        geneid: geneid,
+        qtltype: "eQTL"
+      },
+      context: {
+        clientName: "psychscreen",
+      },
+      skip: !geneid,
+    }
+  );
+
+  console.log("qtlsigassocData",qtlsigassocData)
+  const snpCoordinateResponse = useQuery<SNPCoordinateResponse>(
+    SNP_COORDINATE_QUERY,
+    {
+      variables: {
+        id: [
+          ...(qtlsigassocData?.qtlsigassocQuery.map((x) => x.snpid) || [])
+          /*...(data?.queriedTranscript[0]?.fetal_isoqtls.isoqtls.map(
+            (x) => x.snp
+          ) || []),*/
+        ],
+      },
+      context: {
+        clientName: "psychscreen",
+      },
+      skip: loading || qtlsigassocLoading  || !geneid,
+    }
+  );
+
+  const coordinates = useMemo(
+    () =>
+      expandCoordinates(
+        /* {
+        chromosome: snpCoordinateResponse.data?.snpQuery[0]?.coordinates.chromosome || "",
+        start: Math.min(...(snpCoordinateResponse.data?.snpQuery.map(x => x.coordinates.start) || [0])),
+        end: Math.max(...(snpCoordinateResponse.data?.snpQuery.map(x => x.coordinates.end) || [0]))
+    }*/ expandedCoordinates,
+        100000
+      ),
+    [expandedCoordinates]
+  );
+
+  const snpResponse = useQuery<SNPQueryResponse>(SNP_QUERY, {
+    variables: { ...coordinates, coordinates, assembly },
+    skip: loading || snpCoordinateResponse.loading,
+  });
+
+  const groupedTranscripts = useMemo(
+    () =>
+      snpResponse.data?.gene.map((x) => ({
+        ...x,
+        transcripts: x.transcripts.map((xx) => ({
+          ...xx,
+          color:
+            (resolvedTranscript ? xx : x).name === name ? "#880000" : "#aaaaaa",
+        })),
+      })),
+    [resolvedTranscript, name, snpResponse]
+  );
+
+  return {
+    data: { ...snpResponse.data, ...data },
+    loading: loading || snpCoordinateResponse.loading || snpResponse.loading,
+    snpData: snpResponse.data,
+    snpCoordinateData: snpCoordinateResponse.data,
+    groupedTranscripts,
+    expandedCoordinates: coordinates,
+  };
+}
 const DECONQTL_QUERY = gql`
   query deconqtlsQuery($geneid: String, $snpid: String) {
     deconqtlsQuery(geneid: $geneid, snpid: $snpid) {
@@ -326,8 +445,8 @@ const DECONQTL_QUERY = gql`
 `;
 
 const QTLSIGASSOC_QUERY = gql`
-  query qtlsigassocQuery($geneid: String, $snpid: String) {
-    qtlsigassocQuery(geneid: $geneid, snpid: $snpid) {
+  query qtlsigassocQuery($geneid: String, $snpid: String, $qtltype: String) {
+    qtlsigassocQuery(geneid: $geneid, snpid: $snpid, qtltype: $qtltype) {
       snpid
       slope
       qtltype
@@ -349,11 +468,12 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     [props.coordinates]
   );
 
-  const { data, loading, snpCoordinateData } = useGenePageData(
+  const { data, loading, snpCoordinateData } = useGenePageDataWithQTL(
     eexpandedCoordinates,
     "GRCh38" || "",
     props.name,
-    props.resolvedTranscript
+    props.resolvedTranscript,
+    props.geneid
   );
 
   const { data: eqtlData, loading: eqtlLoading } = useQuery(DECONQTL_QUERY, {
@@ -362,81 +482,70 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     },
   });
 
+  console.log(props.geneid, "geneid")
+
   const { data: qtlsigassocData, loading: qtlsigassocLoading } = useQuery(
     QTLSIGASSOC_QUERY,
     {
       variables: {
         geneid: props.geneid,
+        qtltype: "eQTL"     
       },
     }
   );
 
-  const qtlsigData =
-    qtlsigassocData &&
-    qtlsigassocData.qtlsigassocQuery.map((x) => [
-      {
-        header: "SNP ID",
-        value: x.snpid,
-      },
-      {
-        header: "Distance",
-        value: x.dist,
-      },
-      {
-        header: "Slope",
-        value: x.slope.toFixed(2),
-      },
-      {
-        header: "FDR",
-        value: x.fdr.toFixed(2),
-      },
-      {
-        header: "p",
-        value: x.npval.toFixed(2),
-      },
-    ]);
+  const deconqtlColumns = [
+    {
+      header: "SNP ID",
+      value: (x) => x.snpid,
+      render: (d) => 
+   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/snp/${d.snpid}`}>
+  {d.snpid}
+</a> 
+    },
+    {
+      header: "Slope",
+      value:(x) => x.slope.toFixed(2),
+    },
+    {
+      header: "eQTL nominal p-value",
+      HeaderRender: (x) => <>eQTL nominal<i>P</i></>,
+      value:(x) => toScientificNotation(x.nom_val,2),
+    },
+    {
+      header: "Adjusted beta pvalue",
+      HeaderRender: (x) => <>Adjusted beta<i>P</i></>,
+      value:(x) => x.adj_beta_pval.toFixed(2),
+    },
+    {
+      header: "r Squared",
+      value:(x) => x.r_squared.toFixed(2),
+    },
+    {
+      header: "Coordinates",
+      value:(x) => "chr" + x.snp_chrom + ":" + x.snp_start,
+    },
+    {
+      header: "Cell Type",
+      value:(x) => x.celltype,
+    }
+  ]
 
-  const deconqtlData =
-    eqtlData &&
-    eqtlData.deconqtlsQuery.map((x) => [
-      {
-        header: "SNP ID",
-        value: x.snpid,
-      },
-      {
-        header: "Slope",
-        value: x.slope.toFixed(2),
-      },
-      {
-        header: "eQTL nominal p-value",
-        value: x.nom_val.toExponential(2),
-      },
-      {
-        header: "Adjusted beta pvalue",
-        value: x.adj_beta_pval.toFixed(2),
-      },
-      {
-        header: "r Squared",
-        value: x.r_squared.toFixed(2),
-      },
-      {
-        header: "coordinates",
-        value: "chr" + x.snp_chrom + ":" + x.snp_start,
-      },
-      {
-        header: "Cell Type",
-        value: x.celltype,
-      },
-    ]);
-
-  const groupedQTLs = useMemo(
+  const groupedQTLs: Map<string, EQTL> = useMemo(
     () =>
       associateBy(
-        (data?.queriedGene && data.queriedGene[0]?.fetal_eqtls.eqtls) || [],
-        (x) => x.snp,
+        (qtlsigassocData?.qtlsigassocQuery && qtlsigassocData?.qtlsigassocQuery.map(q=>{
+          return {
+            snp: q.snpid,            
+            fdr: q.fdr,
+            nominal_pval: q.npval,
+            slope: q.slope
+          } as EQTL
+        })) || [],
+        (x: EQTL) => x.snp,
         (x) => x
       ),
-    [data]
+    [qtlsigassocData]
   );
   const allQTLs = useMemo(
     () =>
@@ -448,76 +557,68 @@ const AssociatedxQTL: React.FC<any> = (props) => {
       [],
     [snpCoordinateData, groupedQTLs]
   );
+  
 
-  const allQTLsData =
-    allQTLs &&
-    allQTLs.map((x) => [
-      {
-        header: "SNP ID",
-        value: x.id,
-      },
-      {
-        header: "eQTL FDR",
-        value: x.eQTL ? x.eQTL.fdr.toExponential(2) : 0,
-      },
-      {
-        header: "eQTL nominal p-value",
-        value: x.eQTL.nominal_pval.toExponential(2),
-      },
-      {
-        header: "coordinates",
-        value: `${x.coordinates.chromosome}:${x.coordinates.start}`,
-      },
-      {
-        header: "intersecting cCRE",
-        value: x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
-        render: x.intersecting_ccres.intersecting_ccres[0]?.accession ? (
-          <Typography
-            type="body"
-            size="medium"
-            style={{
-              fontSize: "14px",
-              lineHeight: "20px",
-              fontWeight: 400,
-              letterSpacing: "0.1px",
-              marginBottom: "10px",
-            }}
-          >
-            {bccre &&
-            bccre.find(
-              (b) =>
-                b.accession ===
-                x.intersecting_ccres.intersecting_ccres[0]?.accession
-            ) ? (
-              <Link
-                rel="noopener noreferrer"
-                target="_blank"
-                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
-                //href={`https://screen.beta.wenglab.org/search/?q=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&assembly=GRCh38`}
-              >
-                {"*" + x.intersecting_ccres.intersecting_ccres[0]?.accession}
-              </Link>
-            ) : (
-              <Link
-                rel="noopener noreferrer"
-                target="_blank"
-                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
-                
-              >
-                {x.intersecting_ccres.intersecting_ccres[0]?.accession}
-              </Link>
-            )}
+
+  const allQTLsColumns = [
+    {
+      header: "SNP ID",
+      value: (x) => x.id,
+      render: (d) => 
+   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/snp/${d.id}`}>
+  {d.id}
+</a> 
+    },
+    {
+      header: "eQTL FDR",
+      value: (x) =>x.eQTL ? toScientificNotation(x.eQTL.fdr,2) : 0,
+    },
+    {
+      header: "eQTL nominal p-value",
+      value:(x) => toScientificNotation(x.eQTL.nominal_pval,2),
+    },
+    {
+      header: "Coordinates",
+      value: (x) => `${x.coordinates.chromosome}:${x.coordinates.start}`,
+    },
+    {
+      header: "Intersecting cCRE",
+      value:(x) => x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
+      render:(x) => x.intersecting_ccres.intersecting_ccres[0]?.accession ? (
+        <Typography
+          type="body"
+          size="medium"
+          style={{
+            fontSize: "14px",
+            lineHeight: "20px",
+            fontWeight: 400,
+            letterSpacing: "0.1px",
+            marginBottom: "10px",
+          }}
+        >
+          {x.bcre ? (
+             <a target="_blank" rel="noopener noreferrer" href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}>
+             {"*" + x.intersecting_ccres.intersecting_ccres[0]?.accession}
+           </a>
+           
+          ) : (
+            <a target="_blank" rel="noopener noreferrer" href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}>
+             {x.intersecting_ccres.intersecting_ccres[0]?.accession}
+           </a>
+          )}
+        </Typography>
+      ) : (
+        <>
+          <Typography type="body" size="medium">
+            {"--"}
           </Typography>
-        ) : (
-          <>
-            <Typography type="body" size="medium">
-              {"--"}
-            </Typography>
-          </>
-        ),
-      },
-    ]);
-  React.useEffect(() => {
+        </>
+      ),
+    }
+  ]
+
+ 
+  useEffect(() => {
     fetch("https://downloads.wenglab.org/union_bCREs.bed")
       .then((x) => x.text())
       .then((x: string) => {
@@ -534,10 +635,10 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         setbCRE(bcres);
       });
   }, []);
-  if (!loading && allQTLsData && allQTLsData.length === 0)
+  if (!loading && allQTLs && allQTLs.length === 0)
     return (
       <Typography type="body" size="large">
-        No eQTLs or linked candidate brain cis-Regulatory Elements (b-cCREs) were identified for this gene.
+        No eQTLs or linked candidate brain candidate cis-Regulatory Elements (b-cCREs) were identified for this gene.
       </Typography>
     );
 
@@ -547,43 +648,37 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         <CircularProgress />
       ) : (
         <>
-          {allQTLsData && allQTLsData.length > 0 && (
+          {allQTLs && allQTLs.length > 0 && (
             <>
               <Typography type="headline" size="small">
                 {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
-              <CustomizedTable
-                style={{ width: "max-content" }}
-                tabledata={allQTLsData}
+              <DataTable
+                columns={allQTLsColumns}
+                rows={allQTLs.map(x=> { return {...x, bcre: bccre &&
+                  bccre.find(
+                    (b) =>
+                      b.accession ===
+                      x.intersecting_ccres.intersecting_ccres[0]?.accession
+                  )}})}
               />
               <Typography type={"label"} size="small">
-                {`cCREs prefixed with an asterisk are candidate brain cis-Regulatory Elements (b-cCREs)`}
+                {`cCREs prefixed with an asterisk are candidate brain candidate cis-Regulatory Elements (b-cCREs)`}
               </Typography>
               <br />
               <br />
             </>
           )}
-          {deconqtlData && deconqtlData.length > 0 && (
+          {eqtlData && eqtlData.deconqtlsQuery.length > 0 && (
             <>
               <Typography type="headline" size="small">
                 {`The following decon-eQTLs (Liu) have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
-              <CustomizedTable
-                style={{ width: "max-content" }}
-                tabledata={deconqtlData}
-              />
-            </>
-          )}
-          {qtlsigData && qtlsigData.length > 0 && (
-            <>
-              <Typography type="headline" size="small">
-                {`The following eQTLs (Gandal Lab) have been identified for ${props.name} by PsychENCODE:`}
-              </Typography>
               <DataTable
-              columns={qtlsigData}
-              rows={qtlsigData}
+              columns={deconqtlColumns}
+              rows={ eqtlData.deconqtlsQuery}
+               
               />
-              
             </>
           )}
         </>
