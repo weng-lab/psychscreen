@@ -68,8 +68,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         description: `
           Explore gene expression and regulatory element activity in the
           fetal and adult brain at bulk and single-cell resolution.
-          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single
-          cell co-expression analyses.
+          Visualize gene/b-cCRE links based on PsychENCODE QTLs and single-cell co-expression analyses.
         `,
         stats: [
           "Gene expression from 294 donors, including 7 psychiatric disorders",

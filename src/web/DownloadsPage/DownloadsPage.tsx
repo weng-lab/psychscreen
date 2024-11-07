@@ -445,11 +445,11 @@ const atacPeaks = {
 const bCREDownloads = {
   defaultRows: [
     createData(
-      "All Human candidate brain cis-Regulatory Elements (b-cCREs)",
+      "Human candidate brain cis-Regulatory Elements (b-cCREs), All",
       "all",
-      398100,
-      14690395,
-      "https://gcp.wenglab.org/psychscreen-downloads/bCREs/all-bCREs.bed"
+      361844,
+      19868751,
+      "https://downloads.wenglab.org/all_bCREs.bed"
     ),
   ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   extraRows: [
@@ -458,35 +458,28 @@ const bCREDownloads = {
       "adult",
       253638,
       13919707,
-      "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-bCREs.bed"
+      "https://downloads.wenglab.org/adult_bCREs.bed"
     ),
     createData(
       "Adult candidate brain cis-Regulatory Elements (b-cCREs), Neuron-specific",
       "adult",
       46194,
       2123419,
-      "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-NeuN+-bCREs.bed"
+      "https://downloads.wenglab.org/neuron_bCREs.bed"
     ),
     createData(
       "Adult candidate brain cis-Regulatory Elements (b-cCREs), Glia-specific",
       "adult",
       43866,
       2013769,
-      "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-NeuN--bCREs.bed"
-    ),
-    createData(
-      "Adult candidate brain cis-Regulatory Elements (b-cCREs), Neuron/Glia Shared",
-      "adult",
-      69899,
-      3840658,
-      "https://gcp.wenglab.org/psychscreen-downloads/bCREs/adult-shared-bCREs.bed"
+      "https://downloads.wenglab.org/glia_bCREs.bed"
     ),
     createData(
       "Fetal candidate brain cis-Regulatory Elements (b-cCREs), All",
       "fetal",
       230936,
       12677878,
-      "https://gcp.wenglab.org/psychscreen-downloads/bCREs/fetal-bCREs.bed"
+      "https://downloads.wenglab.org/fetal_bCREs.bed"
     ),
   ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
   colorGroups: {
@@ -829,11 +822,11 @@ const gwasMetaDownloads = {
 const pages = [
   "Regulatory Elements",
   "TF Binding Sites",
-  "GWAS Meta Analysis",
-  "ATAC-Seq Peaks",
+  "GWAS Meta-Analysis",
+  "ATAC-seq Peaks",
   "Gene Regulatory Networks",
   "Differentially Expressed Genes",
-  "Cell type Specific eQTLs",
+  "Cell Type-Specific eQTLs",
 ];
 
 const DownloadsPage: React.FC = () => {
@@ -881,7 +874,7 @@ const DownloadsPage: React.FC = () => {
           <div style={{ marginTop: "20px" }}>
             {page === 0 && (
               <BEDFileDownloadTable
-                title="candidate brain cis-Regulatory Elements (b-cCREs)"
+                title="Candidate Brain cis-Regulatory Elements (b-cCREs)"
                 {...bCREDownloads}
               />
             )}
@@ -900,7 +893,7 @@ const DownloadsPage: React.FC = () => {
             {page === 2 && (
               <>
                 <BEDFileDownloadTable
-                  title="GWAS Meta Analysis"
+                  title="GWAS Meta-Analysis"
                   elementText="SNPs"
                   {...gwasMetaDownloads}
                 />
@@ -923,7 +916,7 @@ const DownloadsPage: React.FC = () => {
             )}
             {page === 6 && (
               <BEDFileDownloadTable
-                title="Cell type specific eQTLs"
+                title="Cell type-specific eQTLs"
                 {...eqtls}
               />
             )}
