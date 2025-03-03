@@ -20,3 +20,10 @@ body {
 .main {
   flex: 1;
 }
+
+/* Vitessce container styles */
+.vitessce-container {
+  align-items: stretch;
+  background: #f0f0f0;
+  min-height: 100vh;
+}
