@@ -301,7 +301,7 @@ const GeneDetails: React.FC = (props) => {
           ) : tabIndex === 5 ? (
             <Box>
               <Typography type="body" size="small">
-                <Spatial />
+                <Spatial gene={gene || "MBP"} />
               </Typography>
             </Box>
           ) : tabIndex === 1 ? (

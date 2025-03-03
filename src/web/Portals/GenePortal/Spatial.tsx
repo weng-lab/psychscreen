@@ -36,15 +36,21 @@ export const SAMPLES: Map<string, { dataset: string; shortdesc: string }> =
     ],
   ]);
 
-const Spatial: React.FC = () => {
+// Define props interface to include gene
+interface SpatialProps {
+  gene: string; // Gene should be a string
+}
+
+export const Spatial: React.FC<SpatialProps> = (props) => {
   const [sample, setSample] = useState<string>(
     "DLPFC_Br8667_mid_manual_alignment_all"
   );
+
   const [config, setConfig] = useState<object | null>(null);
 
   // Fetch the config from the Zervers based on the sample name every time a new sample name is selected
   useEffect(() => {
-    if (sample) {
+    if (sample && props.gene) {
       const fetchConfig = async () => {
         let configPath: string;
 
@@ -58,11 +64,17 @@ const Spatial: React.FC = () => {
 
         const response = await fetch(configPath);
         const data = await response.json();
+
+        // Modify the featureSelection field to use the selected gene as default gene view
+        if (data.coordinationSpace && data.coordinationSpace.featureSelection) {
+          data.coordinationSpace.featureSelection["A"] = [props.gene];
+        }
+
         setConfig(data);
       };
       fetchConfig();
     }
-  }, [sample]);
+  }, [sample, props.gene]);
 
   const handleChange = (event) => {
     console.log(event);
