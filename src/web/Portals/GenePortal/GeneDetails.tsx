@@ -7,7 +7,6 @@ import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
 import { groupBy } from "queryz";
 import { tissueColors } from "./consts";
-import OpenTarget from "./OpenTarget";
 import AssociatedxQTL from "./AssociatedxQTL";
 import GeneExpressionPage from "./GeneExpression";
 import Browser from "./Browser/Browser";
