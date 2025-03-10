@@ -14,10 +14,45 @@ import { Select as MUISelect } from "@mui/material";
 export const SAMPLES: Map<string, { dataset: string; shortdesc: string }> =
   new Map([
     [
-      "DLPFC_Br2720_ant_2",
+      "Example_1",
       {
-        dataset: "spatialDLPFC",
-        shortdesc: "Anterior slice of DLPFC from Brain 2720",
+        dataset: "Example",
+        shortdesc: "Busy view of 2024_8667_mid",
+      },
+    ],
+    [
+      "Example_2",
+      {
+        dataset: "Example",
+        shortdesc: "Simpler view with heatmap of 2024_8667_mid",
+      },
+    ],
+    [
+      "Example_3",
+      {
+        dataset: "Example",
+        shortdesc: "Manual layer with heatmap of 2021_151674",
+      },
+    ],
+    [
+      "Example_4",
+      {
+        dataset: "Example",
+        shortdesc: "Proposed layout for 2024 with MA",
+      },
+    ],
+    [
+      "Example_5",
+      {
+        dataset: "Example",
+        shortdesc: "Proposed layout for 2024 without MA",
+      },
+    ],
+    [
+      "Example_6",
+      {
+        dataset: "Example",
+        shortdesc: "Proposed layout for 2021",
       },
     ],
     [
@@ -32,6 +67,13 @@ export const SAMPLES: Map<string, { dataset: string; shortdesc: string }> =
       {
         dataset: "spatialDLPFC",
         shortdesc: "Middle slice of DLPFC from Brain 8667",
+      },
+    ],
+    [
+      "DLPFC_Br6522_mid_manual_alignment_all",
+      {
+        dataset: "spatialDLPFC",
+        shortdesc: "Middle slice of Brain 6522",
       },
     ],
   ]);
@@ -54,7 +96,9 @@ export const Spatial: React.FC<SpatialProps> = (props) => {
       const fetchConfig = async () => {
         let configPath: string;
 
-        if (sample.startsWith("DLPFC")) {
+        if (sample.startsWith("Example")) {
+          configPath = `https://users.wenglab.org/kresgeb/psych_encode/example_configs/${sample}/config.json`;
+        } else if (sample.startsWith("DLPFC")) {
           // Fetch from spatialDLPFC (2024 paper)
           configPath = `https://users.wenglab.org/kresgeb/psych_encode/spatialDLPFC/configs/${sample}/config.json`;
         } else {
