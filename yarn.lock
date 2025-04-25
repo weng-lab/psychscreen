@@ -3987,6 +3987,16 @@
     "@turf/helpers" "^6.5.0"
     "@turf/meta" "^6.5.0"
 
+"@turf/area@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/area/-/area-7.2.0.tgz"
+  integrity sha512-zuTTdQ4eoTI9nSSjerIy4QwgvxqwJVciQJ8tOPuMHbXJ9N/dNjI7bU8tasjhxas/Cx3NE9NxVHtNpYHL0FSzoA==
+  dependencies:
+    "@turf/helpers" "^7.2.0"
+    "@turf/meta" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    tslib "^2.8.1"
+
 "@turf/bbox-polygon@>=4.0.0":
   version "7.2.0"
   resolved "https://registry.npmjs.org/@turf/bbox-polygon/-/bbox-polygon-7.2.0.tgz"
@@ -4053,6 +4063,19 @@
     "@turf/helpers" "^6.5.0"
     "@turf/invariant" "^6.5.0"
 
+"@turf/boolean-contains@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/boolean-contains/-/boolean-contains-7.2.0.tgz"
+  integrity sha512-dgRQm4uVO5XuLee4PLVH7CFQZKdefUBMIXTPITm2oRIDmPLJKHDOFKQTNkGJ73mDKKBR2lmt6eVH3br6OYrEYg==
+  dependencies:
+    "@turf/bbox" "^7.2.0"
+    "@turf/boolean-point-in-polygon" "^7.2.0"
+    "@turf/boolean-point-on-line" "^7.2.0"
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    tslib "^2.8.1"
+
 "@turf/boolean-overlap@^6.5.0":
   version "6.5.0"
   resolved "https://registry.npmjs.org/@turf/boolean-overlap/-/boolean-overlap-6.5.0.tgz"
@@ -4065,6 +4088,20 @@
     "@turf/meta" "^6.5.0"
     geojson-equality "0.1.6"
 
+"@turf/boolean-overlap@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/boolean-overlap/-/boolean-overlap-7.2.0.tgz"
+  integrity sha512-ieM5qIE4anO+gUHIOvEN7CjyowF+kQ6v20/oNYJCp63TVS6eGMkwgd+I4uMzBXfVW66nVHIXjODdUelU+Xyctw==
+  dependencies:
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@turf/line-intersect" "^7.2.0"
+    "@turf/line-overlap" "^7.2.0"
+    "@turf/meta" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    geojson-equality-ts "^1.0.2"
+    tslib "^2.8.1"
+
 "@turf/boolean-point-in-polygon@^6.5.0", "@turf/boolean-point-in-polygon@>=4.0.0":
   version "6.5.0"
   resolved "https://registry.npmjs.org/@turf/boolean-point-in-polygon/-/boolean-point-in-polygon-6.5.0.tgz"
@@ -4073,6 +4110,17 @@
     "@turf/helpers" "^6.5.0"
     "@turf/invariant" "^6.5.0"
 
+"@turf/boolean-point-in-polygon@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/boolean-point-in-polygon/-/boolean-point-in-polygon-7.2.0.tgz"
+  integrity sha512-lvEOjxeXIp+wPXgl9kJA97dqzMfNexjqHou+XHVcfxQgolctoJiRYmcVCWGpiZ9CBf/CJha1KmD1qQoRIsjLaA==
+  dependencies:
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    point-in-polygon-hao "^1.1.0"
+    tslib "^2.8.1"
+
 "@turf/boolean-point-on-line@^6.5.0":
   version "6.5.0"
   resolved "https://registry.npmjs.org/@turf/boolean-point-on-line/-/boolean-point-on-line-6.5.0.tgz"
@@ -4080,6 +4128,16 @@
   dependencies:
     "@turf/helpers" "^6.5.0"
     "@turf/invariant" "^6.5.0"
+
+"@turf/boolean-point-on-line@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/boolean-point-on-line/-/boolean-point-on-line-7.2.0.tgz"
+  integrity sha512-H/bXX8+2VYeSyH8JWrOsu8OGmeA9KVZfM7M6U5/fSqGsRHXo9MyYJ94k39A9kcKSwI0aWiMXVD2UFmiWy8423Q==
+  dependencies:
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    tslib "^2.8.1"
 
 "@turf/boolean-within@^6.5.0":
   version "6.5.0"
@@ -4091,6 +4149,19 @@
     "@turf/boolean-point-on-line" "^6.5.0"
     "@turf/helpers" "^6.5.0"
     "@turf/invariant" "^6.5.0"
+
+"@turf/boolean-within@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/boolean-within/-/boolean-within-7.2.0.tgz"
+  integrity sha512-zB3AiF59zQZ27Dp1iyhp9mVAKOFHat8RDH45TZhLY8EaqdEPdmLGvwMFCKfLryQcUDQvmzP8xWbtUR82QM5C4g==
+  dependencies:
+    "@turf/bbox" "^7.2.0"
+    "@turf/boolean-point-in-polygon" "^7.2.0"
+    "@turf/boolean-point-on-line" "^7.2.0"
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    tslib "^2.8.1"
 
 "@turf/buffer@>=4.0.0":
   version "7.2.0"
@@ -4212,6 +4283,17 @@
     "@types/geojson" "^7946.0.10"
     tslib "^2.8.1"
 
+"@turf/geojson-rbush@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/geojson-rbush/-/geojson-rbush-7.2.0.tgz"
+  integrity sha512-ST8fLv+EwxVkDgsmhHggM0sPk2SfOHTZJkdgMXVFT7gB9o4lF8qk4y4lwvCCGIfFQAp2yv/PN5EaGMEKutk6xw==
+  dependencies:
+    "@turf/bbox" "^7.2.0"
+    "@turf/helpers" "^7.2.0"
+    "@turf/meta" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    rbush "^3.0.1"
+
 "@turf/helpers@^6.5.0", "@turf/helpers@>=4.0.0", "@turf/helpers@6.x":
   version "6.5.0"
   resolved "https://registry.npmjs.org/@turf/helpers/-/helpers-6.5.0.tgz"
@@ -4270,7 +4352,7 @@
     "@turf/meta" "^6.5.0"
     geojson-rbush "3.x"
 
-"@turf/line-intersect@>=4.0.0":
+"@turf/line-intersect@^7.2.0", "@turf/line-intersect@>=4.0.0":
   version "7.2.0"
   resolved "https://registry.npmjs.org/@turf/line-intersect/-/line-intersect-7.2.0.tgz"
   integrity sha512-GhCJVEkc8EmggNi85EuVLoXF5T5jNVxmhIetwppiVyJzMrwkYAkZSYB3IBFYGUUB9qiNFnTwungVSsBV/S8ZiA==
@@ -4294,6 +4376,22 @@
     deep-equal "1.x"
     geojson-rbush "3.x"
 
+"@turf/line-overlap@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/line-overlap/-/line-overlap-7.2.0.tgz"
+  integrity sha512-NNn7/jg53+N10q2Kyt66bEDqN3101iW/1zA5FW7J6UbKApDFkByh+18YZq1of71kS6oUYplP86WkDp16LFpqqw==
+  dependencies:
+    "@turf/boolean-point-on-line" "^7.2.0"
+    "@turf/geojson-rbush" "^7.2.0"
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@turf/line-segment" "^7.2.0"
+    "@turf/meta" "^7.2.0"
+    "@turf/nearest-point-on-line" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    fast-deep-equal "^3.1.3"
+    tslib "^2.8.1"
+
 "@turf/line-segment@^6.5.0":
   version "6.5.0"
   resolved "https://registry.npmjs.org/@turf/line-segment/-/line-segment-6.5.0.tgz"
@@ -4302,6 +4400,17 @@
     "@turf/helpers" "^6.5.0"
     "@turf/invariant" "^6.5.0"
     "@turf/meta" "^6.5.0"
+
+"@turf/line-segment@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@turf/line-segment/-/line-segment-7.2.0.tgz"
+  integrity sha512-E162rmTF9XjVN4rINJCd15AdQGCBlNqeWN3V0YI1vOUpZFNT2ii4SqEMCcH2d+5EheHLL8BWVwZoOsvHZbvaWA==
+  dependencies:
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@turf/meta" "^7.2.0"
+    "@types/geojson" "^7946.0.10"
+    tslib "^2.8.1"
 
 "@turf/meta@^6.5.0", "@turf/meta@6.x":
   version "6.5.0"
@@ -4471,7 +4580,7 @@
     "@types/geojson" "^7946.0.10"
     tslib "^2.8.1"
 
-"@turf/union@>=4.0.0":
+"@turf/union@^7.2.0", "@turf/union@>=4.0.0":
   version "7.2.0"
   resolved "https://registry.npmjs.org/@turf/union/-/union-7.2.0.tgz"
   integrity sha512-Xex/cfKSmH0RZRWSJl4RLlhSmEALVewywiEXcu0aIxNbuZGTcpNoI0h4oLFrE/fUd0iBGFg/EGLXRL3zTfpg6g==
@@ -4572,7 +4681,7 @@
   resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.39.tgz"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
 
-"@types/geojson@*", "@types/geojson@^7946.0.10", "@types/geojson@^7946.0.7", "@types/geojson@^7946.0.8":
+"@types/geojson@*", "@types/geojson@^7946.0.10", "@types/geojson@^7946.0.14", "@types/geojson@^7946.0.7", "@types/geojson@^7946.0.8":
   version "7946.0.16"
   resolved "https://registry.npmjs.org/@types/geojson/-/geojson-7946.0.16.tgz"
   integrity sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==
@@ -5059,6 +5168,13 @@
     prop-types "^15.5.10"
     react-use-measure "^2.0.4"
 
+"@vitessce/abstract@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/abstract/-/abstract-3.5.11.tgz"
+  integrity sha512-GRDfHOshaY3jEaUUSbfWp9h2khRFOrSQ5cyZwL+4GS2QtQFb9AX1Cj7L6ZnacdhSVrNVShtSlHfJ1PPj9O2/mA==
+  dependencies:
+    "@vitessce/globals" "3.5.11"
+
 "@vitessce/abstract@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/abstract/-/abstract-3.5.7.tgz"
@@ -5119,6 +5235,15 @@
     fuse.js "^7.0.0"
     react-window "^1.8.10"
 
+"@vitessce/config@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/config/-/config-3.5.11.tgz"
+  integrity sha512-tQBp2Pq9bXfYHlbX8++t/JKjDVftn/EDpzZNMr2nRTcw7vrjM3mMjdDAXsr+zWlv4dBHUu5NY5CGbwVHB97nFw==
+  dependencies:
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+
 "@vitessce/config@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/config/-/config-3.5.7.tgz"
@@ -5128,10 +5253,23 @@
     "@vitessce/globals" "3.5.7"
     "@vitessce/utils" "3.5.7"
 
+"@vitessce/constants-internal@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/constants-internal/-/constants-internal-3.5.11.tgz"
+  integrity sha512-o1RlLNKRYTo5xfowETsque/5mRj4tpBfmdNgvb003V60UYmCIVzS556WaUDX3IH+PYf68L3+sbpmiy7E23rppA==
+
 "@vitessce/constants-internal@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/constants-internal/-/constants-internal-3.5.7.tgz"
   integrity sha512-Ir5u+3nnkHq6ehDleszGZAumHb6Z28vVeBDgWx6SsbiIlvfgLQYryCaahkLQAZow8YBxdNvXLF0uPxspOawunQ==
+
+"@vitessce/constants@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/constants/-/constants-3.5.11.tgz"
+  integrity sha512-FSzVwz7kShgN6jc3RGyuSn6FjVmiYL2EnH2TJo7LvK1V0KpW8PmmEj97gtZRXqxm86SwlB0JgJWvY0ZzPVtuVA==
+  dependencies:
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/globals" "3.5.11"
 
 "@vitessce/constants@3.5.7":
   version "3.5.7"
@@ -5202,6 +5340,54 @@
     higlass-zarr-datafetchers "0.3.0-next.3"
     lodash-es "^4.17.21"
 
+"@vitessce/gl@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/gl/-/gl-3.5.11.tgz"
+  integrity sha512-GvaQ5uQUOlBO2uu9R9RSb9DFBELJblbbVQSStoa/9TdbNiM7d1X8uOruN5eTfOr4KrCbmPcCz8+aJxZXcAlHrw==
+  dependencies:
+    "@deck.gl/aggregation-layers" "8.8.27"
+    "@deck.gl/core" "8.8.27"
+    "@deck.gl/extensions" "8.8.27"
+    "@deck.gl/geo-layers" "8.8.27"
+    "@deck.gl/layers" "8.8.27"
+    "@deck.gl/mesh-layers" "8.8.27"
+    "@deck.gl/react" "8.8.27"
+    "@hms-dbmi/viv" "~0.16.0"
+    "@loaders.gl/3d-tiles" "^3.0.0"
+    "@loaders.gl/core" "^3.0.0"
+    "@loaders.gl/images" "^3.0.0"
+    "@loaders.gl/loader-utils" "^3.0.0"
+    "@luma.gl/constants" "8.5.21"
+    "@luma.gl/core" "8.5.21"
+    "@luma.gl/engine" "8.5.21"
+    "@luma.gl/experimental" "8.5.21"
+    "@luma.gl/gltools" "8.5.21"
+    "@luma.gl/shadertools" "8.5.21"
+    "@luma.gl/webgl" "8.5.21"
+    "@math.gl/core" "^3.5.6"
+    "@nebula.gl/edit-modes" "0.23.8"
+    "@nebula.gl/layers" "0.23.8"
+    "@turf/area" "^7.2.0"
+    "@turf/boolean-contains" "^7.2.0"
+    "@turf/boolean-overlap" "^7.2.0"
+    "@turf/boolean-point-in-polygon" "^7.2.0"
+    "@turf/boolean-within" "^7.2.0"
+    "@turf/centroid" "^7.2.0"
+    "@turf/distance" "^7.2.0"
+    "@turf/helpers" "^7.2.0"
+    "@turf/invariant" "^7.2.0"
+    "@turf/meta" "^7.2.0"
+    "@turf/union" "^7.2.0"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    d3-array "^2.4.0"
+    deck.gl "8.8.27"
+    glslify "^7.0.0"
+    lodash-es "^4.17.21"
+    math.gl "^3.5.6"
+    mathjs "^9.2.0"
+    nebula.gl "0.23.8"
+
 "@vitessce/gl@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/gl/-/gl-3.5.7.tgz"
@@ -5263,6 +5449,13 @@
     lodash-es "^4.17.21"
     three "^0.154.0"
 
+"@vitessce/globals@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/globals/-/globals-3.5.11.tgz"
+  integrity sha512-bzjKSvjDTyic/w4y6S3Jj778kNgEimBHTAKoT6D/gYsTUlW6Tex8KbZzv3Jb4qvd/nUeb50989oT5KlF/lLpSg==
+  dependencies:
+    loglevel "^1.9.2"
+
 "@vitessce/globals@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/globals/-/globals-3.5.7.tgz"
@@ -5287,6 +5480,11 @@
     lodash-es "^4.17.21"
     react-aria "^3.28.0"
     uuid "^9.0.0"
+
+"@vitessce/icons@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/icons/-/icons-3.5.11.tgz"
+  integrity sha512-LXCc+PAVIu/50MJ7KPedTGOEAuNvvGTKcjHxyNJCEYxG3I2Y/9wb/31m4ixjNHBk1SYo0NFS+LGYWXU+M8Bx9w==
 
 "@vitessce/icons@3.5.7":
   version "3.5.7"
@@ -5364,6 +5562,24 @@
     math.gl "^3.5.6"
     react-aria "^3.28.0"
 
+"@vitessce/legend@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/legend/-/legend-3.5.11.tgz"
+  integrity sha512-AKlQr+0q8bw0aOJJ13g7Yv1otCDDXH8PNLM0whbqTc0/KigAZj1ynZUfn9Kha0jStq5MWF/GWFS6lnPIZlj/ug==
+  dependencies:
+    "@material-ui/core" "~4.12.3"
+    "@vitessce/sets-utils" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    clsx "^1.1.1"
+    colormap "^2.3.2"
+    d3-axis "^3.0.0"
+    d3-color "^1.4.0"
+    d3-format "^3.1.0"
+    d3-interpolate "^2.0.1"
+    d3-scale "^4.0.0"
+    d3-selection "^3.0.0"
+    lodash-es "^4.17.21"
+
 "@vitessce/legend@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/legend/-/legend-3.5.7.tgz"
@@ -5425,6 +5641,13 @@
     d3-array "^2.4.0"
     lodash-es "^4.17.21"
 
+"@vitessce/plugins@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/plugins/-/plugins-3.5.11.tgz"
+  integrity sha512-xDYYfY9VNKKe+OVtYTA3oH3LEPcLAGXFeye9CEVe71C6U/4AkobT8atWVJqIdwvNqt5RSH9PHQ2EBRelF2Hh3g==
+  dependencies:
+    zod "^3.21.4"
+
 "@vitessce/plugins@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/plugins/-/plugins-3.5.7.tgz"
@@ -5463,6 +5686,25 @@
     lodash-es "^4.17.21"
     react-aria "^3.28.0"
 
+"@vitessce/scatterplot@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/scatterplot/-/scatterplot-3.5.11.tgz"
+  integrity sha512-tWyQA3p0vyisk7y0ClQ62u1KP4EO0+QbEEXQeNXnSMR82k+COU/owicvwee6Bk8obdSEgtKLNw72w1YV3KdzJg==
+  dependencies:
+    "@material-ui/core" "~4.12.3"
+    "@material-ui/icons" "~4.11.2"
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/gl" "3.5.11"
+    "@vitessce/icons" "3.5.11"
+    "@vitessce/tooltip" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    "@vitessce/vit-s" "3.5.11"
+    clsx "^1.1.1"
+    d3-force "^2.1.1"
+    d3-quadtree "^1.0.7"
+    lodash-es "^4.17.21"
+    react-aria "^3.28.0"
+
 "@vitessce/scatterplot@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/scatterplot/-/scatterplot-3.5.7.tgz"
@@ -5482,6 +5724,24 @@
     lodash-es "^4.17.21"
     react-aria "^3.28.0"
 
+"@vitessce/schemas@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/schemas/-/schemas-3.5.11.tgz"
+  integrity sha512-YLDCsp2BfTc/R8zz4s2NEv3HSNzKAOgLpPxwzHEBDjQ3Hp2Bro9EO0wrk4OX7p4YSHgHRWLsZsHvYzPRGYXisA==
+  dependencies:
+    "@types/lodash-es" "^4.17.7"
+    "@types/semver" "^7.3.13"
+    "@types/uuid" "^9.0.1"
+    "@vitessce/constants" "3.5.11"
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/plugins" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    lodash-es "^4.17.21"
+    semver "^7.3.8"
+    uuid "^9.0.0"
+    zod "^3.21.4"
+
 "@vitessce/schemas@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/schemas/-/schemas-3.5.7.tgz"
@@ -5499,6 +5759,24 @@
     semver "^7.3.8"
     uuid "^9.0.0"
     zod "^3.21.4"
+
+"@vitessce/sets-utils@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/sets-utils/-/sets-utils-3.5.11.tgz"
+  integrity sha512-MpJxSDFPDHNlDckOEg/crygYqoCpb3jDfcPjWel2h4TSlMFMTyff0Oj77CH9VkNToPx4jD6XjxinnAWxwg75SQ==
+  dependencies:
+    "@turf/centroid" "^7.2.0"
+    "@turf/helpers" "^7.2.0"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/schemas" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    concaveman "^1.2.1"
+    d3-dsv "^1.1.1"
+    internmap "^2.0.3"
+    json2csv "^5.0.0"
+    lodash-es "^4.17.21"
+    tinycolor2 "^1.4.1"
+    uuid "^9.0.0"
 
 "@vitessce/sets-utils@3.5.7":
   version "3.5.7"
@@ -5566,6 +5844,21 @@
     short-number "^1.0.6"
     three "^0.154.0"
 
+"@vitessce/spatial-utils@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/spatial-utils/-/spatial-utils-3.5.11.tgz"
+  integrity sha512-qlN1q7hFqDeif0gvTTgjiOwd3H/z6Q3g/REuGD9twYh3nTl9FydkSQ0T3nkTlnp5liH4HrgIWBes+wV22dK2RA==
+  dependencies:
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/gl" "3.5.11"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    "@vitessce/zarr-utils" "3.5.11"
+    lodash-es "^4.17.21"
+    math.gl "^3.5.6"
+    mathjs "^9.2.0"
+    zarrita "0.4.0"
+
 "@vitessce/spatial-utils@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/spatial-utils/-/spatial-utils-3.5.7.tgz"
@@ -5599,6 +5892,29 @@
     ol "^10.2.1"
     parquet-wasm "^0.6.1"
     zarrita "0.4.0-next.16"
+
+"@vitessce/spatial@^3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/spatial/-/spatial-3.5.11.tgz"
+  integrity sha512-h5o0ry1j4g7tFJ7cbwBTCGnU1V9qG/URqzBjY6g3AsTPGKsGuzBUwmn8dl5tvRKxDxp6jdGjT1DKntgEtNHi8w==
+  dependencies:
+    "@material-ui/core" "~4.12.3"
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/gl" "3.5.11"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/legend" "3.5.11"
+    "@vitessce/scatterplot" "3.5.11"
+    "@vitessce/sets-utils" "3.5.11"
+    "@vitessce/spatial-utils" "3.5.11"
+    "@vitessce/tooltip" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    "@vitessce/vit-s" "3.5.11"
+    d3-array "^2.4.0"
+    lodash-es "^4.17.21"
+    math.gl "^3.5.6"
+    mathjs "^9.2.0"
+    react-aria "^3.28.0"
+    short-number "^1.0.6"
 
 "@vitessce/spatial@3.5.7":
   version "3.5.7"
@@ -5658,6 +5974,15 @@
     "@vitessce/vit-s" "3.5.7"
     clsx "^1.1.1"
 
+"@vitessce/tooltip@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/tooltip/-/tooltip-3.5.11.tgz"
+  integrity sha512-PxsaUUoddKJypkcPU3/fseGqDcF7zP61cNBuRTM1Z32seyIObVJTzdKweK3Hs0ebR5Sr1jCzx4YBFMfCml+I1w==
+  dependencies:
+    "@material-ui/core" "~4.12.3"
+    "@vitessce/utils" "3.5.11"
+    "@vitessce/vit-s" "3.5.11"
+
 "@vitessce/tooltip@3.5.7":
   version "3.5.7"
   resolved "https://registry.npmjs.org/@vitessce/tooltip/-/tooltip-3.5.7.tgz"
@@ -5674,6 +5999,18 @@
   dependencies:
     "@hms-dbmi/viv" "~0.16.0"
     "@zarrita/storage" "0.1.0-next.6"
+
+"@vitessce/utils@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/utils/-/utils-3.5.11.tgz"
+  integrity sha512-p8Ie9AY+lCeLGGvwnTr28S2MN3/E6PqykkjD5JW59SmlRX4RqvMDWkYgKbfgbczZ6WKog4ezoaFtJfY1KlcxFQ==
+  dependencies:
+    "@vitessce/globals" "3.5.11"
+    bowser "^2.11.0"
+    d3-array "^2.4.0"
+    lodash-es "^4.17.21"
+    lz-string "^1.4.4"
+    pluralize "^8.0.0"
 
 "@vitessce/utils@3.5.7":
   version "3.5.7"
@@ -5700,6 +6037,34 @@
     vega "^5.21.0"
     vega-lite "^5.1.1"
     vega-tooltip "^0.27.0"
+
+"@vitessce/vit-s@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/vit-s/-/vit-s-3.5.11.tgz"
+  integrity sha512-P2rnsakrdVEhOWLu00vFGx09QuI2U/LOi0bD+MYLWtAXxUESR216Zyi/KM15cL4L3743nrnvs9mKzsgPf1Oivw==
+  dependencies:
+    "@material-ui/core" "~4.12.3"
+    "@material-ui/icons" "~4.11.2"
+    "@tanstack/react-query" "^4.29.12"
+    "@vitessce/abstract" "3.5.11"
+    "@vitessce/config" "3.5.11"
+    "@vitessce/constants-internal" "3.5.11"
+    "@vitessce/globals" "3.5.11"
+    "@vitessce/plugins" "3.5.11"
+    "@vitessce/schemas" "3.5.11"
+    "@vitessce/sets-utils" "3.5.11"
+    "@vitessce/utils" "3.5.11"
+    clsx "^1.1.1"
+    d3-array "^2.4.0"
+    fast-deep-equal "^3.1.3"
+    internmap "^2.0.3"
+    jss-plugin-global "^10.9.2"
+    lodash-es "^4.17.21"
+    react-aria "^3.28.0"
+    react-error-boundary "^5.0.0"
+    react-grid-layout-with-lodash "^1.3.5"
+    uuid "^9.0.0"
+    zustand "^3.5.10"
 
 "@vitessce/vit-s@3.5.7":
   version "3.5.7"
@@ -5734,6 +6099,15 @@
   integrity sha512-RRq0NrQn12wPjSocTK3aSPVRUXjX+E5nnGfGLrbHy8I5DbniZCNSXEN/qpDcc8G6XxoxxzQP8Yu5D71ZZ8JK8w==
   dependencies:
     lodash-es "^4.17.21"
+
+"@vitessce/zarr-utils@3.5.11":
+  version "3.5.11"
+  resolved "https://registry.npmjs.org/@vitessce/zarr-utils/-/zarr-utils-3.5.11.tgz"
+  integrity sha512-m5Veo2RQ2zOZtsGtqVW925kIRjq/tE4BDLaz7e52CGCoDHzo2YKpLnrLrWsrhXAayQLSwN+TmI7kVU3vg3ZE3Q==
+  dependencies:
+    "@vitessce/globals" "3.5.11"
+    "@zarrita/storage" "0.1.0"
+    zarrita "0.4.0"
 
 "@vitessce/zarr-utils@3.5.7":
   version "3.5.7"
@@ -6075,7 +6449,7 @@
     reference-spec-reader "^0.2.0"
     unzipit "^1.4.3"
 
-"@zarrita/storage@^0.1.0":
+"@zarrita/storage@^0.1.0", "@zarrita/storage@0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@zarrita/storage/-/storage-0.1.0.tgz"
   integrity sha512-lSGDQik2fLt/UyvWzWd23sJFHckEmk50F9Baz2XlbgFQhvd2EVBcHGweOTBhu3c5SB05TzOnlY1M1i2FMDi6YA==
@@ -10588,6 +10962,13 @@ gensync@^1.0.0-beta.1, gensync@^1.0.0-beta.2:
   resolved "https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz"
   integrity sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==
 
+geojson-equality-ts@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/geojson-equality-ts/-/geojson-equality-ts-1.0.2.tgz"
+  integrity sha512-h3Ryq+0mCSN/7yLs0eDgrZhvc9af23o/QuC4aTiuuzP/MRCtd6mf5rLsLRY44jX0RPUfM8c4GqERQmlUxPGPoQ==
+  dependencies:
+    "@types/geojson" "^7946.0.14"
+
 geojson-equality@0.1.6:
   version "0.1.6"
   resolved "https://registry.npmjs.org/geojson-equality/-/geojson-equality-0.1.6.tgz"
@@ -14956,6 +15337,13 @@ pnp-webpack-plugin@1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
+point-in-polygon-hao@^1.1.0:
+  version "1.2.4"
+  resolved "https://registry.npmjs.org/point-in-polygon-hao/-/point-in-polygon-hao-1.2.4.tgz"
+  integrity sha512-x2pcvXeqhRHlNRdhLs/tgFapAbSSe86wa/eqmj1G6pWftbEs5aVRJhRGM6FYSUERKu0PjekJzMq0gsI2XyiclQ==
+  dependencies:
+    robust-predicates "^3.0.2"
+
 point-in-polygon@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/point-in-polygon/-/point-in-polygon-1.1.0.tgz"
@@ -16267,6 +16655,13 @@ react-draggable@3.x:
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.0"
+
+react-error-boundary@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/react-error-boundary/-/react-error-boundary-5.0.0.tgz"
+  integrity sha512-tnjAxG+IkpLephNcePNA7v6F/QpWLH8He65+DmedchDwg162JZqx4NmbXj0mlAYVVEd81OW7aFhmbsScYfiAFQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 react-error-overlay@^6.0.9, react-error-overlay@6.0.9:
   version "6.0.9"
@@ -20354,6 +20749,14 @@ zarrita@0.4.0-next.16:
     "@zarrita/core" "^0.1.0-next.14"
     "@zarrita/indexing" "^0.1.0-next.16"
     "@zarrita/storage" "^0.1.0-next.6"
+
+zarrita@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.npmjs.org/zarrita/-/zarrita-0.4.0.tgz"
+  integrity sha512-MK2uustzUF0PooWl6HVUfTares/nmaq5NwRZux/L3npvkSX6Qdpd7w/NOW2cF9EI35yqggoHNi3Nlxyq1YT5eQ==
+  dependencies:
+    "@zarrita/storage" "^0.1.0"
+    numcodecs "^0.3.2"
 
 zen-observable-ts@^0.8.21:
   version "0.8.21"

@@ -15,7 +15,7 @@ import SingleCell from "./SingleCell";
 import { StyledTab, StyledToggleButton } from "../../Portals/styles";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
-import Spatial from "./Spatial";
+import BrainSpatial from "./BrainSpatial";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -225,12 +225,12 @@ const GeneDetails: React.FC = (props) => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
-            <StyledTab label="Brain Epigenome Browser" />
-            <StyledTab label="Brain Single Cell Expression" />
+            <StyledTab label="Epigenome Browser" />
+            <StyledTab label="Single Cell Expression" />
             <StyledTab label="Tissue Expression (GTEx)" />
-            <StyledTab label="Brain eQTLs and b-cCREs" />
+            <StyledTab label="eQTLs and b-cCREs" />
             <StyledTab label="Differential Gene Expression" />
-            {<StyledTab label="Brain Spatial Expression" />}
+            <StyledTab label="Spatial Expression" />
           </Tabs>
           <Divider />
         </Box>
@@ -300,7 +300,7 @@ const GeneDetails: React.FC = (props) => {
           ) : tabIndex === 5 ? (
             <Box>
               <Typography type="body" size="small">
-                <Spatial gene={gene || "MBP"} />
+                <BrainSpatial gene={gene || "MBP"} />
               </Typography>
             </Box>
           ) : tabIndex === 1 ? (
