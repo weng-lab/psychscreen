@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Vitessce } from "vitessce";
-import Spatial from "@vitessce/spatial";
-import { SpatialSubcriber } from "@vitessce/spatial";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
