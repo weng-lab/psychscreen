@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Vitessce } from "vitessce";
-import Spatial from "@vitessce/spatial";
-import { SpatialSubcriber } from "@vitessce/spatial";
+
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
@@ -40,6 +38,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
           const response = await fetch(configPath);
           const data = await response.json();
 
+          // Update the config with the selected gene
           if (data.coordinationSpace?.featureSelection) {
             data.coordinationSpace.featureSelection["A"] = [gene];
           }
@@ -81,7 +80,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
     </Grid>
   );
 };
-
+// TODO: Change this to a stored json file that is fetched from the server
 const SAMPLES: SampleInfo[] = [
   {
     dataset: "spatialDLPFC",
@@ -297,7 +296,7 @@ const SAMPLES: SampleInfo[] = [
 
 const sampleOptions: SampleOption[] = SAMPLES.map((sample) => ({
   ...sample,
-  label: sample.shortDescription,
+  label: sample.shortDescription, // Just the short description for now
   id: `${sample.dataset}__${sample.internalFileName}`, //unique identifier
 }));
 
