@@ -22,8 +22,11 @@ interface SpatialProps {
 }
 
 export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
-  const [selectedSample, setSelectedSample] = useState<SampleOption | null>(
-    null
+  const [selectedSample, setSelectedSample] = useState<SampleOption>(
+    sampleOptions.find(
+      (sample) =>
+        sample.internalFileName === "DLPFC_Br6522_mid_manual_alignment_all"
+    ) || sampleOptions[0]
   );
 
   const [config, setConfig] = useState<object | null>(null);
