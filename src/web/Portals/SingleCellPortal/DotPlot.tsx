@@ -4,7 +4,11 @@ import { YAxis } from "../GenePortal/axis";
 import { linearTransform } from "../GenePortal/violin/utils";
 import { linearTransform as lt } from "jubilant-carnival";
 import { GENE_CELLTYPE_CARDS } from "./consts";
-import { useTooltip, useTooltipInPortal, defaultStyles as defaultTooltipStyles } from '@visx/tooltip';
+import {
+  useTooltip,
+  useTooltipInPortal,
+  defaultStyles as defaultTooltipStyles,
+} from "@visx/tooltip";
 
 export const DOT_PLOT_QUERY = gql`
   query singleCellBoxPlot($disease: String!, $gene: [String]) {
@@ -19,11 +23,11 @@ export const DOT_PLOT_QUERY = gql`
 `;
 
 interface TooltipData {
-  percentexpressed?: number,
-  meanexpression?: number,
-  foldchange?: number,
-  padj?: number,  
-  label: string
+  percentexpressed?: number;
+  meanexpression?: number;
+  foldchange?: number;
+  padj?: number;
+  label: string;
 }
 
 export type DotPlotQueryResponse = {
@@ -128,8 +132,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   },
   ref
 ) => {
-
-  console.log(celltype,"ct")
+  console.log(celltype, "ct");
   // SVG-related parameters
   const width = 15000;
   const height = width / 3;
@@ -194,8 +197,6 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
     return lt({ start: colorDomain[0], end: 0 }, { start: 0, end: 191 });
   }, [colorDomain]);
 
-  
-
   const {
     tooltipData,
     tooltipLeft,
@@ -210,7 +211,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
     detectBounds: true,
     // when tooltip containers are scrolled, this will correctly update the Tooltip position
     scroll: true,
-  })
+  });
 
   // Dot plot for recognized genes
   return (
@@ -224,7 +225,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         width={(width / length) * 2}
         height={height / 2}
         range={[0, 1]}
-        fontStyle={ celltype ? "normal": "italic"}
+        fontStyle={celltype ? "normal" : "italic"}
       />
       {Array.from(uniqueDatasets).map((n, i) => {
         return (
@@ -249,7 +250,6 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       {keys
         .map((x, i) => {
           return results.get(x)!!.map((s, j) => {
-            
             return (
               <React.Fragment key={`${x}_${i}_${j}`}>
                 <g>
@@ -281,22 +281,23 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
                     strokeOpacity={4}
                     onMouseEnter={(event) => {
                       showTooltip({
-                        tooltipLeft: event.clientX, 
+                        tooltipLeft: event.clientX,
                         tooltipTop: event.clientY,
-                        tooltipData: !showTooltipData ?  {
-                          meanexpression: +(s.colorpercent.toFixed(2)),
-                          percentexpressed: +(s.radius.toFixed(2)),
-                          label: x
-                          
-                        }: {
-                          padj: +(s.radius.toFixed(2)),
-                          foldchange: +(s.colorpercent.toFixed(2)),
-                          label: x
-                         }
+                        tooltipData: !showTooltipData
+                          ? {
+                              meanexpression: +s.colorpercent.toFixed(2),
+                              percentexpressed: +s.radius.toFixed(2),
+                              label: x,
+                            }
+                          : {
+                              padj: +s.radius.toFixed(2),
+                              foldchange: +s.colorpercent.toFixed(2),
+                              label: x,
+                            },
                       });
                     }}
                     onMouseLeave={(event) => {
-                      hideTooltip()
+                      hideTooltip();
                     }}
                   >
                     {/*<title>
@@ -319,17 +320,69 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
           });
         })
         .flat()}
-       {tooltipOpen && (
+      {tooltipOpen && (
         <TooltipInPortal
           // set this to random so it correctly updates with parent bounds
           key={Math.random()}
           top={tooltipTop}
           left={tooltipLeft}
-          style={{ ...defaultTooltipStyles, backgroundColor: '#283238', color: 'white' }}
+          style={{
+            ...defaultTooltipStyles,
+            backgroundColor: "#283238",
+            color: "white",
+          }}
         >
-          {!showTooltipData ?   <p>Percent Expressed: {tooltipData?.percentexpressed}</p> : <p>-log<sub>10</sub>(<i>P</i><sub>adj</sub>):  {tooltipData?.padj}</p>}         
-          {!showTooltipData ?  <p>Mean Expression: {tooltipData?.meanexpression}</p> : <p>log<sub>2</sub>(fold change): {tooltipData?.foldchange}</p>}          
-          {celltype ? <p><i>{tooltipData?.label}</i></p> : <p>{GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label) ? GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel.includes("-expressing") ? <><i>{GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel.split("-expressing")[0]}</i><>{"-expressing"}{GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel.split("-expressing")[1]}</></> : GENE_CELLTYPE_CARDS.find(c=>c.val===tooltipData?.label)?.cardLabel   :  tooltipData?.label}</p> }
+          {!showTooltipData ? (
+            <p>Percent Expressed: {tooltipData?.percentexpressed}</p>
+          ) : (
+            <p>
+              -log<sub>10</sub>(<i>P</i>
+              <sub>adj</sub>): {tooltipData?.padj}
+            </p>
+          )}
+          {!showTooltipData ? (
+            <p>Mean Expression: {tooltipData?.meanexpression}</p>
+          ) : (
+            <p>
+              log<sub>2</sub>(fold change): {tooltipData?.foldchange}
+            </p>
+          )}
+          {celltype ? (
+            <p>
+              <i>{tooltipData?.label}</i>
+            </p>
+          ) : (
+            <p>
+              {GENE_CELLTYPE_CARDS.find((c) => c.val === tooltipData?.label) ? (
+                GENE_CELLTYPE_CARDS.find(
+                  (c) => c.val === tooltipData?.label
+                )?.cardLabel.includes("-expressing") ? (
+                  <>
+                    <i>
+                      {
+                        GENE_CELLTYPE_CARDS.find(
+                          (c) => c.val === tooltipData?.label
+                        )?.cardLabel.split("-expressing")[0]
+                      }
+                    </i>
+                    <>
+                      {"-expressing"}
+                      {
+                        GENE_CELLTYPE_CARDS.find(
+                          (c) => c.val === tooltipData?.label
+                        )?.cardLabel.split("-expressing")[1]
+                      }
+                    </>
+                  </>
+                ) : (
+                  GENE_CELLTYPE_CARDS.find((c) => c.val === tooltipData?.label)
+                    ?.cardLabel
+                )
+              ) : (
+                tooltipData?.label
+              )}
+            </p>
+          )}
         </TooltipInPortal>
       )}
 
@@ -348,7 +401,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
               fontSize="140px"
               transform="rotate(-90)"
               textAnchor="end"
-              fontStyle={!celltype ? "normal":"italic"}
+              fontStyle={!celltype ? "normal" : "italic"}
               fontWeight={
                 deg ? (results!!.get(x)!![0].highlighted ? "bold" : "") : ""
               }

@@ -10,7 +10,14 @@ import {
 } from "../../../genome-explorer";
 import { useGenePageData } from "../GenePortal/AssociatedxQTL";
 import { DeepLearnedModelTracks } from "../../../genome-explorer/DeepLearnedModels";
-import { Box, Divider, FormControl, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  FormControl,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { SnpAutoComplete } from "../SnpPortal/SnpAutoComplete";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
@@ -44,7 +51,11 @@ const Browser: React.FC<{
   coordinates: GenomicRange;
   url: string;
   trait: string;
-  gwasLocusSNPs?: { SNPCount : number, minimump: number, coordinates: GenomicRange }
+  gwasLocusSNPs?: {
+    SNPCount: number;
+    minimump: number;
+    coordinates: GenomicRange;
+  };
 }> = (props) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [coordinates, setCoordinates] = useState<GenomicRange>(
@@ -107,87 +118,101 @@ const Browser: React.FC<{
   );
   return (
     <Stack alignItems={"center"} spacing={3}>
-      {props.gwasLocusSNPs && props.gwasLocusSNPs.coordinates.chromosome === coordinates.chromosome && props.gwasLocusSNPs.coordinates.start === coordinates.start && props.gwasLocusSNPs.coordinates.end === coordinates.end &&
-        <>
-          <Typography alignSelf={"flex-start"}>
-            {props.gwasLocusSNPs.SNPCount} significant SNP{props.gwasLocusSNPs.SNPCount !== 1 ? "s" : ""}{" "} at locus {props.gwasLocusSNPs.coordinates.chromosome + ":" + props.gwasLocusSNPs.coordinates.start.toLocaleString() + "-" + props.gwasLocusSNPs.coordinates.end.toLocaleString()}. Lowest <i>P</i> at this locus:{" "} {toScientificNotation(props.gwasLocusSNPs.minimump, 2)}
-          </Typography>
-          <Divider sx={{ width: '100%', marginTop: '1rem !important' }} />
-        </>
-      }
+      {props.gwasLocusSNPs &&
+        props.gwasLocusSNPs.coordinates.chromosome === coordinates.chromosome &&
+        props.gwasLocusSNPs.coordinates.start === coordinates.start &&
+        props.gwasLocusSNPs.coordinates.end === coordinates.end && (
+          <>
+            <Typography alignSelf={"flex-start"}>
+              {props.gwasLocusSNPs.SNPCount} significant SNP
+              {props.gwasLocusSNPs.SNPCount !== 1 ? "s" : ""} at locus{" "}
+              {props.gwasLocusSNPs.coordinates.chromosome +
+                ":" +
+                props.gwasLocusSNPs.coordinates.start.toLocaleString() +
+                "-" +
+                props.gwasLocusSNPs.coordinates.end.toLocaleString()}
+              . Lowest <i>P</i> at this locus:{" "}
+              {toScientificNotation(props.gwasLocusSNPs.minimump, 2)}
+            </Typography>
+            <Divider sx={{ width: "100%", marginTop: "1rem !important" }} />
+          </>
+        )}
       <Grid container alignItems="center">
-          <Grid>
-            <FormControl variant="standard">
-              <Select
-                id="search"
-                value={selectedSearch}
-                onChange={handleChange}
-              >
-                <MenuItem value={"Genes"}>Genes</MenuItem>
-                <MenuItem value={"SNPs"}>SNPs</MenuItem>
-                <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid>
-            {selectedSearch === "Genes" ? (
-              <GeneAutoComplete
-                gridsize={3.5}
-                hideSearchButton
-                onSelected={(value) => {
-                  setCoordinates({
-                    chromosome: value.chromosome,
-                    start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
-                    end: +value.end + 20000,
-                  });
-                }}
-              />
-            ) : selectedSearch === "SNPs" ? (
-              <SnpAutoComplete
-                gridsize={3.5}
-                hideSearchButton
-                onSelected={(value) => {
-                  setCoordinates({
-                    chromosome: value.chromosome,
-                    start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
-                    end: +value.end + 20000,
-                  });
-                }}
-              />
-            ) : (
-              <CoordinatesSearch
-                onSelected={(value) => {
-                  setCoordinates({
-                    chromosome: value.chromosome,
-                    start: +value.start < 0 ? 1 : +value.start,
-                    end: +value.end,
-                  });
-                }}
-                hideSearchButton
-                defaultText={`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}
-              />
-            )}
-          </Grid>
+        <Grid>
+          <FormControl variant="standard">
+            <Select id="search" value={selectedSearch} onChange={handleChange}>
+              <MenuItem value={"Genes"}>Genes</MenuItem>
+              <MenuItem value={"SNPs"}>SNPs</MenuItem>
+              <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
+        <Grid>
+          {selectedSearch === "Genes" ? (
+            <GeneAutoComplete
+              gridsize={3.5}
+              hideSearchButton
+              onSelected={(value) => {
+                setCoordinates({
+                  chromosome: value.chromosome,
+                  start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
+                  end: +value.end + 20000,
+                });
+              }}
+            />
+          ) : selectedSearch === "SNPs" ? (
+            <SnpAutoComplete
+              gridsize={3.5}
+              hideSearchButton
+              onSelected={(value) => {
+                setCoordinates({
+                  chromosome: value.chromosome,
+                  start: +value.start - 20000 < 0 ? 1 : +value.start - 20000,
+                  end: +value.end + 20000,
+                });
+              }}
+            />
+          ) : (
+            <CoordinatesSearch
+              onSelected={(value) => {
+                setCoordinates({
+                  chromosome: value.chromosome,
+                  start: +value.start < 0 ? 1 : +value.start,
+                  end: +value.end,
+                });
+              }}
+              hideSearchButton
+              defaultText={`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}
+            />
+          )}
+        </Grid>
+      </Grid>
 
-        <CytobandView
-          innerWidth={1400}
-          height={15}
-          chromosome={coordinates.chromosome!}
-          assembly="hg38"
-          position={coordinates}
+      <CytobandView
+        innerWidth={1400}
+        height={15}
+        chromosome={coordinates.chromosome!}
+        assembly="hg38"
+        position={coordinates}
+      />
+      <div>
+        <UCSCControls
+          onDomainChanged={onDomainChanged}
+          domain={coordinates}
+          withInput={false}
         />
-        <div>
-          <UCSCControls
-            onDomainChanged={onDomainChanged}
-            domain={coordinates}
-            withInput={false}
-          />
-        </div>
-        <Typography>
-          <b>{coordinates.chromosome + ":" + coordinates.start.toLocaleString() + "-" + coordinates.end.toLocaleString()}</b>{" (Hold shift and drag to select a region)"}
-        </Typography>
-        <GenomeBrowser
+      </div>
+      <Typography>
+        <b>
+          {coordinates.chromosome +
+            ":" +
+            coordinates.start.toLocaleString() +
+            "-" +
+            coordinates.end.toLocaleString()}
+        </b>
+        {" (Hold shift and drag to select a region)"}
+      </Typography>
+      <GenomeBrowser
         svgRef={svgRef}
         domain={coordinates}
         innerWidth={1400}
@@ -202,7 +227,7 @@ const Browser: React.FC<{
             });
           }
         }}
-        >
+      >
         {highlight && (
           <rect
             fill="#8ec7d1"

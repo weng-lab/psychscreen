@@ -140,7 +140,7 @@ const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
           domain={coordinates}
           withInput={false}
         />
-         <br/>
+        <br />
         {"Hold shift and drag to select a region"}
       </div>
       <br />
@@ -194,23 +194,24 @@ const BBTrack: React.FC<{
   );
 
   const re = data as BigBedData[];
-  let linkdata = re && re.map((r) => {
-    return {
-      regionA: {
-        chromosome: r.chr,
-        start: +r.start,
-        end: +r.end + 1, //Why is 1 being added here? -Jonathan 5/23/24
-      },
-      regionB: {
-        chromosome: r.name?.split(":")[0]!!,
-        start: +r.name?.split(":")[1].split("-")[0]!!,
-        end: +r.name?.split(":")[1].split("-")[1]!! + 1, //Why is 1 being added here? -Jonathan 5/23/24
-      
-      },
-      score: 30,
-      targetGene: r.name?.split(":")[2] || 'Target Gene not identified'
-    };
-  });
+  let linkdata =
+    re &&
+    re.map((r) => {
+      return {
+        regionA: {
+          chromosome: r.chr,
+          start: +r.start,
+          end: +r.end + 1, //Why is 1 being added here? -Jonathan 5/23/24
+        },
+        regionB: {
+          chromosome: r.name?.split(":")[0]!!,
+          start: +r.name?.split(":")[1].split("-")[0]!!,
+          end: +r.name?.split(":")[1].split("-")[1]!! + 1, //Why is 1 being added here? -Jonathan 5/23/24
+        },
+        score: 30,
+        targetGene: r.name?.split(":")[2] || "Target Gene not identified",
+      };
+    });
 
   return (
     <g transform={transform}>

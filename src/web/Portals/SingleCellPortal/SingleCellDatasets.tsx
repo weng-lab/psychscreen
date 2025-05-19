@@ -9,7 +9,7 @@ import {
 } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
-import Grid from '@mui/material/Unstable_Grid2'
+import Grid from "@mui/material/Unstable_Grid2";
 import DownloadIcon from "@mui/icons-material/Download";
 import { EmptyTrack, DenseBigBed } from "umms-gb";
 import { gql, useQuery } from "@apollo/client";
@@ -313,26 +313,34 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
   });
 
   return (
-    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+    <Grid
+      container
+      spacing={3}
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+    >
       {disease === "Diff-expressed-genes" && (
         <Grid xs={12}>
-            <Typography
-              type="display"
-              size="medium"
-              style={{
-                fontWeight: 700,
-                fontSize: "40px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-              }}
-            >
-              {"Differential Gene Expression"}
-            </Typography>
+          <Typography
+            type="display"
+            size="medium"
+            style={{
+              fontWeight: 700,
+              fontSize: "40px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {"Differential Gene Expression"}
+          </Typography>
           <br />
-            <Tabs value={tabIndex} onChange={handleTabChange} sx={{mb: 2}}>
-              <StyledTab label="Differential Gene Expression " />
-              <StyledTab label="Data Table" />
-            </Tabs>
+          <Tabs value={tabIndex} onChange={handleTabChange} sx={{ mb: 2 }}>
+            <StyledTab label="Differential Gene Expression " />
+            <StyledTab label="Data Table" />
+          </Tabs>
           {tabIndex === 1 && (
             <Slide direction="up" in timeout={1000}>
               <Box>
@@ -363,9 +371,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 Gene: {gene}
               </Typography>
               <br />
-              <span>
-                Switch to another gene:
-              </span>
+              <span>Switch to another gene:</span>
               <br />
               <br />
               <GeneAutoComplete
@@ -381,48 +387,48 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
       )}
       {disease === "scATAC-Seq-peaks" && (
         <Grid xs={12}>
-            <Typography
-              type="display"
-              size="medium"
-              mb={1}
-              style={{
-                fontWeight: 700,
-                fontSize: "40px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-              }}
-            >
-              {"scATAC-Seq Peaks"}
-            </Typography>
-            <StyledButton
-              bvariant={page === -1 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setPage(-1)}
-            >
-              Genome Browser
-            </StyledButton>
-            &nbsp;&nbsp;&nbsp;
-            <StyledButton
-              bvariant={page === 0 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setPage(0)}
-            >
-              Cell Type specific ATAC peaks
-            </StyledButton>
-            &nbsp;&nbsp;&nbsp;
-            {page === 0 && (
-              <Box mt={3}>
-                <DataTable
-                  columns={COLUMNS}
-                  rows={d}
-                  itemsPerPage={10}
-                  searchable
-                />
-              </Box>
-            )}
-            {page === -1 && (
-              <Grid sm={10} md={10} lg={9} xl={9}>
-                {/*
+          <Typography
+            type="display"
+            size="medium"
+            mb={1}
+            style={{
+              fontWeight: 700,
+              fontSize: "40px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            {"scATAC-Seq Peaks"}
+          </Typography>
+          <StyledButton
+            bvariant={page === -1 ? "filled" : "outlined"}
+            btheme="light"
+            onClick={() => setPage(-1)}
+          >
+            Genome Browser
+          </StyledButton>
+          &nbsp;&nbsp;&nbsp;
+          <StyledButton
+            bvariant={page === 0 ? "filled" : "outlined"}
+            btheme="light"
+            onClick={() => setPage(0)}
+          >
+            Cell Type specific ATAC peaks
+          </StyledButton>
+          &nbsp;&nbsp;&nbsp;
+          {page === 0 && (
+            <Box mt={3}>
+              <DataTable
+                columns={COLUMNS}
+                rows={d}
+                itemsPerPage={10}
+                searchable
+              />
+            </Box>
+          )}
+          {page === -1 && (
+            <Grid sm={10} md={10} lg={9} xl={9}>
+              {/*
                     <>
                       <br />
                       <br />
@@ -477,23 +483,23 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                       </GenomeBrowser>
                     </>
                     */}
-                {
-                  <SingleCellBrowser
-                    coordinates={coordinates}
-                    assembly={"hg38"}
-                    atactracks
-                    grntracks
-                    qtltracks
-                  />
-                }
-              </Grid>
-            )}
+              {
+                <SingleCellBrowser
+                  coordinates={coordinates}
+                  assembly={"hg38"}
+                  atactracks
+                  grntracks
+                  qtltracks
+                />
+              }
+            </Grid>
+          )}
         </Grid>
       )}
       {disease === "Gene-regulatory-networks" && (
         <Grid xs={12}>
           <Container>
-          <Typography
+            <Typography
               type="display"
               size="medium"
               mb={1}
@@ -522,112 +528,111 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               Cell Types
             </StyledButton>
             &nbsp;&nbsp;&nbsp;
-            <br/>
-            <br/>
-              {grnpage === 0 && (
-                <Slide direction="up" in timeout={1000}>
-                  <Box>
-                    <HorizontalCard
-                      width={500}
-                      onCardClick={(v?: string) => {
-                        navigate(
-                          `/psychscreen/single-cell/datasets/Gene-regulatory-networks/${v}`,
-                          { state: { searchvalue: v } }
-                        );
-                      }}
-                      cardContentText={cellTypeCards}
-                    />
-                  </Box>
-                </Slide>
-              )}
-
-              {grnpage === -1 && (
-                  <SingleCellBrowser
-                    coordinates={coordinates}
-                    assembly={"hg38"}
-                    grntracks
+            <br />
+            <br />
+            {grnpage === 0 && (
+              <Slide direction="up" in timeout={1000}>
+                <Box>
+                  <HorizontalCard
+                    width={500}
+                    onCardClick={(v?: string) => {
+                      navigate(
+                        `/psychscreen/single-cell/datasets/Gene-regulatory-networks/${v}`,
+                        { state: { searchvalue: v } }
+                      );
+                    }}
+                    cardContentText={cellTypeCards}
                   />
-              )}
+                </Box>
+              </Slide>
+            )}
+            {grnpage === -1 && (
+              <SingleCellBrowser
+                coordinates={coordinates}
+                assembly={"hg38"}
+                grntracks
+              />
+            )}
           </Container>
         </Grid>
       )}
       {disease === "Cell-type-specific-eQTLs" && (
         <Grid xs={12}>
           <Typography
-              type="display"
-              size="medium"
-              mb={1}
-              style={{
-                fontWeight: 700,
-                fontSize: "40px",
-                lineHeight: "57.6px",
-                letterSpacing: "0.5px",
-              }}
-            >
-              Cell Type Specific eQTLs
-            </Typography>
-            <StyledButton
-              bvariant={qtlpage === -1 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setQtlPage(-1)}
-            >
-              Genome Browser
-            </StyledButton>
-            &nbsp;&nbsp;&nbsp;
-            <StyledButton
-              bvariant={qtlpage === 0 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setQtlPage(0)}
-            >
-              Cell Types
-            </StyledButton>
-            &nbsp;&nbsp;&nbsp;
-            <br />
-            <br />
-              {qtlpage === 0 && (
-                <>
-                  <Slide direction="up" in timeout={1000}>
-                    <Box>
-                      <HorizontalCard
-                        width={500}
-                        onCardClick={(v?: string) => {
-                          navigate(
-                            `/psychscreen/single-cell/datasets/Cell-type-specific-eQTLs/${v}`,
-                            { state: { searchvalue: v } }
-                          );
-                        }}
-                        cardContentText={qtlcellTypeCards}
-                      />
-                    </Box>
-                  </Slide>
-                </>
-              )}
-              {qtlpage === -1 && (
-                <>
-                  <SingleCellBrowser
-                    coordinates={coordinates}
-                    assembly={"hg38"}
-                    qtltracks
-                  />
-                </>
-              )}
-        </Grid>
-      )}
-      {disease === "Indiv-cohort-expression-data" && (
-        <Grid xs={12}>
+            type="display"
+            size="medium"
+            mb={1}
+            style={{
+              fontWeight: 700,
+              fontSize: "40px",
+              lineHeight: "57.6px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            Cell Type Specific eQTLs
+          </Typography>
+          <StyledButton
+            bvariant={qtlpage === -1 ? "filled" : "outlined"}
+            btheme="light"
+            onClick={() => setQtlPage(-1)}
+          >
+            Genome Browser
+          </StyledButton>
+          &nbsp;&nbsp;&nbsp;
+          <StyledButton
+            bvariant={qtlpage === 0 ? "filled" : "outlined"}
+            btheme="light"
+            onClick={() => setQtlPage(0)}
+          >
+            Cell Types
+          </StyledButton>
+          &nbsp;&nbsp;&nbsp;
+          <br />
+          <br />
+          {qtlpage === 0 && (
+            <>
               <Slide direction="up" in timeout={1000}>
                 <Box>
                   <HorizontalCard
                     width={500}
                     onCardClick={(v?: string) => {
-                      navigate(`/psychscreen/single-cell/${v}`, {
-                        state: { searchvalue: v },
-                      });
+                      navigate(
+                        `/psychscreen/single-cell/datasets/Cell-type-specific-eQTLs/${v}`,
+                        { state: { searchvalue: v } }
+                      );
                     }}
-                    cardContentText={DISEASE_CARDS}
+                    cardContentText={qtlcellTypeCards}
                   />
                 </Box>
               </Slide>
+            </>
+          )}
+          {qtlpage === -1 && (
+            <>
+              <SingleCellBrowser
+                coordinates={coordinates}
+                assembly={"hg38"}
+                qtltracks
+              />
+            </>
+          )}
+        </Grid>
+      )}
+      {disease === "Indiv-cohort-expression-data" && (
+        <Grid xs={12}>
+          <Slide direction="up" in timeout={1000}>
+            <Box>
+              <HorizontalCard
+                width={500}
+                onCardClick={(v?: string) => {
+                  navigate(`/psychscreen/single-cell/${v}`, {
+                    state: { searchvalue: v },
+                  });
+                }}
+                cardContentText={DISEASE_CARDS}
+              />
+            </Box>
+          </Slide>
         </Grid>
       )}
     </Grid>

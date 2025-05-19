@@ -138,7 +138,6 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
     [inView]
   );
 
-  
   const allQTLs = useMemo(
     () =>
       inView
@@ -187,7 +186,8 @@ const ManhattanPlotTrack: React.FC<ManhattanPlotTrackProps> = (props) => {
                 : "start"
             }
           >
-            {props.anchor}{props.ld.find(d=> d.id===props.anchor)?.rSquared}
+            {props.anchor}
+            {props.ld.find((d) => d.id === props.anchor)?.rSquared}
           </text>
         </g>
       )}

@@ -199,36 +199,44 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
 
   return (
-    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+    <Grid
+      container
+      spacing={3}
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+    >
       <Grid item xs={12}>
-          <Typography
-            type="display"
-            size="medium"
-            style={{
-              fontWeight: 700,
-              fontSize: "36px",
-              lineHeight: "57.6px",
-              letterSpacing: "0.5px",
-              marginBottom: "16px",
-            }}
-          >
-            {disease}
-          </Typography>
-          <br />
-            <Slide direction="up" in timeout={1000}>
-              <Box>
-                <HorizontalCard
-                  width={500}
-                  onCardClick={(v?: string) => {
-                    navigate(
-                      `/psychscreen/single-cell/datasets/Diff-expressed-genes/${disease}/${v}`,
-                      { state: { searchvalue: v } }
-                    );
-                  }}
-                  cardContentText={diseaseCT[disease!]}
-                />
-              </Box>
-            </Slide>
+        <Typography
+          type="display"
+          size="medium"
+          style={{
+            fontWeight: 700,
+            fontSize: "36px",
+            lineHeight: "57.6px",
+            letterSpacing: "0.5px",
+            marginBottom: "16px",
+          }}
+        >
+          {disease}
+        </Typography>
+        <br />
+        <Slide direction="up" in timeout={1000}>
+          <Box>
+            <HorizontalCard
+              width={500}
+              onCardClick={(v?: string) => {
+                navigate(
+                  `/psychscreen/single-cell/datasets/Diff-expressed-genes/${disease}/${v}`,
+                  { state: { searchvalue: v } }
+                );
+              }}
+              cardContentText={diseaseCT[disease!]}
+            />
+          </Box>
+        </Slide>
       </Grid>
     </Grid>
   );

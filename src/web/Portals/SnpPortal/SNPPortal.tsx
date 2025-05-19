@@ -8,13 +8,15 @@ import { PortalPanel } from "../../HomePage/PortalsPanel";
 
 const SNPPortal: React.FC = () => {
   return (
-    <Box mt={10} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "55%", lg: "70%", md: "85%", sm: "85%", xs: "90%" }}>
-      <PortalPanel
-        portal="SNP"
-        mode="search"
-        imagePlacement={"right"}
-      />
+    <Box
+      mt={10}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "55%", lg: "70%", md: "85%", sm: "85%", xs: "90%" }}
+    >
+      <PortalPanel portal="SNP" mode="search" imagePlacement={"right"} />
     </Box>
-  )
+  );
 };
 export default SNPPortal;

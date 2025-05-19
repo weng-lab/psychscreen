@@ -179,7 +179,6 @@ export const defaultManhattanSNPProps = (
 });
 
 export const ManhattanTrack: React.FC<ManhattanTrackProps> = (props) => {
-  
   const tooltipContext = useContext(TooltipContext);
   const Tooltip = props.tooltipContent || TooltipContent;
   const mouseOver = useCallback(
@@ -247,8 +246,7 @@ export const ManhattanTrack: React.FC<ManhattanTrackProps> = (props) => {
         <ClipPath id={id} width={props.width} height={props.height} />
       </defs>
       <text x={40} y={y(props.threshold || 7.3)}>
-        {toScientificNotation(+"5e-8",0)}
-        
+        {toScientificNotation(+"5e-8", 0)}
       </text>
       <line
         stroke="#ff0000"

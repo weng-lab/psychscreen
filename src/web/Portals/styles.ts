@@ -14,4 +14,3 @@ export const StyledButton = styled(Button)(() => ({
 export const StyledToggleButton = styled(ToggleButton)(() => ({
   textTransform: "none" as any,
 }));
-

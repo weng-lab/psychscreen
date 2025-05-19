@@ -5,9 +5,7 @@ import { EGene } from "./SNPDetails";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { Typography as MUITypography } from "@mui/material";
-import {
-  Typography
-} from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useNavigate } from "react-router-dom";
 import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 const QUERY = gql`
@@ -115,75 +113,87 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     skip: qtlsigassocLoading || !qtlsigassocData,
   });
 
- 
   const qtlsigData = [
-      {
-        header: "Gene ID",
-        value: (x) => x.geneid,
-        render: (x) => x.qtltype==="eQTL" ?   
-        <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${x.geneid}`}>
-          <i>{x.geneid}</i> 
-        </a> : x.geneid
-        
-      },
-      {
-        header: "Distance",
-        value:(x) =>  x.dist,
-      },
-      {
-        header: "Slope",
-        value:(x) =>  x.slope.toFixed(2),
-      },
-      {
-        header: "FDR",
-        value:(x) =>  x.fdr.toFixed(2),
-      },
-      {
-        header: "P",
-        HeaderRender: () => <MUITypography><i>P</i></MUITypography>,
-        value:(x) =>  x.npval.toFixed(2),
-      },
-      {
-        header: "Type",
-        value:(x) =>  x.qtltype,
-      }
-    ];
+    {
+      header: "Gene ID",
+      value: (x) => x.geneid,
+      render: (x) =>
+        x.qtltype === "eQTL" ? (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`/psychscreen/gene/${x.geneid}`}
+          >
+            <i>{x.geneid}</i>
+          </a>
+        ) : (
+          x.geneid
+        ),
+    },
+    {
+      header: "Distance",
+      value: (x) => x.dist,
+    },
+    {
+      header: "Slope",
+      value: (x) => x.slope.toFixed(2),
+    },
+    {
+      header: "FDR",
+      value: (x) => x.fdr.toFixed(2),
+    },
+    {
+      header: "P",
+      HeaderRender: () => (
+        <MUITypography>
+          <i>P</i>
+        </MUITypography>
+      ),
+      value: (x) => x.npval.toFixed(2),
+    },
+    {
+      header: "Type",
+      value: (x) => x.qtltype,
+    },
+  ];
 
   const deconqtlColumns = [
     {
       header: "Gene ID",
-      value:(x) => x.geneid      
+      value: (x) => x.geneid,
     },
     {
       header: "Slope",
-      value:(x) => x.slope.toFixed(2),
+      value: (x) => x.slope.toFixed(2),
     },
     {
       header: "eQTL nominal P",
-      HeaderRender: () => <MUITypography>eQTL nominal <i>P</i></MUITypography>,
-      value:(x) => toScientificNotation(x.nom_val,2),
+      HeaderRender: () => (
+        <MUITypography>
+          eQTL nominal <i>P</i>
+        </MUITypography>
+      ),
+      value: (x) => toScientificNotation(x.nom_val, 2),
     },
     {
       header: "Adjusted beta pvalue",
-      value:(x) => x.adj_beta_pval.toFixed(2),
+      value: (x) => x.adj_beta_pval.toFixed(2),
     },
     {
       header: "R Squared",
-      value:(x) => x.r_squared.toFixed(2),
+      value: (x) => x.r_squared.toFixed(2),
     },
     {
       header: "Coordinates",
-      value:(x) => "chr" + x.snp_chrom + ":" + x.snp_start.toLocaleString(),
+      value: (x) => "chr" + x.snp_chrom + ":" + x.snp_start.toLocaleString(),
     },
     {
       header: "Cell Type",
-      value:(x) => x.celltype,
+      value: (x) => x.celltype,
     },
-  ];  
+  ];
 
-  const deconqtlData =
-    eqtlData &&
-    eqtlData.deconqtlsQuery
+  const deconqtlData = eqtlData && eqtlData.deconqtlsQuery;
 
   const genemap = useMemo(
     () =>
@@ -207,20 +217,24 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     [data, genemap]
   );
 
-  const egenesColumns  = [
+  const egenesColumns = [
     {
       header: "Gene",
-      value:(d) => d.name,
-      render:(d) => (
-        <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${d.name}`}>
-          <i>{d.name}</i> 
+      value: (d) => d.name,
+      render: (d) => (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`/psychscreen/gene/${d.name}`}
+        >
+          <i>{d.name}</i>
         </a>
       ),
     },
     {
       header: "p",
-      value:(d) => d.nominal_pval,
-      render:(d) => (
+      value: (d) => d.nominal_pval,
+      render: (d) => (
         <span>
           {" "}
           {d.nominal_pval < 0.001
@@ -231,26 +245,20 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     },
     {
       header: "FDR",
-      value:(d) => d.fdr,
-      render:(d) => (
-        <span>
-          {d.fdr < 0.001 ? d.fdr.toExponential(2) : d.fdr.toFixed(2)}
-        </span>
+      value: (d) => d.fdr,
+      render: (d) => (
+        <span>{d.fdr < 0.001 ? d.fdr.toExponential(2) : d.fdr.toFixed(2)}</span>
       ),
     },
     {
       header: "slope",
-      value:(d) => d.slope,
+      value: (d) => d.slope,
       render: (d) => <span>{d.slope.toFixed(2)}</span>,
-    }
-
-  ]
+    },
+  ];
   const egeneData =
-    data &&
-    data.gene &&
-    [...genes.keys()]
-      .map((k) => genes.get(k)!)
-      
+    data && data.gene && [...genes.keys()].map((k) => genes.get(k)!);
+
   return loading || !egeneData || qtlsigassocLoading || eqtlLoading ? (
     <>
       <Typography
@@ -275,17 +283,11 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       {" "}
       {egeneData && egeneData.length > 0 ? (
         <>
-          <Typography
-            type="title"          
-            size="large"
-          >
+          <Typography type="title" size="large">
             eGenes for {props.snp}:
           </Typography>
 
-          <DataTable            
-            columns={egenesColumns}
-            rows={egeneData}
-          />
+          <DataTable columns={egenesColumns} rows={egeneData} />
         </>
       ) : (
         <>
@@ -297,42 +299,38 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
           <br />
         </>
       )}
-      {deconqtlData && deconqtlData.length > 0  &&(
+      {deconqtlData && deconqtlData.length > 0 && (
         <>
           <Typography type="title" size="large">
             {`The following decon-eQTLs have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
-          <DataTable
-            rows={deconqtlData}
-            columns={deconqtlColumns}
-          />
+          <DataTable rows={deconqtlData} columns={deconqtlColumns} />
         </>
       )}
-      <br/>
+      <br />
       {qtlsigassocData && qtlsigassocData.qtlsigassocQuery.length > 0 && (
         <>
           <Typography type="title" size="large">
             {`The following eQTLs/isoQTLs (Gandal lab) have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
           <DataTable
-            
             columns={qtlsigData}
-            rows={qtlsigassocData.qtlsigassocQuery.map(x=>{
+            rows={qtlsigassocData.qtlsigassocQuery.map((x) => {
               return {
                 ...x,
-                geneid:  x.geneid.includes("ENSG")
-                ? (geneNameData &&
-                    geneNameData.gene.find((g) => g.id.split(".")[0] === x.geneid)
-                      ?.name) ||
-                  x.geneid
-                : (transcriptNameData &&
-                    transcriptNameData.transcript.find(
-                      (g) => g.id.split(".")[0] === x.geneid.split(".")[0]
-                    )?.name) ||
-                  x.geneid,
-              }
+                geneid: x.geneid.includes("ENSG")
+                  ? (geneNameData &&
+                      geneNameData.gene.find(
+                        (g) => g.id.split(".")[0] === x.geneid
+                      )?.name) ||
+                    x.geneid
+                  : (transcriptNameData &&
+                      transcriptNameData.transcript.find(
+                        (g) => g.id.split(".")[0] === x.geneid.split(".")[0]
+                      )?.name) ||
+                    x.geneid,
+              };
             })}
-            
             sortDescending
           />
         </>

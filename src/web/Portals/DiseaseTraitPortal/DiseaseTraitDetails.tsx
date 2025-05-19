@@ -1,12 +1,12 @@
 /**
- * @Jonathan 5/3/24 - 
+ * @Jonathan 5/3/24 -
  */
 
 import { useParams } from "react-router-dom";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/material";
-import Grid from '@mui/material/Unstable_Grid2'
+import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
@@ -195,7 +195,6 @@ function useLoci(trait: string) {
     );
   }, [data]);
 
-  
   return { loci, loading, data };
 }
 
@@ -207,21 +206,30 @@ const DiseaseTraitDetails: React.FC = () => {
     ? state
     : { searchvalue: "", diseaseDesc: "" };
 
-  const [gwasLocusSNPs, setGwasLocusSNPs] = useState<{SNPCount : number, minimump: number, coordinates: GenomicRange }>()
+  const [gwasLocusSNPs, setGwasLocusSNPs] = useState<{
+    SNPCount: number;
+    minimump: number;
+    coordinates: GenomicRange;
+  }>();
   //This needs to be set to the diseases first risk loci
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
     chromosome: "chr1",
     start: 161033654,
     end: 161317875,
   });
-  const navigateBrowser = useCallback((coordinates: GenomicRange, gwasLocusSNPs?: { SNPCount : number, minimump: number }) => {
-    
-    if(gwasLocusSNPs){
-      setGwasLocusSNPs({...gwasLocusSNPs, coordinates: coordinates})
-    }
-    setBrowserCoordinates(coordinates);
-    setPage(3);
-  }, []);
+  const navigateBrowser = useCallback(
+    (
+      coordinates: GenomicRange,
+      gwasLocusSNPs?: { SNPCount: number; minimump: number }
+    ) => {
+      if (gwasLocusSNPs) {
+        setGwasLocusSNPs({ ...gwasLocusSNPs, coordinates: coordinates });
+      }
+      setBrowserCoordinates(coordinates);
+      setPage(3);
+    },
+    []
+  );
 
   const diseaseLabel =
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
@@ -231,18 +239,17 @@ const DiseaseTraitDetails: React.FC = () => {
       ? FULLSUMSTAT_URL_MAP[disease]
       : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
     : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
-  
+
   const { loci, data } = useLoci(disease || "");
 
   useEffect(() => {
-    loci && setBrowserCoordinates(
-      {
+    loci &&
+      setBrowserCoordinates({
         chromosome: loci[0].chromosome,
         start: loci[0].start + 1500000,
-        end: loci[0].end - 1500000
-      }
-    )
-  }, [loci])
+        end: loci[0].end - 1500000,
+      });
+  }, [loci]);
 
   const { data: genesdata } = useQuery(AssociatedGenesQuery, {
     variables: {
@@ -287,34 +294,52 @@ const DiseaseTraitDetails: React.FC = () => {
     genesdata.genesAssociationsQuery.filter((g) => g.dge_fdr <= 0.05);
 
   return (
-    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+    <Grid
+      container
+      spacing={3}
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+    >
       <Grid xs={12}>
-          <Typography
-            type="display"
-            size="medium"
-            style={{
-              fontWeight: 700,
-              fontSize: "48px",
-              lineHeight: "57.6px",
-              letterSpacing: "0.5px",
-            }}
-          >
-            {diseaseLabel}
-          </Typography>
+        <Typography
+          type="display"
+          size="medium"
+          style={{
+            fontWeight: 700,
+            fontSize: "48px",
+            lineHeight: "57.6px",
+            letterSpacing: "0.5px",
+          }}
+        >
+          {diseaseLabel}
+        </Typography>
       </Grid>
       <Grid xs={12}>
-          <Typography
-            type="body"
-            size="large"
-            style={{
-              fontSize: "16px",
-              lineHeight: "24px",
-              fontWeight: 400,
-              letterSpacing: "0.3%",
-            }}
-          >
-            {diseaseDesc.split("~~").length>1 ? <>{diseaseDesc.split("~~")[0]}<><i>{diseaseDesc.split("~~")[1]}</i>{diseaseDesc.split("~~")[2]}</></>: diseaseDesc}
-          </Typography>
+        <Typography
+          type="body"
+          size="large"
+          style={{
+            fontSize: "16px",
+            lineHeight: "24px",
+            fontWeight: 400,
+            letterSpacing: "0.3%",
+          }}
+        >
+          {diseaseDesc.split("~~").length > 1 ? (
+            <>
+              {diseaseDesc.split("~~")[0]}
+              <>
+                <i>{diseaseDesc.split("~~")[1]}</i>
+                {diseaseDesc.split("~~")[2]}
+              </>
+            </>
+          ) : (
+            diseaseDesc
+          )}
+        </Typography>
       </Grid>
       <Grid xs={12}>
         <Stack direction="row" spacing={1}>
@@ -326,41 +351,41 @@ const DiseaseTraitDetails: React.FC = () => {
             GWAS Locus Overview
           </StyledButton>
           {gassoc && gassoc.length > 0 && (
-              <StyledButton
-                bvariant={page === 0 ? "filled" : "outlined"}
-                btheme="light"
-                onClick={() => {
-                  setPage(0);
-                }}
-              >
-                Gene Associations (TWAS)
-              </StyledButton>
+            <StyledButton
+              bvariant={page === 0 ? "filled" : "outlined"}
+              btheme="light"
+              onClick={() => {
+                setPage(0);
+              }}
+            >
+              Gene Associations (TWAS)
+            </StyledButton>
           )}
           {data &&
             (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
               .gwassnpAssociationsQuery?.length > 0 && (
-                <StyledButton
-                  bvariant={page === 1 ? "filled" : "outlined"}
-                  btheme="light"
-                  onClick={() => {
-                    setPage(1);
-                  }}
-                >
-                  Associated SNPs &amp; QTLs
-                </StyledButton>
+              <StyledButton
+                bvariant={page === 1 ? "filled" : "outlined"}
+                btheme="light"
+                onClick={() => {
+                  setPage(1);
+                }}
+              >
+                Associated SNPs &amp; QTLs
+              </StyledButton>
             )}
           {gwasIntersectingSnpWithCcresData &&
             adultgwasIntersectingSnpWithBcresData &&
             fetalgwasIntersectingSnpWithBcresData &&
             gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
               .length > 0 && (
-                <StyledButton
-                  bvariant={page === 2 ? "filled" : "outlined"}
-                  btheme="light"
-                  onClick={() => setPage(2)}
-                >
-                  Associated SNPs in locus
-                </StyledButton>
+              <StyledButton
+                bvariant={page === 2 ? "filled" : "outlined"}
+                btheme="light"
+                onClick={() => setPage(2)}
+              >
+                Associated SNPs in locus
+              </StyledButton>
             )}
           {browserCoordinates && (
             <StyledButton
@@ -372,7 +397,7 @@ const DiseaseTraitDetails: React.FC = () => {
             </StyledButton>
           )}
           {/* Unused, can I remove? */}
-          {significantSNPs && significantSNPs.length > 0 && 0>1 && (
+          {significantSNPs && significantSNPs.length > 0 && 0 > 1 && (
             <StyledButton
               bvariant={page === 4 ? "filled" : "outlined"}
               btheme="light"
@@ -385,7 +410,11 @@ const DiseaseTraitDetails: React.FC = () => {
       </Grid>
       <Grid xs={12}>
         {page === -1 ? (
-          <RiskLocusView loci={loci || []} onLocusClick={navigateBrowser} disease={disease || ""} />
+          <RiskLocusView
+            loci={loci || []}
+            onLocusClick={navigateBrowser}
+            disease={disease || ""}
+          />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
           <GeneAssociations disease={disease || ""} data={gassoc} />
         ) : page === 1 &&
@@ -400,7 +429,6 @@ const DiseaseTraitDetails: React.FC = () => {
                 .gwassnpAssociationsQuery
             }
           />
-          
         ) : page === 2 &&
           gwasIntersectingSnpWithCcresData &&
           adultgwasIntersectingSnpWithBcresData &&
@@ -421,13 +449,16 @@ const DiseaseTraitDetails: React.FC = () => {
             }
           />
         ) : page === 3 ? (
-            <Browser
-              coordinates={browserCoordinates}
-              url={summaryStatisticsURL}
-              trait={diseaseLabel || "Autism Spectrum Disorder"}
-              gwasLocusSNPs={gwasLocusSNPs}
-            />
-        ) : page === 4 && significantSNPs && significantSNPs.length > 0 && 0>1 ?  (
+          <Browser
+            coordinates={browserCoordinates}
+            url={summaryStatisticsURL}
+            trait={diseaseLabel || "Autism Spectrum Disorder"}
+            gwasLocusSNPs={gwasLocusSNPs}
+          />
+        ) : page === 4 &&
+          significantSNPs &&
+          significantSNPs.length > 0 &&
+          0 > 1 ? (
           // Unused, can I remove?
           <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
         ) : null}

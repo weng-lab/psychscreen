@@ -6,11 +6,7 @@ const AboutUsPanel: React.FC = () => {
   return (
     <Grid2 container xs={12} mt={3}>
       <Grid2 xs={12}>
-        <PortalPanel
-          portal="About"
-          mode="button"
-          imagePlacement={"left"}
-        />
+        <PortalPanel portal="About" mode="button" imagePlacement={"left"} />
       </Grid2>
     </Grid2>
   );

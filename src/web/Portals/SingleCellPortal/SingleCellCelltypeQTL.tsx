@@ -9,10 +9,15 @@ const COLUMNS = [
   {
     header: "Gene",
     value: (row) => row.gene,
-    HeaderRender: (row) => 
-    <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${row.name}`}>
-      <i>{row.name}</i> 
-    </a>
+    HeaderRender: (row) => (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={`/psychscreen/gene/${row.name}`}
+      >
+        <i>{row.name}</i>
+      </a>
+    ),
   },
   {
     header: "Gene Chromosome",
@@ -98,46 +103,53 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   }, [celltype]);
 
   return (
-    <Grid container mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "95%", lg: "90%", md: "95%", sm: "95%", xs: "95%" }}>
+    <Grid
+      container
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "95%", lg: "90%", md: "95%", sm: "95%", xs: "95%" }}
+    >
       <Grid item xs={12}>
+        <Typography
+          type="display"
+          size="medium"
+          style={{
+            fontWeight: 700,
+            fontSize: "36px",
+            lineHeight: "57.6px",
+            letterSpacing: "0.5px",
+            marginBottom: "16px",
+          }}
+        >
+          {celltype}
+        </Typography>
+        <br />
+        {qtl.length === 0 && (
           <Typography
-            type="display"
-            size="medium"
+            type="body"
+            size="large"
             style={{
-              fontWeight: 700,
-              fontSize: "36px",
-              lineHeight: "57.6px",
-              letterSpacing: "0.5px",
-              marginBottom: "16px",
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
             }}
           >
-            {celltype}
+            Loading Gene Regulatory Networks data for {celltype}...
           </Typography>
-          <br />
-          {qtl.length === 0 && (
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                Loading Gene Regulatory Networks data for {celltype}...
-              </Typography>
-          )}
-          {qtl && qtl.length > 0 && (
-              <DataTable
-                columns={COLUMNS}
-                rows={qtl}
-                itemsPerPage={20}
-                searchable
-              />
-          )}
+        )}
+        {qtl && qtl.length > 0 && (
+          <DataTable
+            columns={COLUMNS}
+            rows={qtl}
+            itemsPerPage={20}
+            searchable
+          />
+        )}
       </Grid>
     </Grid>
   );

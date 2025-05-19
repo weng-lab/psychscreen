@@ -22,8 +22,8 @@ const MainPanel: React.FC = () => {
   };
 
   const theme = useTheme();
-  const betweenSmLg = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  
+  const betweenSmLg = useMediaQuery(theme.breakpoints.between("sm", "lg"));
+
   /**
    * xs, extra-small: 0px
    * sm, small: 600px
@@ -31,7 +31,6 @@ const MainPanel: React.FC = () => {
    * lg, large: 1200px
    * xl, extra-large: 1536px
    */
-
 
   return (
     <div>
@@ -123,18 +122,25 @@ const MainPanel: React.FC = () => {
             )}
           </Stack>
         </Grid2>
-        <Grid2 xs={12} sm={6} 
+        <Grid2
+          xs={12}
+          sm={6}
           order={{ xs: 1, sm: 2 }}
           minHeight={250}
-          display={{xs: 'none', sm: 'inherit'}} //hide on mobile,
+          display={{ xs: "none", sm: "inherit" }} //hide on mobile,
         >
-          <Box 
-            position={"relative"} 
-            height={"100%"} 
-            width={'100%'} 
-            sx={{ 
-              objectPosition: { lg: 'right center',  md: "center center", xs: "right center" }
-            }}>
+          <Box
+            position={"relative"}
+            height={"100%"}
+            width={"100%"}
+            sx={{
+              objectPosition: {
+                lg: "right center",
+                md: "center center",
+                xs: "right center",
+              },
+            }}
+          >
             <img
               style={{
                 objectFit: "contain",

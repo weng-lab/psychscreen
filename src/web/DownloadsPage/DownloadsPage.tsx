@@ -70,7 +70,9 @@ const eqtls = {
       24259466,
       "https://downloads.wenglab.org/L5.IT_sig_QTLs.dat"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "Layer 6b Excitatory Neurons",
@@ -157,7 +159,9 @@ const eqtls = {
       9513653,
       "https://downloads.wenglab.org/Vip_sig_QTLs.dat"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
 };
 const deg = {
   colorGroups: {
@@ -178,7 +182,9 @@ const deg = {
       28216020,
       "https://downloads.wenglab.org/Age_DEGcombined.csv"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "Bipolar Disorder",
@@ -194,7 +200,9 @@ const deg = {
       28152425,
       "https://downloads.wenglab.org/Schizophrenia_DEGcombined.csv"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
 };
 const grns = {
   colorGroups: {
@@ -222,7 +230,9 @@ const grns = {
       11474071,
       "https://downloads.wenglab.org/End_GRN.txt"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "Immune Cells",
@@ -371,7 +381,9 @@ const grns = {
       10145653,
       "https://downloads.wenglab.org/Vip_GRN.txt"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
 };
 
 const atacPeaks = {
@@ -397,7 +409,9 @@ const atacPeaks = {
       3770493,
       "https://downloads.wenglab.org/Micro.PeakCalls.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     //"Inhibitory Neurons",
     createData(
@@ -437,7 +451,9 @@ const atacPeaks = {
       4267561,
       "https://downloads.wenglab.org/Oligo.PeakCalls.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   colorGroups: {
     all: "#fafafa",
   },
@@ -451,7 +467,9 @@ const bCREDownloads = {
       19868751,
       "https://downloads.wenglab.org/all_bCREs.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "Adult candidate brain cis-Regulatory Elements (b-cCREs), All",
@@ -481,7 +499,9 @@ const bCREDownloads = {
       12677878,
       "https://downloads.wenglab.org/fetal_bCREs.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   colorGroups: {
     all: "#fafafa",
     adult: "#eeeeee",
@@ -505,7 +525,9 @@ const bulkImportantRegionDownloads = {
       422733989,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/VLPFC_glia.profile_scores.bw.pos.bb.bed.annotated.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "VLPFC Neurons ATAC-seq signal, Downregulating",
@@ -549,7 +571,9 @@ const bulkImportantRegionDownloads = {
       96898982,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/NeuN-.profile_scores.bw.neg.bb.bed.annotated.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   colorGroups: {
     VLPFC: "#fafafa",
     putamen: "#eeeeee",
@@ -572,7 +596,9 @@ const singleCellImportantRegionDownloads = {
       37124711,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Microglia.profile_scores.bw.neg.bed.annotated.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "Astrocytes, Upregulating",
@@ -644,7 +670,9 @@ const singleCellImportantRegionDownloads = {
       120385750,
       "https://gcp.wenglab.org/psychscreen-downloads/important-regions/Glutaminergic_Neuron_2.profile_scores.bw.neg.bed.annotated.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   colorGroups: {
     microglia: "#fafafa",
     astrocytes: "#eeeeee",
@@ -702,23 +730,23 @@ const gwasMetaDownloads = {
       "brain",
       15342055,
       836612757,
-      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/AgeFirstBirth_Mills_meta.formatted.bed",
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/AgeFirstBirth_Mills_meta.formatted.bed"
     ),
     createData(
       "Alzheimers",
       "brain",
       1185515,
       63141184,
-      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bed",
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bed"
     ),
     createData(
       "Anorexia Nervosa",
       "brain",
       8170867,
       441227579,
-      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Anorexia_meta_PGC.formatted.bed",
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Anorexia_meta_PGC.formatted.bed"
     ),
-    
+
     createData(
       "Autism Spectrum Disorder",
       "brain",
@@ -726,7 +754,9 @@ const gwasMetaDownloads = {
       519317164,
       "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ASD_Matoba2021.formatted.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   extraRows: [
     createData(
       "Bipolar Disorder",
@@ -747,7 +777,7 @@ const gwasMetaDownloads = {
       "brain",
       1187090,
       63471107,
-      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/CigarettesPerDay_meta_Koskeridis.formatted.bed",
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/CigarettesPerDay_meta_Koskeridis.formatted.bed"
     ),
     createData(
       "Intelligence",
@@ -803,16 +833,18 @@ const gwasMetaDownloads = {
       "non-brain",
       1187048,
       63268462,
-      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SleepDuration_meta_Dashti.formatted.bed",
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/SleepDuration_meta_Dashti.formatted.bed"
     ),
     createData(
       "Years Of Education",
       "non-brain",
       1172234,
       62735623,
-      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/YearsOfEducation_meta_Okbay.formatted.bed",
+      "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/YearsOfEducation_meta_Okbay.formatted.bed"
     ),
-  ].sort((a: DataRow,b: DataRow)=> a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+  ].sort((a: DataRow, b: DataRow) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  ),
   colorGroups: {
     brain: "#fafafa",
     "non-brain": "#eeeeee",
