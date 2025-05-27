@@ -2,7 +2,6 @@
   "name": "psychscreen",
   "version": "0.4.3",
   "private": true,
-  "homepage": "%PUBLIC_URL%",
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@emotion/react": "^11.10.0",
