@@ -18,7 +18,6 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@visx/tooltip": "^3.3.0",
-    "@vitessce/spatial": "^3.5.11",
     "@weng-lab/psychscreen-ui-components": "^0.8.8",
     "@weng-lab/ts-ztable": "latest",
     "apollo-link": "^1.2.14",
