@@ -4,6 +4,7 @@ import { Vitessce } from "vitessce";
 import Grid from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 
 interface SampleInfo {
   dataset: string;
@@ -79,6 +80,18 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
             <Vitessce config={config} theme="light" />
           </Grid>
         )}
+        <Typography type="body" size="medium" mb={1}>
+          Data and cluster information belonging to the HumanPilot10X dataset
+          are from Maynard KR, Collado-Torres L, <i>et al.</i>,
+          Transcriptome-scale spatial gene expression in the human dorsolateral
+          prefrontal cortex. Nat Neurosci. 2021
+        </Typography>
+        <Typography type="body" size="medium" mb={1}>
+          Data and cluster information belonging to the spatialDLPFC dataset are
+          from Huuki-Myers LA, <i>et al.</i>, A data-driven single-cell and
+          spatial transcriptomic map of the human prefrontal cortex. Science
+          2024
+        </Typography>
       </>
     </Grid>
   );
