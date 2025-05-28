@@ -9,7 +9,7 @@ import {
   FormLabel,
 } from "@mui/material";
 
-import Grid from '@mui/material/Unstable_Grid2'
+import Grid from "@mui/material/Unstable_Grid2";
 import {
   Typography,
   Button,
@@ -30,20 +30,35 @@ import { StyledTab } from "../../Portals/styles";
 import { Download } from "@mui/icons-material";
 import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
 
-
-
 const COLUMNS = [
   {
     header: "Cell type",
     headerRender: () => {
       return <b>Cell type</b>;
     },
-    value: (row) => GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype,
+    value: (row) =>
+      GENE_CELLTYPE_CARDS.find((c) => c.val === row.celltype)?.cardLabel ||
+      row.celltype,
     render: (row) => {
-      let option = GENE_CELLTYPE_CARDS.find(c=>c.val===row.celltype)?.cardLabel || row.celltype
-      return <>{option.includes("-expressing") ? <><i>{option.split("-expressing")[0]}</i><>{" -expressing"}{option.split("-expressing")[1]}</></> : option}</>
-      },
-
+      let option =
+        GENE_CELLTYPE_CARDS.find((c) => c.val === row.celltype)?.cardLabel ||
+        row.celltype;
+      return (
+        <>
+          {option.includes("-expressing") ? (
+            <>
+              <i>{option.split("-expressing")[0]}</i>
+              <>
+                {" -expressing"}
+                {option.split("-expressing")[1]}
+              </>
+            </>
+          ) : (
+            option
+          )}
+        </>
+      );
+    },
   },
   {
     header: "Fraction Cells Non-Zero",
@@ -465,7 +480,9 @@ const SingleCell: React.FC<{
           fill:
             colorScheme === "expression"
               ? x.expressionColor
-              : colors.get(ctClass === "by Cell type" ? x.subclass : x.celltype),
+              : colors.get(
+                  ctClass === "by Cell type" ? x.subclass : x.celltype
+                ),
           fillOpacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
           r: 8,
           strokeWidth:
@@ -531,12 +548,7 @@ const SingleCell: React.FC<{
     <Grid container spacing={2}>
       {selectDatasets && (
         <>
-          <Grid
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-          >
+          <Grid sm={12} md={12} lg={12} xl={12}>
             <Typography type="body" size="large" mb={1}>
               Select PsychENCODE Dataset:
             </Typography>
@@ -565,16 +577,8 @@ const SingleCell: React.FC<{
               </FormControl>
             }
           </Grid>
-          <Grid
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-          >
-            <Typography
-              type="body"
-              size="large"
-            >
+          <Grid sm={12} md={12} lg={12} xl={12}>
+            <Typography type="body" size="large">
               {DATASETS.get(dataset)!.desc}
             </Typography>
           </Grid>
@@ -603,7 +607,9 @@ const SingleCell: React.FC<{
                 </StyledButton>
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
+                  bvariant={
+                    ctClass === "by Broader Cell type" ? "filled" : "outlined"
+                  }
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
@@ -654,7 +660,7 @@ const SingleCell: React.FC<{
                     `${gene}-${dataset}-single-cell-dot-plot.svg`
                   )
                 }
-                sx={{ textTransform: 'none', ml: 1, alignSelf: 'flex-end' }}
+                sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
               >
                 Download
               </MUIButton>
@@ -680,34 +686,34 @@ const SingleCell: React.FC<{
                 </StyledButton>
                 <StyledButton
                   btheme="light"
-                  bvariant={ctClass === "by Broader Cell type" ? "filled" : "outlined"}
+                  bvariant={
+                    ctClass === "by Broader Cell type" ? "filled" : "outlined"
+                  }
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
                   By Broader Cell Type
                 </StyledButton>
               </Stack>
-                {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
-                    <DataTable
-                      columns={COLUMNS}
-                      rows={
-                        ctClass === "by Cell type"
-                          ? scrows
-                              .filter((s) => s.celltype !== "RB")
-                              .filter((e) => e.dataset === dataset)
-                          : ctrows.filter((e) => e.dataset === dataset)
-                      }
-                      itemsPerPage={10}
-                      searchable
-                      sortColumn={2}
-                      onRowMouseEnter={(row: any) =>
-                        setHighlighted(row.celltype)
-                      }
-                      onRowMouseLeave={() => setHighlighted("")}
-                    />
-                ) : (
-                  <>{"Data Not available"}</>
-                )}
+              {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
+                <DataTable
+                  columns={COLUMNS}
+                  rows={
+                    ctClass === "by Cell type"
+                      ? scrows
+                          .filter((s) => s.celltype !== "RB")
+                          .filter((e) => e.dataset === dataset)
+                      : ctrows.filter((e) => e.dataset === dataset)
+                  }
+                  itemsPerPage={10}
+                  searchable
+                  sortColumn={2}
+                  onRowMouseEnter={(row: any) => setHighlighted(row.celltype)}
+                  onRowMouseLeave={() => setHighlighted("")}
+                />
+              ) : (
+                <>{"Data Not available"}</>
+              )}
             </Grid>
           )}
           {points && points.length > 0 ? (
@@ -716,120 +722,118 @@ const SingleCell: React.FC<{
                 {loading ? (
                   <CircularProgress />
                 ) : (
-                    <Chart
-                      key={dataset}
-                      marginFraction={0.24}
-                      innerSize={{ width: 2000, height: 2000 }}
-                      domain={domain}
-                      xAxisProps={{
-                        ticks: range(domain.x.start, domain.x.end + 1, 5),
-                        title: "UMAP-2",
+                  <Chart
+                    key={dataset}
+                    marginFraction={0.24}
+                    innerSize={{ width: 2000, height: 2000 }}
+                    domain={domain}
+                    xAxisProps={{
+                      ticks: range(domain.x.start, domain.x.end + 1, 5),
+                      title: "UMAP-2",
+                    }}
+                    yAxisProps={{
+                      ticks: range(domain.y.start, domain.y.end + 1, 5),
+                      title: "UMAP-1",
+                    }}
+                    scatterData={[points]}
+                    ref={chartRef}
+                  >
+                    <Scatter
+                      data={points}
+                      onPointMouseOver={(i: number) => {
+                        setTooltip(i);
+                        setHighlighted(points[i]?.data);
                       }}
-                      yAxisProps={{
-                        ticks: range(domain.y.start, domain.y.end + 1, 5),
-                        title: "UMAP-1",
+                      onPointMouseOut={() => {
+                        setTooltip(-1);
+                        setHighlighted("");
                       }}
-                      scatterData={[points]}
-                      ref={chartRef}
-                    >
-                      <Scatter
-                        data={points}
-                        onPointMouseOver={(i: number) => {
-                          setTooltip(i);
-                          setHighlighted(points[i]?.data);
-                        }}
-                        onPointMouseOut={() => {
-                          setTooltip(-1);
-                          setHighlighted("");
-                        }}
+                    />
+                    <defs>
+                      <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stop-color="red" />
+                        <stop offset="100%" stop-color="#ffcd00" />
+                      </linearGradient>
+                    </defs>
+                    {tooltip > -1 && (
+                      <rect
+                        x={
+                          points[tooltip].x -
+                          points[tooltip].data.replace(/_/g, " ").length * 1
+                        }
+                        y={points[tooltip].y - 3 + 0.7}
+                        width={
+                          points[tooltip].data.replace(/_/g, " ").length * 1 * 2
+                        }
+                        height={3}
+                        stroke="#000000"
+                        strokeWidth={0.05}
+                        fill="#ffffff"
+                        fillOpacity={0.9}
                       />
-                      <defs>
-                        <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
-                          <stop offset="0%" stop-color="red" />
-                          <stop offset="100%" stop-color="#ffcd00" />
-                        </linearGradient>
-                      </defs>
-                      {tooltip > -1 && (
-                        <rect
-                          x={
-                            points[tooltip].x -
-                            points[tooltip].data.replace(/_/g, " ").length * 1
-                          }
-                          y={points[tooltip].y - 3 + 0.7}
-                          width={
-                            points[tooltip].data.replace(/_/g, " ").length *
-                            1 *
-                            2
-                          }
-                          height={3}
-                          stroke="#000000"
-                          strokeWidth={0.05}
-                          fill="#ffffff"
-                          fillOpacity={0.9}
-                        />
-                      )}
-                      {tooltip > -1 && (
-                        <text
-                          x={points[tooltip].x}
-                          y={points[tooltip].y - 4.2 - 0.1}
-                          fontSize={2}
-                          textAnchor="middle"
-                        >
-                          {points[tooltip].data.replace(/_/g, " ")}
-                        </text>
-                      )}
-                      {colorScheme === "expression" && (
-                        <rect
-                          x={upper5(Math.max(...points.map((x) => x.x))) + 2}
-                          y={upper5(Math.max(...points.map((x) => x.y))) - 2}
-                          width={1}
-                          height={
-                            upper5(Math.max(...points.map((x) => x.y))) -
-                            lower5(Math.min(...points.map((x) => x.y))) -
-                            5
-                          }
-                          fill="url(#scale)"
-                        />
-                      )}
-                      {colorScheme === "expression" && (
-                        <text
-                          x={upper5(Math.max(...points.map((x) => x.x))) + 1}
-                          y={
-                            (lower5(Math.min(...points.map((x) => x.y))) +
-                              upper5(Math.max(...points.map((x) => x.y)))) /
-                              2 +
-                            0.5
-                          }
-                          transform="rotate(-90)"
-                          fontSize={1.5}
-                          textAnchor="middle"
-                        >
-                          <tspan fontStyle="italic">{gene}</tspan>{"  "} Expression
-                          
-                        </text>
-                      )}
-                      {colorScheme === "expression" && (
-                        <text
-                          x={upper5(Math.max(...points.map((x) => x.x))) + 4}
-                          y={upper5(Math.max(...points.map((x) => x.y))) - 2.5}
-                          fontSize={1.2}
-                        >
-                          {maximumValue.toFixed(1)}
-                        </text>
-                      )}
-                      {colorScheme === "expression" && (
-                        <text
-                          x={upper5(Math.max(...points.map((x) => x.x))) + 4}
-                          y={lower5(Math.min(...points.map((x) => x.y))) + 2.5}
-                          fontSize={1.2}
-                        >
-                          0.0
-                        </text>
-                      )}
-                    </Chart>
+                    )}
+                    {tooltip > -1 && (
+                      <text
+                        x={points[tooltip].x}
+                        y={points[tooltip].y - 4.2 - 0.1}
+                        fontSize={2}
+                        textAnchor="middle"
+                      >
+                        {points[tooltip].data.replace(/_/g, " ")}
+                      </text>
+                    )}
+                    {colorScheme === "expression" && (
+                      <rect
+                        x={upper5(Math.max(...points.map((x) => x.x))) + 2}
+                        y={upper5(Math.max(...points.map((x) => x.y))) - 2}
+                        width={1}
+                        height={
+                          upper5(Math.max(...points.map((x) => x.y))) -
+                          lower5(Math.min(...points.map((x) => x.y))) -
+                          5
+                        }
+                        fill="url(#scale)"
+                      />
+                    )}
+                    {colorScheme === "expression" && (
+                      <text
+                        x={upper5(Math.max(...points.map((x) => x.x))) + 1}
+                        y={
+                          (lower5(Math.min(...points.map((x) => x.y))) +
+                            upper5(Math.max(...points.map((x) => x.y)))) /
+                            2 +
+                          0.5
+                        }
+                        transform="rotate(-90)"
+                        fontSize={1.5}
+                        textAnchor="middle"
+                      >
+                        <tspan fontStyle="italic">{gene}</tspan>
+                        {"  "} Expression
+                      </text>
+                    )}
+                    {colorScheme === "expression" && (
+                      <text
+                        x={upper5(Math.max(...points.map((x) => x.x))) + 4}
+                        y={upper5(Math.max(...points.map((x) => x.y))) - 2.5}
+                        fontSize={1.2}
+                      >
+                        {maximumValue.toFixed(1)}
+                      </text>
+                    )}
+                    {colorScheme === "expression" && (
+                      <text
+                        x={upper5(Math.max(...points.map((x) => x.x))) + 4}
+                        y={lower5(Math.min(...points.map((x) => x.y))) + 2.5}
+                        fontSize={1.2}
+                      >
+                        0.0
+                      </text>
+                    )}
+                  </Chart>
                 )}
               </div>
-              <div style={{display: 'flex', justifyContent: 'center'}}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <FormControl>
                   <FormLabel>UMAP Color Scheme:</FormLabel>
                   <ToggleButtonGroup
@@ -837,11 +841,20 @@ const SingleCell: React.FC<{
                     value={colorScheme}
                     exclusive
                     onChange={(_, x) => setColorScheme(x)}
-                    sx={{ textTransform: 'none' }}
+                    sx={{ textTransform: "none" }}
                   >
-                    <ToggleButton value="expression" sx={{ textTransform: 'none' }}>Gene Expression</ToggleButton>
-                    <ToggleButton value="cluster" sx={{ textTransform: 'none' }}>Cell Type Cluster</ToggleButton>
-                    
+                    <ToggleButton
+                      value="expression"
+                      sx={{ textTransform: "none" }}
+                    >
+                      Gene Expression
+                    </ToggleButton>
+                    <ToggleButton
+                      value="cluster"
+                      sx={{ textTransform: "none" }}
+                    >
+                      Cell Type Cluster
+                    </ToggleButton>
                   </ToggleButtonGroup>
                 </FormControl>
                 <MUIButton
@@ -853,7 +866,7 @@ const SingleCell: React.FC<{
                       `${gene}-${dataset}-single-cell-UMAP.png`
                     )
                   }
-                  sx={{ textTransform: 'none', ml: 1, alignSelf: 'flex-end' }}
+                  sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
                 >
                   Download
                 </MUIButton>

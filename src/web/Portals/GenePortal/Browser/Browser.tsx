@@ -416,9 +416,16 @@ const Browser: React.FC<any> = (props) => {
           onDomainChanged={onDomainChanged}
           domain={coordinates || eexpandedCoordinates}
           withInput={false}
-        /> 
-        <br/>
-        <b>{(coordinates || eexpandedCoordinates).chromosome+":"+ (coordinates || eexpandedCoordinates).start.toLocaleString()+"-"+(coordinates || eexpandedCoordinates).end.toLocaleString()}</b>{" (Hold shift and drag to select a region)"}
+        />
+        <br />
+        <b>
+          {(coordinates || eexpandedCoordinates).chromosome +
+            ":" +
+            (coordinates || eexpandedCoordinates).start.toLocaleString() +
+            "-" +
+            (coordinates || eexpandedCoordinates).end.toLocaleString()}
+        </b>
+        {" (Hold shift and drag to select a region)"}
       </div>
       <br />
       <GenomeBrowser

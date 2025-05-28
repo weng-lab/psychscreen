@@ -16,11 +16,11 @@ import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
 import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
 import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
 
-type Portals = 'Disease' | 'Gene' | 'SNP' | 'SingleCell' | 'About'
+type Portals = "Disease" | "Gene" | "SNP" | "SingleCell" | "About";
 
 type PortalPanelProps = {
-  portal: Portals,
-  mode: "search" | "button"
+  portal: Portals;
+  mode: "search" | "button";
   /**
    * Placement of image on large screen width. On small width will always be on top of button
    */
@@ -35,16 +35,19 @@ type PortalPanelProps = {
 export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
   const navigate = useNavigate();
 
-  const portalInfo: Record<Portals, {
-    title: string,
-    description: string,
-    stats?: string[],
-    buttonText: string,
-    buttonLink: string,
-    searchComponent?: JSX.Element,
-    imageSRC: string,
-    imgAltText: string
-  }> = {
+  const portalInfo: Record<
+    Portals,
+    {
+      title: string;
+      description: string;
+      stats?: string[];
+      buttonText: string;
+      buttonLink: string;
+      searchComponent?: JSX.Element;
+      imageSRC: string;
+      imgAltText: string;
+    }
+  > = {
     Disease: {
       title: "Disease/Trait Portal",
       description: `
@@ -53,34 +56,35 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         such as candidate brain cis-Regulatory Elements (b-cCREs) and quantitative trait loci (QTLs). Search genes
         associated with complex traits based on PsychENCODE Transcriptome-wide association studies (TWAS).
       `,
-      stats: [
-        "17 total traits cataloged",
-        "5,848 b-cCRE/trait associations"
-      ],
+      stats: ["17 total traits cataloged", "5,848 b-cCRE/trait associations"],
       buttonText: "Explore Diseases/Traits",
       buttonLink: "/psychscreen/traits",
       imageSRC: DiseaseTrait,
       imgAltText: "Disease/Trait Portal",
-      searchComponent: <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" showTitle />
+      searchComponent: (
+        <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" showTitle />
+      ),
     },
     Gene: {
       title: "Gene/b-cCRE Portal",
-        description: `
+      description: `
           Explore gene expression and regulatory element activity in the
           fetal and adult brain at bulk and single-cell resolution.
           Visualize gene/b-cCRE links based on PsychENCODE QTLs and single-cell co-expression analyses.
         `,
-        stats: [
-          "Gene expression from 294 donors, including 7 psychiatric disorders",
-          "923,942 brain regulatory elements cataloged",
-          "Chromatin accessibility in 13 brain regions",
-          "Gene expression and gene regulatory networks across 27 cell types"
-        ],
-        buttonText: "Explore Genes/b-cCREs",
-        buttonLink: "/psychscreen/gene",
-        imageSRC: GeneBCRE,
-        imgAltText: "Gene b-cCRE portal",
-        searchComponent: <GeneAutoComplete navigateto="/psychscreen/gene/" showTitle />
+      stats: [
+        "Gene expression from 294 donors, including 7 psychiatric disorders",
+        "923,942 brain regulatory elements cataloged",
+        "Chromatin accessibility in 13 brain regions",
+        "Gene expression and gene regulatory networks across 27 cell types",
+      ],
+      buttonText: "Explore Genes/b-cCREs",
+      buttonLink: "/psychscreen/gene",
+      imageSRC: GeneBCRE,
+      imgAltText: "Gene b-cCRE portal",
+      searchComponent: (
+        <GeneAutoComplete navigateto="/psychscreen/gene/" showTitle />
+      ),
     },
     SNP: {
       title: "SNP/QTL Portal",
@@ -93,13 +97,15 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       stats: [
         "161,676,478 eQTLs, sQTLs, caQTLs, and fQTLs",
         "127,265 variants associated with complex traits",
-        "510,062 variants in b-cCREs"
+        "510,062 variants in b-cCREs",
       ],
       buttonText: "Explore SNPs/QTLs",
       buttonLink: "/psychscreen/snp",
       imageSRC: SNPQTL,
       imgAltText: "SNP/QTL Portal",
-      searchComponent: <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
+      searchComponent: (
+        <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
+      ),
     },
     SingleCell: {
       title: "Single-Cell Portal",
@@ -111,13 +117,18 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       `,
       stats: [
         "Transcriptomes for 2,040,943 single cells",
-        "Chromatin accessibility for 344,135 single cells"
+        "Chromatin accessibility for 344,135 single cells",
       ],
       buttonText: "Explore Single Cells",
       buttonLink: "/psychscreen/single-cell",
       imageSRC: SingleCell,
       imgAltText: "Single cell portal",
-      searchComponent: <CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" showTitle />
+      searchComponent: (
+        <CelltypeAutoComplete
+          navigateto="/psychscreen/single-cell/celltype/"
+          showTitle
+        />
+      ),
     },
     About: {
       title: "About Us",
@@ -130,9 +141,9 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       buttonText: "Learn More",
       buttonLink: "/psychscreen/aboutus",
       imageSRC: UMass,
-      imgAltText: "UMass Chan Medical School Logo"
-    }
-  }
+      imgAltText: "UMass Chan Medical School Logo",
+    },
+  };
 
   return (
     <div>
@@ -162,7 +173,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                 fontSize: "16px",
                 lineHeight: "24px",
                 fontWeight: 400,
-                letterSpacing: "0.3%",                
+                letterSpacing: "0.3%",
               }}
             >
               {portalInfo[props.portal].description}
@@ -186,7 +197,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
                 </Typography>
               ))}
             </div>
-            {props.mode === "button" ?
+            {props.mode === "button" ? (
               <StyledButton
                 bvariant="filled"
                 btheme="light"
@@ -196,9 +207,9 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               >
                 {portalInfo[props.portal].buttonText}
               </StyledButton>
-              :
+            ) : (
               portalInfo[props.portal].searchComponent
-            }
+            )}
           </Stack>
         </Grid2>
         <Grid2
@@ -257,41 +268,25 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
       </Divider>
     </Grid2>
     <Grid2 xs={12}>
-      <PortalPanel
-        portal="Disease"
-        mode="button"
-        imagePlacement={"left"}
-      />
+      <PortalPanel portal="Disease" mode="button" imagePlacement={"left"} />
     </Grid2>
     <Grid2 xs={12}>
       <Divider />
     </Grid2>
     <Grid2 xs={12}>
-      <PortalPanel
-        portal="Gene"
-        mode="button"
-        imagePlacement={"right"}
-      />
+      <PortalPanel portal="Gene" mode="button" imagePlacement={"right"} />
     </Grid2>
     <Grid2 xs={12}>
       <Divider />
     </Grid2>
     <Grid2 xs={12}>
-      <PortalPanel
-        portal="SNP"
-        mode="button"
-        imagePlacement={"left"}
-      />
+      <PortalPanel portal="SNP" mode="button" imagePlacement={"left"} />
     </Grid2>
     <Grid2 xs={12}>
       <Divider />
     </Grid2>
     <Grid2 xs={12}>
-      <PortalPanel
-        portal="SingleCell"
-        mode="button"
-        imagePlacement={"right"}
-      />
+      <PortalPanel portal="SingleCell" mode="button" imagePlacement={"right"} />
     </Grid2>
     <Grid2 xs={12} mb={3}>
       <Divider />

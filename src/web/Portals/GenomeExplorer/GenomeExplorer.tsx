@@ -56,7 +56,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps> = ({
           domain={coordinates}
           withInput={false}
         />
-         <br/>
+        <br />
         {"Hold shift and drag to select a region"}
       </div>
       <br />

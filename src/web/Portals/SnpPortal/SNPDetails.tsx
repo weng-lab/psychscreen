@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { GridProps, Divider } from "@mui/material";
-import Grid from  "@mui/material/Unstable_Grid2"
+import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -188,12 +188,17 @@ const SNPDetails: React.FC = () => {
     },
   });
   return (
-    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+    <Grid
+      container
+      spacing={3}
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+    >
       <Grid xs={12}>
-        <Typography
-          type="headline"
-          size="large"
-        >
+        <Typography type="headline" size="large">
           SNP details: {snpid}
         </Typography>
       </Grid>

@@ -81,7 +81,7 @@ export type BigQueryResponse = {
 };
 
 type AtacSeqPeaksTracksProps = {
-  tracks?: [string, string][],
+  tracks?: [string, string][];
   domain: GenomicRange;
   onHeightChanged?: (i: number) => void;
   cCREHighlight?: GenomicRange;
@@ -139,7 +139,7 @@ const TitledTrack: React.FC<{
           transform="translate(0,40)"
           data={data as BigBedData[]}
           svgRef={svgRef}
-          tooltipContent={() => <></> }
+          tooltipContent={() => <></>}
         />
       ) : (
         <FullBigWig
@@ -158,14 +158,16 @@ const TitledTrack: React.FC<{
 };
 
 const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
-  const [cTracks, setTracks] = useState<[string, string][]>( props.tracks || [
-    ["Astrocytes", "https://downloads.wenglab.org/Astro.PeakCalls.bb"],
-    ["Endothelial Cells", "https://downloads.wenglab.org/Endo.PeakCalls.bb"],
-    [
-      "Oligodendrocyte Precursor Cells",
-      "https://downloads.wenglab.org/OPC.PeakCalls.bb",
-    ],
-  ]);
+  const [cTracks, setTracks] = useState<[string, string][]>(
+    props.tracks || [
+      ["Astrocytes", "https://downloads.wenglab.org/Astro.PeakCalls.bb"],
+      ["Endothelial Cells", "https://downloads.wenglab.org/Endo.PeakCalls.bb"],
+      [
+        "Oligodendrocyte Precursor Cells",
+        "https://downloads.wenglab.org/OPC.PeakCalls.bb",
+      ],
+    ]
+  );
   const height = useMemo(() => cTracks.length * 80, [cTracks]);
   const bigRequests = useMemo(
     () =>
@@ -188,7 +190,7 @@ const AtacSeqPeaksTracks: React.FC<AtacSeqPeaksTracksProps> = (props) => {
   const [settingsMousedOver, setSettingsMousedOver] = useState(false);
   const [settingsModalShown, setSettingsModalShown] = useState(false);
 
-  return loading || (data?.bigRequests.length || 0) === 0  ? (
+  return loading || (data?.bigRequests.length || 0) === 0 ? (
     <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." />
   ) : (
     <>

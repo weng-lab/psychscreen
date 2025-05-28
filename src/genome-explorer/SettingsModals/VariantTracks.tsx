@@ -122,8 +122,10 @@ const VariantTrackModal: React.FC<EpigeneticTrackModalProps> = (props) => {
                       }
                     />
                   }
-                  label={DISEASE_CARDS.find(d=>d.val===track[0])?.cardLabel || track[0]}
-                
+                  label={
+                    DISEASE_CARDS.find((d) => d.val === track[0])?.cardLabel ||
+                    track[0]
+                  }
                   onChange={() => toggleTrack(track)}
                 />
               ))}

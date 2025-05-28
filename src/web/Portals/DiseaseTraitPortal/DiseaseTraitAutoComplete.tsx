@@ -14,13 +14,18 @@ export const DiseaseTraitAutoComplete = (props) => {
   const navigate = useNavigate();
 
   const onSubmit = () => {
-    const submittedTrait = DISEASE_CARDS.find((d) => d.cardLabel.toLowerCase() ===  inputValue.toLowerCase());
-    if (submittedTrait){
+    const submittedTrait = DISEASE_CARDS.find(
+      (d) => d.cardLabel.toLowerCase() === inputValue.toLowerCase()
+    );
+    if (submittedTrait) {
       navigate(props.navigateto + submittedTrait.val, {
-        state: { searchvalue: submittedTrait.val, diseaseDesc: submittedTrait.diseaseDesc },
+        state: {
+          searchvalue: submittedTrait.val,
+          diseaseDesc: submittedTrait.diseaseDesc,
+        },
       });
     }
-  }
+  };
 
   return (
     <Stack>
@@ -31,67 +36,66 @@ export const DiseaseTraitAutoComplete = (props) => {
         </Grid>
       )}
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
-      <Grid item>
-        <Autocomplete
-          freeSolo
-          sx={{ width: 300, paper: { height: 200 } }}
-          options={OPTIONS}
-          ListboxProps={{
-            style: {
-              maxHeight: "250px",
-            },
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onSubmit()
-            }
-          }}
-          inputValue={inputValue}
-          onInputChange={(_, newInputValue) => {
-            setInputValue(newInputValue);
-          }}
-          noOptionsText="No Diseases/Traits Found"
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="e.g., Schizophrenia, Insomnia"
-              fullWidth
-            />
-          )}
-          renderOption={(props, option) => {
-            return (
-              <li {...props} key={props.id}>
-                <Grid container alignItems="center">
-                  <Grid
-                    item
-                    sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}
-                  >
-                    <Box component="span" sx={{ fontWeight: "regular" }}>
-                      {option}
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {
-                        DISEASE_CARDS.find((d) => d.cardLabel === option)
-                          ?.cardDesc
-                      }
-                    </Typography>
+        <Grid item>
+          <Autocomplete
+            freeSolo
+            sx={{ width: 300, paper: { height: 200 } }}
+            options={OPTIONS}
+            ListboxProps={{
+              style: {
+                maxHeight: "250px",
+              },
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                onSubmit();
+              }
+            }}
+            inputValue={inputValue}
+            onInputChange={(_, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            noOptionsText="No Diseases/Traits Found"
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="e.g., Schizophrenia, Insomnia"
+                fullWidth
+              />
+            )}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={props.id}>
+                  <Grid container alignItems="center">
+                    <Grid
+                      item
+                      sx={{
+                        width: "calc(100% - 44px)",
+                        wordWrap: "break-word",
+                      }}
+                    >
+                      <Box component="span" sx={{ fontWeight: "regular" }}>
+                        {option}
+                      </Box>
+                      <Typography variant="body2" color="text.secondary">
+                        {
+                          DISEASE_CARDS.find((d) => d.cardLabel === option)
+                            ?.cardDesc
+                        }
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </li>
-            );
-          }}
-        />
+                </li>
+              );
+            }}
+          />
+        </Grid>
+        <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
+          <StyledButton bvariant="filled" btheme="light" onClick={onSubmit}>
+            Search
+          </StyledButton>
+        </Grid>
       </Grid>
-      <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
-        <StyledButton
-          bvariant="filled"
-          btheme="light"
-          onClick={onSubmit}
-        >
-          Search
-        </StyledButton>
-      </Grid>
-    </Grid>
     </Stack>
   );
 };

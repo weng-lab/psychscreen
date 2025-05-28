@@ -14,7 +14,7 @@ const FooterPanel = () => {
     >
       <Grid2
         container
-        flexDirection={{xs: 'column', md: "row"}}
+        flexDirection={{ xs: "column", md: "row" }}
         pt={5}
         pb={5}
         spacing={3}
@@ -42,8 +42,7 @@ const FooterPanel = () => {
             {"and "}
             <MuiLink color="inherit" href="https://co-labo.org/">
               Colubri Lab
-            </MuiLink>
-            {" "}
+            </MuiLink>{" "}
             {new Date().getFullYear()}.
           </Typography>
           <Typography variant="body2">

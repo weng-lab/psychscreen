@@ -1,5 +1,9 @@
 import React, { useRef, useMemo } from "react";
-import { useTooltip, useTooltipInPortal, defaultStyles as defaultTooltipStyles } from '@visx/tooltip';
+import {
+  useTooltip,
+  useTooltipInPortal,
+  defaultStyles as defaultTooltipStyles,
+} from "@visx/tooltip";
 
 export interface Domain {
   chromosome?: string;
@@ -148,8 +152,9 @@ export function renderSimpleLinks(
       const gg = Math.floor(g(score));
       const bb = Math.floor(b(score));
       return {
-        d: `M ${firstC} ${(height * 7) / 8} Q ${(firstC + lastC) / 2
-          } 0 ${lastC} ${(height * 7) / 8}`,
+        d: `M ${firstC} ${(height * 7) / 8} Q ${
+          (firstC + lastC) / 2
+        } 0 ${lastC} ${(height * 7) / 8}`,
         stroke: "#" + p(rr) + p(gg) + p(bb),
       };
     });
@@ -157,7 +162,7 @@ export function renderSimpleLinks(
 
 export function renderRegions(
   links: Link[],
-  x: (value: number) => number,
+  x: (value: number) => number
 ): Rectangle[] {
   return links.reduce<Rectangle[]>(
     (clist, link) => [
@@ -167,25 +172,25 @@ export function renderRegions(
       {
         start: x(link.regionA.start),
         end: x(link.regionA.end),
-        fill: '#FFCD00',
+        fill: "#FFCD00",
         trueCoordinates: {
           start: link.regionA.start,
-          end:link.regionA.end
+          end: link.regionA.end,
         },
         targetTF: link.targetTF,
-        targetGene: link.targetGene
+        targetGene: link.targetGene,
       },
       //Second is Promoter
       {
         start: x(link.regionB.start),
         end: x(link.regionB.end),
-        fill: '#FF0000',
+        fill: "#FF0000",
         trueCoordinates: {
           start: link.regionB.start,
-          end:link.regionB.end
+          end: link.regionB.end,
         },
         targetTF: link.targetTF,
-        targetGene: link.targetGene
+        targetGene: link.targetGene,
       },
     ],
     []
@@ -214,9 +219,9 @@ const deepEqual = function (x, y) {
 };
 
 interface TooltipData {
-  coordinates: Domain,
-  targetTF?: string,
-  targetGene: string,
+  coordinates: Domain;
+  targetTF?: string;
+  targetGene: string;
 }
 
 export const Arcs: React.FC<ArcProps> = (props) => {
@@ -243,8 +248,6 @@ export const Arcs: React.FC<ArcProps> = (props) => {
     ]
   );
 
- 
-
   const {
     tooltipData,
     tooltipLeft,
@@ -259,7 +262,7 @@ export const Arcs: React.FC<ArcProps> = (props) => {
     detectBounds: true,
     // when tooltip containers are scrolled, this will correctly update the Tooltip position
     scroll: true,
-  })
+  });
 
   return (
     <>
@@ -270,7 +273,11 @@ export const Arcs: React.FC<ArcProps> = (props) => {
         clipPath={`url(#${uuid.current})`}
       >
         <defs>
-          <ClipPath id={uuid.current} width={props.width} height={props.height} />
+          <ClipPath
+            id={uuid.current}
+            width={props.width}
+            height={props.height}
+          />
         </defs>
         {renderedLinks.map((path, i) => (
           <path
@@ -284,7 +291,7 @@ export const Arcs: React.FC<ArcProps> = (props) => {
         {renderedRegions.map((rect, i) => (
           <rect
             key={`${props.id}_${i}`}
-            id={'rect' + i}
+            id={"rect" + i}
             height={props.height / 4}
             width={rect.end - rect.start < 2 ? 2 : rect.end - rect.start}
             x={rect.start}
@@ -292,17 +299,17 @@ export const Arcs: React.FC<ArcProps> = (props) => {
             fill={rect.fill}
             onMouseEnter={(event) => {
               showTooltip({
-                tooltipLeft: event.clientX, 
+                tooltipLeft: event.clientX,
                 tooltipTop: event.clientY,
                 tooltipData: {
                   coordinates: rect.trueCoordinates,
                   targetGene: rect.targetGene,
-                  targetTF: rect.targetTF
-                }
+                  targetTF: rect.targetTF,
+                },
               });
             }}
             onMouseLeave={(event) => {
-              hideTooltip()
+              hideTooltip();
             }}
           />
         ))}
@@ -313,11 +320,25 @@ export const Arcs: React.FC<ArcProps> = (props) => {
           key={Math.random()}
           top={tooltipTop}
           left={tooltipLeft}
-          style={{ ...defaultTooltipStyles, backgroundColor: '#283238', color: 'white' }}
+          style={{
+            ...defaultTooltipStyles,
+            backgroundColor: "#283238",
+            color: "white",
+          }}
         >
-          <p>{props.domain.chromosome}:{tooltipData?.coordinates.start.toLocaleString()}-{tooltipData?.coordinates.end.toLocaleString()}</p>
-          <p>Target Gene: <strong>{tooltipData?.targetGene}</strong></p>
-          {tooltipData?.targetTF && <p>Target TF: <strong>{tooltipData?.targetTF}</strong></p>}
+          <p>
+            {props.domain.chromosome}:
+            {tooltipData?.coordinates.start.toLocaleString()}-
+            {tooltipData?.coordinates.end.toLocaleString()}
+          </p>
+          <p>
+            Target Gene: <strong>{tooltipData?.targetGene}</strong>
+          </p>
+          {tooltipData?.targetTF && (
+            <p>
+              Target TF: <strong>{tooltipData?.targetTF}</strong>
+            </p>
+          )}
         </TooltipInPortal>
       )}
     </>

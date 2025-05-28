@@ -7,17 +7,41 @@ export const diseaseCT = {
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
     //{ val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
     { val: "Endo", cardLabel: "Endothelial cells", cardDesc: "" },
-    { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pax6", cardLabel: "PAX6-expressing Inhibitory Neurons", cardDesc: "" },
-    
+    {
+      val: "Sncg",
+      cardLabel: "SNCG-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Vip",
+      cardLabel: "VIP-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Sst",
+      cardLabel: "SST-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Pvalb",
+      cardLabel: "PVALB-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Pax6",
+      cardLabel: "PAX6-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+
     { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
     { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
     // { val: "Lamp5.Lhx6", cardLabel: "Lamp5.Lhx6", cardDesc: "" },
-    { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
-  
+    {
+      val: "Lamp5",
+      cardLabel: "LAMP5-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+
     // { val: "L6b", cardLabel: "L6b", cardDesc: "" },
     {
       val: "L6.IT",
@@ -56,17 +80,41 @@ export const diseaseCT = {
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
     { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
     //{ val: "Pax6", cardLabel: "Pax6", cardDesc: "" },
-    { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  
+    {
+      val: "Sncg",
+      cardLabel: "SNCG-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Vip",
+      cardLabel: "VIP-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Sst",
+      cardLabel: "SST-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Pvalb",
+      cardLabel: "PVALB-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+
     { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
     { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
     { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
-    { val: "Lamp5.Lhx6", cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
+    {
+      val: "Lamp5.Lhx6",
+      cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Lamp5",
+      cardLabel: "LAMP5-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
     {
       val: "L6.IT",
       cardLabel: "Layer 6 Intratelencephalic projecting",
@@ -102,17 +150,41 @@ export const diseaseCT = {
   Bipolar_Disorder: [
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
     { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
-    { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  
+    {
+      val: "Sncg",
+      cardLabel: "SNCG-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Vip",
+      cardLabel: "VIP-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Sst",
+      cardLabel: "SST-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Pvalb",
+      cardLabel: "PVALB-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+
     { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
     { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
     { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
-    { val: "Lamp5.Lhx6", cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
+    {
+      val: "Lamp5.Lhx6",
+      cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Lamp5",
+      cardLabel: "LAMP5-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
     {
       val: "L6.IT",
       cardLabel: "Layer 6 Intratelencephalic projecting",
@@ -149,17 +221,41 @@ export const diseaseCT = {
   Schizophrenia: [
     { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
     { val: "Chandelier", cardLabel: "Chandelier", cardDesc: "" },
-    { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  
+    {
+      val: "Sncg",
+      cardLabel: "SNCG-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Vip",
+      cardLabel: "VIP-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Sst",
+      cardLabel: "SST-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Pvalb",
+      cardLabel: "PVALB-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+
     { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
     { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
     { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
-    { val: "Lamp5.Lhx6", cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-    { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
+    {
+      val: "Lamp5.Lhx6",
+      cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    {
+      val: "Lamp5",
+      cardLabel: "LAMP5-expressing Inhibitory Neurons",
+      cardDesc: "",
+    },
+    { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
     {
       val: "L6.IT",
       cardLabel: "Layer 6 Intratelencephalic Projecting",
@@ -200,16 +296,36 @@ export const CELLTYPE_CARDS = [
   { val: "End", cardLabel: "Endothelial cells", cardDesc: "" },
   { val: "Immune", cardLabel: "Immune Cells", cardDesc: "" },
   { val: "VLMC", cardLabel: "Vascular Leptomeningeal Cells", cardDesc: "" },
-  { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Sncg",
+    cardLabel: "SNCG-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
   { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pax6", cardLabel: "PAX6-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Pvalb",
+    cardLabel: "PVALB-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Pax6",
+    cardLabel: "PAX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "Oli", cardLabel: "Oligodendrocytes", cardDesc: "" },
   { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
   { val: "Mic", cardLabel: "Microglia", cardDesc: "" },
-  { val: "Lamp5.Lhx6", cardLabel: "LAMP5 or LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Lamp5.Lhx6",
+    cardLabel: "LAMP5 or LHX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Lamp5",
+    cardLabel: "LAMP5-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
   {
     val: "L6.IT",
@@ -218,7 +334,8 @@ export const CELLTYPE_CARDS = [
   },
   {
     val: "L6.IT.Car3",
-    cardLabel: "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
+    cardLabel:
+      "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
     cardDesc: "",
   },
   {
@@ -236,7 +353,11 @@ export const CELLTYPE_CARDS = [
     cardLabel: "Layer 5 Extratelencephalic Projecting Excitatory Neurons",
     cardDesc: "",
   },
-  { val: "L5.6.NP", cardLabel: "Layer 5 or 6 Near Projecting Excitatory Neurons", cardDesc: "" },
+  {
+    val: "L5.6.NP",
+    cardLabel: "Layer 5 or 6 Near Projecting Excitatory Neurons",
+    cardDesc: "",
+  },
   {
     val: "L4.IT",
     cardLabel: "Layer 4 Intratelencephalic Projecting Excitatory Neurons",
@@ -252,7 +373,11 @@ export const CELLTYPE_CARDS = [
 
 export const GENE_CELLTYPE_CARDS = [
   { val: "Astro", cardLabel: "Astrocytes", cardDesc: "" },
-  { val: "Chandelier", cardLabel: "Chandelier Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Chandelier",
+    cardLabel: "Chandelier Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "SMC", cardLabel: "Smooth Muscle Cells", cardDesc: "" },
   { val: "Endo", cardLabel: "Endothelial Cells", cardDesc: "" },
   { val: "Misc", cardLabel: "Vasculature-related Cells", cardDesc: "" },
@@ -261,18 +386,42 @@ export const GENE_CELLTYPE_CARDS = [
   { val: "ExcitatoryNeurons", cardLabel: "Excitatory Neurons", cardDesc: "" },
   { val: "Immune", cardLabel: "Immune Cells", cardDesc: "" },
   { val: "VLMC", cardLabel: "Vascular Leptomeningeal Cells", cardDesc: "" },
-  { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Sncg",
+    cardLabel: "SNCG-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
   { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pax6", cardLabel: "PAX6-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Pvalb",
+    cardLabel: "PVALB-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Pax6",
+    cardLabel: "PAX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
   { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
   { val: "Micro", cardLabel: "Microglia", cardDesc: "" },
-  { val: "Sst Chodl", cardLabel: "SST/CHODL-expressing Inhibitory Neurons", cardDesc: "" },
-  
-  { val: "Lamp5 Lhx6", cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Sst Chodl",
+    cardLabel: "SST/CHODL-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+
+  {
+    val: "Lamp5 Lhx6",
+    cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Lamp5",
+    cardLabel: "LAMP5-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
   {
     val: "L6 IT",
@@ -281,7 +430,8 @@ export const GENE_CELLTYPE_CARDS = [
   },
   {
     val: "L6 IT Car3",
-    cardLabel: "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
+    cardLabel:
+      "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
     cardDesc: "",
   },
   {
@@ -299,7 +449,11 @@ export const GENE_CELLTYPE_CARDS = [
     cardLabel: "Layer 5 Extratelencephalic Projecting Excitatory Neurons",
     cardDesc: "",
   },
-  { val: "L5/6 NP", cardLabel: "Layer 5 or 6 Near Projecting Excitatory Neurons", cardDesc: "" },
+  {
+    val: "L5/6 NP",
+    cardLabel: "Layer 5 or 6 Near Projecting Excitatory Neurons",
+    cardDesc: "",
+  },
   {
     val: "L4 IT",
     cardLabel: "Layer 4 Intratelencephalic Projecting Excitatory Neurons",
@@ -319,18 +473,38 @@ export const GRN_cellType_Cards = [
   { val: "End", cardLabel: "Endothelial cells", cardDesc: "" },
   { val: "Immune", cardLabel: "Immune Cells", cardDesc: "" },
   { val: "VLMC", cardLabel: "Vascular Leptomeningeal Cells", cardDesc: "" },
-  { val: "Sncg", cardLabel: "SNCG-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Sncg",
+    cardLabel: "SNCG-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "Vip", cardLabel: "VIP-expressing Inhibitory Neurons", cardDesc: "" },
   { val: "Sst", cardLabel: "SST-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pvalb", cardLabel: "PVALB-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Pax6", cardLabel: "PAX6-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Pvalb",
+    cardLabel: "PVALB-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Pax6",
+    cardLabel: "PAX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "Oli", cardLabel: "Oligodendrocytes", cardDesc: "" },
   { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
   { val: "Mic", cardLabel: "Microglia", cardDesc: "" },
-  { val: "Lamp5.Lhx6", cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Lamp5.Lhx6",
+    cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Lamp5",
+    cardLabel: "LAMP5-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
-  
+
   {
     val: "L6.IT",
     cardLabel: "Layer 6 Intratelencephalic Projecting Excitatory Neurons",
@@ -338,7 +512,8 @@ export const GRN_cellType_Cards = [
   },
   {
     val: "L6.IT.Car3",
-    cardLabel: "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
+    cardLabel:
+      "Layer 6 Intratelencephalic Projecting Excitatory Neurons Expressing Car3",
     cardDesc: "",
   },
   {
@@ -356,7 +531,11 @@ export const GRN_cellType_Cards = [
     cardLabel: "Layer 5 Extratelencephalic Projecting Excitatory Neurons",
     cardDesc: "",
   },
-  { val: "L5.6.NP", cardLabel: "Layer 5/6 Near Projecting Excitatory Neurons", cardDesc: "" },
+  {
+    val: "L5.6.NP",
+    cardLabel: "Layer 5/6 Near Projecting Excitatory Neurons",
+    cardDesc: "",
+  },
   {
     val: "L4.IT",
     cardLabel: "Layer 4 Intratelencephalic Projecting Excitatory Neurons",
@@ -378,10 +557,18 @@ export const Qtl_Celltype_Cards = [
   { val: "Oligo", cardLabel: "Oligodendrocytes", cardDesc: "" },
   { val: "OPC", cardLabel: "Oligodendrocyte Precursor Cells", cardDesc: "" },
   { val: "Micro.PVM", cardLabel: "Microglia", cardDesc: "" },
-  { val: "Lamp5.Lhx6", cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons", cardDesc: "" },
-  { val: "Lamp5", cardLabel: "LAMP5-expressing Inhibitory Neurons", cardDesc: "" },
+  {
+    val: "Lamp5.Lhx6",
+    cardLabel: "LAMP5/LHX6-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
+  {
+    val: "Lamp5",
+    cardLabel: "LAMP5-expressing Inhibitory Neurons",
+    cardDesc: "",
+  },
   { val: "L6b", cardLabel: "Layer 6b Excitatory Neurons", cardDesc: "" },
-  
+
   {
     val: "L6.IT",
     cardLabel: "Layer 6 Intratelencephalic Projecting Excitatory Neurons",
@@ -399,7 +586,11 @@ export const Qtl_Celltype_Cards = [
     cardDesc: "",
   },
   //  { val: "L5.ET", cardLabel: "Layer 5 Extratelencephalic projecting", cardDesc: ""},
-  { val: "L5.6.NP", cardLabel: "Layer 5/6 Near Projecting Excitatory Neurons", cardDesc: "" },
+  {
+    val: "L5.6.NP",
+    cardLabel: "Layer 5/6 Near Projecting Excitatory Neurons",
+    cardDesc: "",
+  },
   {
     val: "L4.IT",
     cardLabel: "Layer 4 Intratelencephalic Projecting Excitatory Neurons",

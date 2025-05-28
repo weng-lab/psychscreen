@@ -79,7 +79,14 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   }, [celltype]);*/
 
   return (
-    <Grid container mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+    <Grid
+      container
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+    >
       <Grid item xs={12}>
         <Container>
           <Typography

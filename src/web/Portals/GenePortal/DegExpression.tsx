@@ -114,7 +114,10 @@ export const DegExpression = (props) => {
               mean_count: k.log2_fc,
               dataset,
               gene: props.gene,
-              celltype: k.celltype.replace("2.3.","2/3 ").replace("5.6.","5/6 ").replaceAll("."," "),
+              celltype: k.celltype
+                .replace("2.3.", "2/3 ")
+                .replace("5.6.", "5/6 ")
+                .replaceAll(".", " "),
             };
           })
       : [];
@@ -192,8 +195,9 @@ export const DegExpression = (props) => {
                 title1={
                   <>
                     {"-log"}
-                    <tspan baseline-shift="sub">10</tspan>
-                    (<tspan fontStyle="italic">P</tspan><tspan baseline-shift="sub">adj</tspan>)
+                    <tspan baseline-shift="sub">10</tspan>(
+                    <tspan fontStyle="italic">P</tspan>
+                    <tspan baseline-shift="sub">adj</tspan>)
                   </>
                 }
                 title2={

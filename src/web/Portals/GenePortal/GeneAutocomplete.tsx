@@ -40,7 +40,7 @@ export const GeneAutoComplete = (props) => {
         options.map((gene) =>
           fetch(
             "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" +
-            gene.toUpperCase()
+              gene.toUpperCase()
           )
             .then((x) => x && x.json())
             .then((x) => {
@@ -103,8 +103,8 @@ export const GeneAutoComplete = (props) => {
   };
 
   const onSubmit = () => {
-    const inputStr = inputValue.toUpperCase()
-    const submittedGene = geneids.find((g) => g.name === inputStr)
+    const inputStr = inputValue.toUpperCase();
+    const submittedGene = geneids.find((g) => g.name === inputStr);
     if (submittedGene) {
       props.onSelected &&
         props.onSelected({
@@ -124,7 +124,7 @@ export const GeneAutoComplete = (props) => {
           },
         });
     }
-  }
+  };
 
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
 
@@ -151,7 +151,7 @@ export const GeneAutoComplete = (props) => {
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.defaultPrevented = true;
-                onSubmit()
+                onSubmit();
               }
             }}
             inputValue={inputValue}
@@ -163,7 +163,15 @@ export const GeneAutoComplete = (props) => {
             }}
             noOptionsText="No Genes Found"
             renderInput={(params) => (
-              <TextField {...params} label={<>e.g., <i>SOX4</i>, <i>APOE</i></>} fullWidth />
+              <TextField
+                {...params}
+                label={
+                  <>
+                    e.g., <i>SOX4</i>, <i>APOE</i>
+                  </>
+                }
+                fullWidth
+              />
             )}
             renderOption={(props, option) => {
               return (

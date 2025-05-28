@@ -379,7 +379,10 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = (props) => {
         >
           <EmptyTrack
             transform=""
-            text={`${title.replace("ATAC signal", "ChromBPNet significance score")}`}
+            text={`${title.replace(
+              "ATAC signal",
+              "ChromBPNet significance score"
+            )}`}
             height={5}
             width={1400}
             id=""

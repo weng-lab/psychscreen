@@ -163,8 +163,6 @@ export type SNPQueryResponse = {
   }[];
 };
 
-
-
 const QUERY = gql`
   ${CCRE_FIELDS}
   query q($assembly: String!, $name: [String]) {
@@ -202,7 +200,6 @@ const QUERY = gql`
     }
   }
 `;
-
 
 const QUERYQTL = gql`
   ${CCRE_FIELDS}
@@ -258,7 +255,6 @@ export type GeneQueryResponse = {
     };
   }[];
 };
-
 
 export function useGenePageData(
   expandedCoordinates: GenomicRange,
@@ -339,7 +335,7 @@ export function useGenePageData(
 function useGenePageDataWithQTL(
   expandedCoordinates: GenomicRange,
   assembly: string,
-  name: string,   
+  name: string,
   resolvedTranscript?: boolean,
   geneid?: string
 ) {
@@ -360,7 +356,7 @@ function useGenePageDataWithQTL(
     {
       variables: {
         geneid: geneid,
-        qtltype: "eQTL"
+        qtltype: "eQTL",
       },
       context: {
         clientName: "psychscreen",
@@ -369,13 +365,13 @@ function useGenePageDataWithQTL(
     }
   );
 
-  console.log("qtlsigassocData",qtlsigassocData)
+  console.log("qtlsigassocData", qtlsigassocData);
   const snpCoordinateResponse = useQuery<SNPCoordinateResponse>(
     SNP_COORDINATE_QUERY,
     {
       variables: {
         id: [
-          ...(qtlsigassocData?.qtlsigassocQuery.map((x) => x.snpid) || [])
+          ...(qtlsigassocData?.qtlsigassocQuery.map((x) => x.snpid) || []),
           /*...(data?.queriedTranscript[0]?.fetal_isoqtls.isoqtls.map(
             (x) => x.snp
           ) || []),*/
@@ -384,7 +380,7 @@ function useGenePageDataWithQTL(
       context: {
         clientName: "psychscreen",
       },
-      skip: loading || qtlsigassocLoading  || !geneid,
+      skip: loading || qtlsigassocLoading || !geneid,
     }
   );
 
@@ -482,14 +478,14 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     },
   });
 
-  console.log(props.geneid, "geneid")
+  console.log(props.geneid, "geneid");
 
   const { data: qtlsigassocData, loading: qtlsigassocLoading } = useQuery(
     QTLSIGASSOC_QUERY,
     {
       variables: {
         geneid: props.geneid,
-        qtltype: "eQTL"     
+        qtltype: "eQTL",
       },
     }
   );
@@ -498,50 +494,65 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     {
       header: "SNP ID",
       value: (x) => x.snpid,
-      render: (d) => 
-   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/snp/${d.snpid}`}>
-  {d.snpid}
-</a> 
+      render: (d) => (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`/psychscreen/snp/${d.snpid}`}
+        >
+          {d.snpid}
+        </a>
+      ),
     },
     {
       header: "Slope",
-      value:(x) => x.slope.toFixed(2),
+      value: (x) => x.slope.toFixed(2),
     },
     {
       header: "eQTL nominal p-value",
-      HeaderRender: (x) => <>eQTL nominal<i>P</i></>,
-      value:(x) => toScientificNotation(x.nom_val,2),
+      HeaderRender: (x) => (
+        <>
+          eQTL nominal<i>P</i>
+        </>
+      ),
+      value: (x) => toScientificNotation(x.nom_val, 2),
     },
     {
       header: "Adjusted beta pvalue",
-      HeaderRender: (x) => <>Adjusted beta<i>P</i></>,
-      value:(x) => x.adj_beta_pval.toFixed(2),
+      HeaderRender: (x) => (
+        <>
+          Adjusted beta<i>P</i>
+        </>
+      ),
+      value: (x) => x.adj_beta_pval.toFixed(2),
     },
     {
       header: "r Squared",
-      value:(x) => x.r_squared.toFixed(2),
+      value: (x) => x.r_squared.toFixed(2),
     },
     {
       header: "Coordinates",
-      value:(x) => "chr" + x.snp_chrom + ":" + x.snp_start,
+      value: (x) => "chr" + x.snp_chrom + ":" + x.snp_start,
     },
     {
       header: "Cell Type",
-      value:(x) => x.celltype,
-    }
-  ]
+      value: (x) => x.celltype,
+    },
+  ];
 
   const groupedQTLs: Map<string, EQTL> = useMemo(
     () =>
       associateBy(
-        (qtlsigassocData?.qtlsigassocQuery && qtlsigassocData?.qtlsigassocQuery.map(q=>{
-          return {
-            snp: q.snpid,            
-            fdr: q.fdr,
-            nominal_pval: q.npval,
-            slope: q.slope
-          } as EQTL
-        })) || [],
+        (qtlsigassocData?.qtlsigassocQuery &&
+          qtlsigassocData?.qtlsigassocQuery.map((q) => {
+            return {
+              snp: q.snpid,
+              fdr: q.fdr,
+              nominal_pval: q.npval,
+              slope: q.slope,
+            } as EQTL;
+          })) ||
+          [],
         (x: EQTL) => x.snp,
         (x) => x
       ),
@@ -557,25 +568,28 @@ const AssociatedxQTL: React.FC<any> = (props) => {
       [],
     [snpCoordinateData, groupedQTLs]
   );
-  
-
 
   const allQTLsColumns = [
     {
       header: "SNP ID",
       value: (x) => x.id,
-      render: (d) => 
-   <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/snp/${d.id}`}>
-  {d.id}
-</a> 
+      render: (d) => (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`/psychscreen/snp/${d.id}`}
+        >
+          {d.id}
+        </a>
+      ),
     },
     {
       header: "eQTL FDR",
-      value: (x) =>x.eQTL ? toScientificNotation(x.eQTL.fdr,2) : 0,
+      value: (x) => (x.eQTL ? toScientificNotation(x.eQTL.fdr, 2) : 0),
     },
     {
       header: "eQTL nominal p-value",
-      value:(x) => toScientificNotation(x.eQTL.nominal_pval,2),
+      value: (x) => toScientificNotation(x.eQTL.nominal_pval, 2),
     },
     {
       header: "Coordinates",
@@ -583,41 +597,49 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     },
     {
       header: "Intersecting cCRE",
-      value:(x) => x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
-      render:(x) => x.intersecting_ccres.intersecting_ccres[0]?.accession ? (
-        <Typography
-          type="body"
-          size="medium"
-          style={{
-            fontSize: "14px",
-            lineHeight: "20px",
-            fontWeight: 400,
-            letterSpacing: "0.1px",
-            marginBottom: "10px",
-          }}
-        >
-          {x.bcre ? (
-             <a target="_blank" rel="noopener noreferrer" href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}>
-             {"*" + x.intersecting_ccres.intersecting_ccres[0]?.accession}
-           </a>
-           
-          ) : (
-            <a target="_blank" rel="noopener noreferrer" href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}>
-             {x.intersecting_ccres.intersecting_ccres[0]?.accession}
-           </a>
-          )}
-        </Typography>
-      ) : (
-        <>
-          <Typography type="body" size="medium">
-            {"--"}
+      value: (x) =>
+        x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
+      render: (x) =>
+        x.intersecting_ccres.intersecting_ccres[0]?.accession ? (
+          <Typography
+            type="body"
+            size="medium"
+            style={{
+              fontSize: "14px",
+              lineHeight: "20px",
+              fontWeight: 400,
+              letterSpacing: "0.1px",
+              marginBottom: "10px",
+            }}
+          >
+            {x.bcre ? (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
+              >
+                {"*" + x.intersecting_ccres.intersecting_ccres[0]?.accession}
+              </a>
+            ) : (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
+              >
+                {x.intersecting_ccres.intersecting_ccres[0]?.accession}
+              </a>
+            )}
           </Typography>
-        </>
-      ),
-    }
-  ]
+        ) : (
+          <>
+            <Typography type="body" size="medium">
+              {"--"}
+            </Typography>
+          </>
+        ),
+    },
+  ];
 
- 
   useEffect(() => {
     fetch("https://downloads.wenglab.org/union_bCREs.bed")
       .then((x) => x.text())
@@ -638,7 +660,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
   if (!loading && allQTLs && allQTLs.length === 0)
     return (
       <Typography type="body" size="large">
-        No eQTLs or linked candidate brain candidate cis-Regulatory Elements (b-cCREs) were identified for this gene.
+        No eQTLs or linked candidate brain candidate cis-Regulatory Elements
+        (b-cCREs) were identified for this gene.
       </Typography>
     );
 
@@ -655,12 +678,18 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               </Typography>
               <DataTable
                 columns={allQTLsColumns}
-                rows={allQTLs.map(x=> { return {...x, bcre: bccre &&
-                  bccre.find(
-                    (b) =>
-                      b.accession ===
-                      x.intersecting_ccres.intersecting_ccres[0]?.accession
-                  )}})}
+                rows={allQTLs.map((x) => {
+                  return {
+                    ...x,
+                    bcre:
+                      bccre &&
+                      bccre.find(
+                        (b) =>
+                          b.accession ===
+                          x.intersecting_ccres.intersecting_ccres[0]?.accession
+                      ),
+                  };
+                })}
               />
               <Typography type={"label"} size="small">
                 {`cCREs prefixed with an asterisk are candidate brain candidate cis-Regulatory Elements (b-cCREs)`}
@@ -675,9 +704,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                 {`The following decon-eQTLs (Liu) have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
               <DataTable
-              columns={deconqtlColumns}
-              rows={ eqtlData.deconqtlsQuery}
-               
+                columns={deconqtlColumns}
+                rows={eqtlData.deconqtlsQuery}
               />
             </>
           )}

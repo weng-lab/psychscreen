@@ -192,7 +192,7 @@ const ConservationTracks: React.FC<ConservationTrackProps> = (props) => {
         textAnchor="middle"
         fill="#4c1f8f"
       >
-        Evo. Conservation 
+        Evo. Conservation
       </text>
     </>
   );

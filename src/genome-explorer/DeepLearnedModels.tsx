@@ -101,7 +101,7 @@ export const DeepLearnedModelTracks: React.FC<DeepLearnedModelTrackProps> = ({
       displayedTracks.find((x) => x[0] === "241-way mammalian phylo-P")?.length
         ? 130 + displayedTracks.length * 130 - 130
         : displayedTracks.length * 130) -
-        130,
+      130,
     [displayedTracks, domain]
   );
   useEffect(() => {

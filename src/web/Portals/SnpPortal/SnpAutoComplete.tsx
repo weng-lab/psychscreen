@@ -62,24 +62,28 @@ export const SnpAutoComplete = (props) => {
   const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
 
   const onSubmit = () => {
-    const submittedSNP = snpids.find((g) => g.id.toLowerCase() === inputValue.toLowerCase())
+    const submittedSNP = snpids.find(
+      (g) => g.id.toLowerCase() === inputValue.toLowerCase()
+    );
     if (submittedSNP) {
-      props.onSelected && props.onSelected({
-        snpid: submittedSNP.id,
-        chromosome: submittedSNP.chrom,
-        start: submittedSNP.start,
-        end: submittedSNP.end,
-      });
-      props.navigateto && navigate(props.navigateto + submittedSNP.id, {
-        state: {
+      props.onSelected &&
+        props.onSelected({
           snpid: submittedSNP.id,
           chromosome: submittedSNP.chrom,
           start: submittedSNP.start,
           end: submittedSNP.end,
-        },
-      });
+        });
+      props.navigateto &&
+        navigate(props.navigateto + submittedSNP.id, {
+          state: {
+            snpid: submittedSNP.id,
+            chromosome: submittedSNP.chrom,
+            start: submittedSNP.start,
+            end: submittedSNP.end,
+          },
+        });
     }
-  }
+  };
 
   return (
     <Stack>
@@ -90,71 +94,69 @@ export const SnpAutoComplete = (props) => {
         </Grid>
       )}
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
-      <Grid item>
-        <Autocomplete
-          freeSolo
-          sx={{ width: 300, paper: { height: 200 } }}
-          options={options}
-          ListboxProps={{
-            style: {
-              maxHeight: "250px",
-            },
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.defaultPrevented = true;
-              onSubmit()
-            }
-          }}
-          inputValue={inputValue}
-          onInputChange={(_, newInputValue) => {
-            if (newInputValue !== "") {
-              debounceFn(newInputValue);
-            }
-            setInputValue(newInputValue);
-          }}
-          noOptionsText="e.g. rs11669173"
-          renderInput={(params) => (
-            <TextField {...params} label="e.g. rs11669173" fullWidth />
-          )}
-          renderOption={(props, option) => {
-            return (
-              <li {...props} key={props.id}>
-                <Grid container alignItems="center">
-                  <Grid
-                    item
-                    sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}
-                  >
-                    <Box component="span" sx={{ fontWeight: "regular" }}>
-                      {option}
-                    </Box>
-                    {snpids && snpids.find((g) => g.id === option) && (
-                      <Typography variant="body2" color="text.secondary">
-                        {`${snpids.find((g) => g.id === option)?.chrom}:${
-                          snpids.find((g) => g.id === option)?.start
-                        }:${snpids.find((g) => g.id === option)?.end}`}
-                      </Typography>
-                    )}
+        <Grid item>
+          <Autocomplete
+            freeSolo
+            sx={{ width: 300, paper: { height: 200 } }}
+            options={options}
+            ListboxProps={{
+              style: {
+                maxHeight: "250px",
+              },
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.defaultPrevented = true;
+                onSubmit();
+              }
+            }}
+            inputValue={inputValue}
+            onInputChange={(_, newInputValue) => {
+              if (newInputValue !== "") {
+                debounceFn(newInputValue);
+              }
+              setInputValue(newInputValue);
+            }}
+            noOptionsText="e.g. rs11669173"
+            renderInput={(params) => (
+              <TextField {...params} label="e.g. rs11669173" fullWidth />
+            )}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={props.id}>
+                  <Grid container alignItems="center">
+                    <Grid
+                      item
+                      sx={{
+                        width: "calc(100% - 44px)",
+                        wordWrap: "break-word",
+                      }}
+                    >
+                      <Box component="span" sx={{ fontWeight: "regular" }}>
+                        {option}
+                      </Box>
+                      {snpids && snpids.find((g) => g.id === option) && (
+                        <Typography variant="body2" color="text.secondary">
+                          {`${snpids.find((g) => g.id === option)?.chrom}:${
+                            snpids.find((g) => g.id === option)?.start
+                          }:${snpids.find((g) => g.id === option)?.end}`}
+                        </Typography>
+                      )}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </li>
-            );
-          }}
-        />
-      </Grid>
-      {!props.hideSearchButton && (
-          <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
-          <StyledButton
-            bvariant="filled"
-            btheme="light"
-            onClick={onSubmit}
-          >
-            Search
-          </StyledButton>
+                </li>
+              );
+            }}
+          />
         </Grid>
-      )}
-    </Grid>
+        {!props.hideSearchButton && (
+          <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
+            <StyledButton bvariant="filled" btheme="light" onClick={onSubmit}>
+              Search
+            </StyledButton>
+          </Grid>
+        )}
+      </Grid>
     </Stack>
-    
   );
 };

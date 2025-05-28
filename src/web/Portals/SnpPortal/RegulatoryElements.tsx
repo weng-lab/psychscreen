@@ -94,15 +94,12 @@ export const GROUPS: Map<string, string> = new Map([
   ["CA-H3K4me3", "Chromatin Accessible with H3K4me3"],
   ["TF", "TF"],
   ["CA", "Chromatin Accessible Only"],
-  ["pELS","Proximal Enhancer-Like Signature"],
-  ["dELS","Distal Enhancer-Like Signature"],
-  ["PLS","Promoter-Like Signature"],    
-  ["ylowdnase","Low DNase"],
-  ["zunclassified","zunclassified"]  
-])
-
-
-
+  ["pELS", "Proximal Enhancer-Like Signature"],
+  ["dELS", "Distal Enhancer-Like Signature"],
+  ["PLS", "Promoter-Like Signature"],
+  ["ylowdnase", "Low DNase"],
+  ["zunclassified", "zunclassified"],
+]);
 
 const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
   const { data, loading } = useQuery<SearchQueryResponse>(SEARCH_QUERY, {
@@ -192,11 +189,7 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
     </>
   ) : (
     <>
-      <Typography
-        type="title"
-        
-        size="large"
-      >
+      <Typography type="title" size="large">
         {" "}
         Your search returned {combinedResults.length.toLocaleString() || 0}{" "}
         cCREs and rDHSs.

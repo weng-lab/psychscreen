@@ -24,10 +24,15 @@ const COLUMNS = [
   {
     header: "Gene",
     value: (row) => row.gene,
-    HeaderRender: (row) => 
-    <a target="_blank" rel="noopener noreferrer" href={`/psychscreen/gene/${row.name}`}>
-    <i>{row.name}</i> 
-  </a>
+    HeaderRender: (row) => (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={`/psychscreen/gene/${row.name}`}
+      >
+        <i>{row.name}</i>
+      </a>
+    ),
   },
   {
     header: "Base mean",
@@ -67,48 +72,56 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
   });
 
   return (
-    <Grid container spacing={3} mt={6} mb={8} ml={"auto"} mr={"auto"} maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}>
+    <Grid
+      container
+      spacing={3}
+      mt={6}
+      mb={8}
+      ml={"auto"}
+      mr={"auto"}
+      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+    >
       <Grid item xs={12}>
+        <Typography
+          type="display"
+          size="medium"
+          style={{
+            fontWeight: 700,
+            fontSize: "36px",
+            lineHeight: "57.6px",
+            letterSpacing: "0.5px",
+            marginBottom: "16px",
+          }}
+        >
+          {celltype}
+        </Typography>
+        <br />
+        {!data && (
           <Typography
-            type="display"
-            size="medium"
+            type="body"
+            size="large"
             style={{
-              fontWeight: 700,
-              fontSize: "36px",
-              lineHeight: "57.6px",
-              letterSpacing: "0.5px",
-              marginBottom: "16px",
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              fontSize: "16px",
+              fontWeight: 400,
+              lineHeight: "19px",
             }}
           >
-            {celltype}
+            Loading Differential Gene Expression for {celltype}...
           </Typography>
-          <br />
-          {!data && (
-              <Typography
-                type="body"
-                size="large"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "19px",
-                }}
-              >
-                Loading Differential Gene Expression for {celltype}...
-              </Typography>
-          )}
-          {data && data.degQuery.length > 0 && (
-              <DataTable
-                columns={COLUMNS}
-                rows={data.degQuery}
-                itemsPerPage={20}
-                sortDescending
-                searchable
-                sortColumn={6}
-              />
-          )}
+        )}
+        {data && data.degQuery.length > 0 && (
+          <DataTable
+            columns={COLUMNS}
+            rows={data.degQuery}
+            itemsPerPage={20}
+            sortDescending
+            searchable
+            sortColumn={6}
+          />
+        )}
       </Grid>
     </Grid>
   );

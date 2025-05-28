@@ -1,14 +1,13 @@
 import { useState, useRef } from "react";
 import { CircularProgress } from "@mui/material";
 import { Grid, FormControl } from "@mui/material";
-import {  Typography } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { gql, useQuery } from "@apollo/client";
 import DotPlot from "./DotPlot";
 import { Select as MUISelect } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import { Box,  FormLabel, Slider } from "@mui/material";
-
+import { Box, FormLabel, Slider } from "@mui/material";
 
 const DEG_BYCT_QUERY = gql`
   query degQuery($gene: String, $disease: String!, $celltype: String) {
@@ -30,42 +29,47 @@ const pValMarks = [
   {
     value: 0,
     scaledValue: 0.0001,
-    label: 0.0001
+    label: 0.0001,
   },
   {
     value: 1,
     scaledValue: 0.001,
-    label: 0.001
+    label: 0.001,
   },
   {
     value: 2,
     scaledValue: 0.01,
-    label: 0.01
+    label: 0.01,
   },
   {
     value: 3,
     scaledValue: 0.05,
-    label: 0.05
+    label: 0.05,
   },
   {
     value: 4,
     scaledValue: 1,
-    label: 1
+    label: 1,
   },
-]
+];
 
 const scale = (value: number) => {
-  return pValMarks.find(x => x.value === value)!!.scaledValue
+  return pValMarks.find((x) => x.value === value)!!.scaledValue;
 };
 
 const SingleCelldegCelltypeDotplot = (props) => {
   const { data, loading } = useQuery(DEG_BYCT_QUERY, {
     variables: {
       celltype: props.celltype,
-      disease: props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease === "Autism Specturm Disorder"  ? "ASD" : props.disease,
+      disease:
+        props.disease === "Bipolar Disorder"
+          ? "Bipolar"
+          : props.disease === "Autism Specturm Disorder"
+          ? "ASD"
+          : props.disease,
     },
   });
-  const [pValCutoff, setPValCutoff] = useState<number>(0.05)
+  const [pValCutoff, setPValCutoff] = useState<number>(0.05);
 
   const handleValueChange = (event) => {
     setValue(event.target.value);
@@ -98,16 +102,10 @@ const SingleCelldegCelltypeDotplot = (props) => {
     <>
       <Grid container mt={2} mb={2} gap={2}>
         <Grid item>
-          <Typography
-            type="body"
-            size="large"
-          >
+          <Typography type="body" size="large">
             Select Disease:
           </Typography>
-          <FormControl
-            sx={{ minWidth: 300 }}
-            style={{ marginTop: "0.5em" }}
-          >
+          <FormControl sx={{ minWidth: 300 }} style={{ marginTop: "0.5em" }}>
             <InputLabel id="simple-select-helper-label">Disease:</InputLabel>
             <MUISelect
               labelId="simple-select-helper-label"
@@ -124,16 +122,20 @@ const SingleCelldegCelltypeDotplot = (props) => {
         </Grid>
         {dotplotData.length >= 50 && (
           <Grid item>
-            <Typography
-              type="body"
-              size="large"
-            >
-              Showing top 50 datasets based on {value==="log2(fold change)" ? <>log<sub>2</sub>(fold change)</> : <>-log<sub>10</sub>(<i>P</i><sub>adj</sub>)</> }
+            <Typography type="body" size="large">
+              Showing top 50 datasets based on{" "}
+              {value === "log2(fold change)" ? (
+                <>
+                  log<sub>2</sub>(fold change)
+                </>
+              ) : (
+                <>
+                  -log<sub>10</sub>(<i>P</i>
+                  <sub>adj</sub>)
+                </>
+              )}
             </Typography>
-            <FormControl
-              sx={{ minWidth: 300 }}
-              style={{ marginTop: "0.5em" }}
-            >
+            <FormControl sx={{ minWidth: 300 }} style={{ marginTop: "0.5em" }}>
               <InputLabel id="value-select">Value:</InputLabel>
               <MUISelect
                 labelId="value-select-helper"
@@ -143,9 +145,20 @@ const SingleCelldegCelltypeDotplot = (props) => {
                 onChange={handleValueChange}
               >
                 {["log2(fold change)", "-log10(p-adj)"].map((d) => {
-                  return <MenuItem value={d}>
-                        {d==="log2(fold change)" ? <>log<sub>2</sub>(fold change)</> : <>-log<sub>10</sub>(<i>P</i><sub>adj</sub>)</> }
-                  </MenuItem>;
+                  return (
+                    <MenuItem value={d}>
+                      {d === "log2(fold change)" ? (
+                        <>
+                          log<sub>2</sub>(fold change)
+                        </>
+                      ) : (
+                        <>
+                          -log<sub>10</sub>(<i>P</i>
+                          <sub>adj</sub>)
+                        </>
+                      )}
+                    </MenuItem>
+                  );
                 })}
               </MUISelect>
             </FormControl>
@@ -154,16 +167,25 @@ const SingleCelldegCelltypeDotplot = (props) => {
       </Grid>
       <Grid container>
         <Grid item>
-        <Box width={300}>
-            <FormLabel><i>P</i><sub>adj</sub> Cutoff</FormLabel>
+          <Box width={300}>
+            <FormLabel>
+              <i>P</i>
+              <sub>adj</sub> Cutoff
+            </FormLabel>
             <Slider
               min={0} //Min/Max is 0/4 since that is the true value of the marks above
               max={4}
               defaultValue={3}
               scale={scale} //Allows the slider to access the scaled values which we want displayed
               aria-label="Restricted values"
-              onChange={(event: Event, value: number | number[], activeThumb: number) => setPValCutoff(scale(value as number))} //Sets p value cutoff to scaled value
-              getAriaValueText={(value: number, index: number) => value.toString()}
+              onChange={(
+                event: Event,
+                value: number | number[],
+                activeThumb: number
+              ) => setPValCutoff(scale(value as number))} //Sets p value cutoff to scaled value
+              getAriaValueText={(value: number, index: number) =>
+                value.toString()
+              }
               step={null}
               valueLabelDisplay="auto"
               marks={pValMarks}
@@ -200,8 +222,9 @@ const SingleCelldegCelltypeDotplot = (props) => {
               title1={
                 <>
                   {"-log"}
-                  <tspan baseline-shift="sub">10</tspan>
-                  (<tspan fontStyle="italic">P</tspan><tspan baseline-shift="sub">adj</tspan>)
+                  <tspan baseline-shift="sub">10</tspan>(
+                  <tspan fontStyle="italic">P</tspan>
+                  <tspan baseline-shift="sub">adj</tspan>)
                 </>
               }
               title2={

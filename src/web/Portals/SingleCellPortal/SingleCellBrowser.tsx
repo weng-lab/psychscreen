@@ -136,17 +136,11 @@ export const SingleCellBrowser = (props) => {
   );
   return (
     <>
-      <br/>
+      <br />
       <Grid2 container justifyContent={"center"}>
         <Grid2>
-          <FormControl
-            variant="standard"
-          >
-            <Select
-              id="search"
-              value={selectedSearch}
-              onChange={handleChange}
-            >
+          <FormControl variant="standard">
+            <Select id="search" value={selectedSearch} onChange={handleChange}>
               <MenuItem value={"Genes"}>Genes</MenuItem>
               <MenuItem value={"SNPs"}>SNPs</MenuItem>
               <MenuItem value={"Coordinates"}>Coordinates</MenuItem>
@@ -211,7 +205,7 @@ export const SingleCellBrowser = (props) => {
           domain={coordinates || eexpandedCoordinates}
           withInput={false}
         />
-         <br/>
+        <br />
         {"Hold shift and drag to select a region"}
       </div>
       <br />
@@ -245,7 +239,7 @@ export const SingleCellBrowser = (props) => {
           <AtacSeqPeaksTracks
             assembly="GRCh38"
             //tracks={atacseqpeaksTracks}
-        //    tracks = { props.defaultatactracks }
+            //    tracks = { props.defaultatactracks }
             domain={coordinates || eexpandedCoordinates}
           />
         )}
