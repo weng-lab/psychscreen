@@ -32,6 +32,7 @@
     "queryz": "^0.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^5.0.0",
     "react-ga": "^3.3.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
@@ -39,6 +40,7 @@
     "typescript": "^4.7.4",
     "umap-js": "^1.3.3",
     "umms-gb": "^3.8.2",
+    "uuid": "^11.1.0",
     "vitessce": "^3.5.6",
     "web-vitals": "^2.1.4"
   },
@@ -70,5 +72,6 @@
     "gh-pages": "^4.0.0",
     "prettier": "^2.8.3",
     "react-error-overlay": "6.0.9"
-  }
+  },
+  "packageManager": "yarn@4.9.1"
 }

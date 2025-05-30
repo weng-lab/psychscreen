@@ -5,7 +5,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { Container } from "@mui/system";
+import { Container } from "@mui/material";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
 import { StyledButton } from "../Portals/styles";
 
