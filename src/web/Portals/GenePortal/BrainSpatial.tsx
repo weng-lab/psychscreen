@@ -10,6 +10,7 @@ import { Alert, Button } from "@mui/material";
 
 interface SampleInfo {
   dataset: string;
+  citation: string;
   internalFileName: string;
   shortDescription: string;
 }
@@ -58,14 +59,23 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
       fetchConfig();
     }
   }, [selectedSample, gene]);
-  
+
   const ErrorAlert = () => {
-    const { resetBoundary } = useErrorBoundary()
+    const { resetBoundary } = useErrorBoundary();
 
     return (
-      <Alert severity="error" action={<Button onClick={resetBoundary} sx={{textTransform: "none"}}>Reload</Button>}>Vitessce ran into an error, please reload!</Alert>
-    )
-  }
+      <Alert
+        severity="error"
+        action={
+          <Button onClick={resetBoundary} sx={{ textTransform: "none" }}>
+            Reload
+          </Button>
+        }
+      >
+        Vitessce ran into an error, please reload!
+      </Alert>
+    );
+  };
 
   return (
     <Grid container spacing={2}>
@@ -74,7 +84,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
           <Autocomplete
             options={sampleOptions}
             value={selectedSample}
-            groupBy={(option) => option.dataset}
+            groupBy={(option) => option.citation}
             onChange={(event, newValue) => {
               if (newValue) setSelectedSample(newValue);
             }}
@@ -91,16 +101,16 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
               <Vitessce config={config} theme="light" />
             </ErrorBoundary>
             <Typography type="body" size="medium" mt={1} mb={1}>
-              Data and cluster information belonging to the spatialDLPFC dataset are
-              from Huuki-Myers LA, <i>et al.</i>, A data-driven single-cell and
-              spatial transcriptomic map of the human prefrontal cortex. Science
-              2024
+              Data and cluster information belonging to the spatialDLPFC dataset
+              are from Huuki-Myers LA, <i>et al.</i>, A data-driven single-cell
+              and spatial transcriptomic map of the human prefrontal cortex.
+              Science 2024
             </Typography>
             <Typography type="body" size="medium" mt={1} mb={1}>
-              Data and cluster information belonging to the HumanPilot10X dataset
-              are from Maynard KR, Collado-Torres L, <i>et al.</i>,
-              Transcriptome-scale spatial gene expression in the human dorsolateral
-              prefrontal cortex. Nat Neurosci. 2021
+              Data and cluster information belonging to the HumanPilot10X
+              dataset are from Maynard KR, Collado-Torres L, <i>et al.</i>,
+              Transcriptome-scale spatial gene expression in the human
+              dorsolateral prefrontal cortex. Nat Neurosci. 2021
             </Typography>
           </Grid>
         )}
@@ -112,211 +122,253 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 const SAMPLES: SampleInfo[] = [
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br2720_ant_2",
     shortDescription: "Brain 2720 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br2720_mid_manual_alignment",
     shortDescription: "Brain 2720 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br2720_post_extra_reads",
     shortDescription: "Brain 2720 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br2743_ant_manual_alignment",
     shortDescription: "Brain 2743 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br2743_mid_manual_alignment_extra_reads",
     shortDescription: "Brain 2743 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br2743_post_manual_alignment",
     shortDescription: "Brain 2743 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br3942_ant_manual_alignment",
     shortDescription: "Brain 3942 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br3942_mid_manual_alignment",
     shortDescription: "Brain 3942 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br3942_post_manual_alignment",
     shortDescription: "Brain 3942 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6423_ant_manual_alignment_extra_reads",
     shortDescription: "Brain 6423 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6423_mid_manual_alignment",
     shortDescription: "Brain 6423 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6423_post_extra_reads",
     shortDescription: "Brain 6423 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6432_ant_2",
     shortDescription: "Brain 6432 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6432_mid_manual_alignment",
     shortDescription: "Brain 6432 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6432_post_manual_alignment",
     shortDescription: "Brain 6432 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6471_ant_manual_alignment_all",
     shortDescription: "Brain 6471 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6471_mid_manual_alignment_all",
     shortDescription: "Brain 6471 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6471_post_manual_alignment_all",
     shortDescription: "Brain 6471 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6522_ant_manual_alignment_all",
     shortDescription: "Brain 6522 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6522_mid_manual_alignment_all",
     shortDescription: "Brain 6522 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br6522_post_manual_alignment_all",
     shortDescription: "Brain 6522 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8325_ant_manual_alignment_all",
     shortDescription: "Brain 8325 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8325_mid_2",
     shortDescription: "Brain 8325 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8325_post_manual_alignment_all",
     shortDescription: "Brain 8325 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8492_ant_manual_alignment",
     shortDescription: "Brain 8492 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8492_mid_manual_alignment_extra_reads",
     shortDescription: "Brain 8492 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8492_post_manual_alignment",
     shortDescription: "Brain 8492 - Posterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8667_ant_extra_reads",
     shortDescription: "Brain 8667 - Anterior",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8667_mid_manual_alignment_all",
     shortDescription: "Brain 8667 - Middle",
   },
   {
     dataset: "spatialDLPFC",
+    citation: "Huuki-Myers et al. 2024",
     internalFileName: "DLPFC_Br8667_post_manual_alignment_all",
     shortDescription: "Brain 8667 - Posterior",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151507",
     shortDescription: "Sample 151507",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151508",
     shortDescription: "Sample 151508",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151509",
     shortDescription: "Sample 151509",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151510",
     shortDescription: "Sample 151510",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151669",
     shortDescription: "Sample 151669",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151670",
     shortDescription: "Sample 151670",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151671",
     shortDescription: "Sample 151671",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151672",
     shortDescription: "Sample 151672",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151673",
     shortDescription: "Sample 151673",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151674",
     shortDescription: "Sample 151674",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151675",
     shortDescription: "Sample 151675",
   },
   {
     dataset: "HumanPilot10X",
+    citation: "Maynard et al. 2021",
     internalFileName: "151676",
     shortDescription: "Sample 151676",
   },
