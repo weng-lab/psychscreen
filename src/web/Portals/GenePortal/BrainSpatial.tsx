@@ -6,7 +6,15 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
-import { Alert, Button } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 
 interface SampleInfo {
   dataset: string;
@@ -100,18 +108,54 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
             <ErrorBoundary fallback={<ErrorAlert />}>
               <Vitessce config={config} theme="light" />
             </ErrorBoundary>
-            <Typography type="body" size="medium" mt={1} mb={1}>
-              Data and cluster information belonging to the spatialDLPFC dataset
-              are from Huuki-Myers LA, <i>et al.</i>, A data-driven single-cell
-              and spatial transcriptomic map of the human prefrontal cortex.
-              Science 2024
-            </Typography>
-            <Typography type="body" size="medium" mt={1} mb={1}>
-              Data and cluster information belonging to the HumanPilot10X
-              dataset are from Maynard KR, Collado-Torres L, <i>et al.</i>,
-              Transcriptome-scale spatial gene expression in the human
-              dorsolateral prefrontal cortex. Nat Neurosci. 2021
-            </Typography>
+            <Box mt={2}>
+              <Typography type="body" fontWeight="bold" size="medium">
+                Source of gene expression and layer/cluster assignment:
+              </Typography>
+              <List dense>
+                <ListItem>
+                  <ListItemText
+                    primary={
+                      <>
+                        Maynard <i>et al</i>. Transcriptome-scale spatial gene
+                        expression in the human dorsolateral prefrontal cortex.{" "}
+                        <i>Nature Neuroscience</i> <b>24</b>, 425–436 (2021).
+                        (doi:{" "}
+                        <Link
+                          href="https://doi.org/10.1038/s41593-020-00787-0"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          underline="hover"
+                        >
+                          10.1038/s41593-020-00787-0
+                        </Link>
+                        ).
+                      </>
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={
+                      <>
+                        Huuki-Myers <i>et al</i>. A data-driven single-cell and
+                        spatial transcriptomic map of the human prefrontal
+                        cortex. <i>Science</i> <b>384</b>, 866 (2024). (doi:{" "}
+                        <Link
+                          href="https://doi.org/10.1126/science.adh1938"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          underline="hover"
+                        >
+                          10.1126/science.adh1938
+                        </Link>
+                        ).
+                      </>
+                    }
+                  />
+                </ListItem>
+              </List>
+            </Box>
           </Grid>
         )}
       </>
