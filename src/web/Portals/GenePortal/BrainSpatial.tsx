@@ -14,6 +14,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 interface SampleInfo {
@@ -45,11 +47,14 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
   const [config, setConfig] = useState<object | null>(null);
 
+  const theme = useTheme()
+  const useSingleColumn = useMediaQuery(theme.breakpoints.down('md'))
+
   // Fetch the config from the Zervers based on the sample name every time a new sample name is selected
   useEffect(() => {
     if (selectedSample && gene) {
       const fetchConfig = async () => {
-        let configPath: string = `https://users.wenglab.org/kresgeb/psych_encode/${selectedSample.dataset}/configs/${selectedSample.internalFileName}/config.json`;
+        let configPath: string = useSingleColumn ? "https://users.wenglab.org/kresgeb/psych_encode/spatialDLPFC/configs/DLPFC_Br6522_mid_manual_alignment_all/config2.json" : `https://users.wenglab.org/kresgeb/psych_encode/${selectedSample.dataset}/configs/${selectedSample.internalFileName}/config.json`;
 
         try {
           const response = await fetch(configPath);
@@ -68,7 +73,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
       fetchConfig();
     }
-  }, [selectedSample, gene]);
+  }, [selectedSample, gene, useSingleColumn]);
 
   const ErrorAlert = () => {
     const { resetBoundary } = useErrorBoundary();
@@ -88,9 +93,8 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
   };
 
   return (
-    <Grid container spacing={2}>
-      <>
-        <Grid sm={12} md={12} lg={12} xl={12}>
+    <Grid container spacing={2} id="parentEl">
+        <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
           <Autocomplete
             options={sampleOptions}
             value={selectedSample}
@@ -194,7 +198,6 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
             </Box>
           </Grid>
         )}
-      </>
     </Grid>
   );
 };
