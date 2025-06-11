@@ -47,14 +47,18 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
   const [config, setConfig] = useState<object | null>(null);
 
-  const theme = useTheme()
-  const useSingleColumn = useMediaQuery(theme.breakpoints.down('md'))
+  const theme = useTheme();
+  const useSingleColumn = useMediaQuery(theme.breakpoints.down("md"));
 
   // Fetch the config from the Zervers based on the sample name every time a new sample name is selected
   useEffect(() => {
     if (selectedSample && gene) {
       const fetchConfig = async () => {
-        let configPath: string = useSingleColumn ? "https://users.wenglab.org/kresgeb/psych_encode/spatialDLPFC/configs/DLPFC_Br6522_mid_manual_alignment_all/config2.json" : `https://users.wenglab.org/kresgeb/psych_encode/${selectedSample.dataset}/configs/${selectedSample.internalFileName}/config.json`;
+        let configPath: string = `https://users.wenglab.org/kresgeb/psych_encode/${
+          selectedSample.dataset
+        }/configs/${selectedSample.internalFileName}/config${
+          useSingleColumn ? "_single_column" : ""
+        }.json`;
 
         try {
           const response = await fetch(configPath);
@@ -94,110 +98,106 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
   return (
     <Grid container spacing={2} id="parentEl">
-        <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Autocomplete
-            options={sampleOptions}
-            value={selectedSample}
-            groupBy={(option) => option.headerGroup}
-            onChange={(event, newValue) => {
-              if (newValue) setSelectedSample(newValue);
-            }}
-            getOptionLabel={(option) => option.label}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Brain Sample"
-                variant="outlined"
-              />
-            )}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={option.id}>
-                  <Grid container direction="column">
-                    <Typography type="body" size="medium">
-                      {option.label}
-                    </Typography>
-                    {option.availableAssignments &&
-                      option.availableAssignments.length > 0 && (
-                        <Typography
-                          type="body"
-                          size="small"
-                          color="text.secondary"
-                        >
-                          {option.availableAssignments.join(", ")}
-                        </Typography>
-                      )}
-                    {option.additionalInfo && (
+      <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
+        <Autocomplete
+          options={sampleOptions}
+          value={selectedSample}
+          groupBy={(option) => option.headerGroup}
+          onChange={(event, newValue) => {
+            if (newValue) setSelectedSample(newValue);
+          }}
+          getOptionLabel={(option) => option.label}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Select Brain Sample"
+              variant="outlined"
+            />
+          )}
+          renderOption={(props, option) => {
+            return (
+              <li {...props} key={option.id}>
+                <Grid container direction="column">
+                  <Typography type="body" size="medium">
+                    {option.label}
+                  </Typography>
+                  {option.availableAssignments &&
+                    option.availableAssignments.length > 0 && (
                       <Typography
                         type="body"
                         size="small"
                         color="text.secondary"
                       >
-                        {option.additionalInfo}
+                        {option.availableAssignments.join(", ")}
                       </Typography>
                     )}
-                  </Grid>
-                </li>
-              );
-            }}
-            sx={{ width: 300 }}
-          />
+                  {option.additionalInfo && (
+                    <Typography type="body" size="small" color="text.secondary">
+                      {option.additionalInfo}
+                    </Typography>
+                  )}
+                </Grid>
+              </li>
+            );
+          }}
+          sx={{ width: 300 }}
+        />
+      </Grid>
+      {config && (
+        <Grid sm={12} md={12} lg={12} xl={12}>
+          <ErrorBoundary fallback={<ErrorAlert />}>
+            <Vitessce config={config} theme="light" />
+          </ErrorBoundary>
+          <Box mt={2}>
+            <Typography type="title" fontWeight="bold" size="medium">
+              Source of gene expression and layer/cluster assignment:
+            </Typography>
+            <List dense>
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <>
+                      Maynard <i>et al</i>. Transcriptome-scale spatial gene
+                      expression in the human dorsolateral prefrontal cortex.{" "}
+                      <i>Nature Neuroscience</i> <b>24</b>, 425–436 (2021).
+                      (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1038/s41593-020-00787-0"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1038/s41593-020-00787-0
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <>
+                      Huuki-Myers <i>et al</i>. A data-driven single-cell and
+                      spatial transcriptomic map of the human prefrontal cortex.{" "}
+                      <i>Science</i> <b>384</b>, 866 (2024). (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1126/science.adh1938"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1126/science.adh1938
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </ListItem>
+            </List>
+          </Box>
         </Grid>
-        {config && (
-          <Grid sm={12} md={12} lg={12} xl={12}>
-            <ErrorBoundary fallback={<ErrorAlert />}>
-              <Vitessce config={config} theme="light" />
-            </ErrorBoundary>
-            <Box mt={2}>
-              <Typography type="title" fontWeight="bold" size="medium">
-                Source of gene expression and layer/cluster assignment:
-              </Typography>
-              <List dense>
-                <ListItem>
-                  <ListItemText
-                    primary={
-                      <>
-                        Maynard <i>et al</i>. Transcriptome-scale spatial gene
-                        expression in the human dorsolateral prefrontal cortex.{" "}
-                        <i>Nature Neuroscience</i> <b>24</b>, 425–436 (2021).
-                        (doi:{" "}
-                        <Link
-                          href="https://doi.org/10.1038/s41593-020-00787-0"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          underline="hover"
-                        >
-                          10.1038/s41593-020-00787-0
-                        </Link>
-                        ).
-                      </>
-                    }
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary={
-                      <>
-                        Huuki-Myers <i>et al</i>. A data-driven single-cell and
-                        spatial transcriptomic map of the human prefrontal
-                        cortex. <i>Science</i> <b>384</b>, 866 (2024). (doi:{" "}
-                        <Link
-                          href="https://doi.org/10.1126/science.adh1938"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          underline="hover"
-                        >
-                          10.1126/science.adh1938
-                        </Link>
-                        ).
-                      </>
-                    }
-                  />
-                </ListItem>
-              </List>
-            </Box>
-          </Grid>
-        )}
+      )}
     </Grid>
   );
 };
