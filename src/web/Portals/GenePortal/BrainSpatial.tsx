@@ -11,8 +11,6 @@ import {
   Box,
   Button,
   Link,
-  List,
-  ListItem,
   ListItemText,
   useMediaQuery,
   useTheme,
@@ -152,8 +150,8 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
             <Typography type="title" fontWeight="bold" size="medium">
               Source of gene expression and layer/cluster assignment:
             </Typography>
-            <List dense>
-              <ListItem>
+            <ul>
+              <li>
                 <ListItemText
                   primary={
                     <>
@@ -173,8 +171,8 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                     </>
                   }
                 />
-              </ListItem>
-              <ListItem>
+              </li>
+              <li>
                 <ListItemText
                   primary={
                     <>
@@ -193,8 +191,8 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                     </>
                   }
                 />
-              </ListItem>
-            </List>
+              </li>
+            </ul>
           </Box>
         </Grid>
       )}
