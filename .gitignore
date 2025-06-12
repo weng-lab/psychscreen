@@ -3,3 +3,4 @@ build/
 .yarn
 .yarnrc.yml
 .vscode
+package-lock.json
