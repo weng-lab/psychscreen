@@ -192,6 +192,79 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                   }
                 />
               </li>
+              <li>
+                <ListItemText
+                  primary={
+                    <>
+                      Pardo <i>et al</i>. spatialLIBD: an R/Bioconductor package
+                      to visualize spatially-resolved transcriptomics data.{" "}
+                      <i>BMC Genomics</i> <b>23</b>, 434 (2022). (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1186/s12864-022-08601-w"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1186/s12864-022-08601-w
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </li>
+            </ul>
+            <Typography type="title" fontWeight="bold" size="medium">
+              Visualization powered by{" "}
+              <Link
+                href="https://vitessce.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+              >
+                Vitessce v3.6.2
+              </Link>
+            </Typography>
+            <ul>
+              <li>
+                <ListItemText
+                  primary={
+                    <>
+                      Keller <i>et al</i>. Vitessce: integrative visualization
+                      of multimodal and spatially resolved single-cell data.{" "}
+                      <i>Nature Methods</i> <b>22</b>, 63–67 (2025). (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1038/s41592-024-02436-x"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1038/s41592-024-02436-x
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </li>
+              <li>
+                <ListItemText
+                  primary={
+                    <>
+                      Manz <i>et al</i>. Viv: multiscale visualization of
+                      high-resolution multiplexed bioimaging data on the web.{" "}
+                      <i>Nature Methods</i> <b>19</b>, 1569–1576 (2022). (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1038/s41592-022-01482-7"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1038/s41592-022-01482-7
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </li>
             </ul>
           </Box>
         </Grid>
