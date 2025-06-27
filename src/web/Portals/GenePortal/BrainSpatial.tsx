@@ -37,10 +37,8 @@ interface SpatialProps {
 
 export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
   const [selectedSample, setSelectedSample] = useState<SampleOption>(
-    sampleOptions.find(
-      (sample) =>
-        sample.internalFileName === "DLPFC_Br6522_mid_manual_alignment_all"
-    ) || sampleOptions[0]
+    sampleOptions.find((sample) => sample.internalFileName === "Br6522_mid") ||
+      sampleOptions[0]
   );
 
   const [config, setConfig] = useState<object | null>(null);
@@ -52,7 +50,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
   useEffect(() => {
     if (selectedSample && gene) {
       const fetchConfig = async () => {
-        let configPath: string = `https://users.wenglab.org/kresgeb/psych_encode/${
+        let configPath: string = `https://users.wenglab.org/kresgeb/psych_screen/${
           selectedSample.dataset
         }/configs/${selectedSample.internalFileName}/config${
           useSingleColumn ? "_single_column" : ""
@@ -277,7 +275,7 @@ const SAMPLES: SampleInfo[] = [
   {
     dataset: "spatialDLPFC",
     headerGroup: "Suggested Samples",
-    internalFileName: "DLPFC_Br6522_mid_manual_alignment_all",
+    internalFileName: "Br6522_mid",
     shortDescription: "Brain 6522 - Middle",
     availableAssignments: ["Manual Annotation", "BayesSpace"],
     additionalInfo: "From Huuki-Myers et al. 2024",
@@ -285,7 +283,7 @@ const SAMPLES: SampleInfo[] = [
   {
     dataset: "spatialDLPFC",
     headerGroup: "Suggested Samples",
-    internalFileName: "DLPFC_Br6522_ant_manual_alignment_all",
+    internalFileName: "Br6522_ant",
     shortDescription: "Brain 6522 - Anterior",
     availableAssignments: ["Manual Annotation", "BayesSpace"],
     additionalInfo: "From Huuki-Myers et al. 2024",
@@ -293,7 +291,7 @@ const SAMPLES: SampleInfo[] = [
   {
     dataset: "spatialDLPFC",
     headerGroup: "Suggested Samples",
-    internalFileName: "DLPFC_Br8667_post_manual_alignment_all",
+    internalFileName: "Br8667_post",
     shortDescription: "Brain 8667 - Posterior",
     availableAssignments: ["Manual Annotation", "BayesSpace"],
     additionalInfo: "From Huuki-Myers et al. 2024",
@@ -309,210 +307,210 @@ const SAMPLES: SampleInfo[] = [
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br2720_ant_2",
+    internalFileName: "Br2720_ant",
     shortDescription: "Brain 2720 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br2720_mid_manual_alignment",
+    internalFileName: "Br2720_mid",
     shortDescription: "Brain 2720 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br2720_post_extra_reads",
+    internalFileName: "Br2720_post",
     shortDescription: "Brain 2720 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br2743_ant_manual_alignment",
+    internalFileName: "Br2743_ant",
     shortDescription: "Brain 2743 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br2743_mid_manual_alignment_extra_reads",
+    internalFileName: "Br2743_mid",
     shortDescription: "Brain 2743 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br2743_post_manual_alignment",
+    internalFileName: "Br2743_post",
     shortDescription: "Brain 2743 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br3942_ant_manual_alignment",
+    internalFileName: "Br3942_ant",
     shortDescription: "Brain 3942 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br3942_mid_manual_alignment",
+    internalFileName: "Br3942_mid",
     shortDescription: "Brain 3942 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br3942_post_manual_alignment",
+    internalFileName: "Br3942_post",
     shortDescription: "Brain 3942 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6423_ant_manual_alignment_extra_reads",
+    internalFileName: "Br6423_ant",
     shortDescription: "Brain 6423 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6423_mid_manual_alignment",
+    internalFileName: "Br6423_mid",
     shortDescription: "Brain 6423 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6423_post_extra_reads",
+    internalFileName: "Br6423_post",
     shortDescription: "Brain 6423 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6432_ant_2",
+    internalFileName: "Br6432_ant",
     shortDescription: "Brain 6432 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6432_mid_manual_alignment",
+    internalFileName: "Br6432_mid",
     shortDescription: "Brain 6432 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6432_post_manual_alignment",
+    internalFileName: "Br6432_post",
     shortDescription: "Brain 6432 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6471_ant_manual_alignment_all",
+    internalFileName: "Br6471_ant",
     shortDescription: "Brain 6471 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6471_mid_manual_alignment_all",
+    internalFileName: "Br6471_mid",
     shortDescription: "Brain 6471 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6471_post_manual_alignment_all",
+    internalFileName: "Br6471_post",
     shortDescription: "Brain 6471 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6522_ant_manual_alignment_all",
+    internalFileName: "Br6522_ant",
     shortDescription: "Brain 6522 - Anterior",
     availableAssignments: ["Manual Annotation", "BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6522_mid_manual_alignment_all",
+    internalFileName: "Br6522_mid",
     shortDescription: "Brain 6522 - Middle",
     availableAssignments: ["Manual Annotation", "BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br6522_post_manual_alignment_all",
+    internalFileName: "Br6522_post",
     shortDescription: "Brain 6522 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8325_ant_manual_alignment_all",
+    internalFileName: "Br8325_ant",
     shortDescription: "Brain 8325 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8325_mid_2",
+    internalFileName: "Br8325_mid",
     shortDescription: "Brain 8325 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8325_post_manual_alignment_all",
+    internalFileName: "Br8325_post",
     shortDescription: "Brain 8325 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8492_ant_manual_alignment",
+    internalFileName: "Br8492_ant",
     shortDescription: "Brain 8492 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8492_mid_manual_alignment_extra_reads",
+    internalFileName: "Br8492_mid",
     shortDescription: "Brain 8492 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8492_post_manual_alignment",
+    internalFileName: "Br8492_post",
     shortDescription: "Brain 8492 - Posterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8667_ant_extra_reads",
+    internalFileName: "Br8667_ant",
     shortDescription: "Brain 8667 - Anterior",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8667_mid_manual_alignment_all",
+    internalFileName: "Br8667_mid",
     shortDescription: "Brain 8667 - Middle",
     availableAssignments: ["BayesSpace"],
   },
   {
     dataset: "spatialDLPFC",
     headerGroup: "Huuki-Myers et al. 2024",
-    internalFileName: "DLPFC_Br8667_post_manual_alignment_all",
+    internalFileName: "Br8667_post",
     shortDescription: "Brain 8667 - Posterior",
     availableAssignments: ["Manual Annotation", "BayesSpace"],
   },
