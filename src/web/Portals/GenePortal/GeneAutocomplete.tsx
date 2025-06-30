@@ -12,7 +12,7 @@ import { Stack } from "@mui/material";
 
 const GENE_AUTOCOMPLETE_QUERY = `
 query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembx ly, name_prefix: $name_prefix, limit: $limit, version: 40) {
+    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit, version: 40) {
       name
       id
       coordinates {
@@ -77,7 +77,7 @@ export const GeneAutoComplete = (props) => {
         variables: {
           assembly: "GRCh38",
           name_prefix: value,
-          limit: 1000,
+          limit: 1000
         },
       }),
       headers: { "Content-Type": "application/json" },
