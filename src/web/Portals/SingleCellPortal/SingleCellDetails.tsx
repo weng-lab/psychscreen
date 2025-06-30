@@ -95,7 +95,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
               }}
               helperText={
                 <>
-                  e.g., <i>SOX4</i>, <i>APOE</i>
+                  e.g., <i>PCP4</i>, <i>APOE</i>, <i>MBP</i>
                 </>
               }
             />

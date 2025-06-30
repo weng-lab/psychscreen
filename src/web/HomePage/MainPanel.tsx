@@ -16,7 +16,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
 
 const MainPanel: React.FC = () => {
-  const [selectedPortal, setSelectedPortal] = useState<string>("Disease/Trait");
+  const [selectedPortal, setSelectedPortal] = useState<string>("Gene/b-cCRE");
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedPortal(event.target.value);
   };

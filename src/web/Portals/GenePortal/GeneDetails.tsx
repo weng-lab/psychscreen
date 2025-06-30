@@ -227,10 +227,11 @@ const GeneDetails: React.FC = (props) => {
           >
             <StyledTab label="Epigenome Browser" />
             <StyledTab label="Single Cell Expression" />
+            <StyledTab label="Spatial Expression" />
             <StyledTab label="Tissue Expression (GTEx)" />
             <StyledTab label="eQTLs and b-cCREs" />
             <StyledTab label="Differential Gene Expression" />
-            <StyledTab label="Spatial Expression" />
+            
           </Tabs>
           <Divider />
         </Box>
@@ -267,7 +268,7 @@ const GeneDetails: React.FC = (props) => {
             <Box>
               <GeneExpressionPage id={geneid} />
             </Box>
-          ) : tabIndex === 3 &&
+          ) : tabIndex === 4 &&
             (geneCoords ||
               (region.chromosome !== "" && region.start && region.end)) ? (
             <Box>
@@ -293,11 +294,11 @@ const GeneDetails: React.FC = (props) => {
                 //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
               />
             </Box>
-          ) : tabIndex === 4 ? (
+          ) : tabIndex === 5 ? (
             <Box>
               <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
             </Box>
-          ) : tabIndex === 5 ? (
+          ) : tabIndex === 2 ? (
             <Box>
               <Typography type="body" size="small">
                 <BrainSpatial gene={gene || "MBP"} />
@@ -311,7 +312,7 @@ const GeneDetails: React.FC = (props) => {
                 selectDatasets
               />
             </Box>
-          ) : tabIndex === 2 ? (
+          ) : tabIndex === 3 ? (
             <Box>
               {data && data?.gtex_genes.length === 0 ? (
                 <Typography type="body" size="large">
