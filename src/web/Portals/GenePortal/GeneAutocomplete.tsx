@@ -77,7 +77,7 @@ export const GeneAutoComplete = (props) => {
         variables: {
           assembly: "GRCh38",
           name_prefix: value,
-          limit: 1000,
+          limit: 1000
         },
       }),
       headers: { "Content-Type": "application/json" },
@@ -167,7 +167,7 @@ export const GeneAutoComplete = (props) => {
                 {...params}
                 label={
                   <>
-                    e.g., <i>SOX4</i>, <i>APOE</i>
+                    e.g., <i>PCP4</i>, <i>APOE</i>, <i>MBP</i>
                   </>
                 }
                 fullWidth
