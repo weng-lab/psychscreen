@@ -24,6 +24,13 @@ import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import { StyledButton } from "../../Portals/styles";
+import {
+  createTrackStore,
+  createBrowserStore,
+  Domain,
+} from "@weng-lab/genomebrowser";
+import BrowserView from "../../../genome-browser/browserView";
+import { diseaseTracks, geneTrack } from "../../../genome-browser/tracks";
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -449,11 +456,9 @@ const DiseaseTraitDetails: React.FC = () => {
             }
           />
         ) : page === 3 ? (
-          <Browser
-            coordinates={browserCoordinates}
-            url={summaryStatisticsURL}
-            trait={diseaseLabel || "Autism Spectrum Disorder"}
-            gwasLocusSNPs={gwasLocusSNPs}
+          <BrowserView
+            coordinates={browserCoordinates as Domain}
+            tracks={[geneTrack(undefined), ...diseaseTracks]}
           />
         ) : page === 4 &&
           significantSNPs &&

@@ -2,7 +2,7 @@ import { GraphQLImportanceTrack } from "bpnet-ui";
 import { ImportanceTrackDataPoint } from "bpnet-ui/dist/components/ImportanceTrack/ImportanceTrack";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmptyTrack, FullBigWig } from "umms-gb";
-import { RawLogo, DNAAlphabet } from "logojs-react";
+import { RawLogo, DNAAlphabet } from "logo-test";
 import { GenomicRange } from "../web/Portals/GenePortal/AssociatedxQTL";
 import { useQuery } from "@apollo/client";
 import {
@@ -440,8 +440,8 @@ const TitledImportanceTrack: React.FC<TitledImportanceTrackProps> = (props) => {
                 ).map(logLikelihood([0.25, 0.25, 0.25, 0.25]))}
                 glyphWidth={10}
                 stackHeight={50}
-                x={0}
-                y={0}
+                // x={0}
+                // y={0}
               />
               {highlights[selectedHighlight].motif.tomtom_matches &&
                 highlights[selectedHighlight].motif.tomtom_matches.length >
