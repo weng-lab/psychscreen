@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { BrowserStoreInstance } from "@weng-lab/genomebrowser";
+import { BrowserStoreInstance } from "genomebrowser-test";
 import { useCallback } from "react";
 
 export default function ControlButtons({
@@ -81,6 +81,12 @@ export default function ControlButtons({
                 padding: "2px 8px",
                 minWidth: "30px",
                 fontSize: "0.8rem",
+                color: "#000000",
+                borderColor: "#000000",
+                "&:hover": {
+                  borderColor: "#202020",
+                  backgroundColor: "#e0e0e0",
+                },
               }}
             >
               {btn.label}

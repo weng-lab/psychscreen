@@ -9,6 +9,12 @@ import SingleCell from "../GenePortal/SingleCell";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { SingleCellBrowser } from "./SingleCellBrowser";
 import { StyledTab } from "../../Portals/styles";
+import BrowserView from "../../../genome-browser/browserView";
+import {
+  defaultTracks,
+  geneTrack,
+} from "../../../genome-browser/tracks/tracks";
+import { Track } from "genomebrowser-test";
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
@@ -60,6 +66,8 @@ export const SingleCellGeneDetails = (props) => {
     setTabIndex(newTabIndex);
   };
 
+  const tracks: Track[] = [geneTrack(gene), ...defaultTracks];
+
   return (
     <Grid container {...props} style={{ marginTop: "0.5em" }}>
       <Grid item sm={1} lg={1.5} />
@@ -107,7 +115,15 @@ export const SingleCellGeneDetails = (props) => {
           (geneCoords ||
             (region.chromosome !== "" && region.start && region.end)) ? (
             <Box>
-              <SingleCellBrowser
+              <BrowserView
+                coordinates={{
+                  chromosome: region.chromosome,
+                  start: region.start,
+                  end: region.end,
+                }}
+                tracks={tracks}
+              />
+              {/* <SingleCellBrowser
                 name={gene?.toUpperCase()}
                 coordinates={{
                   chromosome:
@@ -124,7 +140,7 @@ export const SingleCellGeneDetails = (props) => {
                       : +region.end,
                 }}
                 // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
-              />
+              /> */}
             </Box>
           ) : (
             <Box>

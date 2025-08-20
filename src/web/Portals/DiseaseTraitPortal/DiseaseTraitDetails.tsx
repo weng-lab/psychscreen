@@ -28,9 +28,12 @@ import {
   createTrackStore,
   createBrowserStore,
   Domain,
-} from "@weng-lab/genomebrowser";
+} from "genomebrowser-test";
 import BrowserView from "../../../genome-browser/browserView";
-import { diseaseTracks, geneTrack } from "../../../genome-browser/tracks";
+import {
+  defaultTracks,
+  geneTrack,
+} from "../../../genome-browser/tracks/tracks";
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -458,7 +461,7 @@ const DiseaseTraitDetails: React.FC = () => {
         ) : page === 3 ? (
           <BrowserView
             coordinates={browserCoordinates as Domain}
-            tracks={[geneTrack(undefined), ...diseaseTracks]}
+            tracks={[geneTrack(undefined), ...defaultTracks]}
           />
         ) : page === 4 &&
           significantSNPs &&

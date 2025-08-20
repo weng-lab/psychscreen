@@ -16,6 +16,12 @@ import { StyledTab, StyledToggleButton } from "../../Portals/styles";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
+import BrowserView from "../../../genome-browser/browserView";
+import { Track } from "genomebrowser-test";
+import {
+  defaultTracks,
+  geneTrack,
+} from "../../../genome-browser/tracks/tracks";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -188,6 +194,8 @@ const GeneDetails: React.FC = (props) => {
     return (54 + (keys < 27 ? 27 : keys)) * 200;
   }, [toPlot]);
 
+  const tracks: Track[] = [geneTrack(gene), ...defaultTracks];
+
   return (
     <Grid
       container
@@ -231,7 +239,6 @@ const GeneDetails: React.FC = (props) => {
             <StyledTab label="Tissue Expression (GTEx)" />
             <StyledTab label="eQTLs and b-cCREs" />
             <StyledTab label="Differential Gene Expression" />
-            
           </Tabs>
           <Divider />
         </Box>
@@ -245,7 +252,15 @@ const GeneDetails: React.FC = (props) => {
             (geneCoords ||
               (region.chromosome !== "" && region.start && region.end)) ? (
             <Box>
-              <Browser
+              <BrowserView
+                coordinates={{
+                  chromosome: region.chromosome,
+                  start: region.start - 2000,
+                  end: region.end + 2000,
+                }}
+                tracks={tracks}
+              />
+              {/* <Browser
                 name={gene?.toUpperCase()}
                 coordinates={{
                   chromosome:
@@ -262,7 +277,7 @@ const GeneDetails: React.FC = (props) => {
                       : +region.end,
                 }}
                 // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
-              />
+              /> */}
             </Box>
           ) : tabIndex === 3 && 0 > 1 ? (
             <Box>
