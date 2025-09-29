@@ -37,6 +37,7 @@ import {
   DataStoreInstance,
   BrowserStoreInstance,
   useCustomData,
+  Chromosome,
 } from "genomebrowser-test";
 import BrowserView from "../../../genome-browser/browserView";
 import {
@@ -377,15 +378,21 @@ const DiseaseTraitDetails: React.FC = () => {
   useLDQuery(hovered, editTrack);
 
   const dataStore = useMemo(() => createDataStore(), []);
-  useManhattanData(
-    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
-    browserStore,
-    dataStore
-  );
+  useManhattanData(summaryStatisticsURL, browserStore, dataStore);
 
   const setDomain = browserStore((state) => state.setDomain);
   useEffect(() => {
-    setDomain(browserCoordinates as Domain);
+    const range = browserCoordinates.end - browserCoordinates.start;
+    const midpoint = (browserCoordinates.start + browserCoordinates.end) / 2;
+    if (range >= 4000000) {
+      setDomain({
+        chromosome: browserCoordinates.chromosome as Chromosome,
+        start: midpoint - 2000000,
+        end: midpoint + 2000000,
+      });
+    } else {
+      setDomain(browserCoordinates as Domain);
+    }
   }, [browserCoordinates]);
 
   return (
