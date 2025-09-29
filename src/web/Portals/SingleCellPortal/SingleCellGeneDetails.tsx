@@ -7,7 +7,6 @@ import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
 
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
-import { SingleCellBrowser } from "./SingleCellBrowser";
 import { StyledTab } from "../../Portals/styles";
 import BrowserView from "../../../genome-browser/browserView";
 import {

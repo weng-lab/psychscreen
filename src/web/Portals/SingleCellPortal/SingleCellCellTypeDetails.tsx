@@ -6,7 +6,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import { diseaseCT, GRN_cellType_Cards, Qtl_Celltype_Cards } from "./consts";
-import { SingleCellBrowser } from "./SingleCellBrowser";
+import SingleCellBrowser from "./SingleCellBrowser";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
 import { StyledTab } from "../styles";
 import { ATACTRACKS } from "./AtacSeaPeaksTrackModal";
@@ -127,21 +127,13 @@ const SingleCellCellTypeDetails: React.FC = () => {
           <Divider />
         </Box>
         {tabIndex === 0 && celltype && (
-          <SingleCellBrowser
-            coordinates={coordinates}
-            assembly={"hg38"}
-            atactracks
-          />
+          <SingleCellBrowser coordinates={coordinates} atactracks />
         )}
         {tabIndex == 1 &&
           (GRN_cellType_Cards.find(
             (c) => c.cardLabel === celltype?.replace(" or ", "/")
           ) ? (
-            <SingleCellBrowser
-              coordinates={coordinates}
-              assembly={"hg38"}
-              grntracks
-            />
+            <SingleCellBrowser coordinates={coordinates} grntracks />
           ) : (
             <>
               <br />
@@ -152,11 +144,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
           (Qtl_Celltype_Cards.find(
             (c) => c.cardLabel === celltype?.replace(" or ", "/")
           ) ? (
-            <SingleCellBrowser
-              coordinates={coordinates}
-              assembly={"hg38"}
-              qtltracks
-            />
+            <SingleCellBrowser coordinates={coordinates} qtltracks />
           ) : (
             <>
               <br />

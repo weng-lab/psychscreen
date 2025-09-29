@@ -22,12 +22,7 @@ import { DeepLearnedTracks } from "../tracks/deep-learned";
 import { EpigeneticTracks } from "../tracks/epigenetic";
 import { PseudobulkAtacTracks } from "../tracks/pseudo-bulk-atac";
 import { TrackList, TrackTemplate } from "../types";
-import {
-  BigBedConfig,
-  BigWigConfig,
-  DisplayMode,
-  TrackType,
-} from "genomebrowser-test";
+import { AtackSeqPeaksTracks } from "../tracks/atac-seq-peaks";
 
 interface TrackDialogProps {
   open: boolean;
@@ -319,6 +314,7 @@ const allTrackLists: Record<string, TrackList> = {
   "Deep Learned Models": DeepLearnedTracks,
   "Pseudo bulk ATAC": PseudobulkAtacTracks,
   "Evolutionary Conservation": EvoConservationTracks,
+  "ATAC Seq Peaks": AtackSeqPeaksTracks,
 };
 
 const categoryColors: Record<string, string> = {
@@ -326,4 +322,5 @@ const categoryColors: Record<string, string> = {
   "Deep Learned Models": "#758c7b",
   "Pseudo bulk ATAC": "#cd8c66",
   "Evolutionary Conservation": "#c0a9e2",
+  "ATAC Seq Peaks": "#9479bc",
 };
