@@ -28,12 +28,25 @@ import {
   createTrackStore,
   createBrowserStore,
   Domain,
+  createDataStore,
+  DisplayMode,
+  TrackType,
+  ManhattanTrackConfig,
+  LDTrackConfig,
+  ManhattanPoint,
+  DataStoreInstance,
+  BrowserStoreInstance,
+  useCustomData,
 } from "genomebrowser-test";
 import BrowserView from "../../../genome-browser/browserView";
 import {
-  defaultTracks,
+  deepLearnedModels,
+  evoConservation,
   geneTrack,
+  regulatoryFeatures,
 } from "../../../genome-browser/tracks/tracks";
+import { useManhattanData } from "../../../genome-browser/useManhattanData";
+import { useLDQuery } from "../../../genome-browser/useLDQuery";
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -208,6 +221,27 @@ function useLoci(trait: string) {
   return { loci, loading, data };
 }
 
+const ldTrack: LDTrackConfig = {
+  id: "ld",
+  title: "LD",
+  trackType: TrackType.LDTrack,
+  displayMode: DisplayMode.GenericLD,
+  height: 50,
+  titleSize: 12,
+  color: "#7c97c4",
+};
+
+const manhattanTrack: ManhattanTrackConfig = {
+  id: "manhattan",
+  title: "Manhattan",
+  trackType: TrackType.Manhattan,
+  displayMode: DisplayMode.Scatter,
+  height: 75,
+  titleSize: 12,
+  color: "#7c97c4",
+  cutoffLabel: "5e-8",
+};
+
 const DiseaseTraitDetails: React.FC = () => {
   const { disease } = useParams();
   const [page, setPage] = useState<number>(-1);
@@ -227,6 +261,7 @@ const DiseaseTraitDetails: React.FC = () => {
     start: 161033654,
     end: 161317875,
   });
+
   const navigateBrowser = useCallback(
     (
       coordinates: GenomicRange,
@@ -302,6 +337,56 @@ const DiseaseTraitDetails: React.FC = () => {
   const gassoc =
     genesdata &&
     genesdata.genesAssociationsQuery.filter((g) => g.dge_fdr <= 0.05);
+
+  const [hovered, setHovered] = useState<ManhattanPoint | null>(null);
+
+  const browserStore = useMemo(
+    () =>
+      createBrowserStore({
+        domain: browserCoordinates as Domain,
+        marginWidth: 100,
+        trackWidth: 1400,
+        multiplier: 3,
+      }),
+    []
+  );
+  const trackStore = useMemo(
+    () =>
+      createTrackStore([
+        geneTrack(undefined),
+        ...regulatoryFeatures,
+        ...deepLearnedModels,
+        {
+          ...manhattanTrack,
+          onHover: (item) => {
+            setHovered(item);
+          },
+        },
+        {
+          ...ldTrack,
+          onHover: (item) => {
+            setHovered(item);
+          },
+        },
+        ...evoConservation,
+      ]),
+    [setHovered]
+  );
+  const editTrack = trackStore((state) => state.editTrack);
+
+  useLDQuery(hovered, editTrack);
+
+  const dataStore = useMemo(() => createDataStore(), []);
+  useManhattanData(
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
+    browserStore,
+    dataStore
+  );
+
+  const setDomain = browserStore((state) => state.setDomain);
+  useEffect(() => {
+    setDomain(browserCoordinates as Domain);
+  }, [browserCoordinates]);
 
   return (
     <Grid
@@ -460,8 +545,9 @@ const DiseaseTraitDetails: React.FC = () => {
           />
         ) : page === 3 ? (
           <BrowserView
-            coordinates={browserCoordinates as Domain}
-            tracks={[geneTrack(undefined), ...defaultTracks]}
+            browserStore={browserStore}
+            trackStore={trackStore}
+            dataStore={dataStore}
           />
         ) : page === 4 &&
           significantSNPs &&

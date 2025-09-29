@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { Divider, Grid, Box, Tabs } from "@mui/material";
@@ -11,10 +11,24 @@ import { SingleCellBrowser } from "./SingleCellBrowser";
 import { StyledTab } from "../../Portals/styles";
 import BrowserView from "../../../genome-browser/browserView";
 import {
-  defaultTracks,
+  evoConservation,
   geneTrack,
+  regulatoryFeatures,
+  deepLearnedModels,
 } from "../../../genome-browser/tracks/tracks";
-import { Track } from "genomebrowser-test";
+import {
+  createBrowserStore,
+  createDataStore,
+  createTrackStore,
+  ManhattanPoint,
+  Track,
+} from "genomebrowser-test";
+import {
+  manhattanTrack,
+  useManhattanData,
+} from "../../../genome-browser/useManhattanData";
+import { ldTrack } from "../../../genome-browser/useManhattanData";
+import { useLDQuery } from "../../../genome-browser/useLDQuery";
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
@@ -66,7 +80,62 @@ export const SingleCellGeneDetails = (props) => {
     setTabIndex(newTabIndex);
   };
 
-  const tracks: Track[] = [geneTrack(gene), ...defaultTracks];
+  const browserStore = useMemo(
+    () =>
+      createBrowserStore({
+        domain: {
+          chromosome:
+            region.chromosome === ""
+              ? geneCoords.gene[0].coordinates.chromosome
+              : region.chromosome,
+          start:
+            (region.start === null
+              ? +geneCoords.gene[0].coordinates.start
+              : +region.start) - 20000,
+          end:
+            (region.end === null
+              ? +geneCoords.gene[0].coordinates.end
+              : +region.end) + 20000,
+        },
+        marginWidth: 100,
+        trackWidth: 1400,
+        multiplier: 3,
+      }),
+    [region]
+  );
+  const [hovered, setHovered] = useState<ManhattanPoint | null>(null);
+  const trackStore = useMemo(
+    () =>
+      createTrackStore([
+        geneTrack(gene),
+        ...regulatoryFeatures,
+        ...deepLearnedModels,
+        {
+          ...manhattanTrack,
+          onHover: (item) => {
+            setHovered(item);
+          },
+        },
+        {
+          ...ldTrack,
+          onHover: (item) => {
+            setHovered(item);
+          },
+        },
+        ...evoConservation,
+      ]),
+    [setHovered]
+  );
+  const editTrack = trackStore((state) => state.editTrack);
+
+  useLDQuery(hovered, editTrack);
+
+  const dataStore = useMemo(() => createDataStore(), []);
+  useManhattanData(
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
+    browserStore,
+    dataStore
+  );
 
   return (
     <Grid container {...props} style={{ marginTop: "0.5em" }}>
@@ -116,31 +185,10 @@ export const SingleCellGeneDetails = (props) => {
             (region.chromosome !== "" && region.start && region.end)) ? (
             <Box>
               <BrowserView
-                coordinates={{
-                  chromosome: region.chromosome,
-                  start: region.start,
-                  end: region.end,
-                }}
-                tracks={tracks}
+                browserStore={browserStore}
+                trackStore={trackStore}
+                dataStore={dataStore}
               />
-              {/* <SingleCellBrowser
-                name={gene?.toUpperCase()}
-                coordinates={{
-                  chromosome:
-                    region.chromosome === ""
-                      ? geneCoords.gene[0].coordinates.chromosome
-                      : region.chromosome,
-                  start:
-                    region.start === null
-                      ? +geneCoords.gene[0].coordinates.start
-                      : +region.start,
-                  end:
-                    region.end === null
-                      ? +geneCoords.gene[0].coordinates.end
-                      : +region.end,
-                }}
-                // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
-              /> */}
             </Box>
           ) : (
             <Box>

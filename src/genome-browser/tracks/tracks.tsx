@@ -24,8 +24,8 @@ export const geneTrack = (gene: string | undefined) => {
   return geneTrack;
 };
 
-const regulatoryColor = "#9479bc";
-const regulatoryFeatures: Track[] = [
+export const regulatoryColor = "#9479bc";
+export const regulatoryFeatures: Track[] = [
   {
     id: "Adult candidate brain cis-Regulatory Elements (b-cCREs)",
     title: "Adult candidate brain cis-Regulatory Elements (b-cCREs)",
@@ -58,7 +58,7 @@ const regulatoryFeatures: Track[] = [
   } as BigWigConfig,
 ];
 
-const deepLearnedModels: Track[] = [
+export const deepLearnedModels: Track[] = [
   {
     id: "VLPFC neurons ATAC signal",
     title: "VLPFC neurons ATAC signal",
@@ -80,7 +80,7 @@ const deepLearnedModels: Track[] = [
     color: "#758c7b",
   } as BigWigConfig,
 ];
-const evoConservation: Track[] = [
+export const evoConservation: Track[] = [
   {
     id: "240-mammal phyloP conservation score (Vertical Viewing Range [-2 to 9])",
     title:
@@ -94,8 +94,76 @@ const evoConservation: Track[] = [
   } as BigWigConfig,
 ];
 
-export const defaultTracks: Track[] = [
-  ...regulatoryFeatures,
-  ...deepLearnedModels,
-  ...evoConservation,
+export const pseudobulkAtacColor = "#cd8c66";
+export const pseudobulkAtac: Track[] = [
+  {
+    id: "Microglia",
+    title: "Microglia",
+    url: "https://downloads.wenglab.org/pseudobulkatac/Microglia.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
+  {
+    id: "Astrocytes",
+    title: "Astrocytes",
+    url: "https://downloads.wenglab.org/pseudobulkatac/Astrocytes.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
+  {
+    id: "ExcitatoryNeurons",
+    title: "ExcitatoryNeurons",
+    url: "https://downloads.wenglab.org/pseudobulkatac/ExcitatoryNeurons.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
+  {
+    id: "Oligodendrocytes",
+    title: "Oligodendrocytes",
+    url: "https://downloads.wenglab.org/pseudobulkatac/Oligodendrocytes.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
+  {
+    id: "InhibitoryNeurons",
+    title: "InhibitoryNeurons",
+    url: "https://downloads.wenglab.org/pseudobulkatac/InhibitoryNeurons.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
+  {
+    id: "OPCs",
+    title: "OPCs",
+    url: "https://downloads.wenglab.org/pseudobulkatac/OPCs.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
+  {
+    id: "NigralNeurons",
+    title: "NigralNeurons",
+    url: "https://downloads.wenglab.org/pseudobulkatac/NigralNeurons.bigWig",
+    trackType: TrackType.BigWig,
+    displayMode: DisplayMode.Full,
+    titleSize: TITLE_SIZE,
+    height: 50,
+    color: pseudobulkAtacColor,
+  } as BigWigConfig,
 ];

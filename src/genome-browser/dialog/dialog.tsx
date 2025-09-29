@@ -16,16 +16,16 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { EvoConservationTracks } from "../tracks/conservation";
 import { DeepLearnedTracks } from "../tracks/deep-learned";
 import { EpigeneticTracks } from "../tracks/epigenetic";
+import { PseudobulkAtacTracks } from "../tracks/pseudo-bulk-atac";
 import { TrackList, TrackTemplate } from "../types";
 import {
   BigBedConfig,
   BigWigConfig,
   DisplayMode,
-  TrackStoreInstance,
   TrackType,
 } from "genomebrowser-test";
 
@@ -42,7 +42,7 @@ export default function TrackDialog({
   setOpen,
   selectedTracks,
   setSelectedTracks,
-  maxTracks = 10,
+  maxTracks = 15,
 }: TrackDialogProps) {
   const [newTracks, setNewTracks] = useState<TrackTemplate[]>(selectedTracks);
 
@@ -293,57 +293,37 @@ function processTemplateVariables(tracks: TrackTemplate[]): TrackTemplate[] {
     return [track];
   });
 }
-// id is title
-// color comes from top level category
-// provide, color, id, title, url
-const createBigWig = (title: string, url: string, color: string) => {
-  const config: BigWigConfig = {
-    id: title,
-    title: title,
-    url: url,
-    color: color,
-    trackType: TrackType.BigWig,
-    displayMode: DisplayMode.Full,
-    titleSize: 12,
-    height: 50,
-  };
-  return config;
-};
 
-const createBigBed = (title: string, url: string, color: string) => {
-  const config: BigBedConfig = {
-    id: title,
-    title: title,
-    url: url,
-    color: color,
-    trackType: TrackType.BigBed,
-    displayMode: DisplayMode.Dense,
-    titleSize: 12,
-    height: 30,
-  };
-  return config;
-};
+// Utility function to determine track color based on track template
+export function getTrackColor(track: TrackTemplate): string {
+  // Check which category this track belongs to by searching through allTrackLists
+  for (const [categoryName, subCategories] of Object.entries(allTrackLists)) {
+    for (const tracks of Object.values(subCategories)) {
+      const processedTracks = processTemplateVariables(tracks);
+      if (
+        processedTracks.some(
+          (t) => t.title === track.title && t.url === track.url
+        )
+      ) {
+        return categoryColors[categoryName] || "#000000";
+      }
+    }
+  }
 
-// Simple utility to create track from template with automatic BigBed/BigWig detection
-function createTrackFromTemplate(
-  template: TrackTemplate,
-  categoryColor: string
-) {
-  const isBigBed =
-    template.url.endsWith(".bb") || template.url.endsWith(".bigBed");
-  return isBigBed
-    ? createBigBed(template.title, template.url, categoryColor)
-    : createBigWig(template.title, template.url, categoryColor);
+  // Default color if track is not found in any category
+  return "#000000";
 }
 
 const allTrackLists: Record<string, TrackList> = {
   "Epigenetic Tracks": EpigeneticTracks,
   "Deep Learned Models": DeepLearnedTracks,
+  "Pseudo bulk ATAC": PseudobulkAtacTracks,
   "Evolutionary Conservation": EvoConservationTracks,
 };
 
 const categoryColors: Record<string, string> = {
   "Epigenetic Tracks": "#9479bc",
   "Deep Learned Models": "#758c7b",
+  "Pseudo bulk ATAC": "#cd8c66",
   "Evolutionary Conservation": "#c0a9e2",
 };

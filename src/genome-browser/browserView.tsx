@@ -12,26 +12,26 @@ import {
   Track,
   TrackStoreInstance,
   TrackType,
+  createDataStore,
+  DataStoreInstance,
 } from "genomebrowser-test";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ControlButtons from "./controls";
-import TrackDialog from "./dialog/dialog";
+import TrackDialog, { getTrackColor } from "./dialog/dialog";
 import { TrackTemplate } from "./types";
 import EditIcon from "@mui/icons-material/Edit";
 
 export interface BrowserViewProps {
-  coordinates: Domain;
-  tracks: Track[];
+  browserStore: BrowserStoreInstance;
+  trackStore: TrackStoreInstance;
+  dataStore: DataStoreInstance;
 }
 
-export default function BrowserView({ coordinates, tracks }: BrowserViewProps) {
-  const browserStore = createBrowserStore({
-    domain: coordinates as Domain,
-    marginWidth: 100,
-    trackWidth: 1400,
-    multiplier: 3,
-  });
-  const trackStore = createTrackStore(tracks);
+export default function BrowserView({
+  browserStore,
+  trackStore,
+  dataStore,
+}: BrowserViewProps) {
   return (
     <Box
       sx={{
@@ -60,7 +60,11 @@ export default function BrowserView({ coordinates, tracks }: BrowserViewProps) {
           <AddTracks trackStore={trackStore} />
         </Box>
         <ControlButtons browserStore={browserStore} />
-        <Browser trackStore={trackStore} browserStore={browserStore} />
+        <Browser
+          trackStore={trackStore}
+          browserStore={browserStore}
+          externalDataStore={dataStore}
+        />
       </Stack>
     </Box>
   );
@@ -84,13 +88,14 @@ function AddTracks({ trackStore }: { trackStore: TrackStoreInstance }) {
       // check if the track is not already in the browser state
       if (!currentTracks.some((t) => t.title === track.title)) {
         let trackToAdd: BigBedConfig | BigWigConfig;
+        const color = getTrackColor(track);
         if (track.url.includes("bigWig") || track.url.includes("bw")) {
           trackToAdd = {
             id: track.title,
             title: track.title,
             url: track.url,
-            color: "#000000",
-            height: 75,
+            color: color,
+            height: 50,
             titleSize: 16,
             displayMode: DisplayMode.Full,
             trackType: TrackType.BigWig,
@@ -100,7 +105,7 @@ function AddTracks({ trackStore }: { trackStore: TrackStoreInstance }) {
             id: track.title,
             title: track.title,
             url: track.url,
-            color: "#000000",
+            color: color,
             height: 35,
             titleSize: 16,
             displayMode: DisplayMode.Dense,

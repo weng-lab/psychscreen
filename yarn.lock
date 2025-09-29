@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@apollo/client@^3.11.10":
-  version "3.13.9"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.13.9.tgz#311e0df1734aaa5598e01a292bb7982df49cc062"
-  integrity sha512-RStSzQfL1XwL6/NWd7W8avhGQYTgPCtJ+qHkkTTSj9Upp3VVm6Oppv81YWdXG1FgEpDPW4hvCrTUELdcC4inCQ==
+"@apollo/client@^3.14.0":
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.14.0.tgz#eda34b85ee03c6c0828ba21782419c8699feaf0b"
+  integrity sha512-0YQKKRIxiMlIou+SekQqdCo0ZTHxOcES+K8vKB53cIDpwABNR0P0yRzPgsbgcj3zRJniD93S/ontsnZsCLZrxQ==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/caches" "^1.0.0"
@@ -10972,17 +10972,17 @@ genbank-parser@^1.0.0:
   resolved "https://registry.yarnpkg.com/genbank-parser/-/genbank-parser-1.2.4.tgz#ee2f9c32f66875024af0c09ee0ec5e10fb231802"
   integrity sha512-r3pTgKHZx/rol90v2cezrNhfMhq3yHWCnBYyETNIJkvnJk+cwx/D/ZVgAy1SX8zwtnfvYQmFbqlpbh2f4t0h2w==
 
-genomebrowser-test@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/genomebrowser-test/-/genomebrowser-test-0.0.1.tgz#adb52735ddb318090ac170dbeb4cc1315a163f6f"
-  integrity sha512-lwYsXq2C2aVMYaXGkCL72EzUHxXyIba07bIQCFjZMbBzImTSWaNHeQca4pythD7nJyHXyZcEUsophJTui4VIbw==
+genomebrowser-test@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/genomebrowser-test/-/genomebrowser-test-1.5.0.tgz#8f3d02ff9294d15fd3dce2c38c1acc8267231654"
+  integrity sha512-Wum4i7eKYVr4gCYquiXp2FgMURexzV2WPCioaOoaO+tkBcNyHJt+MdghWYObu/mhcYWRB8Y4fSHrkaj2sqcb7A==
   dependencies:
-    "@apollo/client" "^3.11.10"
-    graphql "^16.9.0"
+    "@apollo/client" "^3.14.0"
+    graphql "^16.11.0"
     logo-test "^0.0.5"
     react-colorful "^5.6.1"
-    react-draggable "^4.4.6"
-    zustand "^5.0.3"
+    react-draggable "^4.5.0"
+    zustand "^5.0.8"
 
 gensync@^1.0.0-beta.1, gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
@@ -11403,7 +11403,7 @@ graphql@^15.3.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.10.1.tgz#e9ff3bb928749275477f748b14aa5c30dcad6f2f"
   integrity sha512-BL/Xd/T9baO6NFzoMpiMD7YUZ62R6viR5tp/MULVEnbYJXZA//kRNW7J0j1w/wXArgL0sCxhDfK5dczSKn3+cg==
 
-graphql@^16.6.0, graphql@^16.9.0:
+graphql@^16.11.0, graphql@^16.6.0:
   version "16.11.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.11.0.tgz#96d17f66370678027fdf59b2d4c20b4efaa8a633"
   integrity sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==
@@ -16905,7 +16905,7 @@ react-draggable@3.x:
     classnames "^2.2.5"
     prop-types "^15.6.0"
 
-react-draggable@^4.0.0, react-draggable@^4.0.3, react-draggable@^4.4.6:
+react-draggable@^4.0.0, react-draggable@^4.0.3, react-draggable@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.5.0.tgz#0b274ccb6965fcf97ed38fcf7e3cc223bc48cdf5"
   integrity sha512-VC+HBLEZ0XJxnOxVAZsdRi8rD04Iz3SiiKOoYzamjylUcju/hP9np/aZdLHf/7WOD268WMoNJMvYfB5yAK45cw==
@@ -21225,10 +21225,10 @@ zustand@^5.0.1, zustand@^5.0.4:
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.6.tgz#a2da43d8dc3d31e314279e5baec06297bea70a5c"
   integrity sha512-ihAqNeUVhe0MAD+X8M5UzqyZ9k3FFZLBTtqo6JLPwV53cbRB/mJwBI0PxcIgqhBBHlEs8G45OTDTMq3gNcLq3A==
 
-zustand@^5.0.3:
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.7.tgz#e325364e82c992a84bf386d8445aa7f180c450dc"
-  integrity sha512-Ot6uqHDW/O2VdYsKLLU8GQu8sCOM1LcoE8RwvLv9uuRT9s6SOHCKs0ZEOhxg+I1Ld+A1Q5lwx+UlKXXUoCZITg==
+zustand@^5.0.8:
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.8.tgz#b998a0c088c7027a20f2709141a91cb07ac57f8a"
+  integrity sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw==
 
 zwitch@^2.0.0:
   version "2.0.4"
