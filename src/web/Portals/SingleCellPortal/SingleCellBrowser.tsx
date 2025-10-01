@@ -9,15 +9,17 @@ import {
   BigWigConfig,
   Track,
 } from "genomebrowser-test";
-import { SingleCellBrowserLegacy } from "./SingleCellBrowserLegacy";
 import { useMemo } from "react";
 import BrowserView from "../../../genome-browser/browserView";
-import { color } from "html2canvas/dist/types/css/types/color";
 import { geneTrack } from "../../../genome-browser/tracks/tracks";
 import {
   useGRNLDData,
   createGrnLDTrack,
 } from "../../../genome-browser/useGRNLDData";
+import {
+  useQTLLDData,
+  createQtlLDTrack,
+} from "../../../genome-browser/useQTLLDData";
 type GenomicRange = {
   chromosome?: string;
   start: number;
@@ -49,30 +51,44 @@ export default function SingleCellBrowser(props: BrowserProps) {
 
   const dataStore = useMemo(() => createDataStore(), []);
 
-  // Use the GRN LD data hook for GRN tracks
-  const { ldDataByTrack } = useGRNLDData(
-    props.grntracks ? GRN_TRACKS : [],
-    browserStore,
-    dataStore
-  );
-
   const trackStore = useMemo(() => {
     let allTracks: Track[] = [geneTrack(undefined)];
     if (props.atactracks) {
       allTracks.push(...ATAC_TRACKS);
     }
-    // Add separate LD track for each GRN track
     if (props.grntracks) {
-      ldDataByTrack.forEach((trackData) => {
-        const ldTrack = createGrnLDTrack(trackData.leadSnps);
-        // Update the track id and title to match the source track
-        ldTrack.id = `grn-ld-${trackData.trackId}`;
-        ldTrack.title = `${trackData.trackTitle} LD`;
-        allTracks.push(ldTrack);
+      // Add stable LD tracks for each GRN track
+      GRN_TRACKS.forEach((track) => {
+        allTracks.push(
+          createGrnLDTrack(`grn-ld-${track.id}`, `${track.title} LD`)
+        );
+      });
+    }
+    if (props.qtltracks) {
+      // Add stable LD tracks for each eQTL track
+      QTL_TRACKS.forEach((track) => {
+        allTracks.push(
+          createQtlLDTrack(`qtl-ld-${track.id}`, `${track.title} LD`)
+        );
       });
     }
     return createTrackStore(allTracks);
-  }, [props.atactracks, ldDataByTrack]);
+  }, [props.atactracks, props.grntracks, props.qtltracks]);
+
+  // Hooks will update track show arrays via editTrack - no state changes here
+  useGRNLDData(
+    props.grntracks ? GRN_TRACKS : [],
+    browserStore,
+    dataStore,
+    trackStore
+  );
+
+  useQTLLDData(
+    props.qtltracks ? QTL_TRACKS : [],
+    browserStore,
+    dataStore,
+    trackStore
+  );
 
   return (
     <div style={{ paddingTop: "1rem" }}>

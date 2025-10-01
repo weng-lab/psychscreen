@@ -12,9 +12,9 @@ import {
 } from "genomebrowser-test";
 import { BrowserStoreInstance, DataStoreInstance } from "genomebrowser-test";
 
-// Custom tooltip component for GRN LD track (SVG-based)
-const GRNLDTooltip: React.FC<
-  SNP & { targetGene?: string; targetTF?: string }
+// Custom tooltip component for eQTL LD track (SVG-based)
+const QTLLDTooltip: React.FC<
+  SNP & { targetGene?: string }
 > = (props) => {
   const lines = [
     `Position: ${
@@ -24,10 +24,6 @@ const GRNLDTooltip: React.FC<
 
   if (props.targetGene) {
     lines.push(`Target Gene: ${props.targetGene}`);
-  }
-
-  if (props.targetTF) {
-    lines.push(`Target TF: ${props.targetTF}`);
   }
 
   const lineHeight = 16;
@@ -62,10 +58,7 @@ const GRNLDTooltip: React.FC<
   );
 };
 
-export function createGrnLDTrack(
-  trackId: string,
-  title: string
-): LDTrackConfig {
+export function createQtlLDTrack(trackId: string, title: string): LDTrackConfig {
   return {
     id: trackId,
     title: title,
@@ -73,9 +66,9 @@ export function createGrnLDTrack(
     displayMode: DisplayMode.LDBlock,
     height: 50,
     titleSize: 12,
-    color: "#9479bc",
+    color: "#000000",
     show: [], // Will be updated via editTrack callback
-    tooltip: GRNLDTooltip,
+    tooltip: QTLLDTooltip,
   };
 }
 
@@ -92,12 +85,12 @@ export const BIGDATA_QUERY = gql`
 `;
 
 /**
- * Parses BigBed GRN data and transforms it into LD block format.
- * - Original rects are the lead SNPs (enhancers)
- * - Parsed target regions from name field are the non-lead SNPs (promoters)
- * Each BigBed rect has a name field with format: chr:start-end:targetTF:targetGene
+ * Parses BigBed eQTL data and transforms it into LD block format.
+ * - Original rects are the lead SNPs (eQTL variants)
+ * - Parsed target regions from name field are the non-lead SNPs
+ * Each BigBed rect has a name field with format: chr:start-end:targetGene
  */
-function parseGRNToLDBlocks(bigBedData: any[]): {
+function parseQTLToLDBlocks(bigBedData: any[]): {
   entries: any[];
   leadSnps: string[];
 } {
@@ -125,7 +118,7 @@ function parseGRNToLDBlocks(bigBedData: any[]): {
         snpid: leadSnpId,
         start: entry.start,
         stop: entry.end,
-        rsquare: "1.0", // Lead SNP
+        rsquare: "1.0",
         targetGene,
       });
       // Note: NOT adding to leadSnps array so no arc is shown
@@ -137,10 +130,10 @@ function parseGRNToLDBlocks(bigBedData: any[]): {
         ? parseInt(targetRange[0])
         : entry.start;
       const targetEnd = targetRange[1] ? parseInt(targetRange[1]) : entry.end;
-      const targetTF = nameParts[2] && nameParts[3] ? nameParts[2] : undefined;
-      const targetGene = nameParts[3] || nameParts[2] || "Unknown";
+      // For eQTL data, target gene is in position 2 (no TF field)
+      const targetGene = nameParts[2] || "Unknown";
 
-      // Lead SNP (enhancer) - marked with asterisk in rsquare and "Lead" in ldblocksnpid
+      // Lead SNP (eQTL variant) - marked with asterisk in rsquare and "Lead" in ldblocksnpid
       const leadSnpId = `${entry.chr}:${entry.start}`;
       ldEntries.push({
         chromosome: entry.chr,
@@ -151,11 +144,10 @@ function parseGRNToLDBlocks(bigBedData: any[]): {
         stop: entry.end,
         rsquare: "1.0*", // Asterisk marks this as a lead SNP
         targetGene,
-        targetTF,
       });
       leadSnps.push(leadSnpId);
 
-      // Non-lead SNP (promoter/target region) - links to lead but NO "Lead" marker
+      // Non-lead SNP (target region) - links to lead but NO "Lead" marker
       const targetSnpId = `${targetChr}:${targetStart}`;
       ldEntries.push({
         chromosome: targetChr,
@@ -166,7 +158,6 @@ function parseGRNToLDBlocks(bigBedData: any[]): {
         stop: targetEnd,
         rsquare: entry.score ? (entry.score / 1000).toFixed(2) : "0.8", // No asterisk
         targetGene,
-        targetTF,
       });
     }
   });
@@ -175,9 +166,9 @@ function parseGRNToLDBlocks(bigBedData: any[]): {
 }
 
 /**
- * Hook to fetch and parse GRN BigBed data for LD block visualization
+ * Hook to fetch and parse eQTL BigBed data for LD block visualization
  */
-export function useGRNLDData(
+export function useQTLLDData(
   tracks: BigBedConfig[],
   browserStore: BrowserStoreInstance,
   dataStore: DataStoreInstance,
@@ -189,7 +180,7 @@ export function useGRNLDData(
   );
   const editTrack = trackStore((state) => state.editTrack);
 
-  // Create BigRequests for all GRN tracks
+  // Create BigRequests for all eQTL tracks
   const bigRequests = useMemo(
     () =>
       tracks.map((track) => ({
@@ -219,7 +210,7 @@ export function useGRNLDData(
           trackId: tracks[index]?.id || `track-${index}`,
         };
 
-      const parsed = parseGRNToLDBlocks(response.data);
+      const parsed = parseQTLToLDBlocks(response.data);
       return {
         ...parsed,
         trackId: tracks[index]?.id || `track-${index}`,
@@ -230,7 +221,7 @@ export function useGRNLDData(
 
   // Create custom data for track 0
   useCustomData(
-    ldDataByTrack[0] ? `grn-ld-${ldDataByTrack[0].trackId}` : "grn-ld-0",
+    ldDataByTrack[0] ? `qtl-ld-${ldDataByTrack[0].trackId}` : "qtl-ld-0",
     {
       data: ldDataByTrack[0]?.entries || [],
       error,
@@ -241,7 +232,7 @@ export function useGRNLDData(
 
   // Create custom data for track 1
   useCustomData(
-    ldDataByTrack[1] ? `grn-ld-${ldDataByTrack[1].trackId}` : "grn-ld-1",
+    ldDataByTrack[1] ? `qtl-ld-${ldDataByTrack[1].trackId}` : "qtl-ld-1",
     {
       data: ldDataByTrack[1]?.entries || [],
       error,
@@ -252,7 +243,7 @@ export function useGRNLDData(
 
   // Create custom data for track 2
   useCustomData(
-    ldDataByTrack[2] ? `grn-ld-${ldDataByTrack[2].trackId}` : "grn-ld-2",
+    ldDataByTrack[2] ? `qtl-ld-${ldDataByTrack[2].trackId}` : "qtl-ld-2",
     {
       data: ldDataByTrack[2]?.entries || [],
       error,
@@ -265,7 +256,7 @@ export function useGRNLDData(
   useEffect(() => {
     ldDataByTrack.forEach((trackData) => {
       if (trackData.trackId) {
-        editTrack(`grn-ld-${trackData.trackId}`, {
+        editTrack(`qtl-ld-${trackData.trackId}`, {
           show: trackData.leadSnps,
         });
       }
