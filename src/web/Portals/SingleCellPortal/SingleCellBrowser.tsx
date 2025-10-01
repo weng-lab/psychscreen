@@ -7,12 +7,17 @@ import {
   DisplayMode,
   BigBedConfig,
   BigWigConfig,
+  Track,
 } from "genomebrowser-test";
 import { SingleCellBrowserLegacy } from "./SingleCellBrowserLegacy";
 import { useMemo } from "react";
 import BrowserView from "../../../genome-browser/browserView";
 import { color } from "html2canvas/dist/types/css/types/color";
 import { geneTrack } from "../../../genome-browser/tracks/tracks";
+import {
+  useGRNLDData,
+  createGrnLDTrack,
+} from "../../../genome-browser/useGRNLDData";
 type GenomicRange = {
   chromosome?: string;
   start: number;
@@ -42,24 +47,33 @@ export default function SingleCellBrowser(props: BrowserProps) {
     [props.coordinates]
   );
 
-  const tracks = useMemo(() => {
-    if (props.atactracks) {
-      return ATAC_TRACKS;
-    }
-    if (props.grntracks) {
-      return GRN_TRACKS;
-    }
-    if (props.qtltracks) {
-      return QTL_TRACKS;
-    }
-    return [];
-  }, [props.atactracks, props.grntracks, props.qtltracks]);
-
-  const trackStore = useMemo(
-    () => createTrackStore([geneTrack(undefined), ...tracks]),
-    [tracks]
-  );
   const dataStore = useMemo(() => createDataStore(), []);
+
+  // Use the GRN LD data hook for GRN tracks
+  const { ldDataByTrack } = useGRNLDData(
+    props.grntracks ? GRN_TRACKS : [],
+    browserStore,
+    dataStore
+  );
+
+  const trackStore = useMemo(() => {
+    let allTracks: Track[] = [geneTrack(undefined)];
+    if (props.atactracks) {
+      allTracks.push(...ATAC_TRACKS);
+    }
+    // Add separate LD track for each GRN track
+    if (props.grntracks) {
+      ldDataByTrack.forEach((trackData) => {
+        const ldTrack = createGrnLDTrack(trackData.leadSnps);
+        // Update the track id and title to match the source track
+        ldTrack.id = `grn-ld-${trackData.trackId}`;
+        ldTrack.title = `${trackData.trackTitle} LD`;
+        allTracks.push(ldTrack);
+      });
+    }
+    return createTrackStore(allTracks);
+  }, [props.atactracks, ldDataByTrack]);
+
   return (
     <div style={{ paddingTop: "1rem" }}>
       <BrowserView
@@ -127,7 +141,7 @@ const GRN_TRACKS: BigBedConfig[] = [
   },
   {
     id: "Vip Enhancer and Promoter",
-    title: "Vip  Enhancer and Promoter",
+    title: "Vip Enhancer and Promoter",
     url: "https://downloads.wenglab.org/Vip_GRN.bb",
     color: "#000000",
     height: 35,
