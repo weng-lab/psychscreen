@@ -10972,10 +10972,10 @@ genbank-parser@^1.0.0:
   resolved "https://registry.yarnpkg.com/genbank-parser/-/genbank-parser-1.2.4.tgz#ee2f9c32f66875024af0c09ee0ec5e10fb231802"
   integrity sha512-r3pTgKHZx/rol90v2cezrNhfMhq3yHWCnBYyETNIJkvnJk+cwx/D/ZVgAy1SX8zwtnfvYQmFbqlpbh2f4t0h2w==
 
-genomebrowser-test@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/genomebrowser-test/-/genomebrowser-test-1.5.0.tgz#8f3d02ff9294d15fd3dce2c38c1acc8267231654"
-  integrity sha512-Wum4i7eKYVr4gCYquiXp2FgMURexzV2WPCioaOoaO+tkBcNyHJt+MdghWYObu/mhcYWRB8Y4fSHrkaj2sqcb7A==
+genomebrowser-test@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/genomebrowser-test/-/genomebrowser-test-1.5.1.tgz#201d14762726bff528e4dc2f60440029b10a43b4"
+  integrity sha512-0TpBQl4p4b1BR7BUATb330phQifKdEEg5a6NkAAtSO/SHioJoyocVmXrIkoDgroILVkO05HhlSt2M30uSeYGfw==
   dependencies:
     "@apollo/client" "^3.14.0"
     graphql "^16.11.0"

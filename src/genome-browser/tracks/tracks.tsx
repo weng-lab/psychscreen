@@ -91,6 +91,7 @@ export const evoConservation: Track[] = [
     titleSize: TITLE_SIZE,
     height: 50,
     color: "#c0a9e2",
+    customRange: { min: -2, max: 9 },
   } as BigWigConfig,
 ];
 

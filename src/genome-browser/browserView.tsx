@@ -1,4 +1,12 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import {
   BigBedConfig,
   BigWigConfig,
@@ -14,12 +22,16 @@ import {
   TrackType,
   createDataStore,
   DataStoreInstance,
+  Chromosome,
 } from "genomebrowser-test";
 import { useEffect, useMemo, useState } from "react";
 import ControlButtons from "./controls";
 import TrackDialog, { getTrackColor } from "./dialog/dialog";
 import { TrackTemplate } from "./types";
 import EditIcon from "@mui/icons-material/Edit";
+import { Result, ResultType } from "./genomesearch/types";
+import GenomeSearch from "./genomesearch/autocomplete";
+import { Search } from "@mui/icons-material";
 
 export interface BrowserViewProps {
   browserStore: BrowserStoreInstance;
@@ -27,11 +39,61 @@ export interface BrowserViewProps {
   dataStore: DataStoreInstance;
 }
 
+const expansionPercentages: Record<ResultType, number> = {
+  cCRE: 20,
+  iCRE: 20,
+  Gene: 0.2,
+  SNP: 5.0,
+  Coordinate: 0.25,
+  Study: 0.2,
+};
+
+function expandCoordinates(coordinates: Domain, type: ResultType) {
+  let length = coordinates.end - coordinates.start;
+
+  if (length <= 100) {
+    length = 100;
+  }
+
+  const expansionPercentage = expansionPercentages[type];
+  const padding = Math.floor(length * expansionPercentage);
+
+  return {
+    chromosome: coordinates.chromosome as Chromosome,
+    start: Math.max(0, coordinates.start - padding),
+    end: coordinates.end + padding,
+  };
+}
+
+export function randomColor() {
+  return "#" + Math.floor(Math.random() * 16777215).toString(16);
+}
+
 export default function BrowserView({
   browserStore,
   trackStore,
   dataStore,
 }: BrowserViewProps) {
+  const theme = useTheme();
+  const editTrack = trackStore((state) => state.editTrack);
+  const addHighlight = browserStore((state) => state.addHighlight);
+  const setDomain = browserStore((state) => state.setDomain);
+
+  const handeSearchSubmit = (r: Result) => {
+    if (r.type === "Gene") {
+      editTrack("gene-track", {
+        geneName: r.title,
+      });
+    }
+    addHighlight({
+      domain: r.domain as Domain,
+      color: randomColor(),
+      id: r.title || "highlight",
+    });
+
+    setDomain(expandCoordinates(r.domain as Domain, r.type as ResultType));
+  };
+
   return (
     <Box
       sx={{
@@ -51,11 +113,36 @@ export default function BrowserView({
           justifyContent={"space-between"}
           gap={1}
         >
-          <TextField
-            label="Search for a feature"
-            variant="outlined"
-            sx={{ width: "30%" }}
+          <GenomeSearch
             size="small"
+            assembly={"GRCh38"}
+            onSearchSubmit={handeSearchSubmit}
+            queries={["Gene", "SNP", "cCRE", "Coordinate"]}
+            geneLimit={3}
+            sx={{ width: "400px" }}
+            slots={{
+              button: (
+                <IconButton sx={{ color: theme.palette.primary.main }}>
+                  <Search />
+                </IconButton>
+              ),
+            }}
+            slotProps={{
+              input: {
+                label: "Change browser region",
+                sx: {
+                  backgroundColor: "white",
+                  "& label.Mui-focused": {
+                    color: theme.palette.primary.main,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.palette.primary.main,
+                    },
+                  },
+                },
+              },
+            }}
           />
           <AddTracks trackStore={trackStore} />
         </Box>
