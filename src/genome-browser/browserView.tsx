@@ -102,6 +102,7 @@ export default function BrowserView({
         alignItems: "center",
         mt: "0rem",
         mb: "1rem",
+        pt: "1rem",
       }}
     >
       <Stack gap={2} width={"100%"}>

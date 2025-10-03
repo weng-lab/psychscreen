@@ -61,10 +61,6 @@ export const EpigeneticTracks: TrackList = {
       url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/PMC-{NEUN}-healthy-ATAC.bigWig",
     },
     {
-      title: "posterior superior temporal cortex {NEUN}",
-      url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/PMC-{NEUN}-healthy-ATAC.bigWig",
-    },
-    {
       title: "putamen {NEUN}",
       url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/PTM-{NEUN}-healthy-ATAC.bigWig",
     },

@@ -5,7 +5,7 @@
 import { useParams } from "react-router-dom";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
@@ -18,7 +18,7 @@ import {
   URL_MAP,
 } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
-import { riskLoci } from "./utils";
+import { riskLoci, toScientificNotation } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import Browser from "./Browser";
@@ -551,11 +551,39 @@ const DiseaseTraitDetails: React.FC = () => {
             }
           />
         ) : page === 3 ? (
-          <BrowserView
-            browserStore={browserStore}
-            trackStore={trackStore}
-            dataStore={dataStore}
-          />
+          <>
+            {gwasLocusSNPs &&
+              gwasLocusSNPs.coordinates.chromosome ===
+                browserCoordinates.chromosome &&
+              gwasLocusSNPs.coordinates.start === browserCoordinates.start &&
+              gwasLocusSNPs.coordinates.end === browserCoordinates.end && (
+                <>
+                  <Typography
+                    alignSelf={"flex-start"}
+                    type={"body"}
+                    size={"small"}
+                  >
+                    {gwasLocusSNPs.SNPCount} significant SNP
+                    {gwasLocusSNPs.SNPCount !== 1 ? "s" : ""} at locus{" "}
+                    {gwasLocusSNPs.coordinates.chromosome +
+                      ":" +
+                      gwasLocusSNPs.coordinates.start.toLocaleString() +
+                      "-" +
+                      gwasLocusSNPs.coordinates.end.toLocaleString()}
+                    . Lowest <i>P</i> at this locus:{" "}
+                    {toScientificNotation(gwasLocusSNPs.minimump, 2)}
+                  </Typography>
+                  <Divider
+                    sx={{ width: "100%", marginTop: "1rem !important" }}
+                  />
+                </>
+              )}
+            <BrowserView
+              browserStore={browserStore}
+              trackStore={trackStore}
+              dataStore={dataStore}
+            />
+          </>
         ) : page === 4 &&
           significantSNPs &&
           significantSNPs.length > 0 &&
