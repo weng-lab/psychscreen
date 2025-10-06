@@ -8,11 +8,11 @@ export const EpigeneticTracks: TrackList = {
   "Candidate cis-Regulatory Elements": [
     {
       title: "Adult candidate brain cis-Regulatory Elements (b-cCREs)",
-      url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/adult_bCREs.bigBed",
+      url: "http://downloads.wenglab.org/psychscreen/adult_bCREs.bb",
     },
     {
       title: "Fetal candidate brain cis-Regulatory Elements (b-cCREs)",
-      url: "gs://gcp.wenglab.org/GTEx-psychscreen/tracks/data/fetal_bCREs.bigBed",
+      url: "http://downloads.wenglab.org/psychscreen/fetal_bCREs.bb",
     },
     {
       title: "ENCODE cCREs, all tissues",

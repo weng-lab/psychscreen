@@ -37,7 +37,7 @@ export default function TrackDialog({
   setOpen,
   selectedTracks,
   setSelectedTracks,
-  maxTracks = 15,
+  maxTracks = 30,
 }: TrackDialogProps) {
   const [newTracks, setNewTracks] = useState<TrackTemplate[]>(selectedTracks);
 
