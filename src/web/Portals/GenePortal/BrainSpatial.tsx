@@ -273,6 +273,13 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 // TODO: Change this to a stored json file that is fetched from the server
 const SAMPLES: SampleInfo[] = [
   {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V11L05-333_B1",
+    shortDescription: "HPC example",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
     dataset: "spatialDLPFC",
     headerGroup: "Suggested Samples",
     internalFileName: "Br6522_mid",
