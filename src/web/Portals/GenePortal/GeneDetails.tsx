@@ -16,6 +16,27 @@ import { StyledTab, StyledToggleButton } from "../../Portals/styles";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
+import BrowserView from "../../../genome-browser/browserView";
+import {
+  createBrowserStore,
+  createDataStore,
+  createTrackStore,
+  ManhattanPoint,
+  Track,
+} from "genomebrowser-test";
+import {
+  deepLearnedModels,
+  evoConservation,
+  geneTrack,
+  pseudobulkAtac,
+  regulatoryFeatures,
+} from "../../../genome-browser/tracks/tracks";
+import {
+  ldTrack,
+  manhattanTrack,
+  useManhattanData,
+} from "../../../genome-browser/useManhattanData";
+import { useLDQuery } from "../../../genome-browser/useLDQuery";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -106,28 +127,6 @@ const GeneDetails: React.FC = (props) => {
     },
     skip: params.gene === "",
   });
-  /*const onGeneChange = React.useCallback(
-      async (value: any) => {
-          
-          const response = await fetch('https://ga.staging.wenglab.org/graphql', {
-              method: 'POST',
-              body: JSON.stringify({
-                  query: GENE_ID_QUERY,
-                  variables: {
-                    name_prefix: [value?.toUpperCase()],
-                    assembly: "GRCh38"
-                  },
-              }),
-              headers: { 'Content-Type': 'application/json' },
-          });
-          const geneID = (await response.json()).data?.gene; 
-          let d = geneID.find(n=>n.name.toUpperCase()===value.toUpperCase()) ? geneID.find(n=>n.name.toUpperCase()===value.toUpperCase()): geneID[0]         
-          setTrueGeneName(value)
-          setTrueGeneId(d.id.split(".")[0])
-          setRegion({chromosome: d.coordinates.chromosome,start: d.coordinates.start,end: d.coordinates.end})
-      },
-      [params.gene]
-  );*/
   const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {
     variables: {
       gene_id: gid || (geneCoords && geneCoords.gene[0].id.split(".")[0]),
@@ -188,6 +187,64 @@ const GeneDetails: React.FC = (props) => {
     return (54 + (keys < 27 ? 27 : keys)) * 200;
   }, [toPlot]);
 
+  const browserStore = useMemo(
+    () =>
+      createBrowserStore({
+        domain: {
+          chromosome:
+            region.chromosome === ""
+              ? geneCoords.gene[0].coordinates.chromosome
+              : region.chromosome,
+          start:
+            (region.start === null
+              ? +geneCoords.gene[0].coordinates.start
+              : +region.start) - 20000,
+          end:
+            (region.end === null
+              ? +geneCoords.gene[0].coordinates.end
+              : +region.end) + 20000,
+        },
+        marginWidth: 100,
+        trackWidth: 1400,
+        multiplier: 3,
+      }),
+    [region]
+  );
+  const [hovered, setHovered] = useState<ManhattanPoint | null>(null);
+  const trackStore = useMemo(
+    () =>
+      createTrackStore([
+        geneTrack(gene),
+        ...regulatoryFeatures,
+        ...deepLearnedModels,
+        ...pseudobulkAtac,
+        {
+          ...manhattanTrack,
+          onHover: (item) => {
+            setHovered(item);
+          },
+        },
+        {
+          ...ldTrack,
+          onHover: (item) => {
+            setHovered(item);
+          },
+        },
+        ...evoConservation,
+      ]),
+    [setHovered]
+  );
+  const editTrack = trackStore((state) => state.editTrack);
+
+  useLDQuery(hovered, editTrack);
+
+  const dataStore = useMemo(() => createDataStore(), []);
+  useManhattanData(
+    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
+    browserStore,
+    dataStore
+  );
+
   return (
     <Grid
       container
@@ -231,7 +288,6 @@ const GeneDetails: React.FC = (props) => {
             <StyledTab label="Tissue Expression (GTEx)" />
             <StyledTab label="eQTLs and b-cCREs" />
             <StyledTab label="Differential Gene Expression" />
-            
           </Tabs>
           <Divider />
         </Box>
@@ -245,23 +301,10 @@ const GeneDetails: React.FC = (props) => {
             (geneCoords ||
               (region.chromosome !== "" && region.start && region.end)) ? (
             <Box>
-              <Browser
-                name={gene?.toUpperCase()}
-                coordinates={{
-                  chromosome:
-                    region.chromosome === ""
-                      ? geneCoords.gene[0].coordinates.chromosome
-                      : region.chromosome,
-                  start:
-                    region.start === null
-                      ? +geneCoords.gene[0].coordinates.start
-                      : +region.start,
-                  end:
-                    region.end === null
-                      ? +geneCoords.gene[0].coordinates.end
-                      : +region.end,
-                }}
-                // coordinates={{ chromosome: region.chromosome, start:   +region.start, end: +region.end }}
+              <BrowserView
+                browserStore={browserStore}
+                trackStore={trackStore}
+                dataStore={dataStore}
               />
             </Box>
           ) : tabIndex === 3 && 0 > 1 ? (

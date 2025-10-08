@@ -15,7 +15,7 @@ import { EmptyTrack, DenseBigBed } from "umms-gb";
 import { gql, useQuery } from "@apollo/client";
 import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
 import { DataTable } from "@weng-lab/ts-ztable";
-import { SingleCellBrowser } from "./SingleCellBrowser";
+import SingleCellBrowser from "./SingleCellBrowser";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { StyledTab, StyledButton } from "../../Portals/styles";
@@ -486,7 +486,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               {
                 <SingleCellBrowser
                   coordinates={coordinates}
-                  assembly={"hg38"}
                   atactracks
                   grntracks
                   qtltracks
@@ -547,11 +546,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               </Slide>
             )}
             {grnpage === -1 && (
-              <SingleCellBrowser
-                coordinates={coordinates}
-                assembly={"hg38"}
-                grntracks
-              />
+              <SingleCellBrowser coordinates={coordinates} grntracks />
             )}
           </Container>
         </Grid>
@@ -609,11 +604,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
           )}
           {qtlpage === -1 && (
             <>
-              <SingleCellBrowser
-                coordinates={coordinates}
-                assembly={"hg38"}
-                qtltracks
-              />
+              <SingleCellBrowser coordinates={coordinates} qtltracks />
             </>
           )}
         </Grid>

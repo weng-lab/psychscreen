@@ -25,10 +25,11 @@
     "bpnet-ui": "^0.2.9",
     "canvg": "^4.0.1",
     "env-cmd": "^10.1.0",
+    "genomebrowser-test": "1.5.1",
     "graphql": "^16.6.0",
     "html2canvas": "^1.4.1",
     "jubilant-carnival": "^0.2.8",
-    "logojs-react": "^2.1.1",
+    "logo-test": "^0.0.5",
     "queryz": "^0.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -72,6 +73,5 @@
     "gh-pages": "^4.0.0",
     "prettier": "^2.8.3",
     "react-error-overlay": "6.0.9"
-  },
-  "packageManager": "yarn@4.9.1"
+  }
 }

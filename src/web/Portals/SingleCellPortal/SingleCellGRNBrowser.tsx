@@ -60,7 +60,7 @@ const grns = [
     "https://downloads.wenglab.org/Chandelier_GRN.bb",
   ],
   [
-    "Immune Cells  Enhancer and Promoter",
+    "Immune Cells Enhancer and Promoter",
     "https://downloads.wenglab.org/Immune_GRN.bb",
   ],
 
@@ -284,6 +284,7 @@ export const BBTrack: React.FC<{
       };
     }
   });
+  console.log(linkdata);
 
   return (
     <g transform={transform}>
