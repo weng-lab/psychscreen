@@ -50,7 +50,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
   useEffect(() => {
     if (selectedSample && gene) {
       const fetchConfig = async () => {
-        let configPath: string = `https://users.wenglab.org/kresgeb/psych_screen/${
+        let configPath: string = `https://downloads.wenglab.org/psychscreen/spatial/${
           selectedSample.dataset
         }/configs/${selectedSample.internalFileName}/config${
           useSingleColumn ? "_single_column" : ""
@@ -62,7 +62,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
           // Update the config with the selected gene
           if (data.coordinationSpace?.featureSelection) {
-            data.coordinationSpace.featureSelection["A"] = [gene];
+            data.coordinationSpace.featureSelection["gene"] = [gene];
           }
 
           setConfig(data);
