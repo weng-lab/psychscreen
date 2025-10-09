@@ -295,13 +295,6 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 // TODO: Change this to a stored json file that is fetched from the server
 const SAMPLES: SampleInfo[] = [
   {
-    dataset: "hippocampus",
-    headerGroup: "Suggested Samples",
-    internalFileName: "V11L05-333_B1",
-    shortDescription: "HPC example",
-    availableAssignments: ["PRECAST", "NMF"],
-  },
-  {
     dataset: "spatialDLPFC",
     headerGroup: "Suggested Samples",
     internalFileName: "Br6522_mid",
@@ -332,6 +325,30 @@ const SAMPLES: SampleInfo[] = [
     shortDescription: "Sample 151673",
     availableAssignments: ["Manual Annotation"],
     additionalInfo: "From Maynard et al. 2021",
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V11L05-333_B1",
+    shortDescription: "Brain 3942 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+    additionalInfo: "From Thompson et al. 2025",
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V12F14-051_A1",
+    shortDescription: "Brain 2720 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+    additionalInfo: "From Thompson et al. 2025",
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V11U08-081_D1",
+    shortDescription: "Brain 2743 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+    additionalInfo: "From Thompson et al. 2025",
   },
   {
     dataset: "spatialDLPFC",
@@ -813,14 +830,14 @@ const SAMPLES: SampleInfo[] = [
     dataset: "hippocampus",
     headerGroup: "Thompson et al. 2025",
     internalFileName: "V11A20-297_D1",
-    shortDescription: "Brain 8325 - Top Right",
+    shortDescription: "Brain 8325 - Top Right (High)",
     availableAssignments: ["PRECAST", "NMF"],
   },
   {
     dataset: "hippocampus",
     headerGroup: "Thompson et al. 2025",
     internalFileName: "V11L05-335_D1",
-    shortDescription: "Brain 8325 - Top Right",
+    shortDescription: "Brain 8325 - Top Right (Low)",
     availableAssignments: ["PRECAST", "NMF"],
   },
   {
