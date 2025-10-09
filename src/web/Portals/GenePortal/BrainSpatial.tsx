@@ -241,7 +241,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                 rel="noopener noreferrer"
                 underline="hover"
               >
-                Vitessce v3.6.2
+                Vitessce v3.8.3
               </Link>
             </Typography>
             <ul>
