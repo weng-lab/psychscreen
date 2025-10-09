@@ -50,7 +50,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
   useEffect(() => {
     if (selectedSample && gene) {
       const fetchConfig = async () => {
-        let configPath: string = `https://users.wenglab.org/kresgeb/psych_screen/${
+        let configPath: string = `https://downloads.wenglab.org/psychscreen/spatial/${
           selectedSample.dataset
         }/configs/${selectedSample.internalFileName}/config${
           useSingleColumn ? "_single_column" : ""
@@ -62,7 +62,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
           // Update the config with the selected gene
           if (data.coordinationSpace?.featureSelection) {
-            data.coordinationSpace.featureSelection["A"] = [gene];
+            data.coordinationSpace.featureSelection["gene"] = [gene];
           }
 
           setConfig(data);
@@ -146,7 +146,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
           </ErrorBoundary>
           <Box mt={2}>
             <Typography type="title" fontWeight="bold" size="medium">
-              Source of gene expression and layer/cluster assignment:
+              Sources of gene expression and layer/cluster/domain assignment:
             </Typography>
             <ul>
               <li>
@@ -210,6 +210,28 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                   }
                 />
               </li>
+              <li>
+                <ListItemText
+                  primary={
+                    <>
+                      Thompson <i>et al</i>. An integrated single-nucleus and
+                      spatial transcriptomics atlas reveals the molecular
+                      landscape of the human hippocampus.{" "}
+                      <i>Nature Neuroscience</i> <b>28</b>, 1990–2004 (2025).
+                      (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1038/s41593-025-02022-0"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1038/s41593-025-02022-0
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </li>
             </ul>
             <Typography type="title" fontWeight="bold" size="medium">
               Visualization powered by{" "}
@@ -219,7 +241,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                 rel="noopener noreferrer"
                 underline="hover"
               >
-                Vitessce v3.6.2
+                Vitessce v3.8.3
               </Link>
             </Typography>
             <ul>
@@ -303,6 +325,30 @@ const SAMPLES: SampleInfo[] = [
     shortDescription: "Sample 151673",
     availableAssignments: ["Manual Annotation"],
     additionalInfo: "From Maynard et al. 2021",
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V11L05-333_B1",
+    shortDescription: "Brain 3942 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+    additionalInfo: "From Thompson et al. 2025",
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V12F14-051_A1",
+    shortDescription: "Brain 2720 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+    additionalInfo: "From Thompson et al. 2025",
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Suggested Samples",
+    internalFileName: "V11U08-081_D1",
+    shortDescription: "Brain 2743 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+    additionalInfo: "From Thompson et al. 2025",
   },
   {
     dataset: "spatialDLPFC",
@@ -597,6 +643,258 @@ const SAMPLES: SampleInfo[] = [
     internalFileName: "151676",
     shortDescription: "Sample 151676",
     availableAssignments: ["Manual Annotation"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V12F14-051_C1",
+    shortDescription: "Brain 2720 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V12F14-051_D1",
+    shortDescription: "Brain 2720 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V12F14-051_A1",
+    shortDescription: "Brain 2720 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V12F14-051_B1",
+    shortDescription: "Brain 2720 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-086_D1",
+    shortDescription: "Brain 2743 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-086_C1",
+    shortDescription: "Brain 2743 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-081_C1",
+    shortDescription: "Brain 2743 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-081_D1",
+    shortDescription: "Brain 2743 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-333_A1",
+    shortDescription: "Brain 3942 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-333_B1",
+    shortDescription: "Brain 3942 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-333_C1",
+    shortDescription: "Brain 3942 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-333_D1",
+    shortDescription: "Brain 3942 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-085_B1",
+    shortDescription: "Brain 6423 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-085_A1",
+    shortDescription: "Brain 6423 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-085_D1",
+    shortDescription: "Brain 6423 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-085_C1",
+    shortDescription: "Brain 6423 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-086_A1",
+    shortDescription: "Brain 6432 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V10B01-086_B1",
+    shortDescription: "Brain 6432 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-335_C1",
+    shortDescription: "Brain 6471 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-335_B1",
+    shortDescription: "Brain 6471 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-335_A1",
+    shortDescription: "Brain 6471 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-084_A1",
+    shortDescription: "Brain 6522 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-084_B1",
+    shortDescription: "Brain 6522 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-084_C1",
+    shortDescription: "Brain 6522 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-084_D1",
+    shortDescription: "Brain 6522 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11A20-297_C1",
+    shortDescription: "Brain 8325 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11A20-297_D1",
+    shortDescription: "Brain 8325 - Top Right (High)",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-335_D1",
+    shortDescription: "Brain 8325 - Top Right (Low)",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11A20-297_A1",
+    shortDescription: "Brain 8325 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11A20-297_B1",
+    shortDescription: "Brain 8325 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-081_A1",
+    shortDescription: "Brain 8492 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11U08-081_B1",
+    shortDescription: "Brain 8492 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-336_A1",
+    shortDescription: "Brain 8667 - Top Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-336_B1",
+    shortDescription: "Brain 8667 - Top Right",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-336_C1",
+    shortDescription: "Brain 8667 - Bottom Left",
+    availableAssignments: ["PRECAST", "NMF"],
+  },
+  {
+    dataset: "hippocampus",
+    headerGroup: "Thompson et al. 2025",
+    internalFileName: "V11L05-336_D1",
+    shortDescription: "Brain 8667 - Bottom Right",
+    availableAssignments: ["PRECAST", "NMF"],
   },
 ];
 
