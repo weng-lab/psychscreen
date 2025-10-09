@@ -146,7 +146,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
           </ErrorBoundary>
           <Box mt={2}>
             <Typography type="title" fontWeight="bold" size="medium">
-              Source of gene expression and layer/cluster assignment:
+              Sources of gene expression and layer/cluster/domain assignment:
             </Typography>
             <ul>
               <li>
@@ -204,6 +204,28 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                         underline="hover"
                       >
                         10.1186/s12864-022-08601-w
+                      </Link>
+                      ).
+                    </>
+                  }
+                />
+              </li>
+              <li>
+                <ListItemText
+                  primary={
+                    <>
+                      Thompson <i>et al</i>. An integrated single-nucleus and
+                      spatial transcriptomics atlas reveals the molecular
+                      landscape of the human hippocampus.{" "}
+                      <i>Nature Neuroscience</i> <b>28</b>, 1990–2004 (2025).
+                      (doi:{" "}
+                      <Link
+                        href="https://doi.org/10.1038/s41593-025-02022-0"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        underline="hover"
+                      >
+                        10.1038/s41593-025-02022-0
                       </Link>
                       ).
                     </>
