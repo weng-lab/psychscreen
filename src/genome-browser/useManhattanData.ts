@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { ApolloError, gql, useQuery } from "@apollo/client";
 import { useMemo } from "react";
 import {
   TrackType,
@@ -57,8 +57,13 @@ export function useManhattanData(
     },
   });
 
+  let noData = false;
   const manhattanData = useMemo(() => {
     if (!data) return [];
+    if (data.bigRequests[0].error) {
+      noData = true;
+      return [];
+    }
     const points = data.bigRequests[0].data;
     return points.map((snp: any) => {
       return {
@@ -75,7 +80,7 @@ export function useManhattanData(
     manhattanTrack.id,
     {
       data: manhattanData,
-      error,
+      error: noData ? new ApolloError({ errorMessage: "No Data" }) : error,
       loading,
     },
     dataStore
@@ -84,7 +89,7 @@ export function useManhattanData(
     ldTrack.id,
     {
       data: manhattanData,
-      error,
+      error: noData ? new ApolloError({ errorMessage: "No Data" }) : error,
       loading,
     },
     dataStore
