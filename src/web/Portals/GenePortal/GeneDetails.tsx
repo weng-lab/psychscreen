@@ -259,7 +259,7 @@ const GeneDetails: React.FC = (props) => {
         <Stack direction="row" alignItems={"center"} gap={1}>
           <img
             alt="DNA"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Font_Awesome_5_solid_dna.svg/640px-Font_Awesome_5_solid_dna.svg.png"
+            src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Font_Awesome_5_solid_dna.svg"
             height={"25px"}
           />
           <Typography type="headline" size="large">
