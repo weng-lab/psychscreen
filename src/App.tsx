@@ -51,7 +51,8 @@ const openTargetLink = new HttpLink({
 });
 
 const psychscreenLink = new HttpLink({
-  uri: "https://psychscreen.api.wenglab.org/graphql",
+  uri: "https://ga.staging.wenglab.org/graphql", 
+  //"https://psychscreen.api.wenglab.org/graphql",
 });
 
 const LINK = ApolloLink.split(

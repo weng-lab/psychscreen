@@ -67,7 +67,7 @@ export function useBiosamples() {
   const client = useMemo(
     () =>
       new ApolloClient({
-        uri: "https://psychscreen.api.wenglab.org/graphql",
+        uri: "https://screen.api.wenglab.org/graphql",
         cache: new InMemoryCache(),
       }),
     []
@@ -82,7 +82,7 @@ export function useCCREInformation(rDHSAccession: string) {
   const client = useMemo(
     () =>
       new ApolloClient({
-        uri: "https://psychscreen.api.wenglab.org/graphql",
+        uri: "https://screen.api.wenglab.org/graphql",
         cache: new InMemoryCache(),
       }),
     []
