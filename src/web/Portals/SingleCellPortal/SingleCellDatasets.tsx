@@ -459,7 +459,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                       </div>
                       <br />
                       <GenomeBrowser
-                        svgRef={svgRef}
+                        svgRef={svgRef as React.RefObject<SVGSVGElement>}
                         domain={coordinates}
                         innerWidth={1400}
                         width="100%"
@@ -671,7 +671,7 @@ const BBTrack: React.FC<{
         id="atc"
         transform="translate(0,40)"
         data={data as BigBedData[]}
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
       />
     </g>
   );

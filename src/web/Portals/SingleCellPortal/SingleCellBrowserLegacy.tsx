@@ -210,7 +210,7 @@ export const SingleCellBrowserLegacy = (props) => {
       </div>
       <br />
       <GenomeBrowser
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
         domain={coordinates || eexpandedCoordinates}
         innerWidth={1400}
         width="100%"

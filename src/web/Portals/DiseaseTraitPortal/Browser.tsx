@@ -213,7 +213,7 @@ const Browser: React.FC<{
         {" (Hold shift and drag to select a region)"}
       </Typography>
       <GenomeBrowser
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
         domain={coordinates}
         innerWidth={1400}
         width="100%"

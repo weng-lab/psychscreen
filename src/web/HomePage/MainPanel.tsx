@@ -3,7 +3,6 @@ import { Box, Stack } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import BRAIN from "../../assets/brain.png";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -149,7 +148,7 @@ const MainPanel: React.FC = () => {
               }}
               height={"100%"}
               width={"100%"}
-              src={BRAIN}
+              src="/brain.png"
               alt={"psychSCREEN Brain"}
             />
           </Box>

@@ -52,7 +52,7 @@ const VariantTracks: React.FC<VariantTrackProps> = (props) => {
   );
   const { data, snpCoordinateData, expandedCoordinates } = useGenePageData(
     eexpandedCoordinates,
-    "GRCh38" || "",
+    "GRCh38",
     props.name,
     props.resolvedTranscript
   );

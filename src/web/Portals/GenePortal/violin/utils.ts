@@ -147,7 +147,7 @@ export function downloadBlob(blob: Blob, filename: string) {
   document.body.removeChild(downloadLink);
 }
 
-export function svgData(svgNode: RefObject<SVGSVGElement>): string {
+export function svgData(svgNode: RefObject<SVGSVGElement | null>): string {
   if (!svgNode.current) return "";
   const svg = svgNode.current.cloneNode(true) as SVGSVGElement;
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -176,7 +176,10 @@ export function svgDataE(
   return preface + svgs[0].outerHTML.replace(/\n/g, "").replace(/[ ]{8}/g, "");
 }
 
-export function downloadSVG(svg: RefObject<SVGSVGElement>, filename: string) {
+export function downloadSVG(
+  svg: RefObject<SVGSVGElement | null>,
+  filename: string
+) {
   downloadBlob(
     new Blob([svgData(svg)], { type: "image/svg+xml;charset=utf-8" }),
     filename

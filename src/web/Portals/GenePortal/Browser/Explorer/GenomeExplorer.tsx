@@ -80,7 +80,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps> = (props) => {
             domain: { ...domain, chromosome: state.position.chromosome },
           });
         }}
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
       >
         {state.highlights.map((x) => (
           <g transform="translate(150,0)">
@@ -135,7 +135,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps> = (props) => {
                         height={60}
                         domain={state.position}
                         id="cCREs"
-                        svgRef={svgRef}
+                        svgRef={svgRef as React.RefObject<SVGSVGElement>}
                         tooltipContent={rect => <CCRETooltip { ...rect} assembly={props.assembly.toLocaleLowerCase()} />}
                         onClick={x => props.oncCREClicked && x.name && props.oncCREClicked(x.name)}
                     />

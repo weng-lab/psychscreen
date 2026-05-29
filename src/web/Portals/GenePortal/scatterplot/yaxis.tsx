@@ -14,7 +14,7 @@ const YAxis: React.FC<any> = ({ width, height, range, title }) => {
         textAnchor="middle"
         x={-height / 2}
         y={width * 0.2}
-        dominantBaseline="center"
+        dominantBaseline="middle"
         fontSize="20px"
       >
         {title}

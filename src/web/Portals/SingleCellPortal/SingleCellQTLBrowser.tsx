@@ -145,7 +145,7 @@ const SingleCellQTLBrowser: React.FC<GridProps> = (props) => {
       </div>
       <br />
       <GenomeBrowser
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
         domain={coordinates}
         innerWidth={1400}
         width="100%"
@@ -230,7 +230,7 @@ const BBTrack: React.FC<{
         arcOpacity={1}
         transform="translate(0,40)"
         data={linkdata}
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
       />
     </g>
   );

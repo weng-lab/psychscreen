@@ -466,7 +466,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
 
   const { data, loading, snpCoordinateData } = useGenePageDataWithQTL(
     eexpandedCoordinates,
-    "GRCh38" || "",
+    "GRCh38",
     props.name,
     props.resolvedTranscript,
     props.geneid

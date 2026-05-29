@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Vitessce } from "vitessce";
+import React, { Suspense, useState, useEffect } from "react";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -15,6 +14,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+
+const Vitessce = React.lazy(() =>
+  import("vitessce").then((module) => ({ default: module.Vitessce }))
+);
 
 interface SampleInfo {
   dataset: string;
@@ -142,7 +145,9 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
       {config && (
         <Grid sm={12} md={12} lg={12} xl={12}>
           <ErrorBoundary fallback={<ErrorAlert />}>
-            <Vitessce config={config} theme="light" />
+            <Suspense fallback={<Box>Loading spatial view...</Box>}>
+              <Vitessce config={config} theme="light" />
+            </Suspense>
           </ErrorBoundary>
           <Box mt={2}>
             <Typography type="title" fontWeight="bold" size="medium">

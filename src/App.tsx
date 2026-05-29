@@ -5,9 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import "@weng-lab/psychscreen-ui-components/src/App.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import "./App.css";
 import { AboutUsPage, HomePage as WebHomePage } from "./web/HomePage";
 import { DownloadsPage } from "./web/DownloadsPage";
 import {

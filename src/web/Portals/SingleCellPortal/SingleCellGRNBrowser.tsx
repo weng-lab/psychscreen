@@ -202,7 +202,7 @@ const SingleCellGRNBrowser: React.FC<GridProps> = (props) => {
         </div>
         <br />
         <GenomeBrowser
-          svgRef={svgRef}
+          svgRef={svgRef as React.RefObject<SVGSVGElement>}
           domain={coordinates}
           innerWidth={1400}
           width="100%"
@@ -304,7 +304,7 @@ export const BBTrack: React.FC<{
         transform="translate(0,40)"
         data={linkdata}
         // color="black"
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
       />
     </g>
   );

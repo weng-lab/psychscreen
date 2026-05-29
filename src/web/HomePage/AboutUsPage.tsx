@@ -2,7 +2,6 @@ import React from "react";
 import { Divider, GridProps, Stack, Typography } from "@mui/material";
 import AboutUsPanel from "./AboutUsPanel";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import psychSCREEN_about from "../../assets/about.png";
 
 const AboutUsPage: React.FC<GridProps> = (props) => {
   return (
@@ -139,7 +138,7 @@ const AboutUsPage: React.FC<GridProps> = (props) => {
         </a>
       </Typography>
 
-      <img src={psychSCREEN_about} />
+      <img src="/about.png" alt="PsychSCREEN portal overview" />
       <Typography variant="body1" pt={2}>
         <b>A: PsychSCREEN's Disease/SNP Portals.</b> A written description of
         the queried disease—Schizophrenia (top right)—is displayed with a view

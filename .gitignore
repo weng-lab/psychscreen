@@ -1,6 +1,5 @@
 node_modules/
+.next/
+out/
 build/
-.yarn
-.yarnrc.yml
-.vscode
-package-lock.json
+.env*.local

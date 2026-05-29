@@ -2,11 +2,6 @@ import React from "react";
 import { GridProps, Box, Stack, Divider } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
-import DiseaseTrait from "../../assets/disease-trait.png";
-import GeneBCRE from "../../assets/gene-bcre.png";
-import SNPQTL from "../../assets/snp-qtl.png";
-import SingleCell from "../../assets/single-cell.png";
-import UMass from "../../assets/umass.png";
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../Portals/styles";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -43,7 +38,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       stats?: string[];
       buttonText: string;
       buttonLink: string;
-      searchComponent?: JSX.Element;
+      searchComponent?: React.ReactElement;
       imageSRC: string;
       imgAltText: string;
     }
@@ -59,7 +54,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       stats: ["17 total traits cataloged", "5,848 b-cCRE/trait associations"],
       buttonText: "Explore Diseases/Traits",
       buttonLink: "/psychscreen/traits",
-      imageSRC: DiseaseTrait,
+      imageSRC: "/disease-trait.png",
       imgAltText: "Disease/Trait Portal",
       searchComponent: (
         <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" showTitle />
@@ -80,7 +75,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       ],
       buttonText: "Explore Genes/b-cCREs",
       buttonLink: "/psychscreen/gene",
-      imageSRC: GeneBCRE,
+      imageSRC: "/gene-bcre.png",
       imgAltText: "Gene b-cCRE portal",
       searchComponent: (
         <GeneAutoComplete navigateto="/psychscreen/gene/" showTitle />
@@ -101,7 +96,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       ],
       buttonText: "Explore SNPs/QTLs",
       buttonLink: "/psychscreen/snp",
-      imageSRC: SNPQTL,
+      imageSRC: "/snp-qtl.png",
       imgAltText: "SNP/QTL Portal",
       searchComponent: (
         <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
@@ -121,7 +116,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       ],
       buttonText: "Explore Single Cells",
       buttonLink: "/psychscreen/single-cell",
-      imageSRC: SingleCell,
+      imageSRC: "/single-cell.png",
       imgAltText: "Single cell portal",
       searchComponent: (
         <CelltypeAutoComplete
@@ -140,7 +135,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       `,
       buttonText: "Learn More",
       buttonLink: "/psychscreen/aboutus",
-      imageSRC: UMass,
+      imageSRC: "/umass.png",
       imgAltText: "UMass Chan Medical School Logo",
     },
   };

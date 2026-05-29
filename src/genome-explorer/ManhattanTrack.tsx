@@ -154,7 +154,7 @@ export type ManhattanTrackProps = {
   transform?: string;
   domain: Domain;
   data?: SummaryStatisticSNP[];
-  svgRef?: React.RefObject<SVGSVGElement>;
+  svgRef?: React.RefObject<SVGSVGElement | null>;
   threshold?: number;
   max?: number;
   onHeightChanged?: (height: number) => void;

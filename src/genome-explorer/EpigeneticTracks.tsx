@@ -156,7 +156,7 @@ export const TitledTrack: React.FC<{
           id="adult-bCREs"
           transform="translate(0,40)"
           data={data as BigBedData[]}
-          svgRef={svgRef}
+          svgRef={svgRef as React.RefObject<SVGSVGElement>}
           tooltipContent={(rect) => <CCRETooltip {...rect} assembly="grch38" />}
         />
       ) : (

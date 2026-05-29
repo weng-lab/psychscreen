@@ -61,7 +61,7 @@ const GenomeExplorer: React.FC<GenomeExplorerProps> = ({
       </div>
       <br />
       <GenomeBrowser
-        svgRef={svgRef}
+        svgRef={svgRef as React.RefObject<SVGSVGElement>}
         domain={coordinates}
         innerWidth={1400}
         width="100%"

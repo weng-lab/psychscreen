@@ -59,7 +59,7 @@ type ManhattanPlotTrackProps = {
   groupedQTLs: Map<string, EQTL>;
   allQTLs: any[];
   sortOrder?: (a: ManhattanSNP, b: ManhattanSNP) => number;
-  svgRef?: RefObject<SVGSVGElement>;
+  svgRef?: RefObject<SVGSVGElement | null>;
   onSettingsClick?: () => void;
   gene: string;
   importantRegions?: GenomicRange[];

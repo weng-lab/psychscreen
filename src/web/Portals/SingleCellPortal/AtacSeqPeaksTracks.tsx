@@ -138,7 +138,7 @@ const TitledTrack: React.FC<{
           id={url}
           transform="translate(0,40)"
           data={data as BigBedData[]}
-          svgRef={svgRef}
+          svgRef={svgRef as React.RefObject<SVGSVGElement>}
           tooltipContent={() => <></>}
         />
       ) : (
