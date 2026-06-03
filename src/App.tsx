@@ -28,7 +28,6 @@ import SingleCellGeneRegulatoryDatasets from "./web/Portals/SingleCellPortal/Sin
 import SingleCellCelltypeQTL from "./web/Portals/SingleCellPortal/SingleCellCelltypeQTL";
 import SingleCelldegdisease from "./web/Portals/SingleCellPortal/SingleCelldegdisease";
 import SingleCelldegdiseasect from "./web/Portals/SingleCellPortal/SingleCelldegdiseasect";
-import GenomeExplorerPage from "./web/Portals/GenomeExplorer/GenomeExplorerPage";
 import { SingleCellGeneDetails } from "./web/Portals/SingleCellPortal/SingleCellGeneDetails";
 import Header from "./web/HomePage/Header";
 import FooterPanel from "./web/HomePage/FooterPanel";
@@ -134,12 +133,6 @@ const App: React.FC = () => {
               <Route path="/psychscreen/gene/:gene" element={<GeneDetails />} />
               <Route path="/psychscreen/gene/gtexumap" element={<GTexUMAP />} />
               <Route path="/psychscreen/snp/:snpid" element={<SNPDetails />} />
-              <Route
-                path="/psychscreen/genomebrowser/:chromosome/:start/:end/"
-                element={<GenomeExplorerPage />}
-              >
-                <Route path=":trackset" element={<GenomeExplorerPage />} />
-              </Route>
               {PORTALS.map((portal, i) => (
                 <Route
                   key={i}

@@ -8,7 +8,7 @@ import {
   DataTable,
   DataTableColumn,
 } from "@weng-lab/psychscreen-ui-components";
-import { GenomicRange } from "./Browser";
+import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { GROUPS } from "../SnpPortal/RegulatoryElements";
 import { toScientificNotation } from "./utils";
 

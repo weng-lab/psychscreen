@@ -1,32 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { Divider, Box, Tabs } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
-import { diseaseCT, GRN_cellType_Cards, Qtl_Celltype_Cards } from "./consts";
-import SingleCellBrowser from "./SingleCellBrowser";
+import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
 import { StyledTab } from "../styles";
-import { ATACTRACKS } from "./AtacSeaPeaksTrackModal";
-type GenomicRange = {
-  chromosome?: string;
-  start: number;
-  end: number;
-};
+
 const SingleCellCellTypeDetails: React.FC = () => {
   const { celltype } = useParams();
 
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
-  const [coordinates, setCoordinates] = useState<GenomicRange>({
-    chromosome: "chr11",
-    start: 6192271,
-    end: 6680547,
-  });
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = React.useState(0);
 
   useEffect(() => {
     setTabIndex(0);
@@ -119,46 +108,18 @@ const SingleCellCellTypeDetails: React.FC = () => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
-            <StyledTab label="scATAC-Seq Peaks" tabIndex={0} />
-            <StyledTab label="Gene Regulatory Networks" tabIndex={1} />
-            <StyledTab label="eQTLs" tabIndex={2} />
-            <StyledTab label="Differential Gene Expression" tabIndex={3} />
+            <StyledTab label="Differential Gene Expression" tabIndex={0} />
           </Tabs>
           <Divider />
         </Box>
-        {tabIndex === 0 && celltype && (
-          <SingleCellBrowser coordinates={coordinates} atactracks />
-        )}
-        {tabIndex == 1 &&
-          (GRN_cellType_Cards.find(
-            (c) => c.cardLabel === celltype?.replace(" or ", "/")
-          ) ? (
-            <SingleCellBrowser coordinates={coordinates} grntracks />
-          ) : (
-            <>
-              <br />
-              {"No data available for " + celltype?.replace(" or ", "/")}
-            </>
-          ))}
-        {tabIndex == 2 &&
-          (Qtl_Celltype_Cards.find(
-            (c) => c.cardLabel === celltype?.replace(" or ", "/")
-          ) ? (
-            <SingleCellBrowser coordinates={coordinates} qtltracks />
-          ) : (
-            <>
-              <br />
-              {"No data available for " + celltype?.replace(" or ", "/")}
-            </>
-          ))}
-        {tabIndex == 3 && degDiseases && degDiseases.length == 0 && (
+        {tabIndex == 0 && degDiseases && degDiseases.length == 0 && (
           <>
             <br />{" "}
             {"No data diff. expressed genes available for " +
               celltype?.replace(" or ", "/")}{" "}
           </>
         )}
-        {tabIndex == 3 && degDiseases.length > 0 && dataset && (
+        {tabIndex == 0 && degDiseases.length > 0 && dataset && (
           <SingleCelldegCelltypeDotplot
             disease={dataset}
             dataset={dataset}

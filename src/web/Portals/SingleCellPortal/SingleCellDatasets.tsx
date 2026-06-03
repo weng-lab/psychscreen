@@ -1,6 +1,4 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { ValuedPoint } from "umms-gb/dist/utils/types";
-import { RequestError } from "umms-gb/dist/components/tracks/trackset/types";
 import { Box, GridProps, Tabs } from "@mui/material";
 import {
   Typography,
@@ -11,11 +9,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import DownloadIcon from "@mui/icons-material/Download";
-import { EmptyTrack, DenseBigBed } from "umms-gb";
-import { gql, useQuery } from "@apollo/client";
-import { BigWigData, BigBedData, BigZoomData } from "bigwig-reader";
+
 import { DataTable } from "@weng-lab/ts-ztable";
-import SingleCellBrowser from "./SingleCellBrowser";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { StyledTab, StyledButton } from "../../Portals/styles";
@@ -186,32 +181,7 @@ type GenomicRange = {
   end: number;
 };
 
-export const BIG_QUERY = gql`
-  query BigRequests($bigRequests: [BigRequest!]!) {
-    bigRequests(requests: $bigRequests) {
-      data
-      error {
-        errortype
-        message
-      }
-    }
-  }
-`;
 
-export type BigResponseData =
-  | BigWigData[]
-  | BigBedData[]
-  | BigZoomData[]
-  | ValuedPoint[];
-
-export type BigResponse = {
-  data: BigResponseData;
-  error: RequestError;
-};
-
-export type BigQueryResponse = {
-  bigRequests: BigResponse[];
-};
 
 const peaks = [
   [
@@ -272,9 +242,9 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
   const [gene, setGene] = useState("SNX31");
 
-  const [page, setPage] = useState<number>(-1);
-  const [grnpage, setGrnPage] = useState<number>(-1);
-  const [qtlpage, setQtlPage] = useState<number>(-1);
+  const [page, setPage] = useState<number>(0);
+  const [grnpage, setGrnPage] = useState<number>(0);
+  const [qtlpage, setQtlPage] = useState<number>(0);
   const svgRef = React.useRef<SVGSVGElement>(null);
   const [coordinates, setCoordinates] = useState<GenomicRange>({
     chromosome: "chr11",
@@ -401,14 +371,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
             {"scATAC-Seq Peaks"}
           </Typography>
           <StyledButton
-            bvariant={page === -1 ? "filled" : "outlined"}
-            btheme="light"
-            onClick={() => setPage(-1)}
-          >
-            Genome Browser
-          </StyledButton>
-          &nbsp;&nbsp;&nbsp;
-          <StyledButton
             bvariant={page === 0 ? "filled" : "outlined"}
             btheme="light"
             onClick={() => setPage(0)}
@@ -425,73 +387,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 searchable
               />
             </Box>
-          )}
-          {page === -1 && (
-            <Grid sm={10} md={10} lg={9} xl={9}>
-              {/*
-                    <>
-                      <br />
-                      <br />
-                      <div
-                        style={{
-                          marginTop: "1em",
-                          width: "100%",
-                          textAlign: "center",
-                        }}
-                      >
-                        {`${coordinates.chromosome}:${coordinates.start}-${coordinates.end}`}{" "}
-                      </div>
-                      <br />
-                      <CytobandView
-                        innerWidth={1000}
-                        height={15}
-                        chromosome={coordinates.chromosome!}
-                        assembly="hg38"
-                        position={coordinates}
-                      />
-                      <br />
-                      <div style={{ textAlign: "center" }}>
-                        <UCSCControls
-                          onDomainChanged={onDomainChanged}
-                          domain={coordinates}
-                          withInput={false}
-                        />
-                      </div>
-                      <br />
-                      <GenomeBrowser
-                        svgRef={svgRef as React.RefObject<SVGSVGElement>}
-                        domain={coordinates}
-                        innerWidth={1400}
-                        width="100%"
-                        noMargin
-                        onDomainChanged={(x) => {
-                          if (Math.ceil(x.end) - Math.floor(x.start) > 10) {
-                            setCoordinates({
-                              chromosome: coordinates.chromosome,
-                              start: Math.floor(x.start),
-                              end: Math.ceil(x.end),
-                            });
-                          }
-                        }}
-                      >
-                        <RulerTrack
-                          domain={coordinates}
-                          height={30}
-                          width={1400}
-                        />
-                        <Trackset coordinates={coordinates} tracks={peaks} />
-                      </GenomeBrowser>
-                    </>
-                    */}
-              {
-                <SingleCellBrowser
-                  coordinates={coordinates}
-                  atactracks
-                  grntracks
-                  qtltracks
-                />
-              }
-            </Grid>
           )}
         </Grid>
       )}
@@ -511,14 +406,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
             >
               Gene Regulatory Networks
             </Typography>
-            <StyledButton
-              bvariant={grnpage === -1 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setGrnPage(-1)}
-            >
-              Genome Browser
-            </StyledButton>
-            &nbsp;&nbsp;&nbsp;
             <StyledButton
               bvariant={grnpage === 0 ? "filled" : "outlined"}
               btheme="light"
@@ -545,9 +432,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
                 </Box>
               </Slide>
             )}
-            {grnpage === -1 && (
-              <SingleCellBrowser coordinates={coordinates} grntracks />
-            )}
           </Container>
         </Grid>
       )}
@@ -566,14 +450,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
           >
             Cell Type Specific eQTLs
           </Typography>
-          <StyledButton
-            bvariant={qtlpage === -1 ? "filled" : "outlined"}
-            btheme="light"
-            onClick={() => setQtlPage(-1)}
-          >
-            Genome Browser
-          </StyledButton>
-          &nbsp;&nbsp;&nbsp;
           <StyledButton
             bvariant={qtlpage === 0 ? "filled" : "outlined"}
             btheme="light"
@@ -602,11 +478,6 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
               </Slide>
             </>
           )}
-          {qtlpage === -1 && (
-            <>
-              <SingleCellBrowser coordinates={coordinates} qtltracks />
-            </>
-          )}
         </Grid>
       )}
       {disease === "Indiv-cohort-expression-data" && (
@@ -630,94 +501,5 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
   );
 };
 
-const BBTrack: React.FC<{
-  data: BigResponseData;
-  url: string;
-  title: string;
-  color?: string;
-  height: number;
-  transform?: string;
-  onHeightChanged?: (height: number) => void;
-  domain: GenomicRange;
-  svgRef?: React.RefObject<SVGSVGElement>;
-}> = ({
-  data,
-  url,
-  title,
-  height,
-  domain,
-  transform,
-  onHeightChanged,
-  svgRef,
-  color,
-}) => {
-  useEffect(
-    () => onHeightChanged && onHeightChanged(height + 40),
-    [height, onHeightChanged]
-  );
-  return (
-    <g transform={transform}>
-      <EmptyTrack
-        height={40}
-        width={1400}
-        transform="translate(0,8)"
-        id=""
-        text={title}
-      />
-      <DenseBigBed
-        width={1400}
-        height={height}
-        domain={domain}
-        id="atc"
-        transform="translate(0,40)"
-        data={data as BigBedData[]}
-        svgRef={svgRef as React.RefObject<SVGSVGElement>}
-      />
-    </g>
-  );
-};
 
-const Trackset: React.FC<any> = (props) => {
-  const height = useMemo(
-    () => props.tracks.length * 80,
-    [props.tracks, props.coordinates]
-  );
-  const bigRequests = useMemo(
-    () =>
-      props.tracks.map((url) => ({
-        chr1: props.coordinates.chromosome,
-        start: props.coordinates.start,
-        end: props.coordinates.end,
-        chr2: props.coordinates.chromosome,
-        url: url[1],
-        preRenderedWidth: 1400,
-      })),
-    [props.coordinates]
-  );
-  useEffect(() => {
-    props.onHeightChanged && props.onHeightChanged(height);
-  }, [props.onHeightChanged, height, props]);
-  const { data, loading } = useQuery<BigQueryResponse>(BIG_QUERY, {
-    variables: { bigRequests },
-  });
-
-  return loading || (data?.bigRequests.length || 0) < 2 ? (
-    <EmptyTrack width={1400} height={40} transform="" id="" text="Loading..." />
-  ) : (
-    <>
-      {(data?.bigRequests || []).map((data, i) => (
-        <BBTrack
-          height={40}
-          key={props.tracks[i][0]}
-          url={props.tracks[i][1]}
-          domain={props.coordinates}
-          title={props.tracks[i][0]}
-          svgRef={props.svgRef}
-          data={data.data}
-          transform={`translate(0,${i * 70})`}
-        />
-      ))}
-    </>
-  );
-};
 export default SingleCellDatasets;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import { Divider, Grid, Box, Tabs } from "@mui/material";
@@ -8,26 +8,6 @@ import SingleCell from "../GenePortal/SingleCell";
 
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import { StyledTab } from "../../Portals/styles";
-import BrowserView from "../../../genome-browser/browserView";
-import {
-  evoConservation,
-  geneTrack,
-  regulatoryFeatures,
-  deepLearnedModels,
-} from "../../../genome-browser/tracks/tracks";
-import {
-  createBrowserStore,
-  createDataStore,
-  createTrackStore,
-  ManhattanPoint,
-  Track,
-} from "genomebrowser-test";
-import {
-  manhattanTrack,
-  useManhattanData,
-} from "../../../genome-browser/useManhattanData";
-import { ldTrack } from "../../../genome-browser/useManhattanData";
-import { useLDQuery } from "../../../genome-browser/useLDQuery";
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
@@ -45,27 +25,17 @@ const GENE_COORDS_QUERY = gql`
 export const SingleCellGeneDetails = (props) => {
   const { gene } = useParams();
   const { state }: any = useLocation();
-  let { geneid, chromosome, start, end, tabind } = state
-    ? state
-    : { geneid: "", chromosome: "", start: null, end: null, tabind: 0 };
-  const [tabIndex, setTabIndex] = useState(tabind || 0);
+  let { geneid } = state ? state : { geneid: "" };
+  const [tabIndex, setTabIndex] = useState(0);
 
   const [gid, setGid] = useState(geneid);
-  const [region, setRegion] = useState({
-    chromosome: chromosome,
-    start: start,
-    end: end,
-  });
 
   useEffect(() => {
     setTabIndex(0);
   }, []);
 
   useEffect(() => {
-    let { geneid, chromosome, start, end, tabind } = state
-      ? state
-      : { geneid: "", chromosome: "", start: null, end: null, tabind: 0 };
-    setRegion({ chromosome, start, end });
+    let { geneid } = state ? state : { geneid: "" };
     setGid(geneid);
   }, [gene, state]);
   const { data: geneCoords } = useQuery(GENE_COORDS_QUERY, {
@@ -78,63 +48,6 @@ export const SingleCellGeneDetails = (props) => {
   const handleTabChange = (_: any, newTabIndex: number) => {
     setTabIndex(newTabIndex);
   };
-
-  const browserStore = useMemo(
-    () =>
-      createBrowserStore({
-        domain: {
-          chromosome:
-            region.chromosome === ""
-              ? geneCoords.gene[0].coordinates.chromosome
-              : region.chromosome,
-          start:
-            (region.start === null
-              ? +geneCoords.gene[0].coordinates.start
-              : +region.start) - 20000,
-          end:
-            (region.end === null
-              ? +geneCoords.gene[0].coordinates.end
-              : +region.end) + 20000,
-        },
-        marginWidth: 100,
-        trackWidth: 1400,
-        multiplier: 3,
-      }),
-    [region]
-  );
-  const [hovered, setHovered] = useState<ManhattanPoint | null>(null);
-  const trackStore = useMemo(
-    () =>
-      createTrackStore([
-        geneTrack(gene),
-        ...regulatoryFeatures,
-        ...deepLearnedModels,
-        {
-          ...manhattanTrack,
-          onHover: (item) => {
-            setHovered(item);
-          },
-        },
-        {
-          ...ldTrack,
-          onHover: (item) => {
-            setHovered(item);
-          },
-        },
-        ...evoConservation,
-      ]),
-    [setHovered]
-  );
-  const editTrack = trackStore((state) => state.editTrack);
-
-  useLDQuery(hovered, editTrack);
-
-  const dataStore = useMemo(() => createDataStore(), []);
-  useManhattanData(
-    "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed",
-    browserStore,
-    dataStore
-  );
 
   return (
     <Grid container {...props} style={{ marginTop: "0.5em" }}>
@@ -173,23 +86,12 @@ export const SingleCellGeneDetails = (props) => {
       <Grid item sm={9}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
-            <StyledTab label="Brain Epigenome Browser" />
             <StyledTab label="Brain Single Cell Expression" />
           </Tabs>
           <Divider />
         </Box>
         <Box sx={{ padding: 2 }}>
-          {tabIndex === 0 &&
-          (geneCoords ||
-            (region.chromosome !== "" && region.start && region.end)) ? (
-            <Box>
-              <BrowserView
-                browserStore={browserStore}
-                trackStore={trackStore}
-                dataStore={dataStore}
-              />
-            </Box>
-          ) : (
+          {tabIndex === 0 && (
             <Box>
               <SingleCell
                 gene={gene || "APOE"}

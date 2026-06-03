@@ -3,9 +3,9 @@
  */
 
 import { useParams } from "react-router-dom";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Divider, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@weng-lab/psychscreen-ui-components";
 import GeneAssociations from "./GeneAssociations";
@@ -13,41 +13,15 @@ import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
 import {
   DISEASE_CARDS,
-  FULLSUMSTAT_URL_MAP,
   URL_CHROM_MAP,
   URL_MAP,
 } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
-import { riskLoci, toScientificNotation } from "./utils";
+import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
-import Browser from "./Browser";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import { StyledButton } from "../../Portals/styles";
-import {
-  createTrackStore,
-  createBrowserStore,
-  Domain,
-  createDataStore,
-  DisplayMode,
-  TrackType,
-  ManhattanTrackConfig,
-  LDTrackConfig,
-  ManhattanPoint,
-  DataStoreInstance,
-  BrowserStoreInstance,
-  useCustomData,
-  Chromosome,
-} from "genomebrowser-test";
-import BrowserView from "../../../genome-browser/browserView";
-import {
-  deepLearnedModels,
-  evoConservation,
-  geneTrack,
-  regulatoryFeatures,
-} from "../../../genome-browser/tracks/tracks";
-import { useManhattanData } from "../../../genome-browser/useManhattanData";
-import { useLDQuery } from "../../../genome-browser/useLDQuery";
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -222,27 +196,6 @@ function useLoci(trait: string) {
   return { loci, loading, data };
 }
 
-const ldTrack: LDTrackConfig = {
-  id: "ld",
-  title: "LD",
-  trackType: TrackType.LDTrack,
-  displayMode: DisplayMode.GenericLD,
-  height: 50,
-  titleSize: 12,
-  color: "#7c97c4",
-};
-
-const manhattanTrack: ManhattanTrackConfig = {
-  id: "manhattan",
-  title: "Manhattan",
-  trackType: TrackType.Manhattan,
-  displayMode: DisplayMode.Scatter,
-  height: 75,
-  titleSize: 12,
-  color: "#7c97c4",
-  cutoffLabel: "5e-8",
-};
-
 const DiseaseTraitDetails: React.FC = () => {
   const { disease } = useParams();
   const [page, setPage] = useState<number>(-1);
@@ -251,11 +204,6 @@ const DiseaseTraitDetails: React.FC = () => {
     ? state
     : { searchvalue: "", diseaseDesc: "" };
 
-  const [gwasLocusSNPs, setGwasLocusSNPs] = useState<{
-    SNPCount: number;
-    minimump: number;
-    coordinates: GenomicRange;
-  }>();
   //This needs to be set to the diseases first risk loci
   const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
     chromosome: "chr1",
@@ -263,28 +211,8 @@ const DiseaseTraitDetails: React.FC = () => {
     end: 161317875,
   });
 
-  const navigateBrowser = useCallback(
-    (
-      coordinates: GenomicRange,
-      gwasLocusSNPs?: { SNPCount: number; minimump: number }
-    ) => {
-      if (gwasLocusSNPs) {
-        setGwasLocusSNPs({ ...gwasLocusSNPs, coordinates: coordinates });
-      }
-      setBrowserCoordinates(coordinates);
-      setPage(3);
-    },
-    []
-  );
-
   const diseaseLabel =
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
-  const summaryStatisticsURL = disease
-    ? FULLSUMSTAT_URL_MAP[disease].startsWith("gs") ||
-      FULLSUMSTAT_URL_MAP[disease].startsWith("https")
-      ? FULLSUMSTAT_URL_MAP[disease]
-      : `https://downloads.wenglab.org/psychscreen-summary-statistics/${URL_MAP[disease]}.bigBed`
-    : "https://downloads.wenglab.org/psychscreen-summary-statistics/autism.bigBed";
 
   const { loci, data } = useLoci(disease || "");
 
@@ -338,62 +266,6 @@ const DiseaseTraitDetails: React.FC = () => {
   const gassoc =
     genesdata &&
     genesdata.genesAssociationsQuery.filter((g) => g.dge_fdr <= 0.05);
-
-  const [hovered, setHovered] = useState<ManhattanPoint | null>(null);
-
-  const browserStore = useMemo(
-    () =>
-      createBrowserStore({
-        domain: browserCoordinates as Domain,
-        marginWidth: 100,
-        trackWidth: 1400,
-        multiplier: 3,
-      }),
-    []
-  );
-  const trackStore = useMemo(
-    () =>
-      createTrackStore([
-        geneTrack(undefined),
-        ...regulatoryFeatures,
-        ...deepLearnedModels,
-        {
-          ...manhattanTrack,
-          onHover: (item) => {
-            setHovered(item);
-          },
-        },
-        {
-          ...ldTrack,
-          onHover: (item) => {
-            setHovered(item);
-          },
-        },
-        ...evoConservation,
-      ]),
-    [setHovered]
-  );
-  const editTrack = trackStore((state) => state.editTrack);
-
-  useLDQuery(hovered, editTrack);
-
-  const dataStore = useMemo(() => createDataStore(), []);
-  useManhattanData(summaryStatisticsURL, browserStore, dataStore);
-
-  const setDomain = browserStore((state) => state.setDomain);
-  useEffect(() => {
-    const range = browserCoordinates.end - browserCoordinates.start;
-    const midpoint = (browserCoordinates.start + browserCoordinates.end) / 2;
-    if (range >= 4000000) {
-      setDomain({
-        chromosome: browserCoordinates.chromosome as Chromosome,
-        start: midpoint - 2000000,
-        end: midpoint + 2000000,
-      });
-    } else {
-      setDomain(browserCoordinates as Domain);
-    }
-  }, [browserCoordinates]);
 
   return (
     <Grid
@@ -489,15 +361,6 @@ const DiseaseTraitDetails: React.FC = () => {
                 Associated SNPs in locus
               </StyledButton>
             )}
-          {browserCoordinates && (
-            <StyledButton
-              bvariant={page === 3 ? "filled" : "outlined"}
-              btheme="light"
-              onClick={() => setPage(3)}
-            >
-              Brain Epigenome Browser
-            </StyledButton>
-          )}
           {/* Unused, can I remove? */}
           {significantSNPs && significantSNPs.length > 0 && 0 > 1 && (
             <StyledButton
@@ -514,7 +377,6 @@ const DiseaseTraitDetails: React.FC = () => {
         {page === -1 ? (
           <RiskLocusView
             loci={loci || []}
-            onLocusClick={navigateBrowser}
             disease={disease || ""}
           />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
@@ -550,46 +412,12 @@ const DiseaseTraitDetails: React.FC = () => {
               fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
             }
           />
-        ) : page === 3 ? (
-          <>
-            {gwasLocusSNPs &&
-              gwasLocusSNPs.coordinates.chromosome ===
-                browserCoordinates.chromosome &&
-              gwasLocusSNPs.coordinates.start === browserCoordinates.start &&
-              gwasLocusSNPs.coordinates.end === browserCoordinates.end && (
-                <>
-                  <Typography
-                    alignSelf={"flex-start"}
-                    type={"body"}
-                    size={"small"}
-                  >
-                    {gwasLocusSNPs.SNPCount} significant SNP
-                    {gwasLocusSNPs.SNPCount !== 1 ? "s" : ""} at locus{" "}
-                    {gwasLocusSNPs.coordinates.chromosome +
-                      ":" +
-                      gwasLocusSNPs.coordinates.start.toLocaleString() +
-                      "-" +
-                      gwasLocusSNPs.coordinates.end.toLocaleString()}
-                    . Lowest <i>P</i> at this locus:{" "}
-                    {toScientificNotation(gwasLocusSNPs.minimump, 2)}
-                  </Typography>
-                  <Divider
-                    sx={{ width: "100%", marginTop: "1rem !important" }}
-                  />
-                </>
-              )}
-            <BrowserView
-              browserStore={browserStore}
-              trackStore={trackStore}
-              dataStore={dataStore}
-            />
-          </>
         ) : page === 4 &&
           significantSNPs &&
           significantSNPs.length > 0 &&
           0 > 1 ? (
           // Unused, can I remove?
-          <SignifcantSNPs trait={trait} onSNPClick={navigateBrowser} />
+          <SignifcantSNPs trait={trait} />
         ) : null}
       </Grid>
     </Grid>

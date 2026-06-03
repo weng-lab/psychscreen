@@ -127,8 +127,8 @@ const RiskLocusView: React.FC<{
           (v, c) => v + groupedLoci.get(c)!.length,
           0
         )}{" "}
-        risk loci (orange boxes below). Mouse over or click a locus to explore
-        PsychENCODE epigenetic and transcriptomic data in that region.
+        risk loci (orange boxes below). Mouse over a locus to view its
+        coordinates and summary statistics.
       </Typography>
       <Box minWidth={"700px"} maxWidth={"1000px"}>
         <svg viewBox={`0 0 1000 ${groupedLoci.size * 30 + 100}`}>
@@ -242,9 +242,11 @@ const RiskLocusView: React.FC<{
                   2
                 )}
               </text>
-              <text x={12} y={88} fill="#0000ff">
-                Click to explore this locus
-              </text>
+              {props.onLocusClick && (
+                <text x={12} y={88} fill="#0000ff">
+                  Click to explore this locus
+                </text>
+              )}
             </g>
           ) : null}
         </svg>

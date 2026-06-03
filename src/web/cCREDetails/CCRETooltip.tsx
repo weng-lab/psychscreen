@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Loader } from "semantic-ui-react";
+import { CircularProgress } from "@mui/material";
 import { useBiosamples, useCCREInformation } from "./hooks";
 
 type CCRETooltipProps = {
@@ -84,7 +84,7 @@ const CCRETooltip: React.FC<CCRETooltipProps> = (props) => {
       style={{ border: "1px solid", padding: "0.75em", background: "#ffffff" }}
     >
       {loading || !data?.accession ? (
-        <Loader active />
+        <CircularProgress size={24} />
       ) : (
         <>
           <svg height={18}>

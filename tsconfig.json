@@ -16,11 +16,6 @@
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "bundler",
-    "paths": {
-      "genomebrowser-test": [
-        "./src/shims/genomebrowser-test.tsx"
-      ]
-    },
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
