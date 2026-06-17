@@ -5,9 +5,9 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
@@ -278,9 +278,7 @@ const DiseaseTraitDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid xs={12}>
-        <Typography
-          type="display"
-          size="medium"
+        <Typography variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "48px",
@@ -292,9 +290,7 @@ const DiseaseTraitDetails: React.FC = () => {
         </Typography>
       </Grid>
       <Grid xs={12}>
-        <Typography
-          type="body"
-          size="large"
+        <Typography variant="body1"
           style={{
             fontSize: "16px",
             lineHeight: "24px",

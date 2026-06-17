@@ -1,10 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { GridProps, Paper } from "@mui/material";
+import { GridProps, Paper, Typography } from "@mui/material";
 import {
-  Typography,
   SearchBox,
-  HorizontalCard,
-} from "@weng-lab/psychscreen-ui-components";
+  HorizontalCard} from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Container, Slide } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -66,9 +64,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
       <Grid item sm={2}></Grid>
       <Grid item sm={4}>
         <Container style={{ width: "741px", marginTop: "147px" }} fixed>
-          <Typography
-            type="body"
-            size="small"
+          <Typography variant="body2"
             style={{
               fontWeight: 500,
               fontSize: "23px",
@@ -108,9 +104,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
           <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
             {" "}
             <>
-              <Typography
-                type="body"
-                size="large"
+              <Typography variant="body1"
                 style={{
                   display: "flex",
                   alignItems: "center",

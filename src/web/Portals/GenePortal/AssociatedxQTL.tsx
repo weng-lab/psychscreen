@@ -2,11 +2,10 @@ import React, { useMemo, useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { associateBy } from "queryz";
 import {
-  CustomizedTable,
-  Typography,
+  CustomizedTable
 } from "@weng-lab/psychscreen-ui-components";
 import { CircularProgress } from "@material-ui/core";
-import { Link } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 
@@ -601,9 +600,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
       render: (x) =>
         x.intersecting_ccres.intersecting_ccres[0]?.accession ? (
-          <Typography
-            type="body"
-            size="medium"
+          <Typography variant="body1"
             style={{
               fontSize: "14px",
               lineHeight: "20px",
@@ -632,7 +629,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
           </Typography>
         ) : (
           <>
-            <Typography type="body" size="medium">
+            <Typography variant="body1">
               {"--"}
             </Typography>
           </>
@@ -659,7 +656,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
   }, []);
   if (!loading && allQTLs && allQTLs.length === 0)
     return (
-      <Typography type="body" size="large">
+      <Typography variant="body1">
         No eQTLs or linked candidate brain candidate cis-Regulatory Elements
         (b-cCREs) were identified for this gene.
       </Typography>
@@ -673,7 +670,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         <>
           {allQTLs && allQTLs.length > 0 && (
             <>
-              <Typography type="headline" size="small">
+              <Typography variant="h6">
                 {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
               <DataTable
@@ -691,7 +688,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                   };
                 })}
               />
-              <Typography type={"label"} size="small">
+              <Typography variant="caption">
                 {`cCREs prefixed with an asterisk are candidate brain candidate cis-Regulatory Elements (b-cCREs)`}
               </Typography>
               <br />
@@ -700,7 +697,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
           )}
           {eqtlData && eqtlData.deconqtlsQuery.length > 0 && (
             <>
-              <Typography type="headline" size="small">
+              <Typography variant="h6">
                 {`The following decon-eQTLs (Liu) have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
               <DataTable

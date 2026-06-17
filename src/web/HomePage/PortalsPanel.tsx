@@ -1,7 +1,7 @@
 import React from "react";
-import { GridProps, Box, Stack, Divider } from "@mui/material";
+import { GridProps, Box, Stack, Divider, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../Portals/styles";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -150,9 +150,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
           alignSelf={"center"}
         >
           <Stack spacing={2} alignItems={"flex-start"}>
-            <Typography
-              type="body"
-              size="medium"
+            <Typography variant="body1"
               style={{
                 fontSize: "20px",
                 lineHeight: "24.4px",
@@ -161,9 +159,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
             >
               {portalInfo[props.portal].title}
             </Typography>
-            <Typography
-              type="body"
-              size="medium"
+            <Typography variant="body1"
               style={{
                 fontSize: "16px",
                 lineHeight: "24px",
@@ -175,10 +171,8 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
             </Typography>
             <div>
               {portalInfo[props.portal].stats?.map((stat, i) => (
-                <Typography
+                <Typography variant="body1"
                   key={i}
-                  type="body"
-                  size="large"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -255,7 +249,7 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           }}
           sx={{ cursor: "pointer" }}
         >
-          <Typography id="Portals" type={"display"} size={"small"}>
+          <Typography variant="h3" id="Portals">
             Portals
           </Typography>
           <ExpandMore />

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import { Grid, FormControl } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import { gql, useQuery } from "@apollo/client";
 import DotPlot from "./DotPlot";
 import { Select as MUISelect } from "@mui/material";
@@ -102,7 +102,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
     <>
       <Grid container mt={2} mb={2} gap={2}>
         <Grid item>
-          <Typography type="body" size="large">
+          <Typography variant="body1">
             Select Disease:
           </Typography>
           <FormControl sx={{ minWidth: 300 }} style={{ marginTop: "0.5em" }}>
@@ -122,7 +122,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
         </Grid>
         {dotplotData.length >= 50 && (
           <Grid item>
-            <Typography type="body" size="large">
+            <Typography variant="body1">
               Showing top 50 datasets based on{" "}
               {value === "log2(fold change)" ? (
                 <>

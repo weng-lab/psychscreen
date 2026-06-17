@@ -1,6 +1,6 @@
 import React from "react";
-import { GridProps } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { GridProps, Typography } from "@mui/material";
+
 import { useParams } from "react-router-dom";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
@@ -82,9 +82,7 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid item xs={12}>
-        <Typography
-          type="display"
-          size="medium"
+        <Typography variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "36px",
@@ -97,9 +95,7 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
         </Typography>
         <br />
         {!data && (
-          <Typography
-            type="body"
-            size="large"
+          <Typography variant="body1"
             style={{
               display: "flex",
               alignItems: "center",

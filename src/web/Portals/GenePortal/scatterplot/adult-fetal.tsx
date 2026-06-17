@@ -1,5 +1,6 @@
 import React from "react";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { Typography } from "@mui/material";
+
 
 import { linearTransform } from "./utils";
 import XAxis from "./xaxis";
@@ -26,9 +27,7 @@ const AdultFetalScatterPlot: React.FC<any> = ({
 }) => {
   if (!fy || !ay || !fx || !ax || !fy[0] || !ay[0] || !fx[0] || !ax[0])
     return (
-      <Typography
-        type="body"
-        size="large"
+      <Typography variant="body1"
         style={{
           display: "flex",
           alignItems: "center",

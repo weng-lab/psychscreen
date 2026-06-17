@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { GridProps, Divider } from "@mui/material";
+import { GridProps, Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import { useParams, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -198,7 +198,7 @@ const SNPDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid xs={12}>
-        <Typography type="headline" size="large">
+        <Typography variant="h4">
           SNP details: {snpid}
         </Typography>
       </Grid>

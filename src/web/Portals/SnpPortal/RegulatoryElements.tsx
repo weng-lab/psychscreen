@@ -1,8 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import {
-  CustomizedTable,
-  Typography,
+  CustomizedTable
 } from "@weng-lab/psychscreen-ui-components";
 import React, { useMemo } from "react";
 import { GenomicRange } from "./SNPDetails";
@@ -170,9 +169,7 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
 
   return loading ? (
     <>
-      <Typography
-        type="body"
-        size="large"
+      <Typography variant="body1"
         style={{
           display: "flex",
           alignItems: "center",
@@ -189,7 +186,7 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
     </>
   ) : (
     <>
-      <Typography type="title" size="large">
+      <Typography variant="subtitle1">
         {" "}
         Your search returned {combinedResults.length.toLocaleString() || 0}{" "}
         cCREs and rDHSs.

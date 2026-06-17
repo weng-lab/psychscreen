@@ -7,14 +7,12 @@ import {
   Button as MUIButton,
   Stack,
   FormLabel,
-} from "@mui/material";
+  Typography } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import {
-  Typography,
   Button,
-  DataTable,
-} from "@weng-lab/psychscreen-ui-components";
+  DataTable} from "@weng-lab/psychscreen-ui-components";
 import { Chart, linearTransform, Scatter } from "jubilant-carnival";
 import React, { useMemo, useRef, useState } from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
@@ -549,7 +547,7 @@ const SingleCell: React.FC<{
       {selectDatasets && (
         <>
           <Grid sm={12} md={12} lg={12} xl={12}>
-            <Typography type="body" size="large" mb={1}>
+            <Typography variant="body1" mb={1}>
               Select PsychENCODE Dataset:
             </Typography>
             {
@@ -578,7 +576,7 @@ const SingleCell: React.FC<{
             }
           </Grid>
           <Grid sm={12} md={12} lg={12} xl={12}>
-            <Typography type="body" size="large">
+            <Typography variant="body1">
               {DATASETS.get(dataset)!.desc}
             </Typography>
           </Grid>

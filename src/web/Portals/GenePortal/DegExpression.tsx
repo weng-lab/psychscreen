@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -142,10 +142,8 @@ export const DegExpression = (props) => {
                 xl={12}
                 style={{ marginBottom: "2em" }}
               >
-                <Typography
+                <Typography variant="body1"
                   style={{ marginLeft: "1em", marginTop: "0.1em" }}
-                  type="body"
-                  size="large"
                 >
                   Select PsychENCODE Dataset:
                 </Typography>

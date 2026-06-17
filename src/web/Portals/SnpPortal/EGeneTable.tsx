@@ -1,11 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
+import { Typography } from "@mui/material";
 import { associateBy } from "queryz";
 import React, { useMemo } from "react";
 import { EGene } from "./SNPDetails";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
-import { Typography as MUITypography } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
+
 import { useNavigate } from "react-router-dom";
 import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 const QUERY = gql`
@@ -145,9 +146,9 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     {
       header: "P",
       HeaderRender: () => (
-        <MUITypography>
+        <Typography>
           <i>P</i>
-        </MUITypography>
+        </Typography>
       ),
       value: (x) => x.npval.toFixed(2),
     },
@@ -169,9 +170,9 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
     {
       header: "eQTL nominal P",
       HeaderRender: () => (
-        <MUITypography>
+        <Typography>
           eQTL nominal <i>P</i>
-        </MUITypography>
+        </Typography>
       ),
       value: (x) => toScientificNotation(x.nom_val, 2),
     },
@@ -261,9 +262,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
 
   return loading || !egeneData || qtlsigassocLoading || eqtlLoading ? (
     <>
-      <Typography
-        type="body"
-        size="large"
+      <Typography variant="body1"
         style={{
           display: "flex",
           alignItems: "center",
@@ -283,7 +282,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       {" "}
       {egeneData && egeneData.length > 0 ? (
         <>
-          <Typography type="title" size="large">
+          <Typography variant="subtitle1">
             eGenes for {props.snp}:
           </Typography>
 
@@ -291,7 +290,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
         </>
       ) : (
         <>
-          <Typography type="title" size="large">
+          <Typography variant="subtitle1">
             {" "}
             No eGenes have been identified for this SNP.
           </Typography>
@@ -301,7 +300,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       )}
       {deconqtlData && deconqtlData.length > 0 && (
         <>
-          <Typography type="title" size="large">
+          <Typography variant="subtitle1">
             {`The following decon-eQTLs have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
           <DataTable rows={deconqtlData} columns={deconqtlColumns} />
@@ -310,7 +309,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       <br />
       {qtlsigassocData && qtlsigassocData.qtlsigassocQuery.length > 0 && (
         <>
-          <Typography type="title" size="large">
+          <Typography variant="subtitle1">
             {`The following eQTLs/isoQTLs (Gandal lab) have been identified for ${props.snp} by PsychENCODE:`}
           </Typography>
           <DataTable

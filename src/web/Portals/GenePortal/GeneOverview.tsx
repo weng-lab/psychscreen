@@ -1,9 +1,7 @@
-import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Chart, Scatter } from "jubilant-carnival";
 import {
-  Typography,
-  CustomizedTable,
-} from "@weng-lab/psychscreen-ui-components";
+  CustomizedTable} from "@weng-lab/psychscreen-ui-components";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { tissueTypeColors } from "./consts";
 import { lower5, range, upper5 } from "./GTexUMAP";
@@ -394,7 +392,7 @@ const GeneOverview: React.FC<{ gene?: string | undefined }> = ({ gene }) => {
   return (
     <Grid container>
       <Grid item sm={6} md={6} lg={6} xl={6}>
-        <Typography type="headline" size="small">
+        <Typography variant="h6">
           Details and Brain Expression Pattern: {gene}
         </Typography>
         {data.length > 0 && (

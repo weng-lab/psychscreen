@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { Divider, Grid, Box, Tabs } from "@mui/material";
+
+import { Divider, Grid, Box, Tabs, Typography } from "@mui/material";
 
 import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
@@ -53,9 +53,7 @@ export const SingleCellGeneDetails = (props) => {
     <Grid container {...props} style={{ marginTop: "0.5em" }}>
       <Grid item sm={1} lg={1.5} />
       <Grid item sm={9}>
-        <Typography
-          type="headline"
-          size="large"
+        <Typography variant="h4"
           style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
         >
           <img

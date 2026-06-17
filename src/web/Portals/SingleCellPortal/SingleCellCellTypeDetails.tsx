@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { Divider, Box, Tabs } from "@mui/material";
+
+import { Divider, Box, Tabs, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
@@ -66,9 +66,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid xs={12}>
-        <Typography
-          type="headline"
-          size="large"
+        <Typography variant="h4"
           style={{ marginTop: "1em", marginBottom: "0.2em" }}
         >
           Celltype Details:{" "}

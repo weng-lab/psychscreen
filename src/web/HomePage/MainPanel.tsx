@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -41,9 +41,7 @@ const MainPanel: React.FC = () => {
         mb={4}
       >
         <Grid2 display={betweenSmLg ? "block" : "none"}>
-          <Typography
-            type="display"
-            size="medium"
+          <Typography variant="h2"
             style={{
               fontWeight: 700,
               fontSize: "44px",
@@ -58,9 +56,7 @@ const MainPanel: React.FC = () => {
         <Grid2 xs={12} sm={6} order={{ xs: 2, sm: 1 }} alignSelf={"flex-start"}>
           <Stack spacing={3} alignItems={"flex-start"}>
             {!betweenSmLg && (
-              <Typography
-                type="display"
-                size="medium"
+              <Typography variant="h2"
                 style={{
                   fontWeight: 700,
                   fontSize: "44px",
@@ -73,9 +69,7 @@ const MainPanel: React.FC = () => {
               </Typography>
             )}
             <div>
-              <Typography
-                type="body"
-                size="large"
+              <Typography variant="body1"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -87,9 +81,7 @@ const MainPanel: React.FC = () => {
                 <BoltIcon style={{ marginRight: "9px" }} />
                 Powered by the PsychENCODE Consortium
               </Typography>
-              <Typography
-                type="body"
-                size="large"
+              <Typography variant="body1"
                 style={{
                   display: "flex",
                   alignItems: "center",

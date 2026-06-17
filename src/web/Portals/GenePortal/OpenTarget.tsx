@@ -1,9 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
+import { Typography } from "@mui/material";
 import React, { useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
-  CustomizedTable,
-  Typography,
+  CustomizedTable
 } from "@weng-lab/psychscreen-ui-components";
 
 const OpenTargetQuery = gql`
@@ -291,9 +291,7 @@ const OpenTarget: React.FC<any> = (props) => {
   if (loading)
     return (
       <>
-        <Typography
-          type="body"
-          size="large"
+        <Typography variant="body1"
           style={{
             display: "flex",
             alignItems: "center",

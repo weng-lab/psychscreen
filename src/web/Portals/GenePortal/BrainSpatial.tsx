@@ -3,7 +3,7 @@ import React, { Suspense, useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 import {
   Alert,
@@ -13,7 +13,7 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
+  Typography } from "@mui/material";
 
 const Vitessce = React.lazy(() =>
   import("vitessce").then((module) => ({ default: module.Vitessce }))
@@ -117,21 +117,19 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
             return (
               <li {...props} key={option.id}>
                 <Grid container direction="column">
-                  <Typography type="body" size="medium">
+                  <Typography variant="body1">
                     {option.label}
                   </Typography>
                   {option.availableAssignments &&
                     option.availableAssignments.length > 0 && (
-                      <Typography
-                        type="body"
-                        size="small"
+                      <Typography variant="body2"
                         color="text.secondary"
                       >
                         {option.availableAssignments.join(", ")}
                       </Typography>
                     )}
                   {option.additionalInfo && (
-                    <Typography type="body" size="small" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary">
                       {option.additionalInfo}
                     </Typography>
                   )}
@@ -150,7 +148,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
             </Suspense>
           </ErrorBoundary>
           <Box mt={2}>
-            <Typography type="title" fontWeight="bold" size="medium">
+            <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
               Sources of gene expression and layer/cluster/domain assignment:
             </Typography>
             <ul>
@@ -238,7 +236,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                 />
               </li>
             </ul>
-            <Typography type="title" fontWeight="bold" size="medium">
+            <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>
               Visualization powered by{" "}
               <Link
                 href="https://vitessce.io"

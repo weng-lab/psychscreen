@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Box, GridProps, Tabs } from "@mui/material";
+import { Box, GridProps, Tabs, Typography } from "@mui/material";
 import {
-  Typography,
   HorizontalCard,
-  Button,
-} from "@weng-lab/psychscreen-ui-components";
+  Button} from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -294,9 +292,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
     >
       {disease === "Diff-expressed-genes" && (
         <Grid xs={12}>
-          <Typography
-            type="display"
-            size="medium"
+          <Typography variant="h2"
             style={{
               fontWeight: 700,
               fontSize: "40px",
@@ -329,9 +325,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
           )}
           {tabIndex === 0 && (
             <Box>
-              <Typography
-                type="display"
-                size="small"
+              <Typography variant="h3"
                 style={{
                   display: "inline-block",
                   fontSize: "28px",
@@ -357,9 +351,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
       )}
       {disease === "scATAC-Seq-peaks" && (
         <Grid xs={12}>
-          <Typography
-            type="display"
-            size="medium"
+          <Typography variant="h2"
             mb={1}
             style={{
               fontWeight: 700,
@@ -393,9 +385,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
       {disease === "Gene-regulatory-networks" && (
         <Grid xs={12}>
           <Container>
-            <Typography
-              type="display"
-              size="medium"
+            <Typography variant="h2"
               mb={1}
               style={{
                 fontWeight: 700,
@@ -437,9 +427,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
       )}
       {disease === "Cell-type-specific-eQTLs" && (
         <Grid xs={12}>
-          <Typography
-            type="display"
-            size="medium"
+          <Typography variant="h2"
             mb={1}
             style={{
               fontWeight: 700,

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { Divider, Box, Tabs, Stack } from "@mui/material";
+
+import { Divider, Box, Tabs, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
@@ -171,13 +171,13 @@ const GeneDetails: React.FC = (props) => {
             src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Font_Awesome_5_solid_dna.svg"
             height={"25px"}
           />
-          <Typography type="headline" size="large">
+          <Typography variant="h4">
             Gene Details: <i>{gene}</i>
           </Typography>
         </Stack>
       </Grid>
       <Grid xs={12}>
-        <Typography type="body" size="medium" mb={1}>
+        <Typography variant="body1" mb={1}>
           Switch to another gene:
         </Typography>
         <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
@@ -229,7 +229,7 @@ const GeneDetails: React.FC = (props) => {
             </Box>
           ) : tabIndex === 1 ? (
             <Box>
-              <Typography type="body" size="small">
+              <Typography variant="body2">
                 <BrainSpatial gene={gene || "MBP"} />
               </Typography>
             </Box>
@@ -244,12 +244,12 @@ const GeneDetails: React.FC = (props) => {
           ) : tabIndex === 2 ? (
             <Box>
               {data && data?.gtex_genes.length === 0 ? (
-                <Typography type="body" size="large">
+                <Typography variant="body1">
                   No GTex data found for {gene?.toUpperCase()}
                 </Typography>
               ) : (
                 <>
-                  <Typography type="body" size="large" mb={1}>
+                  <Typography variant="body1" mb={1}>
                     Group By:{" "}
                   </Typography>
                   <ToggleButtonGroup

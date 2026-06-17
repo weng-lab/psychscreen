@@ -1,10 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
-import { Box, CircularProgress, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { groupBy } from "queryz";
 import React, { useMemo, useState } from "react";
 import { Cytobands } from "umms-gb";
 import { linearTransform } from "../GenePortal/violin/utils";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { DISEASE_CARDS } from "./config/constants";
 import { toScientificNotation } from "./utils";
@@ -113,7 +113,7 @@ const RiskLocusView: React.FC<{
     <CircularProgress />
   ) : (
     <Stack spacing={3}>
-      <Typography type="body" size="medium">
+      <Typography variant="body1">
         The study{" "}
         <a
           target={"_blank"}
@@ -149,7 +149,7 @@ const RiskLocusView: React.FC<{
                   fontSize="30px"
                   dominantBaseline="middle"
                   textAnchor="end"
-                  fontWeight="bold"
+                  sx={{ fontWeight: "bold" }}
                   fontFamily="roboto"
                 >
                   {chromosome?.replace(/chr/g, "")}

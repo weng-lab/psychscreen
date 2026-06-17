@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import { Grid, Container } from "@mui/material";
+import { Grid, Container, Typography } from "@mui/material";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 type GWASPageProps = {
   id: string;
 };
@@ -58,14 +58,14 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
         <Container style={{ marginTop: "10px", marginLeft: "-30px" }}>
           {data?.snpQuery[0]?.genomeWideAssociation.length ? (
             <>
-              <Typography type="title" size="large">
+              <Typography variant="subtitle1">
                 {" "}
                 {props.id} has been identified in{" "}
                 {data?.snpQuery[0]?.genomeWideAssociation.length} GWAS.
               </Typography>
             </>
           ) : (
-            <Typography type="title" size="large">
+            <Typography variant="subtitle1">
               {props.id} has not been identified in any GWAS catalogued by
               psychSCREEN.
             </Typography>

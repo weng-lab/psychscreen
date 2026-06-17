@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
-import { CircularProgress, Link } from "@mui/material";
+
+import { CircularProgress, Link, Typography } from "@mui/material";
 
 export const CAQTL = ({ caqtls, loading }) => {
   return (
@@ -8,9 +8,7 @@ export const CAQTL = ({ caqtls, loading }) => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <Typography
-          type="title"
-          size="large"
+        <Typography variant="subtitle1"
           // style={{ fontWeight: 500, fontSize: "28px" }}
         >
           {caqtls.length === 2

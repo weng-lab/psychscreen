@@ -1,6 +1,6 @@
 import React from "react";
-import { Grid, GridProps } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { Grid, GridProps, Typography } from "@mui/material";
+
 import { useParams } from "react-router-dom";
 import SingleCell, { DATASETS } from "../GenePortal/SingleCell";
 
@@ -17,10 +17,8 @@ const SingleCellDotPlot: React.FC<GridProps> = (props) => {
         xl={12}
         style={{ marginBottom: "2em" }}
       >
-        <Typography
+        <Typography variant="body1"
           style={{ marginLeft: "15em", marginTop: "0.1em" }}
-          type="body"
-          size="large"
         >
           {
             DATASETS.get(

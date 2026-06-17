@@ -3,8 +3,8 @@
  */
 
 import React from "react";
-import { Grid } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { Grid, Typography } from "@mui/material";
+
 import { Container } from "@mui/material";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
 import { StyledButton } from "../Portals/styles";
@@ -878,9 +878,7 @@ const DownloadsPage: React.FC = () => {
               marginBottom: "30px",
             }}
           >
-            <Typography
-              type="body"
-              size="medium"
+            <Typography variant="body1"
               style={{
                 fontSize: "32px",
                 lineHeight: "38.4px",

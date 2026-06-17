@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { GridProps } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { GridProps, Typography } from "@mui/material";
+
 import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
@@ -112,9 +112,7 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
       maxWidth={{ xl: "95%", lg: "90%", md: "95%", sm: "95%", xs: "95%" }}
     >
       <Grid item xs={12}>
-        <Typography
-          type="display"
-          size="medium"
+        <Typography variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "36px",
@@ -127,9 +125,7 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
         </Typography>
         <br />
         {qtl.length === 0 && (
-          <Typography
-            type="body"
-            size="large"
+          <Typography variant="body1"
             style={{
               display: "flex",
               alignItems: "center",

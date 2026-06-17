@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Chart, Scatter } from "jubilant-carnival";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Legend from "./scatterplot/legend";
 import { tissueTypeColors } from "./consts";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import CircularProgress from "@mui/material/CircularProgress";
 
 const dictionaryInvert = (obj) =>
@@ -146,9 +146,7 @@ const GTexUMAP: React.FC = () => {
         <Grid item sm={6} md={6} lg={6} xl={6}>
           {data && data.length > 0 ? (
             <>
-              <Typography
-                type="display"
-                size="small"
+              <Typography variant="h3"
                 style={{
                   marginTop: "90px",
                   marginLeft: "250px",
@@ -183,9 +181,7 @@ const GTexUMAP: React.FC = () => {
         <Grid item sm={6} md={6} lg={6} xl={6}>
           {pcdata && pcdata.length > 0 ? (
             <>
-              <Typography
-                type="display"
-                size="small"
+              <Typography variant="h3"
                 style={{
                   marginTop: "90px",
                   marginLeft: "250px",
@@ -222,9 +218,7 @@ const GTexUMAP: React.FC = () => {
         <Grid item sm={12} md={12} lg={12} xl={12}>
           {data.length === 0 || pcdata.length === 0 ? (
             <>
-              <Typography
-                type="body"
-                size="large"
+              <Typography variant="body1"
                 style={{
                   display: "flex",
                   alignItems: "center",

@@ -1,8 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
+import { Typography } from "@mui/material";
 import { groupBy } from "queryz";
 import React, { useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+
 import AdultFetalScatterPlot from "./scatterplot/adult-fetal";
 
 const QUERY = gql`
@@ -88,9 +89,7 @@ const GeneExpressionPage: React.FC<GeneExpressionPageProps> = (props) => {
   };
   return loading ? (
     <>
-      <Typography
-        type="body"
-        size="large"
+      <Typography variant="body1"
         style={{
           display: "flex",
           alignItems: "center",

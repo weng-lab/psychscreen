@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { GridProps } from "@mui/material";
-import { Typography } from "@weng-lab/psychscreen-ui-components";
+import { GridProps, Typography } from "@mui/material";
+
 import { useParams } from "react-router-dom";
 import { Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
@@ -89,9 +89,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
     >
       <Grid item xs={12}>
         <Container>
-          <Typography
-            type="display"
-            size="medium"
+          <Typography variant="h2"
             style={{
               fontWeight: 700,
               fontSize: "36px",
@@ -105,9 +103,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
           <br />
           {grn.length === 0 && (
             <Grid xs={12}>
-              <Typography
-                type="body"
-                size="large"
+              <Typography variant="body1"
                 style={{
                   display: "flex",
                   alignItems: "center",

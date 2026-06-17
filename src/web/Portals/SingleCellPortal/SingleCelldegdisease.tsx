@@ -1,8 +1,7 @@
 import React from "react";
-import { Box, GridProps } from "@mui/material";
+import { Box, GridProps, Typography } from "@mui/material";
 import {
-  HorizontalCard,
-  Typography,
+  HorizontalCard
 } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Container, Slide } from "@mui/material";
@@ -209,9 +208,7 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid item xs={12}>
-        <Typography
-          type="display"
-          size="medium"
+        <Typography variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "36px",
