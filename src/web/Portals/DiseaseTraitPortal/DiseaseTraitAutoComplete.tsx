@@ -1,8 +1,8 @@
-import * as React from "react";
+﻿import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/GridLegacy";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { DISEASE_CARDS } from "./config/constants";

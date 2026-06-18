@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
@@ -9,7 +9,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
 import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
 import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
@@ -33,14 +33,14 @@ const MainPanel: React.FC = () => {
 
   return (
     <div>
-      <Grid2
+      <Grid
         container
-        xs={12}
+        size={12}
         justifyContent={"space-between"}
         spacing={3}
         mb={4}
       >
-        <Grid2 display={betweenSmLg ? "block" : "none"}>
+        <Grid display={betweenSmLg ? "block" : "none"}>
           <Typography variant="h2"
             style={{
               fontWeight: 700,
@@ -52,8 +52,8 @@ const MainPanel: React.FC = () => {
             Explore the genetics and epigenetics of human brain development,
             function, and pathophysiology.
           </Typography>
-        </Grid2>
-        <Grid2 xs={12} sm={6} order={{ xs: 2, sm: 1 }} alignSelf={"flex-start"}>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }} order={{ xs: 2, sm: 1 }} alignSelf={"flex-start"}>
           <Stack spacing={3} alignItems={"flex-start"}>
             {!betweenSmLg && (
               <Typography variant="h2"
@@ -112,10 +112,9 @@ const MainPanel: React.FC = () => {
               <SnpAutoComplete navigateto="/psychscreen/snp/" />
             )}
           </Stack>
-        </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
+        </Grid>
+        <Grid
+          size={{ xs: 12, sm: 6 }}
           order={{ xs: 1, sm: 2 }}
           minHeight={250}
           display={{ xs: "none", sm: "inherit" }} //hide on mobile,
@@ -144,8 +143,8 @@ const MainPanel: React.FC = () => {
               alt={"psychSCREEN Brain"}
             />
           </Box>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </div>
   );
 };

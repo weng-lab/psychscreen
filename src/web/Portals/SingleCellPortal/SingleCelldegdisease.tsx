@@ -1,10 +1,10 @@
-import React from "react";
-import { Box, GridProps, Typography } from "@mui/material";
+﻿import React from "react";
+import { Box, GridLegacyProps, Typography } from "@mui/material";
 import {
   HorizontalCard
 } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { Grid, Container, Slide } from "@mui/material";
+import { GridLegacy as Grid, Container, Slide } from "@mui/material";
 
 const diseaseCT = {
   ASD: [
@@ -193,7 +193,7 @@ const diseaseCT = {
   ],
 };
 
-const SingleCelldegdisease: React.FC<GridProps> = (props) => {
+const SingleCelldegdisease: React.FC<GridLegacyProps> = (props) => {
   const navigate = useNavigate();
   const { disease } = useParams();
 

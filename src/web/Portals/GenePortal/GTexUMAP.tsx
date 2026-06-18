@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+﻿import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Chart, Scatter } from "jubilant-carnival";
-import { Grid, Typography } from "@mui/material";
+import { GridLegacy as Grid, Typography } from "@mui/material";
 import Legend from "./scatterplot/legend";
 import { tissueTypeColors } from "./consts";
 

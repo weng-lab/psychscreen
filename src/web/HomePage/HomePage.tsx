@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HomePage.tsx: the app home page.
  */
 
@@ -6,11 +6,11 @@ import React from "react";
 import MainPanel from "./MainPanel";
 import PortalsPanel from "./PortalsPanel";
 import AboutUsPanel from "./AboutUsPanel";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 
 const HomePage: React.FC = () => {
   return (
-    <Grid2
+    <Grid
       container
       mt={10}
       mb={8}
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
       <MainPanel />
       <PortalsPanel />
       <AboutUsPanel />
-    </Grid2>
+    </Grid>
   );
 };
 export default HomePage;

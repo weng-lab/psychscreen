@@ -1,10 +1,10 @@
-import React from "react";
-import { Grid, GridProps, Typography } from "@mui/material";
+﻿import React from "react";
+import { GridLegacy as Grid, GridLegacyProps, Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
 import SingleCell, { DATASETS } from "../GenePortal/SingleCell";
 
-const SingleCellDotPlot: React.FC<GridProps> = (props) => {
+const SingleCellDotPlot: React.FC<GridLegacyProps> = (props) => {
   const { disease, gene } = useParams();
 
   return (

@@ -4,8 +4,7 @@ import { associateBy } from "queryz";
 import {
   CustomizedTable
 } from "@weng-lab/psychscreen-ui-components";
-import { CircularProgress } from "@material-ui/core";
-import { Link, Typography } from "@mui/material";
+import { CircularProgress, Link, Typography } from "@mui/material";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 

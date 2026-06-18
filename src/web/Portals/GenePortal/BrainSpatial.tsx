@@ -1,6 +1,6 @@
-import React, { Suspense, useState, useEffect } from "react";
+﻿import React, { Suspense, useState, useEffect } from "react";
 
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
@@ -97,7 +97,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
 
   return (
     <Grid container spacing={2} id="parentEl">
-      <Grid xs={12} sm={12} md={12} lg={12} xl={12}>
+      <Grid size={12}>
         <Autocomplete
           options={sampleOptions}
           value={selectedSample}
@@ -141,7 +141,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
         />
       </Grid>
       {config && (
-        <Grid sm={12} md={12} lg={12} xl={12}>
+        <Grid size={12}>
           <ErrorBoundary fallback={<ErrorAlert />}>
             <Suspense fallback={<Box>Loading spatial view...</Box>}>
               <Vitessce config={config} theme="light" />
@@ -158,7 +158,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                     <>
                       Maynard <i>et al</i>. Transcriptome-scale spatial gene
                       expression in the human dorsolateral prefrontal cortex.{" "}
-                      <i>Nature Neuroscience</i> <b>24</b>, 425–436 (2021).
+                      <i>Nature Neuroscience</i> <b>24</b>, 425â€“436 (2021).
                       (doi:{" "}
                       <Link
                         href="https://doi.org/10.1038/s41593-020-00787-0"
@@ -220,7 +220,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                       Thompson <i>et al</i>. An integrated single-nucleus and
                       spatial transcriptomics atlas reveals the molecular
                       landscape of the human hippocampus.{" "}
-                      <i>Nature Neuroscience</i> <b>28</b>, 1990–2004 (2025).
+                      <i>Nature Neuroscience</i> <b>28</b>, 1990â€“2004 (2025).
                       (doi:{" "}
                       <Link
                         href="https://doi.org/10.1038/s41593-025-02022-0"
@@ -254,7 +254,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                     <>
                       Keller <i>et al</i>. Vitessce: integrative visualization
                       of multimodal and spatially resolved single-cell data.{" "}
-                      <i>Nature Methods</i> <b>22</b>, 63–67 (2025). (doi:{" "}
+                      <i>Nature Methods</i> <b>22</b>, 63â€“67 (2025). (doi:{" "}
                       <Link
                         href="https://doi.org/10.1038/s41592-024-02436-x"
                         target="_blank"
@@ -274,7 +274,7 @@ export const BrainSpatial: React.FC<SpatialProps> = ({ gene }) => {
                     <>
                       Manz <i>et al</i>. Viv: multiscale visualization of
                       high-resolution multiplexed bioimaging data on the web.{" "}
-                      <i>Nature Methods</i> <b>19</b>, 1569–1576 (2022). (doi:{" "}
+                      <i>Nature Methods</i> <b>19</b>, 1569â€“1576 (2022). (doi:{" "}
                       <Link
                         href="https://doi.org/10.1038/s41592-022-01482-7"
                         target="_blank"

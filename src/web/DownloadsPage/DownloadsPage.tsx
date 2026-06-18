@@ -1,9 +1,9 @@
-/**
+﻿/**
  * DownloadsPage.tsx: contains links to various PsychSCREEN downloads.
  */
 
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { GridLegacy as Grid, Typography } from "@mui/material";
 
 import { Container } from "@mui/material";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
@@ -822,7 +822,7 @@ const gwasMetaDownloads = {
       "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/ReactionTime_Davies.formatted.bed"
     ),
     createData(
-      "Parkinson’s Disease",
+      "Parkinsonâ€™s Disease",
       "non-brain",
       1187261,
       63298941,

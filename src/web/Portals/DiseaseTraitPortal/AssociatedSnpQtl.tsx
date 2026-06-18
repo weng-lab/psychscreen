@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Grid, Container, GridProps } from "@mui/material";
+﻿import React, { useMemo } from "react";
+import { GridLegacy as Grid, Container, GridLegacyProps } from "@mui/material";
 import { CustomizedTable } from "@weng-lab/psychscreen-ui-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GwasIntersectingSnpsWithCcres } from "./DiseaseIntersectingSnpsWithccres";
@@ -15,7 +15,7 @@ export type GWAS_SNP = {
   association_p_val: number[];
 };
 
-export type AssociatedSnpQtlProps = GridProps & {
+export type AssociatedSnpQtlProps = GridLegacyProps & {
   disease: string;
   data: GWAS_SNP[];
 };

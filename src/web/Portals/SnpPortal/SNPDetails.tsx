@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
-import { GridProps, Divider, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+﻿import React, { useState, useMemo } from "react";
+import { Divider, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 import { useParams, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -197,12 +197,12 @@ const SNPDetails: React.FC = () => {
       mr={"auto"}
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
-      <Grid xs={12}>
+      <Grid size={12}>
         <Typography variant="h4">
           SNP details: {snpid}
         </Typography>
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
             <StyledTab label="eGenes" />

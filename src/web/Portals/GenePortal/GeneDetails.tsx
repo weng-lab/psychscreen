@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+﻿import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
 import { Divider, Box, Tabs, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
 import { groupBy } from "queryz";
@@ -164,7 +164,7 @@ const GeneDetails: React.FC = (props) => {
       mr={"auto"}
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
-      <Grid xs={12}>
+      <Grid size={12}>
         <Stack direction="row" alignItems={"center"} gap={1}>
           <img
             alt="DNA"
@@ -176,13 +176,13 @@ const GeneDetails: React.FC = (props) => {
           </Typography>
         </Stack>
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         <Typography variant="body1" mb={1}>
           Switch to another gene:
         </Typography>
         <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         <Box>
           <Tabs
             value={tabIndex}

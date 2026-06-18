@@ -1,10 +1,10 @@
-import React from "react";
-import { GridProps, Box, Stack, Divider, Typography } from "@mui/material";
+﻿import React from "react";
+import { Box, Stack, Divider, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
 import { useNavigate } from "react-router-dom";
 import { StyledButton } from "../Portals/styles";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import { ExpandMore } from "@mui/icons-material";
 import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
 import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
@@ -142,10 +142,9 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
 
   return (
     <div>
-      <Grid2 container xs={12} justifyContent={"space-between"} spacing={10}>
-        <Grid2
-          xs={12}
-          md={6}
+      <Grid container size={12} justifyContent={"space-between"} spacing={10}>
+        <Grid
+          size={{ xs: 12, md: 6 }}
           order={{ xs: 2, md: props.imagePlacement === "right" ? 1 : 2 }}
           alignSelf={"center"}
         >
@@ -200,10 +199,9 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               portalInfo[props.portal].searchComponent
             )}
           </Stack>
-        </Grid2>
-        <Grid2
-          xs={12}
-          md={6}
+        </Grid>
+        <Grid
+          size={{ xs: 12, md: 6 }}
           order={{ xs: 1, md: props.imagePlacement === "right" ? 2 : 1 }}
           minHeight={350}
         >
@@ -230,15 +228,15 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               alt={portalInfo[props.portal].imgAltText}
             />
           </Box>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </div>
   );
 };
 
-export const PortalsPanel: React.FC<GridProps> = (props) => (
-  <Grid2 container rowSpacing={10}>
-    <Grid2 xs={12}>
+export const PortalsPanel: React.FC = () => (
+  <Grid container rowSpacing={10}>
+    <Grid size={12}>
       <Divider>
         <Stack
           alignItems={"center"}
@@ -255,31 +253,31 @@ export const PortalsPanel: React.FC<GridProps> = (props) => (
           <ExpandMore />
         </Stack>
       </Divider>
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <PortalPanel portal="Disease" mode="button" imagePlacement={"left"} />
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <Divider />
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <PortalPanel portal="Gene" mode="button" imagePlacement={"right"} />
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <Divider />
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <PortalPanel portal="SNP" mode="button" imagePlacement={"left"} />
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <Divider />
-    </Grid2>
-    <Grid2 xs={12}>
+    </Grid>
+    <Grid size={12}>
       <PortalPanel portal="SingleCell" mode="button" imagePlacement={"right"} />
-    </Grid2>
-    <Grid2 xs={12} mb={3}>
+    </Grid>
+    <Grid size={12} mb={3}>
       <Divider />
-    </Grid2>
-  </Grid2>
+    </Grid>
+  </Grid>
 );
 export default PortalsPanel;

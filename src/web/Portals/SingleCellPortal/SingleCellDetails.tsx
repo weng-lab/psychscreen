@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from "react";
-import { GridProps, Paper, Typography } from "@mui/material";
+﻿import React, { useState, useCallback } from "react";
+import Grid, { GridProps } from "@mui/material/Grid";
+import { Paper, Typography } from "@mui/material";
 import {
   SearchBox,
   HorizontalCard} from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { Grid, Container, Slide } from "@mui/material";
+import { Container, Slide } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 
@@ -61,8 +62,8 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
 
   return (
     <Grid container {...props}>
-      <Grid item sm={2}></Grid>
-      <Grid item sm={4}>
+      <Grid size={{ sm: 2 }}></Grid>
+      <Grid size={{ sm: 4 }}>
         <Container style={{ width: "741px", marginTop: "147px" }} fixed>
           <Typography variant="body2"
             style={{
@@ -99,7 +100,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
         </Container>
       </Grid>
 
-      <Grid item sm={6}>
+      <Grid size={{ sm: 6 }}>
         {fetching ? (
           <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
             {" "}

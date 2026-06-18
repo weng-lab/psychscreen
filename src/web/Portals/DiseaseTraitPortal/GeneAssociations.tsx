@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Grid, Container, CircularProgress, Typography } from "@mui/material";
+﻿import React, { useMemo } from "react";
+import { GridLegacy as Grid, Container, CircularProgress, Typography } from "@mui/material";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
-import { GridProps } from "@mui/material";
+import { GridLegacyProps } from "@mui/material";
 
 type GeneAssociation = {
   hsq: number;
@@ -13,7 +13,7 @@ type GeneAssociation = {
   dge_fdr: number;
 };
 
-export type GeneAssociationsProps = GridProps & {
+export type GeneAssociationsProps = GridLegacyProps & {
   disease: string;
   data: GeneAssociation[];
 };

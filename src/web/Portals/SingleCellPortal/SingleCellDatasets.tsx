@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Box, GridProps, Tabs, Typography } from "@mui/material";
+﻿import React, { useState, useCallback, useMemo, useEffect } from "react";
+import { Box, Tabs, Typography } from "@mui/material";
 import {
   HorizontalCard,
   Button} from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import DownloadIcon from "@mui/icons-material/Download";
 
 import { DataTable } from "@weng-lab/ts-ztable";
@@ -234,7 +234,7 @@ const COLUMNS = [
   },
 ];
 
-const SingleCellDatasets: React.FC<GridProps> = (props) => {
+const SingleCellDatasets: React.FC = () => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
   const { disease } = useParams();
@@ -291,7 +291,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       {disease === "Diff-expressed-genes" && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Typography variant="h2"
             style={{
               fontWeight: 700,
@@ -350,7 +350,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
         </Grid>
       )}
       {disease === "scATAC-Seq-peaks" && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Typography variant="h2"
             mb={1}
             style={{
@@ -383,7 +383,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
         </Grid>
       )}
       {disease === "Gene-regulatory-networks" && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Container>
             <Typography variant="h2"
               mb={1}
@@ -426,7 +426,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
         </Grid>
       )}
       {disease === "Cell-type-specific-eQTLs" && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Typography variant="h2"
             mb={1}
             style={{
@@ -469,7 +469,7 @@ const SingleCellDatasets: React.FC<GridProps> = (props) => {
         </Grid>
       )}
       {disease === "Indiv-cohort-expression-data" && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Slide direction="up" in timeout={1000}>
             <Box>
               <HorizontalCard

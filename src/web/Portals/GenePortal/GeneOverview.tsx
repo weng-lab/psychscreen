@@ -1,4 +1,4 @@
-import { Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+﻿import { GridLegacy as Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Chart, Scatter } from "jubilant-carnival";
 import {
   CustomizedTable} from "@weng-lab/psychscreen-ui-components";

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { GridProps, Typography } from "@mui/material";
+﻿import React, { useState, useEffect } from "react";
+import { GridLegacyProps, Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { GridLegacy as Grid } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 
 const COLUMNS = [
@@ -69,7 +69,7 @@ const COLUMNS = [
   },
 ];
 
-const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
+const SingleCellCelltypeQTL: React.FC<GridLegacyProps> = (props) => {
   const { celltype } = useParams();
   const [qtl, setQtl] = useState<any>([]);
 

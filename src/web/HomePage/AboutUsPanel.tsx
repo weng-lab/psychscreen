@@ -1,14 +1,14 @@
-import React from "react";
+﻿import React from "react";
 import { PortalPanel } from "./PortalsPanel";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 
 const AboutUsPanel: React.FC = () => {
   return (
-    <Grid2 container xs={12} mt={3}>
-      <Grid2 xs={12}>
+    <Grid container size={12} mt={3}>
+      <Grid size={12}>
         <PortalPanel portal="About" mode="button" imagePlacement={"left"} />
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };
 export default AboutUsPanel;

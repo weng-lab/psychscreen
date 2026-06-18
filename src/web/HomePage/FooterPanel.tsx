@@ -1,5 +1,5 @@
-import { Typography, Box } from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+﻿import { Typography, Box } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 
 const FooterPanel = () => {
@@ -12,7 +12,7 @@ const FooterPanel = () => {
         backgroundColor: "black",
       }}
     >
-      <Grid2
+      <Grid
         container
         flexDirection={{ xs: "column", md: "row" }}
         pt={5}
@@ -21,7 +21,7 @@ const FooterPanel = () => {
         maxWidth={{ xl: "60%", lg: "75%", md: "85%", sm: "90%", xs: "95%" }}
         margin={"auto"}
       >
-        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+        <Grid color="white" textAlign={"left"} flexGrow={1}>
           <Typography variant="h4">psychSCREEN</Typography>
           <Typography variant="body2" mb={1}>
             Explore the genetics and epigenetics
@@ -29,7 +29,7 @@ const FooterPanel = () => {
             of the human brain.
           </Typography>
           <Typography variant="body2" mb={1}>
-            {"Copyright © "}
+            {"Copyright Â© "}
             <MuiLink color="inherit" href="https://www.umassmed.edu/wenglab/">
               Weng Lab
             </MuiLink>
@@ -55,8 +55,8 @@ const FooterPanel = () => {
               CoLabo
             </MuiLink>
           </Typography>
-        </Grid2>
-        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+        </Grid>
+        <Grid color="white" textAlign={"left"} flexGrow={1}>
           <Typography variant="h5" mb={1}>
             <MuiLink
               color="inherit"
@@ -93,8 +93,8 @@ const FooterPanel = () => {
               UMass Chan Medical School
             </MuiLink>
           </Typography>
-        </Grid2>
-        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+        </Grid>
+        <Grid color="white" textAlign={"left"} flexGrow={1}>
           <Typography variant="h5" mb={1}>
             Portals
           </Typography>
@@ -126,8 +126,8 @@ const FooterPanel = () => {
               Single-Cell
             </MuiLink>
           </Typography>
-        </Grid2>
-        <Grid2 color="white" textAlign={"left"} flexGrow={1}>
+        </Grid>
+        <Grid color="white" textAlign={"left"} flexGrow={1}>
           <Typography variant="h5">
             <MuiLink
               color="inherit"
@@ -137,8 +137,8 @@ const FooterPanel = () => {
               Downloads
             </MuiLink>
           </Typography>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

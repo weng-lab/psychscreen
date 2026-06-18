@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+﻿import { gql, useQuery } from "@apollo/client";
 import {
   CircularProgress,
   Tabs,
@@ -9,7 +9,7 @@ import {
   FormLabel,
   Typography } from "@mui/material";
 
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import {
   Button,
   DataTable} from "@weng-lab/psychscreen-ui-components";
@@ -546,7 +546,7 @@ const SingleCell: React.FC<{
     <Grid container spacing={2}>
       {selectDatasets && (
         <>
-          <Grid sm={12} md={12} lg={12} xl={12}>
+          <Grid size={12}>
             <Typography variant="body1" mb={1}>
               Select PsychENCODE Dataset:
             </Typography>
@@ -575,21 +575,21 @@ const SingleCell: React.FC<{
               </FormControl>
             }
           </Grid>
-          <Grid sm={12} md={12} lg={12} xl={12}>
+          <Grid size={12}>
             <Typography variant="body1">
               {DATASETS.get(dataset)!.desc}
             </Typography>
           </Grid>
         </>
       )}
-      <Grid xs={12}>
+      <Grid size={12}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
           <StyledTab label="Detailed Expression Profile" />
           <StyledTab label="Expression Summary" />
         </Tabs>
       </Grid>
       {tabIndex === 1 ? (
-        <Grid xs={12}>
+        <Grid size={12}>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : dotplotDataSc.length > 0 || dotplotDataCt.length > 0 ? (
@@ -672,7 +672,7 @@ const SingleCell: React.FC<{
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : (
-            <Grid xs={12} md={5}>
+            <Grid size={{ xs: 12, md: 5 }}>
               <Stack direction="row" spacing={1} mb={1}>
                 <StyledButton
                   btheme="light"
@@ -715,7 +715,7 @@ const SingleCell: React.FC<{
             </Grid>
           )}
           {points && points.length > 0 ? (
-            <Grid xs={12} md={7}>
+            <Grid size={{ xs: 12, md: 7 }}>
               <div>
                 {loading ? (
                   <CircularProgress />

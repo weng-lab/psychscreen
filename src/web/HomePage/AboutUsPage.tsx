@@ -1,9 +1,8 @@
-import React from "react";
-import { Divider, GridProps, Stack, Typography } from "@mui/material";
+﻿import React from "react";
+import { Divider, Stack, Typography } from "@mui/material";
 import AboutUsPanel from "./AboutUsPanel";
-import Grid2 from "@mui/material/Unstable_Grid2";
 
-const AboutUsPage: React.FC<GridProps> = (props) => {
+const AboutUsPage: React.FC = () => {
   return (
     <Stack
       mt={7}
@@ -141,7 +140,7 @@ const AboutUsPage: React.FC<GridProps> = (props) => {
       <img src="/about.png" alt="PsychSCREEN portal overview" />
       <Typography variant="body1" pt={2}>
         <b>A: PsychSCREEN's Disease/SNP Portals.</b> A written description of
-        the queried disease—Schizophrenia (top right)—is displayed with a view
+        the queried diseaseâ€”Schizophrenia (top right)â€”is displayed with a view
         of all risk loci identified by GWAS, as well as the location of these
         risk loci in the genome (bottom left). Clicking on a locus redirects you
         to a genome browser (bottom right) spanning the highlighted coordinates,

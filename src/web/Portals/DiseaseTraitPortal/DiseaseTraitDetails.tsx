@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @Jonathan 5/3/24 -
  */
 
@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
@@ -277,7 +277,7 @@ const DiseaseTraitDetails: React.FC = () => {
       mr={"auto"}
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
-      <Grid xs={12}>
+      <Grid size={12}>
         <Typography variant="h2"
           style={{
             fontWeight: 700,
@@ -289,7 +289,7 @@ const DiseaseTraitDetails: React.FC = () => {
           {diseaseLabel}
         </Typography>
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         <Typography variant="body1"
           style={{
             fontSize: "16px",
@@ -311,7 +311,7 @@ const DiseaseTraitDetails: React.FC = () => {
           )}
         </Typography>
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         <Stack direction="row" spacing={1}>
           <StyledButton
             bvariant={page === -1 ? "filled" : "outlined"}
@@ -369,7 +369,7 @@ const DiseaseTraitDetails: React.FC = () => {
           )}
         </Stack>
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         {page === -1 ? (
           <RiskLocusView
             loci={loci || []}

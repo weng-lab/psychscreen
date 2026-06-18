@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+﻿import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Divider, Box, Tabs, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import Grid from "@mui/material/Grid";
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import { diseaseCT } from "./consts";
@@ -65,7 +65,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
       mr={"auto"}
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
-      <Grid xs={12}>
+      <Grid size={12}>
         <Typography variant="h4"
           style={{ marginTop: "1em", marginBottom: "0.2em" }}
         >
@@ -97,7 +97,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
           />
         </div>
       </Grid>
-      <Grid xs={12}>
+      <Grid size={12}>
         <Box>
           <Tabs
             value={tabIndex}

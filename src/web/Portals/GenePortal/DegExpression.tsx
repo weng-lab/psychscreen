@@ -1,5 +1,5 @@
-import { gql, useQuery } from "@apollo/client";
-import { CircularProgress, Grid, Typography } from "@mui/material";
+﻿import { gql, useQuery } from "@apollo/client";
+import { CircularProgress, GridLegacy as Grid, Typography } from "@mui/material";
 import * as React from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
 

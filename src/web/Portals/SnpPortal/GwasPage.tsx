@@ -1,6 +1,6 @@
-import { gql, useQuery } from "@apollo/client";
+﻿import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import { Grid, Container, Typography } from "@mui/material";
+import { GridLegacy as Grid, Container, Typography } from "@mui/material";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
 
 type GWASPageProps = {

@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+﻿import { useState, useRef } from "react";
 import { CircularProgress, Typography } from "@mui/material";
-import { Grid, FormControl } from "@mui/material";
+import { GridLegacy as Grid, FormControl } from "@mui/material";
 
 import { gql, useQuery } from "@apollo/client";
 import DotPlot from "./DotPlot";

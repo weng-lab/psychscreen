@@ -1,8 +1,8 @@
-import React from "react";
-import { GridProps, Typography } from "@mui/material";
+﻿import React from "react";
+import { GridLegacyProps, Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
-import { Grid, Container } from "@mui/material";
+import { GridLegacy as Grid, Container } from "@mui/material";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { gql, useQuery } from "@apollo/client";
 
@@ -60,7 +60,7 @@ const COLUMNS = [
   },
 ];
 
-const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
+const SingleCelldegdiseasect: React.FC<GridLegacyProps> = (props) => {
   const { disease } = useParams();
   const { celltype } = useParams();
 
