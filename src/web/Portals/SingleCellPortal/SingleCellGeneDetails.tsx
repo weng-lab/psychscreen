@@ -1,7 +1,8 @@
 ﻿import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
-import { Divider, GridLegacy as Grid, Box, Tabs, Tab, Typography } from "@mui/material";
+import { Divider, Box, Tabs, Tab, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
@@ -50,8 +51,8 @@ export const SingleCellGeneDetails = (props) => {
 
   return (
     <Grid container {...props} style={{ marginTop: "0.5em" }}>
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={9}>
+      <Grid size={{ sm: 1, lg: 1.5 }} />
+      <Grid size={{ sm: 9 }}>
         <Typography variant="h4"
           style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
         >
@@ -77,10 +78,10 @@ export const SingleCellGeneDetails = (props) => {
           />
         </div>
       </Grid>
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={12} style={{ marginBottom: "10px" }} />
-      <Grid item sm={1} lg={1.5} />
-      <Grid item sm={9}>
+      <Grid size={{ sm: 1, lg: 1.5 }} />
+      <Grid size={{ sm: 12 }} style={{ marginBottom: "10px" }} />
+      <Grid size={{ sm: 1, lg: 1.5 }} />
+      <Grid size={{ sm: 9 }}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
             <Tab label="Brain Single Cell Expression" />

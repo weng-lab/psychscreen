@@ -1,4 +1,5 @@
-﻿import { GridLegacy as Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+﻿import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { Chart, Scatter } from "jubilant-carnival";
 import {
   CustomizedTable} from "@weng-lab/psychscreen-ui-components";
@@ -391,7 +392,7 @@ const GeneOverview: React.FC<{ gene?: string | undefined }> = ({ gene }) => {
 
   return (
     <Grid container>
-      <Grid item sm={6} md={6} lg={6} xl={6}>
+      <Grid size={6}>
         <Typography variant="h6">
           Details and Brain Expression Pattern: {gene}
         </Typography>
@@ -399,7 +400,7 @@ const GeneOverview: React.FC<{ gene?: string | undefined }> = ({ gene }) => {
           <CustomizedTable style={{ width: "max-content" }} tabledata={data} />
         )}
       </Grid>
-      <Grid item sm={6} md={6} lg={6} xl={6}>
+      <Grid size={6}>
         <ToggleButtonGroup
           style={{ marginLeft: "2em" }}
           size={"small"}

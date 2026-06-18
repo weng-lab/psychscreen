@@ -1,5 +1,6 @@
 ﻿import React, { useMemo } from "react";
-import { GridLegacy as Grid, Container, GridLegacyProps } from "@mui/material";
+import { Container } from "@mui/material";
+import Grid, { GridProps } from "@mui/material/Grid";
 import { CustomizedTable } from "@weng-lab/psychscreen-ui-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GwasIntersectingSnpsWithCcres } from "./DiseaseIntersectingSnpsWithccres";
@@ -15,7 +16,7 @@ export type GWAS_SNP = {
   association_p_val: number[];
 };
 
-export type AssociatedSnpQtlProps = GridLegacyProps & {
+export type AssociatedSnpQtlProps = GridProps & {
   disease: string;
   data: GWAS_SNP[];
 };
@@ -51,7 +52,7 @@ const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = ({
 
   return (
     <Grid container {...props}>
-      <Grid item sm={12}>
+      <Grid size={{ sm: 12 }}>
         <Container style={{ marginTop: "30px", marginLeft: "130px" }}>
           {data ? (
             <CustomizedTable

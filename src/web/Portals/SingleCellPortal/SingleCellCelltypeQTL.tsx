@@ -1,8 +1,8 @@
 ﻿import React, { useState, useEffect } from "react";
-import { GridLegacyProps, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
-import { GridLegacy as Grid } from "@mui/material";
+import Grid, { GridProps } from "@mui/material/Grid";
 import { DataTable } from "@weng-lab/ts-ztable";
 
 const COLUMNS = [
@@ -69,7 +69,7 @@ const COLUMNS = [
   },
 ];
 
-const SingleCellCelltypeQTL: React.FC<GridLegacyProps> = (props) => {
+const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   const { celltype } = useParams();
   const [qtl, setQtl] = useState<any>([]);
 
@@ -111,7 +111,7 @@ const SingleCellCelltypeQTL: React.FC<GridLegacyProps> = (props) => {
       mr={"auto"}
       maxWidth={{ xl: "95%", lg: "90%", md: "95%", sm: "95%", xs: "95%" }}
     >
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="h2"
           style={{
             fontWeight: 700,

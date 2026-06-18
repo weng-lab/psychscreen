@@ -1,8 +1,9 @@
 ﻿import React, { useState } from "react";
-import { GridLegacyProps, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
-import { GridLegacy as Grid, Container } from "@mui/material";
+import { Container } from "@mui/material";
+import Grid, { GridProps } from "@mui/material/Grid";
 import { DataTable } from "@weng-lab/ts-ztable";
 
 const COLUMNS = [
@@ -40,7 +41,7 @@ const COLUMNS = [
   },
 ];
 
-const SingleCellGeneRegulatoryDatasets: React.FC<GridLegacyProps> = (props) => {
+const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   const { celltype } = useParams();
   const [grn, setGrn] = useState<any>([]);
   //  const [grnNew, setGrnNew] = useState<any>([]);
@@ -87,7 +88,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridLegacyProps> = (props) => {
       mr={"auto"}
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Container>
           <Typography variant="h2"
             style={{
@@ -102,7 +103,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridLegacyProps> = (props) => {
           </Typography>
           <br />
           {grn.length === 0 && (
-            <Grid xs={12}>
+            <Grid size={12}>
               <Typography variant="body1"
                 style={{
                   display: "flex",
@@ -118,7 +119,7 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridLegacyProps> = (props) => {
             </Grid>
           )}
           {grn && grn.length > 0 && (
-            <Grid xs={12}>
+            <Grid size={12}>
               <DataTable
                 columns={COLUMNS}
                 rows={grn}

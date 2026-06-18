@@ -1,20 +1,17 @@
 ﻿import React from "react";
-import { GridLegacy as Grid, GridLegacyProps, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Grid, { GridProps } from "@mui/material/Grid";
 
 import { useParams } from "react-router-dom";
 import SingleCell, { DATASETS } from "../GenePortal/SingleCell";
 
-const SingleCellDotPlot: React.FC<GridLegacyProps> = (props) => {
+const SingleCellDotPlot: React.FC<GridProps> = (props) => {
   const { disease, gene } = useParams();
 
   return (
     <Grid container>
       <Grid
-        item
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
+        size={12}
         style={{ marginBottom: "2em" }}
       >
         <Typography variant="body1"
@@ -27,7 +24,7 @@ const SingleCellDotPlot: React.FC<GridLegacyProps> = (props) => {
           }
         </Typography>
       </Grid>
-      <Grid item sm={12} md={12} lg={12} xl={12} style={{ marginLeft: "15em" }}>
+      <Grid size={12} style={{ marginLeft: "15em" }}>
         {disease && gene && (
           <SingleCell
             selectDatasets={false}

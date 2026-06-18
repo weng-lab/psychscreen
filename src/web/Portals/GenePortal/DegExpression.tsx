@@ -1,5 +1,6 @@
 ﻿import { gql, useQuery } from "@apollo/client";
-import { CircularProgress, GridLegacy as Grid, Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import * as React from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
 
@@ -125,21 +126,13 @@ export const DegExpression = (props) => {
     <>
       <Grid container>
         <Grid
-          item
-          sm={12}
-          md={12}
-          lg={12}
-          xl={12}
+          size={12}
           style={{ marginBottom: "2em", marginTop: "2em" }}
         >
           {
             <>
               <Grid
-                item
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
+                size={12}
                 style={{ marginBottom: "2em" }}
               >
                 <Typography variant="body1"

@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Chart, Scatter } from "jubilant-carnival";
-import { GridLegacy as Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import Legend from "./scatterplot/legend";
 import { tissueTypeColors } from "./consts";
 
@@ -143,7 +144,7 @@ const GTexUMAP: React.FC = () => {
   return (
     <>
       <Grid container>
-        <Grid item sm={6} md={6} lg={6} xl={6}>
+        <Grid size={6}>
           {data && data.length > 0 ? (
             <>
               <Typography variant="h3"
@@ -178,7 +179,7 @@ const GTexUMAP: React.FC = () => {
             </>
           ) : null}
         </Grid>
-        <Grid item sm={6} md={6} lg={6} xl={6}>
+        <Grid size={6}>
           {pcdata && pcdata.length > 0 ? (
             <>
               <Typography variant="h3"
@@ -215,7 +216,7 @@ const GTexUMAP: React.FC = () => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item sm={12} md={12} lg={12} xl={12}>
+        <Grid size={12}>
           {data.length === 0 || pcdata.length === 0 ? (
             <>
               <Typography variant="body1"

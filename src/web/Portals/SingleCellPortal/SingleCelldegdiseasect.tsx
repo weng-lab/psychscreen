@@ -1,8 +1,9 @@
 ﻿import React from "react";
-import { GridLegacyProps, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
-import { GridLegacy as Grid, Container } from "@mui/material";
+import { Container } from "@mui/material";
+import Grid, { GridProps } from "@mui/material/Grid";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { gql, useQuery } from "@apollo/client";
 
@@ -60,7 +61,7 @@ const COLUMNS = [
   },
 ];
 
-const SingleCelldegdiseasect: React.FC<GridLegacyProps> = (props) => {
+const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
   const { celltype } = useParams();
 
@@ -81,7 +82,7 @@ const SingleCelldegdiseasect: React.FC<GridLegacyProps> = (props) => {
       mr={"auto"}
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="h2"
           style={{
             fontWeight: 700,

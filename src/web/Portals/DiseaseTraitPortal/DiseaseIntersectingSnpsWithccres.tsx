@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
-import { GridLegacyProps, Divider, Link, Typography, Stack, Tab } from "@mui/material";
+import { Divider, Link, Typography, Stack, Tab } from "@mui/material";
+import { GridProps } from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Button from "@mui/material/Button";
@@ -29,7 +30,7 @@ type GwasIntersectingSnpsWithBcres = GwasIntersectingSnpsWithCcres & {
   bcre_group: string;
 };
 
-export type DiseaseIntersectingSnpsWithccresProps = GridLegacyProps & {
+export type DiseaseIntersectingSnpsWithccresProps = GridProps & {
   disease: string;
   ccredata: GwasIntersectingSnpsWithCcres[];
   coordinates: GenomicRange;

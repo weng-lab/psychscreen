@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Grid from "@mui/material/GridLegacy";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { CELLTYPE_CARDS } from "./consts";
@@ -28,13 +28,13 @@ export const CelltypeAutoComplete = (props) => {
   return (
     <Stack>
       {props.showTitle && (
-        <Grid item sm={12} md={12} lg={12} xl={12}>
+        <Grid size={12}>
           <Typography>Search a cell type of interest:</Typography>
           <br />
         </Grid>
       )}
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
-        <Grid item>
+        <Grid>
           <Autocomplete
             freeSolo
             sx={{ width: 300, paper: { height: 200 } }}
@@ -67,7 +67,6 @@ export const CelltypeAutoComplete = (props) => {
                 <li {...props} key={props.id}>
                   <Grid container alignItems="center">
                     <Grid
-                      item
                       sx={{
                         width: "calc(100% - 44px)",
                         wordWrap: "break-word",
@@ -99,7 +98,7 @@ export const CelltypeAutoComplete = (props) => {
             }}
           />
         </Grid>
-        <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
+        <Grid sx={{ verticalAlign: "middle", textAlign: "center" }}>
           <Button variant="contained" onClick={onSubmit}>
             Search
           </Button>

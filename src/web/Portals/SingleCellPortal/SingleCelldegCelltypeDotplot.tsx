@@ -1,6 +1,7 @@
 ﻿import { useState, useRef } from "react";
 import { CircularProgress, Typography } from "@mui/material";
-import { GridLegacy as Grid, FormControl } from "@mui/material";
+import { FormControl } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 import { gql, useQuery } from "@apollo/client";
 import DotPlot from "./DotPlot";
@@ -101,7 +102,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
   return (
     <>
       <Grid container mt={2} mb={2} gap={2}>
-        <Grid item>
+        <Grid>
           <Typography variant="body1">
             Select Disease:
           </Typography>
@@ -121,7 +122,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
           </FormControl>
         </Grid>
         {dotplotData.length >= 50 && (
-          <Grid item>
+          <Grid>
             <Typography variant="body1">
               Showing top 50 datasets based on{" "}
               {value === "log2(fold change)" ? (
@@ -166,7 +167,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
         )}
       </Grid>
       <Grid container>
-        <Grid item>
+        <Grid>
           <Box width={300}>
             <FormLabel>
               <i>P</i>
@@ -194,7 +195,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={12} minWidth={700}>
+        <Grid size={12} minWidth={700}>
           {loading || !dotplotData ? (
             <CircularProgress />
           ) : dotplotData.length === 0 ? (

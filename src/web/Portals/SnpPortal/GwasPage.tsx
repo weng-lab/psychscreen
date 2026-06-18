@@ -1,6 +1,7 @@
 ﻿import { gql, useQuery } from "@apollo/client";
 import React from "react";
-import { GridLegacy as Grid, Container, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
 
 type GWASPageProps = {
@@ -54,7 +55,7 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
 
   return (
     <Grid container {...props}>
-      <Grid item sm={12}>
+      <Grid size={{ sm: 12 }}>
         <Container style={{ marginTop: "10px", marginLeft: "-30px" }}>
           {data?.snpQuery[0]?.genomeWideAssociation.length ? (
             <>

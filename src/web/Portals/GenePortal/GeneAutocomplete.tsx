@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Grid from "@mui/material/GridLegacy";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
@@ -131,13 +131,13 @@ export const GeneAutoComplete = (props) => {
   return (
     <Stack>
       {props.showTitle && (
-        <Grid item sm={12} md={12} lg={12} xl={12}>
+        <Grid size={12}>
           <Typography>Search a gene of interest:</Typography>
           <br />
         </Grid>
       )}
       <Grid container alignItems="center" wrap="nowrap" gap={2}>
-        <Grid item>
+        <Grid>
           <Autocomplete
             freeSolo
             id="gene-autocomplete"
@@ -177,7 +177,7 @@ export const GeneAutoComplete = (props) => {
               return (
                 <li {...props} key={props.id}>
                   <Grid container alignItems="center">
-                    <Grid item sx={{ width: "calc(100% - 44px)" }}>
+                    <Grid sx={{ width: "calc(100% - 44px)" }}>
                       <Box component="span" sx={{ fontWeight: "regular" }}>
                         <i>{option}</i>
                       </Box>
@@ -194,7 +194,7 @@ export const GeneAutoComplete = (props) => {
           />
         </Grid>
         {!props.hideSearchButton && (
-          <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
+          <Grid sx={{ verticalAlign: "middle", textAlign: "center" }}>
             <Button variant="contained" onClick={() => onSubmit()}>
               Search
             </Button>
