@@ -1,13 +1,12 @@
 ﻿import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
-import { Divider, GridLegacy as Grid, Box, Tabs, Typography } from "@mui/material";
+import { Divider, GridLegacy as Grid, Box, Tabs, Tab, Typography } from "@mui/material";
 
 import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
 
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
-import { StyledTab } from "../../Portals/styles";
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
@@ -84,7 +83,7 @@ export const SingleCellGeneDetails = (props) => {
       <Grid item sm={9}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
-            <StyledTab label="Brain Single Cell Expression" />
+            <Tab label="Brain Single Cell Expression" />
           </Tabs>
           <Divider />
         </Box>

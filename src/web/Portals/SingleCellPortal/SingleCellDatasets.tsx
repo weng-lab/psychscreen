@@ -1,5 +1,5 @@
 ﻿import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { Box, Tabs, Typography } from "@mui/material";
+import { Box, Tabs, Tab, Typography } from "@mui/material";
 import { HorizontalCard } from "@weng-lab/psychscreen-ui-components";
 import Button from "@mui/material/Button";
 import { useParams, useNavigate } from "react-router-dom";
@@ -10,7 +10,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
-import { StyledTab } from "../../Portals/styles";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
@@ -301,8 +300,8 @@ const SingleCellDatasets: React.FC = () => {
           </Typography>
           <br />
           <Tabs value={tabIndex} onChange={handleTabChange} sx={{ mb: 2 }}>
-            <StyledTab label="Differential Gene Expression " />
-            <StyledTab label="Data Table" />
+            <Tab label="Differential Gene Expression " />
+            <Tab label="Data Table" />
           </Tabs>
           {tabIndex === 1 && (
             <Slide direction="up" in timeout={1000}>

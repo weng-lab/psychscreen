@@ -1,13 +1,12 @@
 ﻿import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { Divider, Box, Tabs, Typography } from "@mui/material";
+import { Divider, Box, Tabs, Tab, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
-import { StyledTab } from "../styles";
 
 const SingleCellCellTypeDetails: React.FC = () => {
   const { celltype } = useParams();
@@ -106,7 +105,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
-            <StyledTab label="Differential Gene Expression" tabIndex={0} />
+            <Tab label="Differential Gene Expression" tabIndex={0} />
           </Tabs>
           <Divider />
         </Box>

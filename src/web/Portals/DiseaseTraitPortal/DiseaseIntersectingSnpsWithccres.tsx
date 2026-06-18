@@ -1,9 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
-import { GridLegacyProps, Divider, Link, Typography, Stack } from "@mui/material";
+import { GridLegacyProps, Divider, Link, Typography, Stack, Tab } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
-
-import { StyledTab } from "../../Portals/styles";
 import Button from "@mui/material/Button";
 import {
   DataTable,
@@ -227,9 +225,9 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
 
       <Box>
         <Tabs value={tabIndex} onChange={handleTabChange}>
-          <StyledTab label="Significant SNPs"></StyledTab>
+          <Tab label="Significant SNPs"></Tab>
           {intersectingSnps.filter((i) => i.bcre_class !== ".").length > 0 && (
-            <StyledTab label="Significant SNPs intersecting brain cCREs (b-cCREs)" />
+            <Tab label="Significant SNPs intersecting brain cCREs (b-cCREs)" />
           )}
         </Tabs>
         <Divider />

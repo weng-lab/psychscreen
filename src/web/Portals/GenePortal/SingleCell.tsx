@@ -17,12 +17,10 @@ import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
-import { StyledToggleButton } from "../../Portals/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import { Select as MUISelect } from "@mui/material";
-import { StyledTab } from "../../Portals/styles";
+import { Select as MUISelect, Tab } from "@mui/material";
 import { Download } from "@mui/icons-material";
 import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
 
@@ -582,8 +580,8 @@ const SingleCell: React.FC<{
       )}
       <Grid size={12}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
-          <StyledTab label="Detailed Expression Profile" />
-          <StyledTab label="Expression Summary" />
+          <Tab label="Detailed Expression Profile" />
+          <Tab label="Expression Summary" />
         </Tabs>
       </Grid>
       {tabIndex === 1 ? (
@@ -618,8 +616,8 @@ const SingleCell: React.FC<{
               {ctClass === "All Datasets" ? (
                 <>
                   <Tabs value={cttabIndex} onChange={handleCtTabChange}>
-                    <StyledTab label="by Cell type" />
-                    <StyledTab label="by Broader Cell type" />
+                    <Tab label="by Cell type" />
+                    <Tab label="by Broader Cell type" />
                   </Tabs>
                   <DotPlot
                     disease={dataset}

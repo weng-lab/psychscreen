@@ -5,13 +5,13 @@ import Grid from "@mui/material/Grid";
 import { useParams, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import GwasPage from "./GwasPage";
 import { gql, useQuery } from "@apollo/client";
 import EGeneTable from "./EGeneTable";
 import RegulatoryElements from "./RegulatoryElements";
 
 import { CAQTL } from "./caQTL";
-import { StyledTab } from "../../Portals/styles";
 
 export const CAQTL_QUERY = gql`
   query caqtls($snpid: String!) {
@@ -205,10 +205,10 @@ const SNPDetails: React.FC = () => {
       <Grid size={12}>
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
-            <StyledTab label="eGenes" />
-            <StyledTab label="caQTL" />
-            <StyledTab label="Regulatory Elements" />
-            <StyledTab label="GWAS" />
+            <Tab label="eGenes" />
+            <Tab label="caQTL" />
+            <Tab label="Regulatory Elements" />
+            <Tab label="GWAS" />
           </Tabs>
           <Divider />
         </Box>

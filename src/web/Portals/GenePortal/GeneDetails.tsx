@@ -1,7 +1,7 @@
 ﻿import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
-import { Divider, Box, Tabs, Stack, Typography } from "@mui/material";
+import { Divider, Box, Tabs, Tab, Stack, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
@@ -9,9 +9,7 @@ import { groupBy } from "queryz";
 import { tissueColors } from "./consts";
 import AssociatedxQTL from "./AssociatedxQTL";
 import GeneExpressionPage from "./GeneExpression";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import SingleCell from "./SingleCell";
-import { StyledTab, StyledToggleButton } from "../../Portals/styles";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
@@ -191,11 +189,11 @@ const GeneDetails: React.FC = (props) => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
-            <StyledTab label="Single Cell Expression" />
-            <StyledTab label="Spatial Expression" />
-            <StyledTab label="Tissue Expression (GTEx)" />
-            <StyledTab label="eQTLs and b-cCREs" />
-            <StyledTab label="Differential Gene Expression" />
+            <Tab label="Single Cell Expression" />
+            <Tab label="Spatial Expression" />
+            <Tab label="Tissue Expression (GTEx)" />
+            <Tab label="eQTLs and b-cCREs" />
+            <Tab label="Differential Gene Expression" />
           </Tabs>
           <Divider />
         </Box>
@@ -258,12 +256,12 @@ const GeneDetails: React.FC = (props) => {
                     exclusive
                     onChange={handleTissueCategory}
                   >
-                    <StyledToggleButton value="broad">
+                    <ToggleButton value="broad">
                       Broad Tissue Category
-                    </StyledToggleButton>
-                    <StyledToggleButton value="granular">
+                    </ToggleButton>
+                    <ToggleButton value="granular">
                       Granular Tissue Category
-                    </StyledToggleButton>
+                    </ToggleButton>
                   </ToggleButtonGroup>
                   <svg
                     viewBox={`0 0 ${width} ${width / 2}`}
