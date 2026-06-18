@@ -6,7 +6,7 @@ import Grid from "@mui/material/GridLegacy";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { DISEASE_CARDS } from "./config/constants";
-import { StyledButton } from "../styles";
+import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
 const OPTIONS = DISEASE_CARDS.map((d) => d.cardLabel).sort();
 export const DiseaseTraitAutoComplete = (props) => {
@@ -91,9 +91,9 @@ export const DiseaseTraitAutoComplete = (props) => {
           />
         </Grid>
         <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
-          <StyledButton bvariant="filled" btheme="light" onClick={onSubmit}>
+          <Button variant="contained" onClick={onSubmit}>
             Search
-          </StyledButton>
+          </Button>
         </Grid>
       </Grid>
     </Stack>

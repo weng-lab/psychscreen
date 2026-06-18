@@ -3,7 +3,8 @@ import { GridLegacyProps, Divider, Link, Typography, Stack } from "@mui/material
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
-import { StyledButton, StyledTab } from "../../Portals/styles";
+import { StyledTab } from "../../Portals/styles";
+import Button from "@mui/material/Button";
 import {
   DataTable,
   DataTableColumn,
@@ -255,35 +256,32 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
               {intersectingSnps.filter(
                 (i) => i.bcre_class === "adult-only"
               ) && (
-                <StyledButton
-                  bvariant={page === 0 ? "filled" : "outlined"}
-                  btheme="light"
+                <Button
+                  variant={page === 0 ? "contained" : "outlined"}
                   onClick={() => setPage(0)}
                 >
                   Adult
-                </StyledButton>
+                </Button>
               )}
               {intersectingSnps.filter(
                 (i) => i.bcre_class === "fetal-only"
               ) && (
-                <StyledButton
-                  bvariant={page === 1 ? "filled" : "outlined"}
-                  btheme="light"
+                <Button
+                  variant={page === 1 ? "contained" : "outlined"}
                   onClick={() => setPage(1)}
                 >
                   Fetal
-                </StyledButton>
+                </Button>
               )}
               {intersectingSnps.filter(
                 (i) => i.bcre_class === "shared-fetal-adult"
               ) && (
-                <StyledButton
-                  bvariant={page === 2 ? "filled" : "outlined"}
-                  btheme="light"
+                <Button
+                  variant={page === 2 ? "contained" : "outlined"}
                   onClick={() => setPage(2)}
                 >
                   Shared
-                </StyledButton>
+                </Button>
               )}
             </Stack>
 

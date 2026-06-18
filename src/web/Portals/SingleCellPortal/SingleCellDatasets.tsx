@@ -1,8 +1,7 @@
 ﻿import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Box, Tabs, Typography } from "@mui/material";
-import {
-  HorizontalCard,
-  Button} from "@weng-lab/psychscreen-ui-components";
+import { HorizontalCard } from "@weng-lab/psychscreen-ui-components";
+import Button from "@mui/material/Button";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -11,7 +10,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { DataTable } from "@weng-lab/ts-ztable";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
-import { StyledTab, StyledButton } from "../../Portals/styles";
+import { StyledTab } from "../../Portals/styles";
 
 export const cellTypeCards = [
   { val: "Ast", cardLabel: "Astrocytes", cardDesc: "" },
@@ -225,11 +224,9 @@ const COLUMNS = [
     header: "Download",
     value: (row) => row.url,
     render: (row) => (
-      <a href={row.url} download style={{ textDecoration: "none" }}>
-        <Button bvariant="filled" btheme="light">
-          <DownloadIcon />
-        </Button>
-      </a>
+      <Button variant="contained" href={row.url} download>
+        <DownloadIcon />
+      </Button>
     ),
   },
 ];
@@ -362,13 +359,12 @@ const SingleCellDatasets: React.FC = () => {
           >
             {"scATAC-Seq Peaks"}
           </Typography>
-          <StyledButton
-            bvariant={page === 0 ? "filled" : "outlined"}
-            btheme="light"
+          <Button
+            variant={page === 0 ? "contained" : "outlined"}
             onClick={() => setPage(0)}
           >
             Cell Type specific ATAC peaks
-          </StyledButton>
+          </Button>
           &nbsp;&nbsp;&nbsp;
           {page === 0 && (
             <Box mt={3}>
@@ -396,13 +392,12 @@ const SingleCellDatasets: React.FC = () => {
             >
               Gene Regulatory Networks
             </Typography>
-            <StyledButton
-              bvariant={grnpage === 0 ? "filled" : "outlined"}
-              btheme="light"
+            <Button
+              variant={grnpage === 0 ? "contained" : "outlined"}
               onClick={() => setGrnPage(0)}
             >
               Cell Types
-            </StyledButton>
+            </Button>
             &nbsp;&nbsp;&nbsp;
             <br />
             <br />
@@ -438,13 +433,12 @@ const SingleCellDatasets: React.FC = () => {
           >
             Cell Type Specific eQTLs
           </Typography>
-          <StyledButton
-            bvariant={qtlpage === 0 ? "filled" : "outlined"}
-            btheme="light"
+          <Button
+            variant={qtlpage === 0 ? "contained" : "outlined"}
             onClick={() => setQtlPage(0)}
           >
             Cell Types
-          </StyledButton>
+          </Button>
           &nbsp;&nbsp;&nbsp;
           <br />
           <br />

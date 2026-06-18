@@ -3,11 +3,10 @@
  */
 
 import React from "react";
-import { GridLegacy as Grid, Typography } from "@mui/material";
-
-import { Container } from "@mui/material";
+import { Typography, Container } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import BEDFileDownloadTable, { DataRow } from "./BCRETable";
-import { StyledButton } from "../Portals/styles";
 
 function createData(
   name: string,
@@ -868,8 +867,8 @@ const DownloadsPage: React.FC = () => {
   return (
     <>
       <Grid container>
-        <Grid item sm={0} md={0} lg={1} xl={2} />
-        <Grid item sm={0} md={0} lg={11} xl={10}>
+        <Grid size={{ sm: 0, md: 0, lg: 1, xl: 2 }} />
+        <Grid size={{ sm: 12, md: 12, lg: 11, xl: 10 }}>
           <Container
             style={{
               marginTop: "25px",
@@ -889,17 +888,17 @@ const DownloadsPage: React.FC = () => {
             </Typography>
           </Container>
         </Grid>
-        <Grid item sm={0} md={0} lg={1} xl={2} />
-        <Grid item sm={0} md={0} lg={10} xl={8}>
+        <Grid size={{ sm: 0, md: 0, lg: 1, xl: 2 }} />
+        <Grid size={{ sm: 12, md: 12, lg: 10, xl: 8 }}>
           {pages.map((p, i) => (
-            <StyledButton
-              bvariant={page === i ? "filled" : "outlined"}
-              btheme="light"
+            <Button
+              key={i}
+              variant={page === i ? "contained" : "outlined"}
               onClick={() => setPage(i)}
-              style={{ marginRight: "5px" }}
+              sx={{ marginRight: "5px", marginBottom: "5px" }}
             >
               {p}
-            </StyledButton>
+            </Button>
           ))}
           <div style={{ marginTop: "20px" }}>
             {page === 0 && (
@@ -952,7 +951,7 @@ const DownloadsPage: React.FC = () => {
             )}
           </div>
         </Grid>
-        <Grid item sm={0} md={0} lg={1} xl={2} />
+        <Grid size={{ sm: 0, md: 0, lg: 1, xl: 2 }} />
       </Grid>
     </>
   );

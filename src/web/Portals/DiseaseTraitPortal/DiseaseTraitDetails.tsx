@@ -21,7 +21,7 @@ import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
-import { StyledButton } from "../../Portals/styles";
+import Button from "@mui/material/Button";
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -313,59 +313,54 @@ const DiseaseTraitDetails: React.FC = () => {
       </Grid>
       <Grid size={12}>
         <Stack direction="row" spacing={1}>
-          <StyledButton
-            bvariant={page === -1 ? "filled" : "outlined"}
-            btheme="light"
+          <Button
+            variant={page === -1 ? "contained" : "outlined"}
             onClick={() => setPage(-1)}
           >
             GWAS Locus Overview
-          </StyledButton>
+          </Button>
           {gassoc && gassoc.length > 0 && (
-            <StyledButton
-              bvariant={page === 0 ? "filled" : "outlined"}
-              btheme="light"
+            <Button
+              variant={page === 0 ? "contained" : "outlined"}
               onClick={() => {
                 setPage(0);
               }}
             >
               Gene Associations (TWAS)
-            </StyledButton>
+            </Button>
           )}
           {data &&
             (data as { gwassnpAssociationsQuery: GWAS_SNP[] })
               .gwassnpAssociationsQuery?.length > 0 && (
-              <StyledButton
-                bvariant={page === 1 ? "filled" : "outlined"}
-                btheme="light"
+              <Button
+                variant={page === 1 ? "contained" : "outlined"}
                 onClick={() => {
                   setPage(1);
                 }}
               >
                 Associated SNPs &amp; QTLs
-              </StyledButton>
+              </Button>
             )}
           {gwasIntersectingSnpWithCcresData &&
             adultgwasIntersectingSnpWithBcresData &&
             fetalgwasIntersectingSnpWithBcresData &&
             gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
               .length > 0 && (
-              <StyledButton
-                bvariant={page === 2 ? "filled" : "outlined"}
-                btheme="light"
+              <Button
+                variant={page === 2 ? "contained" : "outlined"}
                 onClick={() => setPage(2)}
               >
                 Associated SNPs in locus
-              </StyledButton>
+              </Button>
             )}
           {/* Unused, can I remove? */}
           {significantSNPs && significantSNPs.length > 0 && 0 > 1 && (
-            <StyledButton
-              bvariant={page === 4 ? "filled" : "outlined"}
-              btheme="light"
+            <Button
+              variant={page === 4 ? "contained" : "outlined"}
               onClick={() => setPage(4)}
             >
               Prioritized risk variants
-            </StyledButton>
+            </Button>
           )}
         </Stack>
       </Grid>

@@ -6,7 +6,7 @@ import Grid from "@mui/material/GridLegacy";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { CELLTYPE_CARDS } from "./consts";
-import { StyledButton } from "../styles";
+import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
 
 const OPTIONS = CELLTYPE_CARDS.map((d) => d.cardLabel).sort();
@@ -100,9 +100,9 @@ export const CelltypeAutoComplete = (props) => {
           />
         </Grid>
         <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
-          <StyledButton bvariant="filled" btheme="light" onClick={onSubmit}>
+          <Button variant="contained" onClick={onSubmit}>
             Search
-          </StyledButton>
+          </Button>
         </Grid>
       </Grid>
     </Stack>

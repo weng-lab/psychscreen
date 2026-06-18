@@ -31,6 +31,8 @@ import SingleCelldegdiseasect from "./web/Portals/SingleCellPortal/SingleCelldeg
 import { SingleCellGeneDetails } from "./web/Portals/SingleCellPortal/SingleCellGeneDetails";
 import Header from "./web/HomePage/Header";
 import FooterPanel from "./web/HomePage/FooterPanel";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 
 export const PORTALS: [string, React.FC][] = [
   ["/traits", DiseaseTraitPortal],
@@ -72,6 +74,7 @@ const App: React.FC = () => {
   );
 
   return (
+    <ThemeProvider theme={theme}>
     <ApolloProvider client={client}>
       <Router>
         <div className="app">
@@ -148,6 +151,7 @@ const App: React.FC = () => {
         </div>
       </Router>
     </ApolloProvider>
+    </ThemeProvider>
   );
 };
 export default App;

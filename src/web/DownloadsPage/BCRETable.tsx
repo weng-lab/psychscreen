@@ -12,7 +12,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
-import { Button } from "@weng-lab/psychscreen-ui-components";
+import { Button } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -91,11 +91,9 @@ const BEDFileDownloadTable: React.FC<BEDFileDownloadTableProps> = ({
                 {(row.fileSize / 1e6).toFixed(0)} MB
               </StyledTableCell>
               <StyledTableCell align="right">
-                <a href={row.url} download style={{ textDecoration: "none" }}>
-                  <Button bvariant="filled" btheme="light">
-                    <DownloadIcon /> Download
-                  </Button>
-                </a>
+                <Button variant="contained" href={row.url} download startIcon={<DownloadIcon />}>
+                  Download
+                </Button>
               </StyledTableCell>
             </StyledTableRow>
           ))}

@@ -6,7 +6,7 @@ import Grid from "@mui/material/GridLegacy";
 import Typography from "@mui/material/Typography";
 import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from "../../Portals/styles";
+import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
 
 const SNP_AUTOCOMPLETE_QUERY = `
@@ -151,9 +151,9 @@ export const SnpAutoComplete = (props) => {
         </Grid>
         {!props.hideSearchButton && (
           <Grid item sx={{ verticalAlign: "middle", textAlign: "center" }}>
-            <StyledButton bvariant="filled" btheme="light" onClick={onSubmit}>
+            <Button variant="contained" onClick={onSubmit}>
               Search
-            </StyledButton>
+            </Button>
           </Grid>
         )}
       </Grid>

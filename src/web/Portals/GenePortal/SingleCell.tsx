@@ -4,22 +4,20 @@ import {
   Tabs,
   ToggleButton,
   ToggleButtonGroup,
-  Button as MUIButton,
+  Button,
   Stack,
   FormLabel,
   Typography } from "@mui/material";
 
 import Grid from "@mui/material/Grid";
-import {
-  Button,
-  DataTable} from "@weng-lab/psychscreen-ui-components";
+import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { Chart, linearTransform, Scatter } from "jubilant-carnival";
 import React, { useMemo, useRef, useState } from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
 import { lower5, range, upper5 } from "./GTexUMAP";
 import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
-import { StyledButton, StyledToggleButton } from "../../Portals/styles";
+import { StyledToggleButton } from "../../Portals/styles";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -595,32 +593,27 @@ const SingleCell: React.FC<{
           ) : dotplotDataSc.length > 0 || dotplotDataCt.length > 0 ? (
             <>
               <Stack direction={"row"} spacing={1} mb={1}>
-                <StyledButton
-                  btheme="light"
-                  bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                <Button
+                  variant={ctClass === "by Cell type" ? "contained" : "outlined"}
                   key={"by Cell type"}
                   onClick={() => setCtClass("by Cell type")}
                 >
                   By Cell Type
-                </StyledButton>
-                <StyledButton
-                  btheme="light"
-                  bvariant={
-                    ctClass === "by Broader Cell type" ? "filled" : "outlined"
-                  }
+                </Button>
+                <Button
+                  variant={ctClass === "by Broader Cell type" ? "contained" : "outlined"}
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
                   By Broader Cell Type
-                </StyledButton>
-                <StyledButton
-                  btheme="light"
-                  bvariant={ctClass === "All Datasets" ? "filled" : "outlined"}
+                </Button>
+                <Button
+                  variant={ctClass === "All Datasets" ? "contained" : "outlined"}
                   key={"All Datasets"}
                   onClick={() => setCtClass("All Datasets")}
                 >
                   All Datasets
-                </StyledButton>
+                </Button>
               </Stack>
               {ctClass === "All Datasets" ? (
                 <>
@@ -649,7 +642,7 @@ const SingleCell: React.FC<{
                   ref={dotPlotRef}
                 />
               )}
-              <MUIButton
+              <Button
                 startIcon={<Download />}
                 onClick={() =>
                   dotPlotRef?.current &&
@@ -661,7 +654,7 @@ const SingleCell: React.FC<{
                 sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
               >
                 Download
-              </MUIButton>
+              </Button>
             </>
           ) : (
             <>{"Data Not available"}</>
@@ -674,24 +667,20 @@ const SingleCell: React.FC<{
           ) : (
             <Grid size={{ xs: 12, md: 5 }}>
               <Stack direction="row" spacing={1} mb={1}>
-                <StyledButton
-                  btheme="light"
-                  bvariant={ctClass === "by Cell type" ? "filled" : "outlined"}
+                <Button
+                  variant={ctClass === "by Cell type" ? "contained" : "outlined"}
                   key={"by Cell type"}
                   onClick={() => setCtClass("by Cell type")}
                 >
                   By Cell Type
-                </StyledButton>
-                <StyledButton
-                  btheme="light"
-                  bvariant={
-                    ctClass === "by Broader Cell type" ? "filled" : "outlined"
-                  }
+                </Button>
+                <Button
+                  variant={ctClass === "by Broader Cell type" ? "contained" : "outlined"}
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
                   By Broader Cell Type
-                </StyledButton>
+                </Button>
               </Stack>
               {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
                 <DataTable
@@ -855,7 +844,7 @@ const SingleCell: React.FC<{
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </FormControl>
-                <MUIButton
+                <Button
                   startIcon={<Download />}
                   onClick={() =>
                     chartRef?.current &&
@@ -867,7 +856,7 @@ const SingleCell: React.FC<{
                   sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
                 >
                   Download
-                </MUIButton>
+                </Button>
               </div>
             </Grid>
           ) : (

@@ -3,7 +3,7 @@ import { Box, Stack, Divider, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
 import { useNavigate } from "react-router-dom";
-import { StyledButton } from "../Portals/styles";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { ExpandMore } from "@mui/icons-material";
 import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
@@ -186,15 +186,14 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
               ))}
             </div>
             {props.mode === "button" ? (
-              <StyledButton
-                bvariant="filled"
-                btheme="light"
+              <Button
+                variant="contained"
                 onClick={() => {
                   navigate(portalInfo[props.portal].buttonLink);
                 }}
               >
                 {portalInfo[props.portal].buttonText}
-              </StyledButton>
+              </Button>
             ) : (
               portalInfo[props.portal].searchComponent
             )}
