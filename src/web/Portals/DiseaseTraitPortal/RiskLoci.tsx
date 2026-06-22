@@ -149,7 +149,7 @@ const RiskLocusView: React.FC<{
                   fontSize="30px"
                   dominantBaseline="middle"
                   textAnchor="end"
-                  sx={{ fontWeight: "bold" }}
+                  fontWeight="bold"
                   fontFamily="roboto"
                 >
                   {chromosome?.replace(/chr/g, "")}
