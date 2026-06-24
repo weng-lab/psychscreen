@@ -132,7 +132,6 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
   },
   ref
 ) => {
-  console.log(celltype, "ct");
   // SVG-related parameters
   const width = 15000;
   const height = width / 3;
@@ -230,6 +229,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
       {Array.from(uniqueDatasets).map((n, i) => {
         return (
           <text
+            key={n as any}
             fontSize="140px"
             fill="#000000"
             x={
@@ -425,7 +425,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         {title1 || "Percent Expressed"}
       </text>
       {radiusRange.map((r, i) => (
-        <>
+        <React.Fragment key={i}>
           <circle
             r={radiusTransform(r)}
             cx={
@@ -442,7 +442,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
           >
             {r.toFixed(2)}
           </text>
-        </>
+        </React.Fragment>
       ))}
       <text
         fontSize="140px"
@@ -453,7 +453,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
         {title2 || "Mean Expression"}
       </text>
       {colorPercent.map((r, i) => (
-        <>
+        <React.Fragment key={i}>
           <rect
             width={100}
             height={100}
@@ -479,7 +479,7 @@ const DotPlot: React.ForwardRefRenderFunction<SVGSVGElement, DotPlotProps> = (
           >
             {r.toFixed(2)}
           </text>
-        </>
+        </React.Fragment>
       ))}
     </svg>
   );

@@ -186,15 +186,15 @@ export const DegExpression = (props) => {
                 title1={
                   <>
                     {"-log"}
-                    <tspan baseline-shift="sub">10</tspan>(
+                    <tspan baselineShift="sub">10</tspan>(
                     <tspan fontStyle="italic">P</tspan>
-                    <tspan baseline-shift="sub">adj</tspan>)
+                    <tspan baselineShift="sub">adj</tspan>)
                   </>
                 }
                 title2={
                   <>
                     {"log"}
-                    <tspan baseline-shift="sub">2</tspan>
+                    <tspan baselineShift="sub">2</tspan>
                     {"(fold change)"}
                   </>
                 }

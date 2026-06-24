@@ -734,12 +734,6 @@ const SingleCell: React.FC<{
                         setHighlighted("");
                       }}
                     />
-                    <defs>
-                      <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stop-color="red" />
-                        <stop offset="100%" stop-color="#ffcd00" />
-                      </linearGradient>
-                    </defs>
                     {tooltip > -1 && (
                       <rect
                         x={
@@ -817,6 +811,15 @@ const SingleCell: React.FC<{
                     )}
                   </Chart>
                 )}
+                {/* Rendered outside <Chart> so PlotArea doesn't clone a chart `transform`/`domain` onto it */}
+                <svg width={0} height={0} style={{ position: "absolute" }}>
+                  <defs>
+                    <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stopColor="red" />
+                      <stop offset="100%" stopColor="#ffcd00" />
+                    </linearGradient>
+                  </defs>
+                </svg>
               </div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <FormControl>

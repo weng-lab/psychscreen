@@ -29,7 +29,7 @@
       "./node_modules/@types"
     ],
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "downlevelIteration": true,
     "noImplicitAny": false,
     "strict": true

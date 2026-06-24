@@ -1,26 +1,15 @@
-import path from "path";
-
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
     disableStaticImages: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      fs: path.resolve(process.cwd(), "src/empty-module.ts"),
-      // MUI v7 removed Unstable_Grid2; it's now the default Grid
-      "@mui/material/Unstable_Grid2": path.resolve(
-        process.cwd(),
-        "node_modules/@mui/material/Grid"
-      ),
-    };
-
-    return config;
+  turbopack: {
+    resolveAlias: {
+      fs: { browser: "./src/empty-module.ts" },
+      // @weng-lab/psychscreen-ui-components' compiled bundle still imports the old MUI v6 path; MUI v7 removed it, Grid is now the default
+      "@mui/material/Unstable_Grid2": "@mui/material/Grid",
+    },
   },
 };
 

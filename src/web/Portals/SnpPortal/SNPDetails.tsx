@@ -183,6 +183,10 @@ const SNPDetails: React.FC = () => {
       id: snpid,
       ...expandedCoordinates,
     },
+    skip:
+      !coordinates.chromosome ||
+      Number.isNaN(coordinates.start) ||
+      Number.isNaN(coordinates.end),
     context: {
       clientName: "psychscreen",
     },

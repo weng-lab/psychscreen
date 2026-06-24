@@ -116,7 +116,11 @@ const SingleCelldegCelltypeDotplot = (props) => {
               onChange={props.handleChange}
             >
               {props.degDiseases.map((d) => {
-                return <MenuItem value={d}>{d}</MenuItem>;
+                return (
+                  <MenuItem key={d} value={d}>
+                    {d}
+                  </MenuItem>
+                );
               })}
             </MUISelect>
           </FormControl>
@@ -147,7 +151,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
               >
                 {["log2(fold change)", "-log10(p-adj)"].map((d) => {
                   return (
-                    <MenuItem value={d}>
+                    <MenuItem key={d} value={d}>
                       {d === "log2(fold change)" ? (
                         <>
                           log<sub>2</sub>(fold change)
@@ -223,15 +227,15 @@ const SingleCelldegCelltypeDotplot = (props) => {
               title1={
                 <>
                   {"-log"}
-                  <tspan baseline-shift="sub">10</tspan>(
+                  <tspan baselineShift="sub">10</tspan>(
                   <tspan fontStyle="italic">P</tspan>
-                  <tspan baseline-shift="sub">adj</tspan>)
+                  <tspan baselineShift="sub">adj</tspan>)
                 </>
               }
               title2={
                 <>
                   {"log"}
-                  <tspan baseline-shift="sub">2</tspan>
+                  <tspan baselineShift="sub">2</tspan>
                   {"(fold change)"}
                 </>
               }

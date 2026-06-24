@@ -76,7 +76,9 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
     <ApolloProvider client={client}>
-      <Router>
+      <Router
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <div className="app">
           <div className="header">
             <Header />
