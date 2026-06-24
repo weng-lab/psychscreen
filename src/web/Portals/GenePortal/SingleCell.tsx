@@ -1,5 +1,6 @@
 ﻿import { gql, useQuery } from "@apollo/client";
 import {
+  Box,
   CircularProgress,
   Tabs,
   ToggleButton,
@@ -11,18 +12,28 @@ import {
 
 import Grid from "@mui/material/Grid";
 import { DataTable } from "@weng-lab/psychscreen-ui-components";
-import { Chart, linearTransform, Scatter } from "jubilant-carnival";
-import React, { useMemo, useRef, useState } from "react";
+import { linearTransform } from "jubilant-carnival";
+import { Point, ScatterPlot, DownloadPlotHandle } from "@weng-lab/visualization";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
-import { lower5, range, upper5 } from "./GTexUMAP";
-import { downloadSVGAsPNG } from "../../svgToPng";
 import { downloadSVG } from "./violin/utils";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect, Tab } from "@mui/material";
 import { Download } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
 import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
+
+// Band-aid: ScatterPlot's controls are absolutely positioned on the left of the container.
+// The square plot uses min(width, height), so we keep height < width to ensure the controls
+// don't overlap the plot. Measure the container width and cap height at width - CONTROLS_OFFSET.
+const CONTROLS_OFFSET = 65;
+
+type UMAPPointMetadata = {
+  cluster: string;
+  val: number;
+};
 
 const COLUMNS = [
   {
@@ -395,6 +406,7 @@ const SingleCell: React.FC<{
   pedataset: string;
   selectDatasets: boolean;
 }> = ({ gene, pedataset, selectDatasets }) => {
+  const theme = useTheme();
   const [dataset, setDataset] = useState(pedataset);
   const [ctClass, setCtClass] = useState("by Cell type");
   const { loading, data, colors, maximumValue } = useSingleCellData(
@@ -402,7 +414,6 @@ const SingleCell: React.FC<{
     gene,
     ctClass
   );
-  const [tooltip, setTooltip] = useState(-1);
   const [highlighted, setHighlighted] = useState("");
   const [colorScheme, setColorScheme] = React.useState<string | null>(
     "expression"
@@ -463,76 +474,47 @@ const SingleCell: React.FC<{
           })
       : [];
 
-  const points = useMemo(
+  const points: Point<UMAPPointMetadata>[] = useMemo(
     () =>
-      [...data.values()].slice(6000).map((x) => ({
-        x: x.umap_1,
-        y: x.umap_2,
-        data: ctClass === "by Cell type" ? x.subclass : x.celltype,
-        val: x.val,
-        svgProps: {
-          fill:
+      [...data.values()].slice(6000).map((x) => {
+        const cluster = ctClass === "by Cell type" ? x.subclass : x.celltype;
+        const isHighlighted = cluster === highlighted;
+        return {
+          x: x.umap_1,
+          y: x.umap_2,
+          r: isHighlighted ? 6 : 4,
+          color:
             colorScheme === "expression"
               ? x.expressionColor
-              : colors.get(
-                  ctClass === "by Cell type" ? x.subclass : x.celltype
-                ),
-          fillOpacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
-          r: 8,
-          strokeWidth:
-            ctClass === "by Cell type"
-              ? x.subclass === highlighted
-                ? 4
-                : 0
-              : x.celltype === highlighted
-              ? 4
-              : 0,
-          stroke: "#000000",
-          strokeOpacity: 0.4,
-        },
-      })),
+              : colors.get(cluster),
+          opacity: colorScheme === "expression" && x.val === 0 ? 0.1 : 0.6,
+          stroke: isHighlighted ? "#000000" : undefined,
+          metaData: { cluster, val: x.val },
+        };
+      }),
     [data, highlighted, colorScheme, colors, ctClass]
   );
-  /*const groupedVals = useMemo( () => {
-        const groups = groupBy(points, x => x.data, x => x.val);
-        return [ ...groups.keys() ].sort().map(x => [{
-            header: "Cell Type",
-            value: x
-        }, {
-            header: "Fraction Cells Non-Zero",
-            value: groups.get(x)!.filter(x => x !== 0).length / groups.get(x)!.length,
-            render: (groups.get(x)!.filter(x => x !== 0).length / groups.get(x)!.length).toFixed(3)
-        }, {
-            header: "Average Expression",
-            value: groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length,
-            render: (groups.get(x)!.reduce((x, c) => x + c, 0) / groups.get(x)!.length).toFixed(3)
-        }]).sort((a, b) => -(+a[2].value - +b[2].value));
-    }, [ points ]);*/
 
-  const domain = useMemo(
-    () =>
-      points.length === 0
-        ? { x: { start: 0, end: 1 }, y: { start: 0, end: 1 } }
-        : {
-            x: {
-              start: lower5(Math.min(...points.map((x) => x.x)) * 1.1),
-              end: upper5(Math.max(...points.map((x) => x.x))),
-            },
-            y: {
-              start: lower5(Math.min(...points.map((x) => x.y)) * 1.1),
-              end: upper5(Math.max(...points.map((x) => x.y))),
-            },
-          },
-    [points]
-  );
   const [cttabIndex, setCtTabIndex] = useState(0);
 
   const handleCtTabChange = (_: any, newTabIndex: number) => {
     setCtTabIndex(newTabIndex);
   };
 
-  const chartRef = useRef<SVGSVGElement>(null);
+  const chartRef = useRef<DownloadPlotHandle>(null);
   const dotPlotRef = useRef<SVGSVGElement>(null);
+
+  const plotContainerRef = useRef<HTMLDivElement>(null);
+  const [plotContainerWidth, setPlotContainerWidth] = useState(0);
+  useEffect(() => {
+    const el = plotContainerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) =>
+      setPlotContainerWidth(entry.contentRect.width)
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
@@ -703,124 +685,57 @@ const SingleCell: React.FC<{
           )}
           {points && points.length > 0 ? (
             <Grid size={{ xs: 12, md: 7 }}>
-              <div>
-                {loading ? (
-                  <CircularProgress />
-                ) : (
-                  <Chart
+              <Stack direction="row" spacing={1}>
+                <Box
+                  ref={plotContainerRef}
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    position: "relative",
+                    height: 500,
+                    ...(plotContainerWidth > 0 && {
+                      maxHeight: plotContainerWidth - CONTROLS_OFFSET,
+                    }),
+                  }}
+                >
+                  <ScatterPlot
                     key={dataset}
-                    marginFraction={0.24}
-                    innerSize={{ width: 2000, height: 2000 }}
-                    domain={domain}
-                    xAxisProps={{
-                      ticks: range(domain.x.start, domain.x.end + 1, 5),
-                      title: "UMAP-2",
-                    }}
-                    yAxisProps={{
-                      ticks: range(domain.y.start, domain.y.end + 1, 5),
-                      title: "UMAP-1",
-                    }}
-                    scatterData={[points]}
+                    pointData={points}
+                    loading={loading}
+                    groupPointsAnchor="cluster"
+                    controlsHighlight={theme.palette.primary.main}
+                    tooltipBody={(point) => (
+                      <Typography>
+                        {point.metaData?.cluster.replace(/_/g, " ")}
+                      </Typography>
+                    )}
+                    leftAxisLabel="UMAP-1"
+                    bottomAxisLabel="UMAP-2"
                     ref={chartRef}
-                  >
-                    <Scatter
-                      data={points}
-                      onPointMouseOver={(i: number) => {
-                        setTooltip(i);
-                        setHighlighted(points[i]?.data);
-                      }}
-                      onPointMouseOut={() => {
-                        setTooltip(-1);
-                        setHighlighted("");
+                    downloadFileName={`${gene}-${dataset}-single-cell-UMAP.png`}
+                  />
+                </Box>
+                {colorScheme === "expression" && (
+                  <Stack alignItems="center" spacing={0.5}>
+                    <Typography variant="caption">
+                      {maximumValue.toFixed(1)}
+                    </Typography>
+                    <Box
+                      sx={{
+                        width: 14,
+                        flex: 1,
+                        borderRadius: 1,
+                        background: "linear-gradient(to bottom, red, #ffcd00)",
                       }}
                     />
-                    {tooltip > -1 && (
-                      <rect
-                        x={
-                          points[tooltip].x -
-                          points[tooltip].data.replace(/_/g, " ").length * 1
-                        }
-                        y={points[tooltip].y - 3 + 0.7}
-                        width={
-                          points[tooltip].data.replace(/_/g, " ").length * 1 * 2
-                        }
-                        height={3}
-                        stroke="#000000"
-                        strokeWidth={0.05}
-                        fill="#ffffff"
-                        fillOpacity={0.9}
-                      />
-                    )}
-                    {tooltip > -1 && (
-                      <text
-                        x={points[tooltip].x}
-                        y={points[tooltip].y - 4.2 - 0.1}
-                        fontSize={2}
-                        textAnchor="middle"
-                      >
-                        {points[tooltip].data.replace(/_/g, " ")}
-                      </text>
-                    )}
-                    {colorScheme === "expression" && (
-                      <rect
-                        x={upper5(Math.max(...points.map((x) => x.x))) + 2}
-                        y={upper5(Math.max(...points.map((x) => x.y))) - 2}
-                        width={1}
-                        height={
-                          upper5(Math.max(...points.map((x) => x.y))) -
-                          lower5(Math.min(...points.map((x) => x.y))) -
-                          5
-                        }
-                        fill="url(#scale)"
-                      />
-                    )}
-                    {colorScheme === "expression" && (
-                      <text
-                        x={upper5(Math.max(...points.map((x) => x.x))) + 1}
-                        y={
-                          (lower5(Math.min(...points.map((x) => x.y))) +
-                            upper5(Math.max(...points.map((x) => x.y)))) /
-                            2 +
-                          0.5
-                        }
-                        transform="rotate(-90)"
-                        fontSize={1.5}
-                        textAnchor="middle"
-                      >
-                        <tspan fontStyle="italic">{gene}</tspan>
-                        {"  "} Expression
-                      </text>
-                    )}
-                    {colorScheme === "expression" && (
-                      <text
-                        x={upper5(Math.max(...points.map((x) => x.x))) + 4}
-                        y={upper5(Math.max(...points.map((x) => x.y))) - 2.5}
-                        fontSize={1.2}
-                      >
-                        {maximumValue.toFixed(1)}
-                      </text>
-                    )}
-                    {colorScheme === "expression" && (
-                      <text
-                        x={upper5(Math.max(...points.map((x) => x.x))) + 4}
-                        y={lower5(Math.min(...points.map((x) => x.y))) + 2.5}
-                        fontSize={1.2}
-                      >
-                        0.0
-                      </text>
-                    )}
-                  </Chart>
+                    <Typography variant="caption">0.0</Typography>
+                    <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                      {gene}
+                    </Typography>
+                    <Typography variant="caption">Expression</Typography>
+                  </Stack>
                 )}
-                {/* Rendered outside <Chart> so PlotArea doesn't clone a chart `transform`/`domain` onto it */}
-                <svg width={0} height={0} style={{ position: "absolute" }}>
-                  <defs>
-                    <linearGradient id="scale" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stopColor="red" />
-                      <stop offset="100%" stopColor="#ffcd00" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
+              </Stack>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <FormControl>
                   <FormLabel>UMAP Color Scheme:</FormLabel>
@@ -847,13 +762,7 @@ const SingleCell: React.FC<{
                 </FormControl>
                 <Button
                   startIcon={<Download />}
-                  onClick={() =>
-                    chartRef?.current &&
-                    downloadSVGAsPNG(
-                      chartRef.current,
-                      `${gene}-${dataset}-single-cell-UMAP.png`
-                    )
-                  }
+                  onClick={() => chartRef.current?.downloadPNG()}
                   sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
                 >
                   Download
