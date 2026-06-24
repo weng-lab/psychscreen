@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../src/index.css";
 import "../src/App.css";
 import "@weng-lab/psychscreen-ui-components/src/App.css";
+import MuiXLicense from "../src/web/MuiXLicense";
 
 export const metadata: Metadata = {
   title: "PsychSCREEN",
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <MuiXLicense />
+      </body>
     </html>
   );
 }

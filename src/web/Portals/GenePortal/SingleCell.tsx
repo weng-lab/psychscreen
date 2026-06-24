@@ -8,13 +8,13 @@ import {
   Button,
   Stack,
   FormLabel,
-  Typography } from "@mui/material";
+  Typography,
+  useMediaQuery } from "@mui/material";
 
 import Grid from "@mui/material/Grid";
-import { DataTable } from "@weng-lab/psychscreen-ui-components";
 import { linearTransform } from "jubilant-carnival";
 import { Point, ScatterPlot, DownloadPlotHandle } from "@weng-lab/visualization";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DotPlot from "../SingleCellPortal/DotPlot";
 import { downloadSVG } from "./violin/utils";
 import InputLabel from "@mui/material/InputLabel";
@@ -23,7 +23,7 @@ import FormControl from "@mui/material/FormControl";
 import { Select as MUISelect, Tab } from "@mui/material";
 import { Download } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
-import { GENE_CELLTYPE_CARDS } from "../SingleCellPortal/consts";
+import SingleCellExpressionTable from "./SingleCellExpressionTable";
 
 // Band-aid: ScatterPlot's controls are absolutely positioned on the left of the container.
 // The square plot uses min(width, height), so we keep height < width to ensure the controls
@@ -34,54 +34,6 @@ type UMAPPointMetadata = {
   cluster: string;
   val: number;
 };
-
-const COLUMNS = [
-  {
-    header: "Cell type",
-    headerRender: () => {
-      return <b>Cell type</b>;
-    },
-    value: (row) =>
-      GENE_CELLTYPE_CARDS.find((c) => c.val === row.celltype)?.cardLabel ||
-      row.celltype,
-    render: (row) => {
-      let option =
-        GENE_CELLTYPE_CARDS.find((c) => c.val === row.celltype)?.cardLabel ||
-        row.celltype;
-      return (
-        <>
-          {option.includes("-expressing") ? (
-            <>
-              <i>{option.split("-expressing")[0]}</i>
-              <>
-                {" -expressing"}
-                {option.split("-expressing")[1]}
-              </>
-            </>
-          ) : (
-            option
-          )}
-        </>
-      );
-    },
-  },
-  {
-    header: "Fraction Cells Non-Zero",
-    headerRender: () => {
-      return <b>Fraction Cells Non-Zero</b>;
-    },
-    value: (row) => row.pctexp,
-    render: (row) => row.pctexp.toFixed(2),
-  },
-  {
-    header: "Average Expression",
-    headerRender: () => {
-      return <b>Average Expression</b>;
-    },
-    value: (row) => row.avgexp,
-    render: (row) => row.avgexp.toFixed(2),
-  },
-];
 
 export type SingleCellGeneQueryItem = {
   sampleid: string;
@@ -515,13 +467,41 @@ const SingleCell: React.FC<{
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  // Match the table's height to the UMAP column (plot + legend + download row) so they end at the same line.
+  // Uses callback refs (not useRef + useEffect([])) since these elements only mount once data resolves,
+  // which happens after the initial render -- a one-time effect would miss the later mount.
+  const [umapColumnHeight, setUmapColumnHeight] = useState(0);
+  const umapColumnObserver = useRef<ResizeObserver | null>(null);
+  const umapColumnRef = useCallback((el: HTMLDivElement | null) => {
+    umapColumnObserver.current?.disconnect();
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) => setUmapColumnHeight(entry.contentRect.height));
+    observer.observe(el);
+    umapColumnObserver.current = observer;
+  }, []);
+  // Height (including margin) of the "By Cell Type"/"By Broader Cell Type" buttons sitting above the
+  // table in its column, subtracted from umapColumnHeight so the table itself (not its column) ends
+  // level with the UMAP column.
+  const [tableHeaderHeight, setTableHeaderHeight] = useState(0);
+  const tableHeaderObserver = useRef<ResizeObserver | null>(null);
+  const tableHeaderRef = useCallback((el: HTMLDivElement | null) => {
+    tableHeaderObserver.current?.disconnect();
+    if (!el) return;
+    const measure = () => setTableHeaderHeight(el.getBoundingClientRect().height + parseFloat(theme.spacing(1)));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    tableHeaderObserver.current = observer;
+  }, [theme]);
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
   let keys = Array.from(DATASETS.keys());
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} alignItems="flex-start">
       {selectDatasets && (
         <>
           <Grid size={12}>
@@ -567,7 +547,7 @@ const SingleCell: React.FC<{
         </Tabs>
       </Grid>
       {tabIndex === 1 ? (
-        <Grid size={12}>
+        <Grid size={12} sx={{height: "600px"}}>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : dotplotDataSc.length > 0 || dotplotDataCt.length > 0 ? (
@@ -646,7 +626,7 @@ const SingleCell: React.FC<{
             <CircularProgress />
           ) : (
             <Grid size={{ xs: 12, md: 5 }}>
-              <Stack direction="row" spacing={1} mb={1}>
+              <Stack direction="row" spacing={1} mb={1} ref={tableHeaderRef}>
                 <Button
                   variant={ctClass === "by Cell type" ? "contained" : "outlined"}
                   key={"by Cell type"}
@@ -663,8 +643,7 @@ const SingleCell: React.FC<{
                 </Button>
               </Stack>
               {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
-                <DataTable
-                  columns={COLUMNS}
+                <SingleCellExpressionTable
                   rows={
                     ctClass === "by Cell type"
                       ? scrows
@@ -672,11 +651,13 @@ const SingleCell: React.FC<{
                           .filter((e) => e.dataset === dataset)
                       : ctrows.filter((e) => e.dataset === dataset)
                   }
-                  itemsPerPage={10}
-                  searchable
-                  sortColumn={2}
-                  onRowMouseEnter={(row: any) => setHighlighted(row.celltype)}
+                  onRowMouseEnter={(row) => setHighlighted(row.celltype)}
                   onRowMouseLeave={() => setHighlighted("")}
+                  height={
+                    isMdUp && umapColumnHeight > 0
+                      ? Math.max(umapColumnHeight - tableHeaderHeight, 0)
+                      : undefined
+                  }
                 />
               ) : (
                 <>{"Data Not available"}</>
@@ -684,7 +665,7 @@ const SingleCell: React.FC<{
             </Grid>
           )}
           {points && points.length > 0 ? (
-            <Grid size={{ xs: 12, md: 7 }}>
+            <Grid size={{ xs: 12, md: 7 }} ref={umapColumnRef}>
               <Stack direction="row" spacing={1}>
                 <Box
                   ref={plotContainerRef}
