@@ -673,7 +673,7 @@ const SingleCell: React.FC<{
                     flex: 1,
                     minWidth: 0,
                     position: "relative",
-                    height: 500,
+                    height: 650,
                     ...(plotContainerWidth > 0 && {
                       maxHeight: plotContainerWidth - CONTROLS_OFFSET,
                     }),

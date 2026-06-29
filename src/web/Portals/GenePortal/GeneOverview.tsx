@@ -1,8 +1,7 @@
 ﻿import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Chart, Scatter } from "jubilant-carnival";
-import {
-  CustomizedTable} from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { tissueTypeColors } from "./consts";
 import { lower5, range, upper5 } from "./GTexUMAP";
@@ -291,101 +290,86 @@ function specificityCategory(c: number, k: string): string {
   return "not specific";
 }
 
+type GeneOverviewRow = {
+  id: string;
+  property: React.ReactNode;
+  value: React.ReactNode;
+};
+
+const geneOverviewColumns: TableColDef<GeneOverviewRow>[] = [
+  {
+    field: "property",
+    headerName: "",
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params) => params.value,
+  },
+  {
+    field: "value",
+    headerName: "",
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params) => params.value,
+  },
+];
+
 const GeneOverview: React.FC<{ gene?: string | undefined }> = ({ gene }) => {
   const [category, setCategory] = useState("all");
   const description = useGeneDescription(gene || "N/A");
   const specificities = useSpecificities(gene || "");
 
-  const data = useMemo(
+  const data = useMemo<GeneOverviewRow[]>(
     () => [
-      [
-        {
-          header: "",
-          value: "Gene Description",
-        },
-        {
-          header: "",
-          value: description,
-        },
-      ],
-      [
-        {
-          header: "",
-          value: "Overall Brain Specificity Score",
-        },
-        {
-          header: "",
-          value: specificities.get("brain")?.toFixed(3) || "loading",
-          render:
-            specificities.get("brain") !== undefined ? (
-              <span
-                style={{
-                  fontWeight:
-                    specificityCategory(
-                      specificities.get("brain")!,
-                      "brain"
-                    ) !== "not specific"
-                      ? "bold"
-                      : "normal",
-                }}
-              >
-                {specificityCategory(specificities.get("brain")!, "brain")} (
-                {specificities.get("brain")!.toFixed(3)})
-              </span>
-            ) : (
-              ""
-            ),
-        },
-      ],
-      [
-        {
-          header: "",
-          value: "",
-        },
-        {
-          header: "",
-          value: "",
-        },
-      ],
-      [
-        {
-          header: "",
-          value: "Brain Region Specificity",
-          render: (
-            <span style={{ fontWeight: "bold" }}>Brain Region Specificity</span>
-          ),
-        },
-        {
-          header: "",
-          value: "",
-        },
-      ],
-      ...LABEL_ORDER.filter(
-        (x) => x !== "brain" && specificities.get(x) !== undefined
-      ).map((k) => [
-        {
-          header: "",
-          value: `${LABEL_MAP[k]} Specificity Score`,
-        },
-        {
-          header: "",
-          value: (specificities.get(k)! * 10).toFixed(3),
-          render: (
+      { id: "description", property: "Gene Description", value: description },
+      {
+        id: "brain-specificity",
+        property: "Overall Brain Specificity Score",
+        value:
+          specificities.get("brain") !== undefined ? (
             <span
               style={{
                 fontWeight:
-                  specificityCategory(specificities.get(k)!, k) !==
+                  specificityCategory(specificities.get("brain")!, "brain") !==
                   "not specific"
                     ? "bold"
                     : "normal",
               }}
             >
-              {specificityCategory(specificities.get(k)!, k)} (
-              {(specificities.get(k)! * 10).toFixed(3)})
+              {specificityCategory(specificities.get("brain")!, "brain")} (
+              {specificities.get("brain")!.toFixed(3)})
             </span>
+          ) : (
+            "loading"
           ),
-        },
-      ]),
+      },
+      { id: "spacer", property: "", value: "" },
+      {
+        id: "brain-region-header",
+        property: (
+          <span style={{ fontWeight: "bold" }}>Brain Region Specificity</span>
+        ),
+        value: "",
+      },
+      ...LABEL_ORDER.filter(
+        (x) => x !== "brain" && specificities.get(x) !== undefined
+      ).map((k) => ({
+        id: `specificity-${k}`,
+        property: `${LABEL_MAP[k]} Specificity Score`,
+        value: (
+          <span
+            style={{
+              fontWeight:
+                specificityCategory(specificities.get(k)!, k) !==
+                "not specific"
+                  ? "bold"
+                  : "normal",
+            }}
+          >
+            {specificityCategory(specificities.get(k)!, k)} (
+            {(specificities.get(k)! * 10).toFixed(3)})
+          </span>
+        ),
+      })),
     ],
     [description, specificities]
   );
@@ -397,7 +381,15 @@ const GeneOverview: React.FC<{ gene?: string | undefined }> = ({ gene }) => {
           Details and Brain Expression Pattern: {gene}
         </Typography>
         {data.length > 0 && (
-          <CustomizedTable style={{ width: "max-content" }} tabledata={data} />
+          <Table
+            columns={geneOverviewColumns}
+            rows={data}
+            showToolbar={false}
+            hideFooter
+            autoHeight
+            divHeight={{ maxHeight: 750 }}
+            emptyTableFallback="No gene overview data available"
+          />
         )}
       </Grid>
       <Grid size={6}>

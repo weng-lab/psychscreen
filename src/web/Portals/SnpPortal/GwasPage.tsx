@@ -2,7 +2,7 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { DataTable } from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 
 type GWASPageProps = {
   id: string;
@@ -30,28 +30,29 @@ const QUERY = gql`
   }
 `;
 
+const gwasColumns: TableColDef<GWASEntry>[] = [
+  {
+    field: "pubMedId",
+    headerName: "PubMed ID",
+    renderCell: (params) => (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={`https://pubmed.ncbi.nlm.nih.gov/${params.value}`}
+        style={{ color: "#0000EE" }}
+      >
+        {params.value}
+      </a>
+    ),
+  },
+  { field: "author", headerName: "Lead Author" },
+  { field: "name", headerName: "Trait" },
+];
+
 const GwasPage: React.FC<GWASPageProps> = (props) => {
   const { data } = useQuery<QueryResponse>(QUERY, {
     variables: { id: props.id },
   });
-
-  const gwasColumns = [
-    {
-      header: "PubMed ID",
-      value: (d) => d.pubMedId,
-      render: (d) => (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`https://pubmed.ncbi.nlm.nih.gov/${d.pubMedId}`}
-        >
-          {d.pubMedId}
-        </a>
-      ),
-    },
-    { header: "Lead Author", value: (d) => d.author },
-    { header: "Trait", value: (d) => d.name },
-  ];
 
   return (
     <Grid container {...props}>
@@ -72,9 +73,12 @@ const GwasPage: React.FC<GWASPageProps> = (props) => {
             </Typography>
           )}
           {data && data.snpQuery[0]?.genomeWideAssociation.length > 0 && (
-            <DataTable
+            <Table
+              label="Genome-Wide Associations"
               columns={gwasColumns}
               rows={data.snpQuery[0]?.genomeWideAssociation}
+              divHeight={{ maxHeight: 750 }}
+              emptyTableFallback="No genome-wide associations found"
             />
           )}
         </Container>

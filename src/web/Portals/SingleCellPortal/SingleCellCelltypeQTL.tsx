@@ -14,6 +14,7 @@ const COLUMNS = [
         target="_blank"
         rel="noopener noreferrer"
         href={`/psychscreen/gene/${row.name}`}
+        style={{ color: "#0000EE" }}
       >
         <i>{row.name}</i>
       </a>

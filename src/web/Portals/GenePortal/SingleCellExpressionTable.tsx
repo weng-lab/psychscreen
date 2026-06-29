@@ -33,7 +33,7 @@ const columns: TableColDef<SingleCellExpressionRow>[] = [
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: 100,
+              maxWidth: 125,
             }}>
           <i>{prefix}</i>
           {" -expressing"}
@@ -44,7 +44,7 @@ const columns: TableColDef<SingleCellExpressionRow>[] = [
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: 100,
+              maxWidth: 125,
             }}>
           {label}
             </div>
@@ -68,10 +68,12 @@ const columns: TableColDef<SingleCellExpressionRow>[] = [
 const SingleCellExpressionTable = ({ rows, onRowMouseEnter, onRowMouseLeave, height }: SingleCellExpressionTableProps) => {
   return (
     <Table
+      label="Cell Type Expression"
       columns={columns}
       rows={rows}
       getRowId={(row) => row.celltype}
       divHeight={height ? { height } : undefined}
+      emptyTableFallback="No cell type expression data found"
       initialState={{
         sorting: { sortModel: [{ field: "avgexp", sort: "desc" }] },
       }}

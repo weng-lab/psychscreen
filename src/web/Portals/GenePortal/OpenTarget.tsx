@@ -199,6 +199,7 @@ const OpenTarget: React.FC<any> = (props) => {
                 target={"_blank"}
                 rel={"noreferrer noopener"}
                 href={`https://genetics.opentargets.org/study/${q.study.studyId}`}
+                style={{ color: "#0000EE" }}
               >
                 {q.study.studyId}
               </a>
@@ -216,6 +217,7 @@ const OpenTarget: React.FC<any> = (props) => {
                 target={"_blank"}
                 rel={"noreferrer noopener"}
                 href={`http://europepmc.org/article/MED/${q.study.pmid}`}
+                style={{ color: "#0000EE" }}
               >
                 {q.study.pubAuthor}
               </a>
@@ -236,6 +238,7 @@ const OpenTarget: React.FC<any> = (props) => {
                 target={"_blank"}
                 rel={"noreferrer noopener"}
                 href={`https://genetics.opentargets.org/variant/${q.variant.id}`}
+                style={{ color: "#0000EE" }}
               >
                 {q.variant.id}
               </a>
@@ -279,6 +282,7 @@ const OpenTarget: React.FC<any> = (props) => {
                 target={"_blank"}
                 rel={"noreferrer noopener"}
                 href={`https://genetics.opentargets.org/study-locus/${q.study.studyId}/${q.variant.id}`}
+                style={{ color: "#0000EE" }}
               >
                 Gene Prioritisation
               </a>

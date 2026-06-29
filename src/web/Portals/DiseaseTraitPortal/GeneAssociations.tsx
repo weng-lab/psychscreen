@@ -1,6 +1,6 @@
 ﻿import React, { useMemo } from "react";
 import { Container, CircularProgress, Typography } from "@mui/material";
-import { DataTable } from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import { GridProps } from "@mui/material/Grid";
 
 type GeneAssociation = {
@@ -18,54 +18,68 @@ export type GeneAssociationsProps = GridProps & {
   data: GeneAssociation[];
 };
 
-const formatEntry = [
-  { header: "Gene ID", value: (d) => d.gene_id },
+const formatEntry: TableColDef<GeneAssociation>[] = [
+  { field: "gene_id", headerName: "Gene ID" },
   {
-    header: "Gene Name",
-    value: (d) => d.gene_name,
-    render: (d) => (
+    field: "gene_name",
+    headerName: "Gene Name",
+    renderCell: (params) => (
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${d.gene_name}`}
+        href={`/psychscreen/gene/${params.value}`}
+        style={{ color: "#0000EE" }}
       >
-        <i>{d.gene_name}</i>
+        <i>{params.value}</i>
       </a>
     ),
   },
-
-  { header: "Hsq", value: (d) => d.hsq.toFixed(2) },
   {
-    header: "P",
-    HeaderRender: () => (
+    field: "hsq",
+    headerName: "Hsq",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
+  },
+  {
+    field: "twas_p",
+    headerName: "P",
+    type: "number",
+    renderHeader: () => (
       <Typography>
         <i>P</i>
       </Typography>
     ),
-    value: (d) =>
-      d.twas_p < 0.01 ? d.twas_p.toExponential(2) : d.twas_p.toFixed(2),
+    valueFormatter: (value: number) =>
+      value < 0.01 ? value.toExponential(2) : value.toFixed(2),
   },
   {
-    header: "Q",
-    HeaderRender: () => (
+    field: "twas_bonferroni",
+    headerName: "Q",
+    type: "number",
+    renderHeader: () => (
       <Typography>
         <i>Q</i>
       </Typography>
     ),
-    value: (d) =>
-      d.twas_bonferroni < 0.01
-        ? d.twas_bonferroni.toExponential(2)
-        : d.twas_bonferroni.toFixed(2),
+    valueFormatter: (value: number) =>
+      value < 0.01 ? value.toExponential(2) : value.toFixed(2),
   },
-  { header: "FDR", value: (d) => d.dge_fdr.toFixed(2) },
   {
-    header: "log2(fold change)",
-    value: (d) => d.dge_log2fc.toFixed(2),
-    HeaderRender: () => (
+    field: "dge_fdr",
+    headerName: "FDR",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
+  },
+  {
+    field: "dge_log2fc",
+    headerName: "log2(fold change)",
+    type: "number",
+    renderHeader: () => (
       <Typography>
         Log<sub>2</sub>(fold change)
       </Typography>
     ),
+    valueFormatter: (value: number) => value.toFixed(2),
   },
 ];
 
@@ -78,11 +92,16 @@ const GeneAssociations: React.FC<GeneAssociationsProps> = (props) => {
   );
 
   return props.data && tabledata ? (
-    <DataTable
+    <Table
+      label="Gene Associations"
       columns={formatEntry}
       rows={tabledata}
-      itemsPerPage={10}
-      searchable
+      getRowId={(row) => row.gene_id}
+      initialState={{
+        pagination: { paginationModel: { pageSize: 10 } },
+      }}
+      divHeight={{ maxHeight: 750 }}
+      emptyTableFallback="No gene associations found"
     />
   ) : (
     <CircularProgress color="inherit" />

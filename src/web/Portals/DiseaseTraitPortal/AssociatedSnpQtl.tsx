@@ -1,7 +1,7 @@
 ﻿import React, { useMemo } from "react";
 import { Container } from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
-import { CustomizedTable } from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GwasIntersectingSnpsWithCcres } from "./DiseaseIntersectingSnpsWithccres";
 
@@ -28,25 +28,35 @@ export function compareByMinimumP(
   return Math.min(...a.association_p_val) - Math.min(...b.association_p_val);
 }
 
+const associatedSnpQtlColumns: TableColDef<GWAS_SNP>[] = [
+  { field: "snpid", headerName: "SNP ID" },
+  { field: "chrom", headerName: "Chromosome" },
+  {
+    field: "stop",
+    headerName: "Position",
+    type: "number",
+    valueFormatter: (value: number) => value.toLocaleString(),
+  },
+  {
+    field: "analyses_identifying_snp",
+    headerName: "Number of Supporting GWAS",
+    type: "number",
+  },
+  { field: "riskallele", headerName: "Risk Allele" },
+  { field: "associated_gene", headerName: "Nearest Gene" },
+  {
+    field: "association_p_val",
+    headerName: "GWAS p-value",
+    valueGetter: (_, row) => row.association_p_val.join(","),
+  },
+];
+
 const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = ({
   data,
   ...props
 }) => {
-  const SnpAssociationData = useMemo(
-    () =>
-      data &&
-      [...data].sort(compareByMinimumP).map((d: GWAS_SNP) => [
-        { header: "SNP ID", value: d.snpid },
-        { header: "Chromosome", value: d.chrom },
-        { header: "Position", value: d.stop.toLocaleString() },
-        {
-          header: "Number of Supporting GWAS",
-          value: d.analyses_identifying_snp,
-        },
-        { header: "Risk Allele", value: d.riskallele },
-        { header: "Nearest Gene", value: d.associated_gene },
-        { header: "GWAS p-value", value: d.association_p_val.join(",") },
-      ]),
+  const sortedData = useMemo(
+    () => data && [...data].sort(compareByMinimumP),
     [data]
   );
 
@@ -54,10 +64,14 @@ const AssociatedSnpQtl: React.FC<AssociatedSnpQtlProps> = ({
     <Grid container {...props}>
       <Grid size={{ sm: 12 }}>
         <Container style={{ marginTop: "30px", marginLeft: "130px" }}>
-          {data ? (
-            <CustomizedTable
-              style={{ width: "max-content" }}
-              tabledata={SnpAssociationData}
+          {sortedData ? (
+            <Table
+              label="Associated SNPs"
+              columns={associatedSnpQtlColumns}
+              rows={sortedData}
+              getRowId={(row) => row.snpid}
+              divHeight={{ maxHeight: 750 }}
+              emptyTableFallback="No associated SNPs found"
             />
           ) : (
             <CircularProgress color="inherit" />

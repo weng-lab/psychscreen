@@ -1,8 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { CircularProgress, Typography } from "@mui/material";
-import {
-  CustomizedTable
-} from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import React, { useMemo } from "react";
 import { GenomicRange } from "./SNPDetails";
 
@@ -100,6 +98,58 @@ export const GROUPS: Map<string, string> = new Map([
   ["zunclassified", "zunclassified"],
 ]);
 
+const regulatoryElementsColumns: TableColDef<CCREEntry>[] = [
+  { field: "accession", headerName: "cCRE ID" },
+  {
+    field: "group",
+    headerName: "cCRE Class",
+    renderCell: (params) => (
+      <svg height={18}>
+        <rect
+          width={10}
+          height={10}
+          y={3}
+          fill={COLORS.get(params.row.group || "") || "#06da93"}
+        />
+        <text x={16} y={12}>
+          {GROUPS.get(params.row.group || "") || params.row.group || "rDHS"}
+        </text>
+      </svg>
+    ),
+  },
+  {
+    field: "dnaseZ",
+    headerName: "DNase Z-score in fetal brain",
+    type: "number",
+    renderCell: (params) =>
+      params.value ? (
+        <span style={{ fontWeight: params.value > 1.64 ? "bold" : "normal" }}>
+          {params.value.toFixed(2)}
+        </span>
+      ) : (
+        <span>--</span>
+      ),
+  },
+  {
+    field: "chromosome",
+    headerName: "Chromosome",
+    valueGetter: (_, row) => row.coordinates.chromosome,
+  },
+  {
+    field: "start",
+    headerName: "Start",
+    type: "number",
+    valueGetter: (_, row) => row.coordinates.start,
+    valueFormatter: (value: number) => value.toLocaleString(),
+  },
+  {
+    field: "length",
+    headerName: "Length",
+    type: "number",
+    valueGetter: (_, row) => row.coordinates.end - row.coordinates.start,
+  },
+];
+
 const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
   const { data, loading } = useQuery<SearchQueryResponse>(SEARCH_QUERY, {
     variables: {
@@ -119,53 +169,6 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
     [data, ur]
   );
   const combinedResults = useMemo(() => [...allResults], [allResults]);
-
-  const tableData = combinedResults.map((d) => {
-    return [
-      { header: "cCRE ID", value: d.accession },
-      {
-        header: "cCRE Class",
-        value: GROUPS.get(d.group || "") || d.group || "rDHS",
-        render: (
-          <svg height={18}>
-            <rect
-              width={10}
-              height={10}
-              y={3}
-              fill={COLORS.get(d.group || "") || "#06da93"}
-            />
-            <text x={16} y={12}>
-              {GROUPS.get(d.group || "") || d.group || "rDHS"}
-            </text>
-          </svg>
-        ),
-      },
-      {
-        header: "DNase Z-score in fetal brain",
-        value: (d.zScores && d.zScores[0].score) || -11,
-        render: d.dnaseZ ? (
-          <span style={{ fontWeight: d.dnaseZ > 1.64 ? "bold" : "normal" }}>
-            {d.dnaseZ.toFixed(2)}
-          </span>
-        ) : (
-          <span>--</span>
-        ),
-      },
-      {
-        header: "Chromosome",
-        value: d.coordinates.chromosome!,
-      },
-      {
-        header: "Start",
-        value: d.coordinates.start,
-        render: d.coordinates.start.toLocaleString(),
-      },
-      {
-        header: "Length",
-        value: d.coordinates.end - d.coordinates.start,
-      },
-    ];
-  });
 
   return loading ? (
     <>
@@ -191,10 +194,14 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
         Your search returned {combinedResults.length.toLocaleString() || 0}{" "}
         cCREs and rDHSs.
       </Typography>
-      {tableData && tableData.length > 0 && (
-        <CustomizedTable
-          style={{ width: "max-content" }}
-          tabledata={tableData}
+      {combinedResults.length > 0 && (
+        <Table
+          label="Regulatory Elements"
+          columns={regulatoryElementsColumns}
+          rows={combinedResults}
+          getRowId={(row) => row.accession}
+          divHeight={{ maxHeight: 750 }}
+          emptyTableFallback="No regulatory elements found"
         />
       )}
     </>

@@ -1,11 +1,8 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { associateBy } from "queryz";
-import {
-  CustomizedTable
-} from "@weng-lab/psychscreen-ui-components";
-import { CircularProgress, Link, Typography } from "@mui/material";
-import { DataTable } from "@weng-lab/psychscreen-ui-components";
+import { CircularProgress, Typography } from "@mui/material";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 
 export type GenomicRange = {
@@ -452,6 +449,130 @@ const QTLSIGASSOC_QUERY = gql`
   }
 `;
 
+const deconqtlColumns: TableColDef[] = [
+  {
+    field: "snpid",
+    headerName: "SNP ID",
+    renderCell: (params) => (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={`/psychscreen/snp/${params.value}`}
+        style={{ color: "#0000EE" }}
+      >
+        {params.value}
+      </a>
+    ),
+  },
+  {
+    field: "slope",
+    headerName: "Slope",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
+  },
+  {
+    field: "nom_val",
+    headerName: "eQTL nominal p-value",
+    type: "number",
+    renderHeader: () => (
+      <>
+        eQTL nominal<i>P</i>
+      </>
+    ),
+    valueFormatter: (value: number) => toScientificNotation(value, 2),
+  },
+  {
+    field: "adj_beta_pval",
+    headerName: "Adjusted beta pvalue",
+    type: "number",
+    renderHeader: () => (
+      <>
+        Adjusted beta<i>P</i>
+      </>
+    ),
+    valueFormatter: (value: number) => value.toFixed(2),
+  },
+  {
+    field: "r_squared",
+    headerName: "r Squared",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
+  },
+  {
+    field: "coordinates",
+    headerName: "Coordinates",
+    valueGetter: (_, row) => `chr${row.snp_chrom}:${row.snp_start}`,
+  },
+  { field: "celltype", headerName: "Cell Type" },
+];
+
+const allQTLsColumns: TableColDef[] = [
+  {
+    field: "id",
+    headerName: "SNP ID",
+    renderCell: (params) => (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={`/psychscreen/snp/${params.value}`}
+        style={{ color: "#0000EE" }}
+      >
+        {params.value}
+      </a>
+    ),
+  },
+  {
+    field: "eQTLFdr",
+    headerName: "eQTL FDR",
+    valueGetter: (_, row) =>
+      row.eQTL ? toScientificNotation(row.eQTL.fdr, 2) : 0,
+  },
+  {
+    field: "eQTLNominalPval",
+    headerName: "eQTL nominal p-value",
+    valueGetter: (_, row) => toScientificNotation(row.eQTL.nominal_pval, 2),
+  },
+  {
+    field: "snpCoordinates",
+    headerName: "Coordinates",
+    valueGetter: (_, row) =>
+      `${row.coordinates.chromosome}:${row.coordinates.start}`,
+  },
+  {
+    field: "intersectingCcre",
+    headerName: "Intersecting cCRE",
+    valueGetter: (_, row) =>
+      row.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
+    renderCell: (params) => {
+      const accession =
+        params.row.intersecting_ccres.intersecting_ccres[0]?.accession;
+      return accession ? (
+        <Typography
+          variant="body1"
+          style={{
+            fontSize: "14px",
+            lineHeight: "20px",
+            fontWeight: 400,
+            letterSpacing: "0.1px",
+            marginBottom: "10px",
+          }}
+        >
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${accession}&page=2`}
+            style={{ color: "#0000EE" }}
+          >
+            {params.row.bcre ? `*${accession}` : accession}
+          </a>
+        </Typography>
+      ) : (
+        <Typography variant="body1">{"--"}</Typography>
+      );
+    },
+  },
+];
+
 const AssociatedxQTL: React.FC<any> = (props) => {
   const [bccre, setbCRE] = useState<
     { accession: string; chrom: string; start: number; end: number }[]
@@ -488,56 +609,6 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     }
   );
 
-  const deconqtlColumns = [
-    {
-      header: "SNP ID",
-      value: (x) => x.snpid,
-      render: (d) => (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`/psychscreen/snp/${d.snpid}`}
-        >
-          {d.snpid}
-        </a>
-      ),
-    },
-    {
-      header: "Slope",
-      value: (x) => x.slope.toFixed(2),
-    },
-    {
-      header: "eQTL nominal p-value",
-      HeaderRender: (x) => (
-        <>
-          eQTL nominal<i>P</i>
-        </>
-      ),
-      value: (x) => toScientificNotation(x.nom_val, 2),
-    },
-    {
-      header: "Adjusted beta pvalue",
-      HeaderRender: (x) => (
-        <>
-          Adjusted beta<i>P</i>
-        </>
-      ),
-      value: (x) => x.adj_beta_pval.toFixed(2),
-    },
-    {
-      header: "r Squared",
-      value: (x) => x.r_squared.toFixed(2),
-    },
-    {
-      header: "Coordinates",
-      value: (x) => "chr" + x.snp_chrom + ":" + x.snp_start,
-    },
-    {
-      header: "Cell Type",
-      value: (x) => x.celltype,
-    },
-  ];
-
   const groupedQTLs: Map<string, EQTL> = useMemo(
     () =>
       associateBy(
@@ -566,75 +637,6 @@ const AssociatedxQTL: React.FC<any> = (props) => {
       [],
     [snpCoordinateData, groupedQTLs]
   );
-
-  const allQTLsColumns = [
-    {
-      header: "SNP ID",
-      value: (x) => x.id,
-      render: (d) => (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`/psychscreen/snp/${d.id}`}
-        >
-          {d.id}
-        </a>
-      ),
-    },
-    {
-      header: "eQTL FDR",
-      value: (x) => (x.eQTL ? toScientificNotation(x.eQTL.fdr, 2) : 0),
-    },
-    {
-      header: "eQTL nominal p-value",
-      value: (x) => toScientificNotation(x.eQTL.nominal_pval, 2),
-    },
-    {
-      header: "Coordinates",
-      value: (x) => `${x.coordinates.chromosome}:${x.coordinates.start}`,
-    },
-    {
-      header: "Intersecting cCRE",
-      value: (x) =>
-        x.intersecting_ccres.intersecting_ccres[0]?.accession || "--",
-      render: (x) =>
-        x.intersecting_ccres.intersecting_ccres[0]?.accession ? (
-          <Typography variant="body1"
-            style={{
-              fontSize: "14px",
-              lineHeight: "20px",
-              fontWeight: 400,
-              letterSpacing: "0.1px",
-              marginBottom: "10px",
-            }}
-          >
-            {x.bcre ? (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
-              >
-                {"*" + x.intersecting_ccres.intersecting_ccres[0]?.accession}
-              </a>
-            ) : (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${x.intersecting_ccres.intersecting_ccres[0]?.accession}&page=2`}
-              >
-                {x.intersecting_ccres.intersecting_ccres[0]?.accession}
-              </a>
-            )}
-          </Typography>
-        ) : (
-          <>
-            <Typography variant="body1">
-              {"--"}
-            </Typography>
-          </>
-        ),
-    },
-  ];
 
   useEffect(() => {
     fetch("https://downloads.wenglab.org/union_bCREs.bed")
@@ -672,7 +674,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               <Typography variant="h6">
                 {`The following eQTLs have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
-              <DataTable
+              <Table
+                label="eQTLs (PsychENCODE)"
                 columns={allQTLsColumns}
                 rows={allQTLs.map((x) => {
                   return {
@@ -686,6 +689,9 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                       ),
                   };
                 })}
+                getRowId={(row) => row.id}
+                divHeight={{ maxHeight: 750 }}
+                emptyTableFallback="No eQTLs found"
               />
               <Typography variant="caption">
                 {`cCREs prefixed with an asterisk are candidate brain candidate cis-Regulatory Elements (b-cCREs)`}
@@ -699,9 +705,13 @@ const AssociatedxQTL: React.FC<any> = (props) => {
               <Typography variant="h6">
                 {`The following decon-eQTLs (Liu) have been identified for ${props.name} by PsychENCODE:`}
               </Typography>
-              <DataTable
+              <Table
+                label="Decon-eQTLs (Liu)"
                 columns={deconqtlColumns}
                 rows={eqtlData.deconqtlsQuery}
+                getRowId={(row) => `${row.snpid}-${row.celltype}`}
+                divHeight={{ maxHeight: 750 }}
+                emptyTableFallback="No decon-eQTLs found"
               />
             </>
           )}

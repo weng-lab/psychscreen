@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { GWAS_SIGNIFICANT_SNPS } from "../../../data/all-significant-snps.gwas";
 import { groupBy } from "queryz";
-import { CustomizedTable } from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 
 type SignificantSNPEntry = {
@@ -77,51 +77,66 @@ function snpWindow(
   };
 }
 
+const significantSNPsColumns: TableColDef[] = [
+  { field: "snp", headerName: "SNP ID" },
+  {
+    field: "position",
+    headerName: "position",
+    valueGetter: (_, row) =>
+      `${row.coordinates.chromosome}:${row.coordinates.position}`,
+  },
+  {
+    field: "fdr",
+    headerName: "FDR",
+    type: "number",
+    valueFormatter: (value: number) => value.toExponential(3),
+  },
+  {
+    field: "score",
+    headerName: "magnitude of predicted impact",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(3),
+  },
+  {
+    field: "tissues",
+    headerName: "active tissues",
+    valueGetter: (_, row) => row.tissues.join(", "),
+  },
+  {
+    field: "TF_impact",
+    headerName: "impacts TF binding site?",
+    valueGetter: (_, row) => (row.TF_impact !== "none" ? "yes" : "no"),
+  },
+];
+
 const SignifcantSNPs: React.FC<SignificantSNPsProps> = ({
   trait,
   onSNPClick,
 }) => {
   const significantSNPs = useSNPs(traitKey(trait));
 
-  const onSNPRowClick = useCallback(
-    (row: SignificantSNPEntry) => {
-      if (onSNPClick)
-        onSNPClick(
-          snpWindow(row[1].value.split(":")[0], +row[1].value.split(":")[1])
-        );
-    },
-    [onSNPClick]
-  );
-
   const tabledata = useMemo(
-    () =>
-      significantSNPs
-        .sort((a, b) => a.fdr - b.fdr)
-        .map((d) => [
-          { header: "SNP ID", value: d.snp },
-          {
-            header: "position",
-            value: `${d.coordinates.chromosome}:${d.coordinates.position}`,
-          },
-          { header: "FDR", value: d.fdr.toExponential(3) },
-          {
-            header: "magnitude of predicted impact",
-            value: d.score.toFixed(3),
-          },
-          { header: "active tissues", value: d.tissues.join(", ") },
-          {
-            header: "impacts TF binding site?",
-            value: d.TF_impact !== "none" ? "yes" : "no",
-          },
-        ]),
-    [SignifcantSNPs]
+    () => [...significantSNPs].sort((a, b) => a.fdr - b.fdr),
+    [significantSNPs]
   );
 
   return tabledata.length > 0 ? (
-    <CustomizedTable
-      style={{ width: "max-content" }}
-      tabledata={tabledata}
-      onRowClick={onSNPRowClick}
+    <Table
+      label="Significant SNPs"
+      columns={significantSNPsColumns}
+      rows={tabledata}
+      getRowId={(row) => row.snp}
+      divHeight={{ maxHeight: 750 }}
+      emptyTableFallback="No significant SNPs found"
+      onRowClick={(params) => {
+        if (onSNPClick)
+          onSNPClick(
+            snpWindow(
+              params.row.coordinates.chromosome,
+              params.row.coordinates.position
+            )
+          );
+      }}
     />
   ) : (
     <></>

@@ -1,13 +1,10 @@
 ﻿import React, { useState, useEffect } from "react";
-import { Divider, Link, Typography, Stack, Tab } from "@mui/material";
+import { Divider, Typography, Stack, Tab } from "@mui/material";
 import { GridProps } from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Button from "@mui/material/Button";
-import {
-  DataTable,
-  DataTableColumn,
-} from "@weng-lab/psychscreen-ui-components";
+import { Table, TableColDef } from "@weng-lab/ui-components";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { GROUPS } from "../SnpPortal/RegulatoryElements";
 import { toScientificNotation } from "./utils";
@@ -38,134 +35,146 @@ export type DiseaseIntersectingSnpsWithccresProps = GridProps & {
   fetal_bcredata: GwasIntersectingSnpsWithBcres[];
 };
 
-const formatEntry = [
+const formatEntry: TableColDef<GwasIntersectingSnpsWithCcres>[] = [
   {
-    header: "SNP ID",
-    value: (d) => d.snpid,
-    render: (d) => (
+    field: "snpid",
+    headerName: "SNP ID",
+    renderCell: (params) => (
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/snp/${d.snpid}`}
+        href={`/psychscreen/snp/${params.value}`}
+        style={{ color: "#0000EE" }}
       >
-        {d.snpid}
+        {params.value}
       </a>
     ),
   },
-  { header: "Chromosome", value: (d) => d.snp_chrom },
-  { header: "Position", value: (d) => d.snp_stop.toLocaleString() },
-  { header: "Reference Allele", value: (d) => d.referenceallele },
-  { header: "Effect Allele", value: (d) => d.effectallele },
+  { field: "snp_chrom", headerName: "Chromosome" },
   {
-    header: "Nearest Protein-Coding Gene",
-    value: (d) => d.associated_gene,
-    render: (d) => (
+    field: "snp_stop",
+    headerName: "Position",
+    type: "number",
+    valueFormatter: (value: number) => value.toLocaleString(),
+  },
+  { field: "referenceallele", headerName: "Reference Allele" },
+  { field: "effectallele", headerName: "Effect Allele" },
+  {
+    field: "associated_gene",
+    headerName: "Nearest Protein-Coding Gene",
+    renderCell: (params) => (
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${d.associated_gene}`}
+        href={`/psychscreen/gene/${params.value}`}
+        style={{ color: "#0000EE" }}
       >
-        <i>{d.associated_gene}</i>
+        <i>{params.value}</i>
       </a>
     ),
   },
   {
-    header: "GWAS p",
-    HeaderRender: () => (
+    field: "association_p_val",
+    headerName: "GWAS p",
+    renderHeader: () => (
       <Typography variant="body2">
         GWAS <i>P</i>
       </Typography>
     ),
-    value: (d) => d.association_p_val,
-    render: (d) => toScientificNotation(+d.association_p_val, 1),
+    valueFormatter: (value: any) => toScientificNotation(+value, 1),
   },
   {
-    header: "cCRE ID",
-    value: (d) => d.ccreid,
-    render: (d) => {
-      if (d.ccreid === ".") {
-        return <>{"NA"}</>;
-      }
-      return (
+    field: "ccreid",
+    headerName: "cCRE ID",
+    renderCell: (params) =>
+      params.value === "." ? (
+        "NA"
+      ) : (
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${d.ccreid}&page=2`}
+          href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${params.value}&page=2`}
+          style={{ color: "#0000EE" }}
         >
-          {d.ccreid}
+          {params.value}
         </a>
-      );
-    },
+      ),
   },
   {
-    header: "cCRE Class",
-    value: (d) => GROUPS.get(d.ccre_class) ?? d.ccre_class,
+    field: "ccre_class",
+    headerName: "cCRE Class",
+    valueFormatter: (value: string) => GROUPS.get(value) ?? value,
   },
 ];
 
-const bcreformatEntry: DataTableColumn<GwasIntersectingSnpsWithCcres>[] = [
+const bcreformatEntry: TableColDef<GwasIntersectingSnpsWithCcres>[] = [
   {
-    header: "SNP ID",
-    value: (d) => d.snpid,
-    render: (d) => (
+    field: "snpid",
+    headerName: "SNP ID",
+    renderCell: (params) => (
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/snp/${d.snpid}`}
+        href={`/psychscreen/snp/${params.value}`}
+        style={{ color: "#0000EE" }}
       >
-        {d.snpid}
+        {params.value}
       </a>
     ),
   },
-  { header: "Chromosome", value: (d) => d.snp_chrom },
+  { field: "snp_chrom", headerName: "Chromosome" },
   {
-    header: "Position",
-    value: (d) => d.snp_stop,
-    render: (d) => d.snp_stop.toLocaleString(),
+    field: "snp_stop",
+    headerName: "Position",
+    type: "number",
+    valueFormatter: (value: number) => value.toLocaleString(),
   },
-  { header: "Reference Allele", value: (d) => d.referenceallele },
-  { header: "Effect Allele", value: (d) => d.effectallele },
+  { field: "referenceallele", headerName: "Reference Allele" },
+  { field: "effectallele", headerName: "Effect Allele" },
   {
-    header: "Nearest Protein-Coding Gene",
-    value: (d) => d.associated_gene,
-    render: (d) => (
+    field: "associated_gene",
+    headerName: "Nearest Protein-Coding Gene",
+    renderCell: (params) => (
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${d.associated_gene}`}
+        href={`/psychscreen/gene/${params.value}`}
+        style={{ color: "#0000EE" }}
       >
-        <i>{d.associated_gene}</i>
+        <i>{params.value}</i>
       </a>
     ),
   },
   {
-    header: "GWAS p",
-    HeaderRender: () => (
+    field: "association_p_val",
+    headerName: "GWAS p",
+    renderHeader: () => (
       <Typography variant="body2">
         GWAS <i>P</i>
       </Typography>
     ),
-    value: (d) => d.association_p_val,
-    render: (d) => toScientificNotation(+d.association_p_val, 1),
+    valueFormatter: (value: any) => toScientificNotation(+value, 1),
   },
   {
-    header: "bCRE ID",
-    value: (d) => d.ccreid,
-    render: (d) => (
-      <Link
-        rel="noopener noreferrer"
+    field: "ccreid",
+    headerName: "bCRE ID",
+    renderCell: (params) => (
+      <a
         target="_blank"
-        href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${d.ccreid}&page=2`}
+        rel="noopener noreferrer"
+        href={`https://screen.beta.wenglab.org/search?assembly=GRCh38&accessions=${params.value}&page=2`}
+        style={{ color: "#0000EE" }}
       >
-        {d.ccreid}
-      </Link>
+        {params.value}
+      </a>
     ),
   },
   {
-    header: "bCRE Class",
-    value: (d) => GROUPS.get(d.ccre_class) ?? d.ccre_class,
+    field: "ccre_class",
+    headerName: "bCRE Class",
+    valueFormatter: (value: string) => GROUPS.get(value) ?? value,
   },
-  { header: "bCRE group", value: (d) => d.bcre_class },
+  { field: "bcre_class", headerName: "bCRE group" },
 ];
 
 const DiseaseIntersectingSnpsWithccres: React.FC<
@@ -234,7 +243,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
         <Divider />
       </Box>
       {intersectingSnps && tabIndex === 0 && (
-        <DataTable
+        <Table
+          label="Significant SNPs"
           columns={formatEntry}
           rows={intersectingSnps.filter(
             (a) =>
@@ -242,9 +252,13 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
               a.snp_start >= props.coordinates.start &&
               a.snp_start <= props.coordinates.end
           )}
-          searchable
-          itemsPerPage={10}
-          sortColumn={6}
+          getRowId={(row) => `${row.snpid}-${row.ccreid}`}
+          initialState={{
+            sorting: { sortModel: [{ field: "association_p_val", sort: "asc" }] },
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+          divHeight={{ maxHeight: 750 }}
+          emptyTableFallback="No significant SNPs found"
         />
       )}
       {intersectingSnps.filter((i) => i.bcre_class !== ".") &&
@@ -285,7 +299,8 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
             </Stack>
 
             {page === 0 && (
-              <DataTable
+              <Table
+                label="Significant SNPs Intersecting Adult b-cCREs"
                 columns={bcreformatEntry}
                 rows={intersectingSnps
                   .filter((i) => i.bcre_class === "adult-only")
@@ -295,13 +310,18 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                       a.snp_start >= props.coordinates.start &&
                       a.snp_start <= props.coordinates.end
                   )}
-                itemsPerPage={10}
-                searchable
-                sortColumn={6}
+                getRowId={(row) => `${row.snpid}-${row.ccreid}`}
+                initialState={{
+                  sorting: { sortModel: [{ field: "association_p_val", sort: "asc" }] },
+                  pagination: { paginationModel: { pageSize: 10 } },
+                }}
+                divHeight={{ maxHeight: 750 }}
+                emptyTableFallback="No significant SNPs intersecting adult b-cCREs found"
               />
             )}
             {page === 1 && (
-              <DataTable
+              <Table
+                label="Significant SNPs Intersecting Fetal b-cCREs"
                 columns={bcreformatEntry}
                 rows={intersectingSnps
                   .filter((i) => i.bcre_class === "fetal-only")
@@ -311,13 +331,18 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                       a.snp_start >= props.coordinates.start &&
                       a.snp_start <= props.coordinates.end
                   )}
-                itemsPerPage={10}
-                searchable
-                sortColumn={6}
+                getRowId={(row) => `${row.snpid}-${row.ccreid}`}
+                initialState={{
+                  sorting: { sortModel: [{ field: "association_p_val", sort: "asc" }] },
+                  pagination: { paginationModel: { pageSize: 10 } },
+                }}
+                divHeight={{ maxHeight: 750 }}
+                emptyTableFallback="No significant SNPs intersecting fetal b-cCREs found"
               />
             )}
             {page === 2 && (
-              <DataTable
+              <Table
+                label="Significant SNPs Intersecting Shared b-cCREs"
                 columns={bcreformatEntry}
                 rows={intersectingSnps
                   .filter((i) => i.bcre_class === "adult/fetal-shared")
@@ -327,9 +352,13 @@ const DiseaseIntersectingSnpsWithccres: React.FC<
                       a.snp_start >= props.coordinates.start &&
                       a.snp_start <= props.coordinates.end
                   )}
-                itemsPerPage={10}
-                sortColumn={6}
-                searchable
+                getRowId={(row) => `${row.snpid}-${row.ccreid}`}
+                initialState={{
+                  sorting: { sortModel: [{ field: "association_p_val", sort: "asc" }] },
+                  pagination: { paginationModel: { pageSize: 10 } },
+                }}
+                divHeight={{ maxHeight: 750 }}
+                emptyTableFallback="No significant SNPs intersecting shared b-cCREs found"
               />
             )}
           </Stack>
