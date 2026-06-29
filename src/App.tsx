@@ -29,10 +29,10 @@ import SingleCellCelltypeQTL from "./web/Portals/SingleCellPortal/SingleCellCell
 import SingleCelldegdisease from "./web/Portals/SingleCellPortal/SingleCelldegdisease";
 import SingleCelldegdiseasect from "./web/Portals/SingleCellPortal/SingleCelldegdiseasect";
 import { SingleCellGeneDetails } from "./web/Portals/SingleCellPortal/SingleCellGeneDetails";
-import Header from "./web/HomePage/Header";
 import FooterPanel from "./web/HomePage/FooterPanel";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+import AppBar from "./web/HomePage/AppBar";
 
 export const PORTALS: [string, React.FC][] = [
   ["/traits", DiseaseTraitPortal],
@@ -81,7 +81,7 @@ const App: React.FC = () => {
       >
         <div className="app">
           <div className="header">
-            <Header />
+            <AppBar />
           </div>
           <div className="main">
             <Routes>
