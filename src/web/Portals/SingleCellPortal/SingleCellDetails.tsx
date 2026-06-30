@@ -1,9 +1,9 @@
 ﻿import React, { useState, useCallback } from "react";
 import Grid, { GridProps } from "@mui/material/Grid";
 import { Paper, Typography } from "@mui/material";
-import {
-  SearchBox,
-  HorizontalCard} from "@weng-lab/psychscreen-ui-components";
+// import {
+//   SearchBox,
+//   HorizontalCard} from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -80,22 +80,24 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
             navigateto={`/psychscreen/single-cell/${disease}/`}
           />
           {0 > 1 && (
-            <SearchBox
-              value={val}
-              onChange={(e) => {
-                setVal(e.target.value);
-              }}
-              onSearchButtonClick={() => {
-                if (val !== "") {
-                  onSearchChange(val);
-                }
-              }}
-              helperText={
-                <>
-                  e.g., <i>PCP4</i>, <i>APOE</i>, <i>MBP</i>
-                </>
-              }
-            />
+            <>
+            </>
+            // <SearchBox
+            //   value={val}
+            //   onChange={(e) => {
+            //     setVal(e.target.value);
+            //   }}
+            //   onSearchButtonClick={() => {
+            //     if (val !== "") {
+            //       onSearchChange(val);
+            //     }
+            //   }}
+            //   helperText={
+            //     <>
+            //       e.g., <i>PCP4</i>, <i>APOE</i>, <i>MBP</i>
+            //     </>
+            //   }
+            // />
           )}
         </Container>
       </Grid>
@@ -131,7 +133,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                       elevation={0}
                       style={{ maxHeight: 500, width: 350, overflow: "auto" }}
                     >
-                      <HorizontalCard
+                      {/* <HorizontalCard
                         width={500}
                         onCardClick={(v?: string) => {
                           let f = geneCards!!.find((g: any) => g.val === v);
@@ -140,7 +142,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                           );
                         }}
                         cardContentText={geneCards!!}
-                      />
+                      /> */}
                     </Paper>
                   }
                 </Container>

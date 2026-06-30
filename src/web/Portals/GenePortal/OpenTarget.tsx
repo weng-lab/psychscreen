@@ -2,9 +2,9 @@ import { gql, useQuery } from "@apollo/client";
 import { Typography } from "@mui/material";
 import React, { useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import {
-  CustomizedTable
-} from "@weng-lab/psychscreen-ui-components";
+// import {
+//   CustomizedTable
+// } from "@weng-lab/psychscreen-ui-components";
 
 const OpenTargetQuery = gql`
   query GenePageQuery($geneId: String!) {
@@ -314,12 +314,12 @@ const OpenTarget: React.FC<any> = (props) => {
 
   return (
     <>
-      {
+      {/* {
         <CustomizedTable
           style={{ width: "max-content" }}
           tabledata={formattedData}
         />
-      }
+      } */}
     </>
   );
 };

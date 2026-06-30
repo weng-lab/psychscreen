@@ -4,7 +4,8 @@ import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { Container } from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
-import { DataTable } from "@weng-lab/ts-ztable";
+import { Table, TableColDef } from "@weng-lab/ui-components";
+import { GridSortModel } from "@mui/x-data-grid-premium";
 import { gql, useQuery } from "@apollo/client";
 
 const DEG_BYCT_QUERY = gql`
@@ -21,46 +22,58 @@ const DEG_BYCT_QUERY = gql`
     }
   }
 `;
-const COLUMNS = [
+
+type DegRow = {
+  gene: string;
+  base_mean: number;
+  log2_fc: number;
+  lfc_se: number;
+  stat: number;
+  pvalue: number;
+  padj: number;
+};
+
+const columns: TableColDef<DegRow>[] = [
+  { field: "gene", headerName: "Gene" },
   {
-    header: "Gene",
-    value: (row) => row.gene,
-    HeaderRender: (row) => (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={`/psychscreen/gene/${row.name}`}
-        style={{ color: "#0000EE" }}
-      >
-        <i>{row.name}</i>
-      </a>
-    ),
+    field: "base_mean",
+    headerName: "Base mean",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
   {
-    header: "Base mean",
-    value: (row) => row.base_mean.toFixed(2),
+    field: "log2_fc",
+    headerName: "log2(fc)",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
   {
-    header: "log2(fc)",
-    value: (row) => row.log2_fc.toFixed(2),
+    field: "lfc_se",
+    headerName: "Std Error",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
   {
-    header: "Std Error",
-    value: (row) => row.lfc_se.toFixed(2),
+    field: "stat",
+    headerName: "Stat",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
   {
-    header: "Stat",
-    value: (row) => row.stat.toFixed(2),
+    field: "pvalue",
+    headerName: "Pvalue",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
   {
-    header: "Pvalue",
-    value: (row) => row.pvalue.toFixed(2),
-  },
-  {
-    header: "Ajdusted-P",
-    value: (row) => row.padj.toExponential(2),
+    field: "padj",
+    headerName: "Ajdusted-P",
+    type: "number",
+    valueFormatter: (value: number) => value.toExponential(2),
   },
 ];
+
+const initialSort: GridSortModel = [{ field: "padj", sort: "desc" }];
 
 const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
@@ -111,13 +124,13 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
           </Typography>
         )}
         {data && data.degQuery.length > 0 && (
-          <DataTable
-            columns={COLUMNS}
+          <Table
+            columns={columns}
             rows={data.degQuery}
-            itemsPerPage={20}
-            sortDescending
-            searchable
-            sortColumn={6}
+            initialState={{
+              sorting: { sortModel: initialSort },
+              pagination: { paginationModel: { pageSize: 20 } },
+            }}
           />
         )}
       </Grid>

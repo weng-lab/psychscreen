@@ -1,8 +1,8 @@
 ﻿import React from "react";
 import { Box, Typography } from "@mui/material";
-import {
-  HorizontalCard
-} from "@weng-lab/psychscreen-ui-components";
+// import {
+//   HorizontalCard
+// } from "@weng-lab/psychscreen-ui-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
@@ -223,7 +223,7 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
         <br />
         <Slide direction="up" in timeout={1000}>
           <Box>
-            <HorizontalCard
+            {/* <HorizontalCard
               width={500}
               onCardClick={(v?: string) => {
                 navigate(
@@ -232,7 +232,7 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
                 );
               }}
               cardContentText={diseaseCT[disease!]}
-            />
+            /> */}
           </Box>
         </Slide>
       </Grid>

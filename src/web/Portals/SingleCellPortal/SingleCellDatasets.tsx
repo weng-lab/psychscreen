@@ -1,13 +1,14 @@
 ﻿import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Box, Tabs, Tab, Typography } from "@mui/material";
-import { HorizontalCard } from "@weng-lab/psychscreen-ui-components";
+// import { HorizontalCard } from "@weng-lab/psychscreen-ui-components";
 import Button from "@mui/material/Button";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import DownloadIcon from "@mui/icons-material/Download";
 
-import { DataTable } from "@weng-lab/ts-ztable";
+import { Table, TableColDef } from "@weng-lab/ui-components";
+import { GridSortModel } from "@mui/x-data-grid-premium";
 import { DegExpression } from "../GenePortal/DegExpression";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 
@@ -214,21 +215,22 @@ const peaks = [
   ],
 ];
 
-const COLUMNS = [
+type ScAtacPeakRow = { name: string; url: string };
+
+const peakColumns: TableColDef<ScAtacPeakRow>[] = [
+  { field: "name", headerName: "Cell Type", flex: 1 },
   {
-    header: "Cell Type",
-    value: (row) => row.name,
-  },
-  {
-    header: "Download",
-    value: (row) => row.url,
-    render: (row) => (
-      <Button variant="contained" href={row.url} download>
+    field: "url",
+    headerName: "Download",
+    renderCell: (params) => (
+      <Button variant="contained" href={params.value} download>
         <DownloadIcon />
       </Button>
     ),
   },
 ];
+
+const peakInitialSort: GridSortModel = [{ field: "name", sort: "desc" }];
 
 const SingleCellDatasets: React.FC = () => {
   const navigate = useNavigate();
@@ -306,7 +308,7 @@ const SingleCellDatasets: React.FC = () => {
           {tabIndex === 1 && (
             <Slide direction="up" in timeout={1000}>
               <Box>
-                <HorizontalCard
+                {/* <HorizontalCard
                   width={500}
                   onCardClick={(v?: string) => {
                     navigate(
@@ -315,7 +317,7 @@ const SingleCellDatasets: React.FC = () => {
                     );
                   }}
                   cardContentText={degCards}
-                />
+                /> */}
               </Box>
             </Slide>
           )}
@@ -367,11 +369,13 @@ const SingleCellDatasets: React.FC = () => {
           &nbsp;&nbsp;&nbsp;
           {page === 0 && (
             <Box mt={3}>
-              <DataTable
-                columns={COLUMNS}
+              <Table
+                columns={peakColumns}
                 rows={d}
-                itemsPerPage={10}
-                searchable
+                initialState={{
+                  sorting: { sortModel: peakInitialSort },
+                  pagination: { paginationModel: { pageSize: 10 } },
+                }}
               />
             </Box>
           )}
@@ -403,7 +407,7 @@ const SingleCellDatasets: React.FC = () => {
             {grnpage === 0 && (
               <Slide direction="up" in timeout={1000}>
                 <Box>
-                  <HorizontalCard
+                  {/* <HorizontalCard
                     width={500}
                     onCardClick={(v?: string) => {
                       navigate(
@@ -412,7 +416,7 @@ const SingleCellDatasets: React.FC = () => {
                       );
                     }}
                     cardContentText={cellTypeCards}
-                  />
+                  /> */}
                 </Box>
               </Slide>
             )}
@@ -445,7 +449,7 @@ const SingleCellDatasets: React.FC = () => {
             <>
               <Slide direction="up" in timeout={1000}>
                 <Box>
-                  <HorizontalCard
+                  {/* <HorizontalCard
                     width={500}
                     onCardClick={(v?: string) => {
                       navigate(
@@ -454,7 +458,7 @@ const SingleCellDatasets: React.FC = () => {
                       );
                     }}
                     cardContentText={qtlcellTypeCards}
-                  />
+                  /> */}
                 </Box>
               </Slide>
             </>
@@ -465,7 +469,7 @@ const SingleCellDatasets: React.FC = () => {
         <Grid size={12}>
           <Slide direction="up" in timeout={1000}>
             <Box>
-              <HorizontalCard
+              {/* <HorizontalCard
                 width={500}
                 onCardClick={(v?: string) => {
                   navigate(`/psychscreen/single-cell/${v}`, {
@@ -473,7 +477,7 @@ const SingleCellDatasets: React.FC = () => {
                   });
                 }}
                 cardContentText={DISEASE_CARDS}
-              />
+              /> */}
             </Box>
           </Slide>
         </Grid>

@@ -3,72 +3,42 @@ import { Typography } from "@mui/material";
 
 import { useParams } from "react-router-dom";
 import Grid, { GridProps } from "@mui/material/Grid";
-import { DataTable } from "@weng-lab/ts-ztable";
+import { Table, TableColDef } from "@weng-lab/ui-components";
+import { GridSortModel } from "@mui/x-data-grid-premium";
 
-const COLUMNS = [
-  {
-    header: "Gene",
-    value: (row) => row.gene,
-    HeaderRender: (row) => (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={`/psychscreen/gene/${row.name}`}
-        style={{ color: "#0000EE" }}
-      >
-        <i>{row.name}</i>
-      </a>
-    ),
-  },
-  {
-    header: "Gene Chromosome",
-    value: (row) => row.genechrom,
-  },
-  {
-    header: "Gene Start",
-    value: (row) => row.genestart,
-  },
-  {
-    header: "Gene Strand",
-    value: (row) => row.genestrand,
-  },
-  {
-    header: "Number of variants in cis window ",
-    value: (row) => row.numvariants,
-  },
-  {
-    header: "Distance between variant and gene start position",
-    value: (row) => row.distance,
-  },
-  {
-    header: "Variant ID",
-    value: (row) => row.variantid,
-  },
-  {
-    header: "Variant Chromosome",
-    value: (row) => row.variantchrom,
-  },
-  {
-    header: "Variant start",
-    value: (row) => row.variantstart,
-  },
-  {
-    header: "P-value of association between variant and gene",
-    value: (row) => row.pval,
-  },
-  {
-    header: "R2 of linear regression",
-    value: (row) => row.r2,
-  },
-  {
-    header: "Beta (slope) of linear regression",
-    value: (row) => row.slope,
-  },
-  {
-    header: "Best Hit for Gene",
-    value: (row) => row.besthit,
-  },
+type CelltypeQtlRow = {
+  gene: string;
+  genechrom: string;
+  genestart: string;
+  genestrand: string;
+  numvariants: string;
+  distance: string;
+  variantid: string;
+  variantchrom: string;
+  variantstart: string;
+  pval: string;
+  r2: string;
+  slope: string;
+  besthit: string;
+};
+
+const columns: TableColDef<CelltypeQtlRow>[] = [
+  { field: "gene", headerName: "Gene" },
+  { field: "genechrom", headerName: "Gene Chromosome" },
+  { field: "genestart", headerName: "Gene Start" },
+  { field: "genestrand", headerName: "Gene Strand" },
+  { field: "numvariants", headerName: "Number of variants in cis window " },
+  { field: "distance", headerName: "Distance between variant and gene start position" },
+  { field: "variantid", headerName: "Variant ID" },
+  { field: "variantchrom", headerName: "Variant Chromosome" },
+  { field: "variantstart", headerName: "Variant start" },
+  { field: "pval", headerName: "P-value of association between variant and gene" },
+  { field: "r2", headerName: "R2 of linear regression" },
+  { field: "slope", headerName: "Beta (slope) of linear regression" },
+  { field: "besthit", headerName: "Best Hit for Gene" },
 ];
+
+const initialSort: GridSortModel = [{ field: "gene", sort: "desc" }];
 
 const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
   const { celltype } = useParams();
@@ -140,11 +110,13 @@ const SingleCellCelltypeQTL: React.FC<GridProps> = (props) => {
           </Typography>
         )}
         {qtl && qtl.length > 0 && (
-          <DataTable
-            columns={COLUMNS}
+          <Table
+            columns={columns}
             rows={qtl}
-            itemsPerPage={20}
-            searchable
+            initialState={{
+              sorting: { sortModel: initialSort },
+              pagination: { paginationModel: { pageSize: 20 } },
+            }}
           />
         )}
       </Grid>

@@ -4,42 +4,42 @@ import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { Container } from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
-import { DataTable } from "@weng-lab/ts-ztable";
+import { Table, TableColDef } from "@weng-lab/ui-components";
+import { GridSortModel } from "@mui/x-data-grid-premium";
 
-const COLUMNS = [
+type GeneRegulatoryRow = {
+  tf: string;
+  enhancer: string;
+  promoter: string;
+  tg: string;
+  edgeweight: number;
+  method: string;
+  correlation: number;
+  regulation: string;
+};
+
+const columns: TableColDef<GeneRegulatoryRow>[] = [
+  { field: "tf", headerName: "TF" },
+  { field: "enhancer", headerName: "Enhancer" },
+  { field: "promoter", headerName: "Promoter" },
+  { field: "tg", headerName: "TG" },
   {
-    header: "TF",
-    value: (row) => row.tf,
+    field: "edgeweight",
+    headerName: "Edge Weight",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
+  { field: "method", headerName: "Method" },
   {
-    header: "Enhancer",
-    value: (row) => row.enhancer,
+    field: "correlation",
+    headerName: "Correlation",
+    type: "number",
+    valueFormatter: (value: number) => value.toFixed(2),
   },
-  {
-    header: "Promoter",
-    value: (row) => row.promoter,
-  },
-  {
-    header: "TG",
-    value: (row) => row.tg,
-  },
-  {
-    header: "Edge Weight",
-    value: (row) => row.edgeweight.toFixed(2),
-  },
-  {
-    header: "Method",
-    value: (row) => row.method,
-  },
-  {
-    header: "Correlation",
-    value: (row) => row.correlation.toFixed(2),
-  },
-  {
-    header: "Regulation",
-    value: (row) => row.regulation,
-  },
+  { field: "regulation", headerName: "Regulation" },
 ];
+
+const initialSort: GridSortModel = [{ field: "tg", sort: "desc" }];
 
 const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
   const { celltype } = useParams();
@@ -120,12 +120,13 @@ const SingleCellGeneRegulatoryDatasets: React.FC<GridProps> = (props) => {
           )}
           {grn && grn.length > 0 && (
             <Grid size={12}>
-              <DataTable
-                columns={COLUMNS}
+              <Table
+                columns={columns}
                 rows={grn}
-                itemsPerPage={20}
-                searchable
-                sortColumn={3}
+                initialState={{
+                  sorting: { sortModel: initialSort },
+                  pagination: { paginationModel: { pageSize: 20 } },
+                }}
               />
             </Grid>
           )}
