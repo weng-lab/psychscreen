@@ -13,10 +13,9 @@ import {
 
 import Grid from "@mui/material/Grid";
 import { linearTransform } from "jubilant-carnival";
-import { Point, ScatterPlot, DownloadPlotHandle } from "@weng-lab/visualization";
+import { Point, ScatterPlot, DownloadPlotHandle, DotPlot } from "@weng-lab/visualization";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import DotPlot from "../SingleCellPortal/DotPlot";
-import { downloadSVG } from "./violin/utils";
+
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -454,7 +453,7 @@ const SingleCell: React.FC<{
   };
 
   const chartRef = useRef<DownloadPlotHandle>(null);
-  const dotPlotRef = useRef<SVGSVGElement>(null);
+  const dotPlotRef = useRef<DownloadPlotHandle>(null);
 
   const plotContainerRef = useRef<HTMLDivElement>(null);
   const [plotContainerWidth, setPlotContainerWidth] = useState(0);
@@ -582,35 +581,40 @@ const SingleCell: React.FC<{
                     <Tab label="by Broader Cell type" />
                   </Tabs>
                   <DotPlot
-                    disease={dataset}
-                    yaxistitle={gene}
-                    dotplotData={
-                      cttabIndex === 0 ? dotplotDataSc : dotplotDataCt
-                    }
+                    data={(cttabIndex === 0 ? dotplotDataSc : dotplotDataCt).map((k) => ({
+                      x: k.celltype,
+                      y: k.dataset,
+                      radius: k.expr_frac,
+                      color: k.mean_count,
+                    }))}
+                    yAxisLabel={gene}
+                    yLabelsRight
+                    downloadFileName={`${gene}-${dataset}-single-cell-dot-plot.svg`}
                     ref={dotPlotRef}
                   />
                 </>
               ) : (
+                <div style={{height: 400}}>
                 <DotPlot
-                  disease={dataset}
-                  yaxistitle={gene}
-                  dotplotData={
-                    ctClass === "by Cell type"
-                      ? dotplotDataSc.filter((d) => d.dataset === dataset)
-                      : dotplotDataCt.filter((d) => d.dataset === dataset)
-                  }
+                  data={(ctClass === "by Cell type"
+                    ? dotplotDataSc.filter((d) => d.dataset === dataset)
+                    : dotplotDataCt.filter((d) => d.dataset === dataset)
+                  ).map((k) => ({
+                    x: k.celltype,
+                    y: k.dataset,
+                    radius: k.expr_frac,
+                    color: k.mean_count,
+                  }))}
+                  yAxisLabel={gene}
+                  yLabelsRight
+                  downloadFileName={`${gene}-${dataset}-single-cell-dot-plot.svg`}
                   ref={dotPlotRef}
                 />
+                </div>
               )}
               <Button
                 startIcon={<Download />}
-                onClick={() =>
-                  dotPlotRef?.current &&
-                  downloadSVG(
-                    dotPlotRef,
-                    `${gene}-${dataset}-single-cell-dot-plot.svg`
-                  )
-                }
+                onClick={() => dotPlotRef.current?.downloadSVG()}
                 sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
               >
                 Download

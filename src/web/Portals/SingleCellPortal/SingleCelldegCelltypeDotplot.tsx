@@ -4,7 +4,7 @@ import { FormControl } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 import { gql, useQuery } from "@apollo/client";
-import DotPlot from "./DotPlot";
+import { DotPlot, DownloadPlotHandle } from "@weng-lab/visualization";
 import { Select as MUISelect } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -77,7 +77,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
   };
   const [value, setValue] = useState("log2(fold change)");
 
-  const dotPlotRef = useRef<SVGSVGElement>(null);
+  const dotPlotRef = useRef<DownloadPlotHandle>(null);
 
   const dotplotData =
     !loading && data
@@ -199,7 +199,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid size={12} minWidth={700}>
+        <Grid size={12} minWidth={700} height={500}>
           {loading || !dotplotData ? (
             <CircularProgress />
           ) : dotplotData.length === 0 ? (
@@ -207,38 +207,28 @@ const SingleCelldegCelltypeDotplot = (props) => {
           ) : (
             <DotPlot
               deg={true}
-              celltype={true}
-              disease={
-                props.disease === "Bipolar Disorder" ? "Bipolar" : props.disease
-              }
-              yaxistitle={props.celltype}
+              xTickFontStyle="italic"
+              data={(dotplotData.length >= 50
+                ? dotplotData
+                    .sort((a, b) =>
+                      value === "log2(fold change)"
+                        ? Math.abs(b.mean_count) - Math.abs(a.mean_count)
+                        : b.expr_frac - a.expr_frac
+                    )
+                    .slice(0, 50)
+                : dotplotData
+              ).map((k) => ({
+                x: k.gene,
+                y: k.dataset,
+                radius: k.expr_frac,
+                color: k.mean_count,
+                highlighted: k.highlighted,
+              }))}
+              yAxisLabel={props.celltype}
+              yLabelsRight
               showTooltipData={true}
-              dotplotData={
-                dotplotData.length >= 50
-                  ? dotplotData
-                      .sort((a, b) =>
-                        value === "log2(fold change)"
-                          ? Math.abs(b.mean_count) - Math.abs(a.mean_count)
-                          : b.expr_frac - a.expr_frac
-                      )
-                      .slice(0, 50)
-                  : dotplotData
-              }
-              title1={
-                <>
-                  {"-log"}
-                  <tspan baselineShift="sub">10</tspan>(
-                  <tspan fontStyle="italic">P</tspan>
-                  <tspan baselineShift="sub">adj</tspan>)
-                </>
-              }
-              title2={
-                <>
-                  {"log"}
-                  <tspan baselineShift="sub">2</tspan>
-                  {"(fold change)"}
-                </>
-              }
+              radiusTitle="-log10(Padj)"
+              colorTitle="log2(fold change)"
               ref={dotPlotRef}
             />
           )}

@@ -2,7 +2,7 @@
 import { CircularProgress, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import * as React from "react";
-import DotPlot from "../SingleCellPortal/DotPlot";
+import { DotPlot, DownloadPlotHandle } from "@weng-lab/visualization";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -101,7 +101,7 @@ export const DegExpression = (props) => {
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
-  const dotPlotRef = React.useRef<SVGSVGElement>(null);
+  const dotPlotRef = React.useRef<DownloadPlotHandle>(null);
   let keys = Array.from(DATASETS.keys());
   const dotplotData =
     !loading && data
@@ -176,31 +176,24 @@ export const DegExpression = (props) => {
           ) : dotplotData.length == 0 ? (
             <>{"No data available for " + props.gene}</>
           ) : (
-            <>
+            <div style={{height: 250}}>
               <DotPlot
                 deg={true}
-                disease={dataset}
-                yaxistitle={props.gene}
+                data={dotplotData.map((k) => ({
+                  x: k.celltype,
+                  y: k.dataset,
+                  radius: k.expr_frac,
+                  color: k.mean_count,
+                  highlighted: k.highlighted,
+                }))}
+                yAxisLabel={props.gene}
+                yLabelsRight
                 showTooltipData
-                dotplotData={dotplotData}
-                title1={
-                  <>
-                    {"-log"}
-                    <tspan baselineShift="sub">10</tspan>(
-                    <tspan fontStyle="italic">P</tspan>
-                    <tspan baselineShift="sub">adj</tspan>)
-                  </>
-                }
-                title2={
-                  <>
-                    {"log"}
-                    <tspan baselineShift="sub">2</tspan>
-                    {"(fold change)"}
-                  </>
-                }
+                radiusTitle="-log10(Padj)"
+                colorTitle="log2(fold change)"
                 ref={dotPlotRef}
               />
-            </>
+            </div>
           )}
         </Grid>
       </Grid>
