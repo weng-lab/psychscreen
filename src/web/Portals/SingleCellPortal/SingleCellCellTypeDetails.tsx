@@ -7,6 +7,7 @@ import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
+import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 
 const SingleCellCellTypeDetails: React.FC = () => {
   const { celltype } = useParams();
@@ -35,19 +36,19 @@ const SingleCellCellTypeDetails: React.FC = () => {
     degDiseases.push("Age");
   if (
     diseaseCT["Bipolar_Disorder"].find(
-      (d) => d.cardLabel === celltype?.replace(" or ", "/")
+      (d) => d.cardLabel === celltype?.replace(" or ", "/"),
     )
   )
     degDiseases.push("Bipolar Disorder");
   if (
     diseaseCT["Schizophrenia"].find(
-      (d) => d.cardLabel === celltype?.replace(" or ", "/")
+      (d) => d.cardLabel === celltype?.replace(" or ", "/"),
     )
   )
     degDiseases.push("Schizophrenia");
 
   const [dataset, setDataset] = React.useState(
-    (degDiseases && degDiseases[0]) || null
+    (degDiseases && degDiseases[0]) || null,
   );
 
   useEffect(() => {
@@ -65,7 +66,8 @@ const SingleCellCellTypeDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid size={12}>
-        <Typography variant="h4"
+        <Typography
+          variant="h4"
           style={{ marginTop: "1em", marginBottom: "0.2em" }}
         >
           Celltype Details:{" "}
@@ -105,18 +107,31 @@ const SingleCellCellTypeDetails: React.FC = () => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
-            <Tab label="Differential Gene Expression" tabIndex={0} />
+            <Tab label="scATAC-Seq Peaks " tabIndex={0} />
+            <Tab label="Gene Regulatory Networks" tabIndex={1} />
+            <Tab label="eQTLs" tabIndex={2} />
+            <Tab label="Differential Gene Expression" tabIndex={3} />
           </Tabs>
           <Divider />
         </Box>
-        {tabIndex == 0 && degDiseases && degDiseases.length == 0 && (
-          <>
-            <br />{" "}
-            {"No data diff. expressed genes available for " +
-              celltype?.replace(" or ", "/")}{" "}
-          </>
+        {tabIndex === 0 ? (
+          <GenomeBrowserView />
+        ) : tabIndex === 1 ? (
+          <GenomeBrowserView />
+        ) : tabIndex === 2 ? (
+          <GenomeBrowserView />
+        ) : (
+          tabIndex == 3 &&
+          degDiseases &&
+          degDiseases.length == 0 && (
+            <>
+              <br />{" "}
+              {"No data diff. expressed genes available for " +
+                celltype?.replace(" or ", "/")}{" "}
+            </>
+          )
         )}
-        {tabIndex == 0 && degDiseases.length > 0 && dataset && (
+        {tabIndex == 3 && degDiseases.length > 0 && dataset && (
           <SingleCelldegCelltypeDotplot
             disease={dataset}
             dataset={dataset}

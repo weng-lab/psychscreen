@@ -11,17 +11,14 @@ import Grid from "@mui/material/Grid";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import {
-  DISEASE_CARDS,
-  URL_CHROM_MAP,
-  URL_MAP,
-} from "./config/constants";
+import { DISEASE_CARDS, URL_CHROM_MAP, URL_MAP } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import Button from "@mui/material/Button";
+import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -175,7 +172,7 @@ function useLoci(trait: string) {
           start: x.start,
           end: x.stop,
           p: Math.min(...x.association_p_val),
-        })) || []
+        })) || [],
       );
     const d = data as {
       bigRequests: [{ data: (GenomicRange & { name: string; chr: string })[] }];
@@ -187,9 +184,9 @@ function useLoci(trait: string) {
           start: x.start,
           end: x.end,
           p: Math.exp(-+x.name.split("_")[1]),
-        })
+        }),
       ) || [],
-      trait
+      trait,
     );
   }, [data]);
 
@@ -239,7 +236,7 @@ const DiseaseTraitDetails: React.FC = () => {
         disease: disease,
       },
       skip: disease === "",
-    }
+    },
   );
   const { data: adultgwasIntersectingSnpWithBcresData } = useQuery(
     GwasIntersectingSnpswithBcresQuery,
@@ -249,7 +246,7 @@ const DiseaseTraitDetails: React.FC = () => {
         bcre_group: "adult",
       },
       skip: disease === "",
-    }
+    },
   );
   const { data: fetalgwasIntersectingSnpWithBcresData } = useQuery(
     GwasIntersectingSnpswithBcresQuery,
@@ -259,7 +256,7 @@ const DiseaseTraitDetails: React.FC = () => {
         bcre_group: "fetal",
       },
       skip: disease === "",
-    }
+    },
   );
   const trait = disease ? URL_MAP[disease] : "";
   const significantSNPs = useSNPs(traitKey(trait));
@@ -278,7 +275,8 @@ const DiseaseTraitDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid size={12}>
-        <Typography variant="h2"
+        <Typography
+          variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "48px",
@@ -290,7 +288,8 @@ const DiseaseTraitDetails: React.FC = () => {
         </Typography>
       </Grid>
       <Grid size={12}>
-        <Typography variant="body1"
+        <Typography
+          variant="body1"
           style={{
             fontSize: "16px",
             lineHeight: "24px",
@@ -353,6 +352,14 @@ const DiseaseTraitDetails: React.FC = () => {
                 Associated SNPs in locus
               </Button>
             )}
+          {browserCoordinates && (
+            <Button
+              variant={page === 3 ? "contained" : "outlined"}
+              onClick={() => setPage(3)}
+            >
+              Brain Epigenome Browser
+            </Button>
+          )}
           {/* Unused, can I remove? */}
           {significantSNPs && significantSNPs.length > 0 && 0 > 1 && (
             <Button
@@ -366,10 +373,7 @@ const DiseaseTraitDetails: React.FC = () => {
       </Grid>
       <Grid size={12}>
         {page === -1 ? (
-          <RiskLocusView
-            loci={loci || []}
-            disease={disease || ""}
-          />
+          <RiskLocusView loci={loci || []} disease={disease || ""} />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
           <GeneAssociations disease={disease || ""} data={gassoc} />
         ) : page === 1 &&
@@ -403,6 +407,8 @@ const DiseaseTraitDetails: React.FC = () => {
               fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
             }
           />
+        ) : page === 3 ? (
+          <GenomeBrowserView />
         ) : page === 4 &&
           significantSNPs &&
           significantSNPs.length > 0 &&

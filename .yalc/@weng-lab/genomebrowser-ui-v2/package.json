@@ -1,0 +1,52 @@
+{
+  "name": "@weng-lab/genomebrowser-ui-v2",
+  "version": "0.0.0",
+  "private": true,
+  "bin": {
+    "trackselect": "./dist/trackselect.js"
+  },
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "type": "module",
+  "module": "dist/genomebrowser-ui-v2.es.js",
+  "types": "dist/src/lib.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/lib.d.ts",
+      "import": "./dist/genomebrowser-ui-v2.es.js"
+    },
+    "./cli": {
+      "types": "./dist/src/cli.d.ts",
+      "import": "./dist/cli.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsgo -b && vite build",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
+    "format": "oxfmt .",
+    "format:check": "oxfmt . --check",
+    "test": "vitest run",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@weng-lab/genomebrowser-v2": "*",
+    "jiti": "^2.6.2",
+    "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/icons-material": "^7.0.0",
+    "@mui/material": "^7.0.0",
+    "@mui/x-data-grid-premium": "^8.0.0",
+    "@mui/x-license": "^8.0.0",
+    "@mui/x-tree-view": "^8.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "yalcSig": "fc7250c36f78ae237d725043523edbda"
+}

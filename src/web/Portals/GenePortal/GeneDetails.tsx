@@ -1,7 +1,16 @@
 ﻿import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
-import { Divider, Box, Tabs, Tab, Stack, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  Divider,
+  Box,
+  Tabs,
+  Tab,
+  Stack,
+  Typography,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
@@ -13,6 +22,7 @@ import SingleCell from "./SingleCell";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
+import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -59,7 +69,7 @@ const GeneDetails: React.FC = (props) => {
   const ref = useRef<SVGSVGElement>(null);
   const [gid, setGid] = useState(geneid);
   const [tissueCategory, setTissueCategory] = React.useState<string | null>(
-    "granular"
+    "granular",
   );
 
   //const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
@@ -105,9 +115,9 @@ const GeneDetails: React.FC = (props) => {
         data?.gtex_genes || [],
         (x) =>
           tissueCategory === "granular" ? x.tissue_type_detail : x.tissue_type,
-        (x) => x
+        (x) => x,
       ),
-    [data, tissueCategory, gid, geneCoords]
+    [data, tissueCategory, gid, geneCoords],
   );
 
   const sortedKeys = useMemo(
@@ -115,7 +125,7 @@ const GeneDetails: React.FC = (props) => {
       [...grouped.keys()]
         .filter((x) => x !== null && grouped.get(x)!)
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
-    [grouped, gid, geneCoords]
+    [grouped, gid, geneCoords],
   );
 
   const toPlot = useMemo(
@@ -136,11 +146,11 @@ const GeneDetails: React.FC = (props) => {
                       .map((x) => Math.log10(x! + 0.01)),
                   ],
                 ]),
-              ] as [string, Map<string, number[]>]
+              ] as [string, Map<string, number[]>],
           )
-          .filter((x) => x[1].get("all")!.length > 1)
+          .filter((x) => x[1].get("all")!.length > 1),
       ),
-    [sortedKeys, grouped, gid, geneCoords]
+    [sortedKeys, grouped, gid, geneCoords],
   );
 
   const domain: [number, number] = useMemo(() => {
@@ -189,6 +199,7 @@ const GeneDetails: React.FC = (props) => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
+            <Tab label="Epigenome Browser" />
             <Tab label="Single Cell Expression" />
             <Tab label="Spatial Expression" />
             <Tab label="Tissue Expression (GTEx)" />
@@ -201,11 +212,13 @@ const GeneDetails: React.FC = (props) => {
           {
             //region.chromosome==='' && !region.start && !region.end && <CircularProgress/>
           }
-          {tabIndex === 2 && 0 > 1 ? (
+          {tabIndex === 0 ? (
+            <GenomeBrowserView />
+          ) : tabIndex === 2 && 0 > 1 ? (
             <Box>
               <GeneExpressionPage id={geneid} />
             </Box>
-          ) : tabIndex === 3 && geneCoords ? (
+          ) : tabIndex === 4 && geneCoords ? (
             <Box>
               <AssociatedxQTL
                 name={gene?.toUpperCase()}
@@ -213,23 +226,22 @@ const GeneDetails: React.FC = (props) => {
                   gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])
                 }
                 coordinates={{
-                  chromosome:
-                    geneCoords.gene[0].coordinates.chromosome,
+                  chromosome: geneCoords.gene[0].coordinates.chromosome,
                   start: +geneCoords.gene[0].coordinates.start,
                   end: +geneCoords.gene[0].coordinates.end,
                 }}
                 //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
               />
             </Box>
-          ) : tabIndex === 4 ? (
+          ) : tabIndex === 5 ? (
             <Box>
               <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
             </Box>
-          ) : tabIndex === 1 ? (
+          ) : tabIndex === 2 ? (
             <Box>
               <BrainSpatial gene={gene || "MBP"} />
             </Box>
-          ) : tabIndex === 0 ? (
+          ) : tabIndex === 1 ? (
             <Box>
               <SingleCell
                 gene={gene || "APOE"}
@@ -237,7 +249,7 @@ const GeneDetails: React.FC = (props) => {
                 selectDatasets
               />
             </Box>
-          ) : tabIndex === 2 ? (
+          ) : tabIndex === 3 ? (
             <Box>
               {data && data?.gtex_genes.length === 0 ? (
                 <Typography variant="body1">

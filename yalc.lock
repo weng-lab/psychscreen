@@ -1,0 +1,13 @@
+{
+  "version": "v1",
+  "packages": {
+    "@weng-lab/genomebrowser-v2": {
+      "signature": "6529e8f44072c145157ee6ab9917294f",
+      "file": true
+    },
+    "@weng-lab/genomebrowser-ui-v2": {
+      "signature": "fc7250c36f78ae237d725043523edbda",
+      "file": true
+    }
+  }
+}

@@ -11,6 +11,7 @@ const nextConfig = {
       "@mui/material/Unstable_Grid2": "@mui/material/Grid",
     },
   },
+  allowedDevOrigins: ['arch.crane-tawny.ts.net']
 };
 
 export default nextConfig;
