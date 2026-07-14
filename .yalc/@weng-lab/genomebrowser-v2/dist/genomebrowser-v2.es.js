@@ -1,13 +1,13 @@
-import { createContext as e, createElement as t, memo as n, use as r, useCallback as i, useEffect as a, useId as o, useLayoutEffect as s, useMemo as c, useReducer as l, useRef as u, useState as d } from "react";
-import { create as f } from "zustand";
-import { z as p } from "zod";
-import { Fragment as m, jsx as h, jsxs as g } from "react/jsx-runtime";
-import { createPortal as _ } from "react-dom";
-import v from "axios";
-import { AxiosDataLoader as y, BigWigReader as b, FileType as x } from "genomic-reader";
+import { createContext as e, createElement as t, memo as n, use as r, useCallback as i, useEffect as a, useEffectEvent as o, useId as s, useLayoutEffect as c, useMemo as l, useReducer as u, useRef as d, useState as f } from "react";
+import { create as p } from "zustand";
+import { z as m } from "zod";
+import { Fragment as h, jsx as g, jsxs as _ } from "react/jsx-runtime";
+import { createPortal as v } from "react-dom";
+import y from "axios";
+import { AxiosDataLoader as b, BigWigReader as x, FileType as S } from "genomic-reader";
 //#region src/browser/data/dataStore.ts
 function ee() {
-	return f((e) => ({
+	return p((e) => ({
 		data: {},
 		setData: (t) => e({ data: t }),
 		setTrackData: (t, n) => e((e) => ({ data: {
@@ -23,33 +23,33 @@ function ee() {
 }
 //#endregion
 //#region src/modules/fetchOnChange.ts
-var S = p.registry();
-function C(e) {
-	return S.add(e, { fetchOnChange: !0 }), e;
-}
-function w(e, t) {
-	return JSON.stringify(T(e.configSchema, t.config) ?? {});
+var C = m.registry();
+function w(e) {
+	return C.add(e, { fetchOnChange: !0 }), e;
 }
 function T(e, t) {
-	if (S.has(e)) return t;
-	if (e instanceof p.ZodObject) {
+	return JSON.stringify(E(e.configSchema, t.config) ?? {});
+}
+function E(e, t) {
+	if (C.has(e)) return t;
+	if (e instanceof m.ZodObject) {
 		if (!t || typeof t != "object" || Array.isArray(t)) return;
 		let n = {};
 		for (let [r, i] of Object.entries(e.shape)) {
-			let e = T(i, Reflect.get(t, r));
+			let e = E(i, Reflect.get(t, r));
 			e !== void 0 && (n[r] = e);
 		}
 		return Object.keys(n).length === 0 ? void 0 : n;
 	}
-	if (e instanceof p.ZodArray) {
+	if (e instanceof m.ZodArray) {
 		if (!Array.isArray(t)) return;
-		let n = t.map((t) => T(e.element, t));
+		let n = t.map((t) => E(e.element, t));
 		return n.some((e) => e !== void 0) ? n : void 0;
 	}
 }
 //#endregion
 //#region src/browser/data/fetchTrackData.ts
-async function te({ registry: e, track: t, region: n }) {
+async function D({ registry: e, track: t, region: n }) {
 	try {
 		let r = e.get(t.type).fetch;
 		return {
@@ -68,21 +68,21 @@ async function te({ registry: e, track: t, region: n }) {
 }
 //#endregion
 //#region src/browser/data/useTrackData.ts
-function ne({ useDataStore: e, registry: t, tracks: n, region: r, onSettled: i }) {
-	let o = e((e) => e.data), s = e((e) => e.setData), [l, f] = d(() => /* @__PURE__ */ new Set()), p = u(null), m = u({}), h = u(i), g = E(r);
+function te({ useDataStore: e, registry: t, tracks: n, region: r, onSettled: i }) {
+	let o = e((e) => e.data), s = e((e) => e.setData), [c, u] = f(() => /* @__PURE__ */ new Set()), p = d(null), m = d({}), h = d(i), g = ne(r);
 	return h.current = i, a(() => {
 		let i = !0, a = new Set(n.map((e) => e.base.id)), o = re(t, n), c = ie(e.getState().data, a);
 		Object.keys(e.getState().data).length !== Object.keys(c).length && s(c);
-		let l = p.current === null, u = p.current !== null && p.current !== g, d = l || u ? n : n.filter((e) => {
+		let l = p.current === null, d = p.current !== null && p.current !== g, f = l || d ? n : n.filter((e) => {
 			let t = m.current[e.base.id], n = o[e.base.id];
 			return t === void 0 || t !== n;
 		});
-		if (d.length === 0) {
-			p.current = g, m.current = o, (l || u) && h.current?.();
+		if (f.length === 0) {
+			p.current = g, m.current = o, (l || d) && h.current?.();
 			return;
 		}
-		return f(new Set(d.map((e) => e.base.id))), Promise.all(d.map(async (e) => {
-			let n = await te({
+		return u(new Set(f.map((e) => e.base.id))), Promise.all(f.map(async (e) => {
+			let n = await D({
 				registry: t,
 				track: e,
 				region: r
@@ -92,7 +92,7 @@ function ne({ useDataStore: e, registry: t, tracks: n, region: r, onSettled: i }
 			if (!i) return;
 			let n = { ...ie(e.getState().data, a) };
 			for (let [e, r] of t) n[e] = r;
-			p.current = g, m.current = o, s(n), f(/* @__PURE__ */ new Set()), h.current?.();
+			p.current = g, m.current = o, s(n), u(/* @__PURE__ */ new Set()), h.current?.();
 		}), () => {
 			i = !1;
 		};
@@ -104,21 +104,21 @@ function ne({ useDataStore: e, registry: t, tracks: n, region: r, onSettled: i }
 		n,
 		e
 	]), {
-		dataStates: c(() => ae(n, o, l), [
+		dataStates: l(() => ae(n, o, c), [
 			o,
-			l,
+			c,
 			n
 		]),
-		isFetching: l.size > 0
+		isFetching: c.size > 0
 	};
 }
-function E(e) {
+function ne(e) {
 	return `${e.chromosome}:${e.start}-${e.end}`;
 }
 function re(e, t) {
 	let n = {};
 	for (let r of t) try {
-		n[r.base.id] = w(e.get(r.type), r);
+		n[r.base.id] = T(e.get(r.type), r);
 	} catch {
 		n[r.base.id] = "{}";
 	}
@@ -142,9 +142,9 @@ function ae(e, t, n) {
 }
 //#endregion
 //#region src/browser/tooltip/TooltipContext.tsx
-var D = e(null);
+var O = e(null);
 function oe({ children: e, isDisabled: t, getTooltipComponent: n, store: r }) {
-	let i = c(() => ({
+	let i = l(() => ({
 		isDisabled: t,
 		getTooltipComponent: n,
 		store: r
@@ -153,37 +153,37 @@ function oe({ children: e, isDisabled: t, getTooltipComponent: n, store: r }) {
 		n,
 		r
 	]);
-	return /* @__PURE__ */ h(D.Provider, {
+	return /* @__PURE__ */ g(O.Provider, {
 		value: i,
 		children: e
 	});
 }
 function se() {
-	let e = r(D);
+	let e = r(O);
 	if (!e) throw Error("useTooltip must be used within a GenomeBrowser");
 	return e.isDisabled;
 }
 function ce(e) {
-	let t = r(D);
+	let t = r(O);
 	if (!t) throw Error("useTooltip must be used within a GenomeBrowser");
 	return t.getTooltipComponent(e);
 }
-function O(e) {
-	let t = r(D);
+function k(e) {
+	let t = r(O);
 	if (!t) throw Error("useTooltip must be used within a GenomeBrowser");
 	return t.store(e);
 }
 //#endregion
 //#region src/browser/tooltip/TooltipOverlay.tsx
-var k = 10;
+var A = 10;
 function le({ width: e, height: t }) {
-	let n = O((e) => e.content), r = O((e) => e.isVisible), a = O((e) => e.anchor), o = u(null), [c, l] = d({
+	let n = k((e) => e.content), r = k((e) => e.isVisible), a = k((e) => e.anchor), o = d(null), [s, l] = f({
 		x: 0,
 		y: 0
-	}), f = i(() => {
+	}), u = i(() => {
 		if (!o.current) return;
-		let n = o.current.getBBox(), r = a.x + k, i = a.y + k;
-		r + n.width > e && (r = a.x - n.width - k), i + n.height > t && (i = a.y - n.height - k), r < 0 && (r = Math.max(0, e - n.width)), i < 0 && (i = Math.max(0, t - n.height)), l({
+		let n = o.current.getBBox(), r = a.x + A, i = a.y + A;
+		r + n.width > e && (r = a.x - n.width - A), i + n.height > t && (i = a.y - n.height - A), r < 0 && (r = Math.max(0, e - n.width)), i < 0 && (i = Math.max(0, t - n.height)), l({
 			x: r,
 			y: i
 		});
@@ -193,15 +193,15 @@ function le({ width: e, height: t }) {
 		t,
 		e
 	]);
-	return s(() => {
-		!r || !n || f();
+	return c(() => {
+		!r || !n || u();
 	}, [
-		f,
+		u,
 		n,
 		r
-	]), !r || !n ? null : /* @__PURE__ */ h("g", {
+	]), !r || !n ? null : /* @__PURE__ */ g("g", {
 		ref: o,
-		transform: `translate(${c.x},${c.y})`,
+		transform: `translate(${s.x},${s.y})`,
 		style: { pointerEvents: "none" },
 		children: n
 	});
@@ -209,33 +209,36 @@ function le({ width: e, height: t }) {
 //#endregion
 //#region src/browser/tooltip/tooltipStore.ts
 function ue() {
-	return f((e) => ({
+	return p((e) => ({
 		isVisible: !1,
 		content: void 0,
 		anchor: {
 			x: 0,
 			y: 0
 		},
-		show: (t, n) => e({
+		owner: void 0,
+		show: (t, n, r) => e({
 			isVisible: !0,
-			content: t,
-			anchor: n
+			content: n,
+			anchor: r,
+			owner: t
 		}),
-		hide: () => e({
+		hide: (t) => e((e) => e.owner === t ? {
 			isVisible: !1,
 			content: void 0,
 			anchor: {
 				x: 0,
 				y: 0
-			}
-		})
+			},
+			owner: void 0
+		} : e)
 	}));
 }
 //#endregion
 //#region src/browser/tooltip/TooltipProvider.tsx
 function de({ children: e, isDisabled: t, getTooltipComponent: n }) {
-	return /* @__PURE__ */ h(oe, {
-		store: c(() => ue(), []),
+	return /* @__PURE__ */ g(oe, {
+		store: l(() => ue(), []),
 		isDisabled: i(() => t?.() === !0, [t]),
 		getTooltipComponent: n,
 		children: e
@@ -243,55 +246,55 @@ function de({ children: e, isDisabled: t, getTooltipComponent: n }) {
 }
 //#endregion
 //#region src/browser/svg/BrowserSvgContext.tsx
-var fe = e(void 0);
-function pe({ children: e, svg: t }) {
-	return /* @__PURE__ */ h(fe.Provider, {
+var j = e(void 0);
+function fe({ children: e, svg: t }) {
+	return /* @__PURE__ */ g(j.Provider, {
 		value: t,
 		children: e
 	});
 }
-function A() {
-	let e = r(fe);
+function pe() {
+	let e = r(j);
 	if (e === void 0) throw Error("useBrowserSvg must be used within a GenomeBrowser");
 	return e;
 }
 //#endregion
 //#region src/browser/state/BrowserContext.tsx
-var j = e(null), me = e(null);
-function he({ children: e, value: t }) {
-	return /* @__PURE__ */ h(j.Provider, {
+var me = e(null), he = e(null);
+function ge({ children: e, value: t }) {
+	return /* @__PURE__ */ g(me.Provider, {
 		value: t,
 		children: e
 	});
 }
-function ge({ children: e, value: t }) {
-	return /* @__PURE__ */ h(me.Provider, {
+function _e({ children: e, value: t }) {
+	return /* @__PURE__ */ g(he.Provider, {
 		value: t,
 		children: e
 	});
 }
 function M(e) {
-	let t = r(j);
+	let t = r(me);
 	if (!t) throw Error("useTrackStore must be used within a GenomeBrowser");
 	return t.trackStore(e);
 }
-function _e(e) {
-	let t = r(j);
+function ve(e) {
+	let t = r(me);
 	if (!t) throw Error("useBrowserStore must be used within a GenomeBrowser");
 	return t.browserStore(e);
 }
 function N(e) {
-	let t = r(j);
+	let t = r(me);
 	if (!t) throw Error("useContextMenuStore must be used within a GenomeBrowser");
 	return t.contextMenuStore(e);
 }
 function P(e) {
-	let t = r(j);
+	let t = r(me);
 	if (!t) throw Error("useSettingsStore must be used within a GenomeBrowser");
 	return t.settingsStore(e);
 }
-function ve() {
-	let e = r(me);
+function ye() {
+	let e = r(he);
 	if (!e) throw Error("useTrackMutationGate must be used within a GenomeBrowser");
 	return {
 		isInteractionBlocked: e.isInteractionBlocked,
@@ -303,13 +306,13 @@ function ve() {
 }
 //#endregion
 //#region src/browser/track-row/TrackHeightProvider.tsx
-var ye = e(null);
-function be({ children: e }) {
-	let t = M((e) => e.getTrack), n = M((e) => e.updateBase), r = c(() => ({
+var be = e(null);
+function xe({ children: e }) {
+	let t = M((e) => e.getTrack), n = M((e) => e.updateBase), r = l(() => ({
 		getTrackHeight: (e) => t(e)?.base.height,
 		updateHeight: (e, t) => n(e, { height: t })
 	}), [t, n]);
-	return /* @__PURE__ */ h(ye.Provider, {
+	return /* @__PURE__ */ g(be.Provider, {
 		value: r,
 		children: e
 	});
@@ -317,12 +320,12 @@ function be({ children: e }) {
 //#endregion
 //#region src/modules/runtime/SettingsSection.tsx
 function F({ title: e, children: t }) {
-	return /* @__PURE__ */ g("section", {
+	return /* @__PURE__ */ _("section", {
 		style: {
 			display: "grid",
 			gap: "8px"
 		},
-		children: [/* @__PURE__ */ h("div", {
+		children: [/* @__PURE__ */ g("div", {
 			style: { fontWeight: 700 },
 			children: e
 		}), t]
@@ -330,48 +333,48 @@ function F({ title: e, children: t }) {
 }
 //#endregion
 //#region src/browser/settings/settingsColor.ts
-function xe(e) {
+function Se(e) {
 	return e ? /^#[0-9a-fA-F]{6}$/.test(e) : !1;
 }
-function Se(e) {
-	if (!xe(e)) return "#000000";
+function Ce(e) {
+	if (!Se(e)) return "#000000";
 	let t = Number.parseInt(e.slice(1, 3), 16), n = Number.parseInt(e.slice(3, 5), 16), r = Number.parseInt(e.slice(5, 7), 16);
 	return t * .299 + n * .587 + r * .114 > 186 ? "#000000" : "#ffffff";
 }
 //#endregion
 //#region src/browser/settings/DefaultBaseSettings.tsx
-function Ce({ base: e, displayOptions: t, updateBase: n }) {
-	let [r, i] = d(null), a = (e) => {
+function we({ base: e, displayOptions: t, updateBase: n }) {
+	let [r, i] = f(null), a = (e) => {
 		let t = n(e);
 		i(t.ok ? null : t.error);
 	};
-	return /* @__PURE__ */ g(F, {
+	return /* @__PURE__ */ _(F, {
 		title: "Track",
 		children: [
-			r && /* @__PURE__ */ h("div", {
-				style: Te,
+			r && /* @__PURE__ */ g("div", {
+				style: Ee,
 				children: r
 			}),
-			/* @__PURE__ */ g("label", {
-				style: we,
-				children: ["Title", /* @__PURE__ */ h("input", {
+			/* @__PURE__ */ _("label", {
+				style: Te,
+				children: ["Title", /* @__PURE__ */ g("input", {
 					type: "text",
 					value: e.title,
 					onChange: (e) => a({ title: e.target.value })
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
-				style: we,
-				children: ["Color", /* @__PURE__ */ g("div", {
+			/* @__PURE__ */ _("label", {
+				style: Te,
+				children: ["Color", /* @__PURE__ */ _("div", {
 					style: {
 						display: "flex",
 						gap: "6px"
 					},
-					children: [/* @__PURE__ */ h("input", {
+					children: [/* @__PURE__ */ g("input", {
 						type: "color",
-						value: xe(e.color) ? e.color : "#000000",
+						value: Se(e.color) ? e.color : "#000000",
 						onChange: (e) => a({ color: e.target.value })
-					}), /* @__PURE__ */ h("input", {
+					}), /* @__PURE__ */ g("input", {
 						type: "text",
 						value: e.color ?? "",
 						placeholder: "#000000",
@@ -379,9 +382,9 @@ function Ce({ base: e, displayOptions: t, updateBase: n }) {
 					})]
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
-				style: we,
-				children: ["Height", /* @__PURE__ */ h("input", {
+			/* @__PURE__ */ _("label", {
+				style: Te,
+				children: ["Height", /* @__PURE__ */ g("input", {
 					type: "number",
 					min: 20,
 					value: e.height,
@@ -391,12 +394,12 @@ function Ce({ base: e, displayOptions: t, updateBase: n }) {
 					}
 				})]
 			}),
-			t.length > 1 && /* @__PURE__ */ g("label", {
-				style: we,
-				children: ["Display", /* @__PURE__ */ h("select", {
+			t.length > 1 && /* @__PURE__ */ _("label", {
+				style: Te,
+				children: ["Display", /* @__PURE__ */ g("select", {
 					value: e.display,
 					onChange: (e) => a({ display: e.target.value }),
-					children: t.map((e) => /* @__PURE__ */ h("option", {
+					children: t.map((e) => /* @__PURE__ */ g("option", {
 						value: e,
 						children: e
 					}, e))
@@ -405,17 +408,17 @@ function Ce({ base: e, displayOptions: t, updateBase: n }) {
 		]
 	});
 }
-var we = {
+var Te = {
 	display: "grid",
 	gap: "4px"
-}, Te = {
+}, Ee = {
 	color: "#b00020",
 	fontSize: "12px"
 };
 //#endregion
 //#region src/browser/settings/useDraggableSettingsModal.ts
-function Ee(e) {
-	let [t, n] = d(e), [r, i] = d(e), a = u(null);
+function De(e) {
+	let [t, n] = f(e), [r, i] = f(e), a = d(null);
 	(e.x !== r.x || e.y !== r.y) && (i(e), n(e));
 	let o = (e) => {
 		e.currentTarget.setPointerCapture(e.pointerId), a.current = {
@@ -447,36 +450,36 @@ function Ee(e) {
 }
 //#endregion
 //#region src/browser/settings/DefaultSettingsModal.tsx
-function De({ track: e, title: t, position: n, closeSettings: r, children: i }) {
-	let { position: o, handleProps: s } = Ee(n);
+function Oe({ track: e, title: t, position: n, closeSettings: r, children: i }) {
+	let { position: o, handleProps: s } = De(n);
 	return a(() => {
 		let e = (e) => {
 			e.key === "Escape" && r();
 		};
 		return document.addEventListener("keydown", e), () => document.removeEventListener("keydown", e);
-	}, [r]), /* @__PURE__ */ g("dialog", {
+	}, [r]), /* @__PURE__ */ _("dialog", {
 		open: !0,
 		"aria-label": t,
 		style: {
-			...Oe,
+			...ke,
 			left: o.x,
 			top: o.y
 		},
-		children: [/* @__PURE__ */ g("div", {
+		children: [/* @__PURE__ */ _("div", {
 			...s,
 			style: {
-				...ke,
+				...Ae,
 				background: e.base.color || "#f5f5f5",
-				color: Se(e.base.color || "#f5f5f5"),
+				color: Ce(e.base.color || "#f5f5f5"),
 				...s.style
 			},
-			children: [/* @__PURE__ */ h("div", { children: t }), /* @__PURE__ */ h("button", {
+			children: [/* @__PURE__ */ g("div", { children: t }), /* @__PURE__ */ g("button", {
 				type: "button",
 				onClick: r,
 				onPointerDown: (e) => e.stopPropagation(),
 				"aria-label": "Close settings",
-				style: Ae,
-				children: /* @__PURE__ */ g("svg", {
+				style: je,
+				children: /* @__PURE__ */ _("svg", {
 					"aria-hidden": "true",
 					width: "16",
 					height: "16",
@@ -486,16 +489,16 @@ function De({ track: e, title: t, position: n, closeSettings: r, children: i }) 
 					strokeLinecap: "round",
 					strokeLinejoin: "round",
 					strokeWidth: "2.5",
-					children: [/* @__PURE__ */ h("path", { d: "M18 6 6 18" }), /* @__PURE__ */ h("path", { d: "m6 6 12 12" })]
+					children: [/* @__PURE__ */ g("path", { d: "M18 6 6 18" }), /* @__PURE__ */ g("path", { d: "m6 6 12 12" })]
 				})
 			})]
-		}), /* @__PURE__ */ h("div", {
-			style: je,
+		}), /* @__PURE__ */ g("div", {
+			style: Me,
 			children: i
 		})]
 	});
 }
-var Oe = {
+var ke = {
 	position: "fixed",
 	zIndex: 10,
 	minWidth: "280px",
@@ -507,14 +510,14 @@ var Oe = {
 	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
 	fontFamily: "system-ui, sans-serif",
 	fontSize: "14px"
-}, ke = {
+}, Ae = {
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "space-between",
 	gap: "12px",
 	padding: "10px 12px",
 	fontWeight: 700
-}, Ae = {
+}, je = {
 	display: "inline-flex",
 	alignItems: "center",
 	justifyContent: "center",
@@ -528,7 +531,7 @@ var Oe = {
 	background: "transparent",
 	color: "inherit",
 	cursor: "pointer"
-}, je = {
+}, Me = {
 	display: "grid",
 	gap: "12px",
 	padding: "12px",
@@ -537,16 +540,16 @@ var Oe = {
 };
 //#endregion
 //#region src/browser/state/settingsStore.ts
-function Me(e = {}) {
-	return f((t) => ({
+function Ne(e = {}) {
+	return p((t) => ({
 		open: !1,
 		trackId: void 0,
 		position: {
 			x: 0,
 			y: 0
 		},
-		modalComponent: e.modalComponent ?? De,
-		baseSettingsComponent: e.baseSettingsComponent ?? Ce,
+		modalComponent: e.modalComponent ?? Oe,
+		baseSettingsComponent: e.baseSettingsComponent ?? we,
 		openSettings: (e, n) => t({
 			open: !0,
 			trackId: e,
@@ -559,8 +562,8 @@ function Me(e = {}) {
 }
 //#endregion
 //#region src/browser/state/contextMenuStore.ts
-function Ne() {
-	return f((e) => ({
+function Pe() {
+	return p((e) => ({
 		open: !1,
 		trackId: void 0,
 		position: {
@@ -577,21 +580,21 @@ function Ne() {
 }
 //#endregion
 //#region src/browser/overlays/InteractionShield.tsx
-function Pe(e) {
+function Fe(e) {
 	e.preventDefault(), e.stopPropagation();
 }
-function Fe({ active: e, width: t, height: n }) {
-	return e ? /* @__PURE__ */ h("g", {
+function Ie({ active: e, width: t, height: n }) {
+	return e ? /* @__PURE__ */ g("g", {
 		role: "status",
 		"aria-live": "polite",
 		"aria-label": "Genome browser is updating track data",
 		tabIndex: 0,
-		onClick: Pe,
-		onContextMenu: Pe,
-		onMouseDown: Pe,
-		onPointerDown: Pe,
+		onClick: Fe,
+		onContextMenu: Fe,
+		onMouseDown: Fe,
+		onPointerDown: Fe,
 		style: { cursor: "wait" },
-		children: /* @__PURE__ */ h("rect", {
+		children: /* @__PURE__ */ g("rect", {
 			x: 0,
 			y: 0,
 			width: t,
@@ -606,13 +609,13 @@ function I(e, t) {
 	let n = e.end - e.start;
 	return (r) => (r - e.start) * t / n;
 }
-function Ie(e, t) {
+function Le(e, t) {
 	let n = e.end - e.start;
 	return (r) => Math.round(e.start + r / t * n);
 }
 //#endregion
 //#region src/browser/overlays/highlightRects.ts
-function Le({ highlights: e, region: t, width: n }) {
+function Re({ highlights: e, region: t, width: n }) {
 	let r = I(t, n);
 	return e.flatMap((e) => {
 		if ((e.region.chromosome ?? t.chromosome) !== t.chromosome) return [];
@@ -628,34 +631,34 @@ function Le({ highlights: e, region: t, width: n }) {
 }
 //#endregion
 //#region src/browser/overlays/Highlights.tsx
-function Re({ region: e, marginWidth: t, renderWidth: n, contentX: r, browserWidth: i, totalHeight: s, registerContentGroup: c }) {
-	let l = _e((e) => e.highlights), d = o(), f = u(null), p = Le({
+function ze({ region: e, marginWidth: t, renderWidth: n, contentX: r, browserWidth: i, totalHeight: o, registerContentGroup: c }) {
+	let l = ve((e) => e.highlights), u = s(), f = d(null), p = Re({
 		highlights: l,
 		region: e,
 		width: n
 	});
 	return a(() => {
 		if (!(!c || !f.current)) return c(f.current);
-	}, [p.length, c]), p.length === 0 ? null : /* @__PURE__ */ g("g", {
+	}, [p.length, c]), p.length === 0 ? null : /* @__PURE__ */ _("g", {
 		pointerEvents: "none",
-		children: [/* @__PURE__ */ h("defs", { children: /* @__PURE__ */ h("clipPath", {
-			id: d,
-			children: /* @__PURE__ */ h("rect", {
+		children: [/* @__PURE__ */ g("defs", { children: /* @__PURE__ */ g("clipPath", {
+			id: u,
+			children: /* @__PURE__ */ g("rect", {
 				x: t,
 				y: 0,
 				width: i - t,
-				height: s
+				height: o
 			})
-		}) }), /* @__PURE__ */ h("g", {
-			clipPath: `url(#${d})`,
-			children: /* @__PURE__ */ h("g", {
+		}) }), /* @__PURE__ */ g("g", {
+			clipPath: `url(#${u})`,
+			children: /* @__PURE__ */ g("g", {
 				ref: f,
 				transform: `translate(${r},0)`,
-				children: p.map((e) => /* @__PURE__ */ h("rect", {
+				children: p.map((e) => /* @__PURE__ */ g("rect", {
 					x: e.x,
 					y: 0,
 					width: e.width,
-					height: s,
+					height: o,
 					fill: e.color,
 					fillOpacity: e.opacity
 				}, e.id))
@@ -665,25 +668,25 @@ function Re({ region: e, marginWidth: t, renderWidth: n, contentX: r, browserWid
 }
 //#endregion
 //#region src/browser/state/RegistryContext.tsx
-var ze = e(null);
-function Be({ registry: e, children: t }) {
-	let n = c(() => e, [e]);
-	return /* @__PURE__ */ h(ze.Provider, {
+var Be = e(null);
+function Ve({ registry: e, children: t }) {
+	let n = l(() => e, [e]);
+	return /* @__PURE__ */ g(Be.Provider, {
 		value: n,
 		children: t
 	});
 }
 //#endregion
 //#region src/browser/state/useRegistry.ts
-function Ve() {
-	let e = r(ze);
+function He() {
+	let e = r(Be);
 	if (!e) throw Error("useRegistry must be used within a RegistryProvider");
 	return e;
 }
 //#endregion
 //#region src/browser/overlays/ContextMenuController.tsx
-function He() {
-	let e = Ve(), t = N((e) => e.open), n = N((e) => e.trackId), r = N((e) => e.position), i = N((e) => e.closeContextMenu), o = M((e) => n ? e.getTrack(n) : void 0), s = M((e) => e.updateBase), c = M((e) => e.removeTrack), { isInteractionBlocked: l, runTrackMutation: f } = ve(), p = u(null), [m, _] = d(null);
+function Ue() {
+	let e = He(), t = N((e) => e.open), n = N((e) => e.trackId), r = N((e) => e.position), i = N((e) => e.closeContextMenu), o = M((e) => n ? e.getTrack(n) : void 0), s = M((e) => e.updateBase), c = M((e) => e.removeTrack), { isInteractionBlocked: l, runTrackMutation: u } = ye(), p = d(null), [m, h] = f(null);
 	if (a(() => {
 		if (!t) return;
 		let e = (e) => {
@@ -702,45 +705,45 @@ function He() {
 		v = [];
 	}
 	let y = (e) => {
-		f(() => s(n, { display: e })).ok && i();
+		u(() => s(n, { display: e })).ok && i();
 	}, b = () => {
-		f(() => c(n)).ok && i();
+		u(() => c(n)).ok && i();
 	};
-	return /* @__PURE__ */ g("div", {
+	return /* @__PURE__ */ _("div", {
 		ref: p,
 		style: {
-			...We,
+			...Ge,
 			left: r.x,
 			top: r.y
 		},
 		onContextMenu: (e) => e.preventDefault(),
 		children: [
-			v.map((e) => /* @__PURE__ */ h(Ue, {
+			v.map((e) => /* @__PURE__ */ g(We, {
 				label: e,
 				selected: o.base.display === e,
 				hovered: m === e,
 				disabled: l,
-				onHover: () => _(e),
-				onLeave: () => _(null),
+				onHover: () => h(e),
+				onLeave: () => h(null),
 				onClick: () => y(e)
 			}, e)),
-			v.length > 0 && /* @__PURE__ */ h("div", { style: Ke }),
-			/* @__PURE__ */ h(Ue, {
+			v.length > 0 && /* @__PURE__ */ g("div", { style: qe }),
+			/* @__PURE__ */ g(We, {
 				label: "remove",
 				hovered: m === "remove",
 				disabled: l,
-				onHover: () => _("remove"),
-				onLeave: () => _(null),
+				onHover: () => h("remove"),
+				onLeave: () => h(null),
 				onClick: b
 			})
 		]
 	});
 }
-function Ue({ label: e, selected: t = !1, hovered: n = !1, disabled: r = !1, onHover: i, onLeave: a, onClick: o }) {
-	return /* @__PURE__ */ h("button", {
+function We({ label: e, selected: t = !1, hovered: n = !1, disabled: r = !1, onHover: i, onLeave: a, onClick: o }) {
+	return /* @__PURE__ */ g("button", {
 		type: "button",
 		style: {
-			...Ge,
+			...Ke,
 			background: t ? "#d0d0d0" : n && !r ? "#f0f0f0" : "#ffffff",
 			color: r ? "#888888" : "#000000",
 			cursor: r ? "not-allowed" : "pointer"
@@ -752,13 +755,13 @@ function Ue({ label: e, selected: t = !1, hovered: n = !1, disabled: r = !1, onH
 		children: e
 	});
 }
-var We = {
+var Ge = {
 	position: "fixed",
 	background: "#ffffff",
 	boxShadow: "0 0 5px 0 rgba(0, 0, 0, 0.5)",
 	zIndex: 20,
 	fontSize: "12px"
-}, Ge = {
+}, Ke = {
 	display: "block",
 	width: "100%",
 	padding: "5px",
@@ -767,30 +770,30 @@ var We = {
 	textAlign: "left",
 	cursor: "pointer",
 	fontSize: "12px"
-}, Ke = {
+}, qe = {
 	height: "1px",
 	background: "#cccccc"
 };
 //#endregion
 //#region src/browser/overlays/SettingsModalController.tsx
-function qe() {
-	let e = Ve(), t = P((e) => e.open), n = P((e) => e.trackId), r = P((e) => e.position), i = P((e) => e.modalComponent), a = P((e) => e.baseSettingsComponent), o = P((e) => e.closeSettings), s = M((e) => n ? e.getTrack(n) : void 0), c = M((e) => e.updateBase), l = M((e) => e.updateConfig), { isInteractionBlocked: u, runTrackMutation: d } = ve();
+function Je() {
+	let e = He(), t = P((e) => e.open), n = P((e) => e.trackId), r = P((e) => e.position), i = P((e) => e.modalComponent), a = P((e) => e.baseSettingsComponent), o = P((e) => e.closeSettings), s = M((e) => n ? e.getTrack(n) : void 0), c = M((e) => e.updateBase), l = M((e) => e.updateConfig), { isInteractionBlocked: u, runTrackMutation: d } = ye();
 	if (!t || !s) return null;
 	try {
 		let t = e.get(s.type), n = t.settingsComponent;
-		return /* @__PURE__ */ h(i, {
+		return /* @__PURE__ */ g(i, {
 			track: s,
 			title: `Configure ${s.base.title}`,
 			position: r,
 			closeSettings: o,
-			children: /* @__PURE__ */ g("div", {
+			children: /* @__PURE__ */ _("div", {
 				"aria-disabled": u,
 				style: { pointerEvents: u ? "none" : void 0 },
-				children: [/* @__PURE__ */ h(a, {
+				children: [/* @__PURE__ */ g(a, {
 					base: s.base,
 					displayOptions: Object.keys(t.render),
 					updateBase: (e) => d(() => c(s.base.id, e))
-				}), n && /* @__PURE__ */ h(n, {
+				}), n && /* @__PURE__ */ g(n, {
 					id: s.base.id,
 					config: s.config,
 					updateConfig: (e) => d(() => l(s.base.id, e))
@@ -798,20 +801,20 @@ function qe() {
 			})
 		});
 	} catch (e) {
-		return /* @__PURE__ */ h(i, {
+		return /* @__PURE__ */ g(i, {
 			track: s,
 			title: `Configure ${s.base.title}`,
 			position: r,
 			closeSettings: o,
-			children: /* @__PURE__ */ h("div", { children: e instanceof Error ? e.message : "No settings available" })
+			children: /* @__PURE__ */ g("div", { children: e instanceof Error ? e.message : "No settings available" })
 		});
 	}
 }
 //#endregion
 //#region src/browser/svg/SvgShell.tsx
-function Je({ width: e, height: t, setSvg: n, children: r }) {
-	let i = u(null);
-	return a(() => (n(i.current), () => n(null)), [n]), /* @__PURE__ */ h("svg", {
+function Ye({ width: e, height: t, setSvg: n, children: r }) {
+	let i = d(null);
+	return a(() => (n(i.current), () => n(null)), [n]), /* @__PURE__ */ g("svg", {
 		id: "browserSVG",
 		ref: i,
 		viewBox: `0 0 ${e} ${t}`,
@@ -829,10 +832,10 @@ function Je({ width: e, height: t, setSvg: n, children: r }) {
 function L(e, t) {
 	return e.base.height + (e.base.title ? t + 5 : 0);
 }
-function Ye(e, t) {
+function Xe(e, t) {
 	return e.base.title ? t + 5 : 0;
 }
-function Xe(e, t) {
+function Ze(e, t) {
 	return e.reduce((e, n) => e + L(n, t), 0);
 }
 //#endregion
@@ -850,10 +853,10 @@ function R(e, t, n) {
 }
 //#endregion
 //#region src/browser/track-row/trackSwapMath.ts
-function Ze(e, t) {
+function Qe(e, t) {
 	return e?.draggedId === t.draggedId && e.currentIndex === t.currentIndex && e.targetIndex === t.targetIndex;
 }
-function Qe(e, t, n, r) {
+function $e(e, t, n, r) {
 	let i = t.findIndex((t) => t.base.id === e);
 	if (i < 0) return null;
 	let a = t.map((e) => L(e, n)), o = a.map((e, t) => t < i ? -a.slice(t, i).reduce((e, t) => e + t, 0) : t > i ? a.slice(i + 1, t + 1).reduce((e, t) => e + t, 0) : 0);
@@ -863,15 +866,15 @@ function Qe(e, t, n, r) {
 		targetIndex: o.reduce((e, t, n) => Math.abs(t - r) < Math.abs(o[e] - r) ? n : e, 0)
 	};
 }
-function $e(e, t, n, r, i) {
+function et(e, t, n, r, i) {
 	if (!i || t === i.draggedId) return 0;
 	let a = n[i.currentIndex];
 	if (!a) return 0;
 	let o = L(a, r);
 	return i.targetIndex > i.currentIndex ? e > i.currentIndex && e <= i.targetIndex ? -o : 0 : i.targetIndex < i.currentIndex && e >= i.targetIndex && e < i.currentIndex ? o : 0;
 }
-function et(e, t, n, r) {
-	let i = Qe(e, t, n, r);
+function tt(e, t, n, r) {
+	let i = $e(e, t, n, r);
 	if (!i) return null;
 	let { currentIndex: a, targetIndex: o } = i;
 	if (o === a) return null;
@@ -880,21 +883,21 @@ function et(e, t, n, r) {
 }
 //#endregion
 //#region src/browser/track-row/useTrackSwap.ts
-function tt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPreviewEnd: i, cloneRef: o }) {
-	let s = A(), c = M((e) => e.tracks), l = M((e) => e.reorderTracks), { isInteractionBlocked: f, runTrackMutation: p } = ve(), [m, h] = d(null), g = m !== null, _ = u(null);
+function nt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPreviewEnd: i, cloneRef: o }) {
+	let s = pe(), c = M((e) => e.tracks), l = M((e) => e.reorderTracks), { isInteractionBlocked: u, runTrackMutation: p } = ye(), [m, h] = f(null), g = m !== null, _ = d(null);
 	a(() => {
 		if (m) return document.addEventListener("mousemove", m.handleMove), document.addEventListener("mouseup", m.handleUp), () => {
 			document.removeEventListener("mousemove", m.handleMove), document.removeEventListener("mouseup", m.handleUp), m.didEnd() || i();
 		};
 	}, [m, i]);
-	let v = n || f ? void 0 : (a) => {
-		if (n || f || a.button !== 0 || !s || c.length < 2) return;
-		let u = R(s, a.clientX, a.clientY);
-		if (!u) return;
+	let v = n || u ? void 0 : (a) => {
+		if (n || u || a.button !== 0 || !s || c.length < 2) return;
+		let d = R(s, a.clientX, a.clientY);
+		if (!d) return;
 		a.preventDefault(), a.stopPropagation();
-		let d = u.y, m = 0, g = !1, v = (n) => {
-			let i = Qe(e.base.id, c, t, n);
-			!i || Ze(_.current, i) || (_.current = i, r(i));
+		let f = d.y, m = 0, g = !1, v = (n) => {
+			let i = $e(e.base.id, c, t, n);
+			!i || Qe(_.current, i) || (_.current = i, r(i));
 		}, y = (e) => {
 			o.current?.setAttribute("transform", `translate(0,${e})`);
 		};
@@ -903,11 +906,11 @@ function tt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPr
 			handleMove: (e) => {
 				e.preventDefault();
 				let t = R(s, e.clientX, e.clientY);
-				t && (m = t.y - d, y(m), v(m));
+				t && (m = t.y - f, y(m), v(m));
 			},
 			handleUp: (n) => {
 				if (n.preventDefault(), Math.abs(m) > 5) {
-					let n = et(e.base.id, c, t, m);
+					let n = tt(e.base.id, c, t, m);
 					n && p(() => l(n));
 				}
 				g = !0, h(null), _.current = null, i();
@@ -931,8 +934,8 @@ function tt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPr
 }
 //#endregion
 //#region src/browser/track-row/SwapTrack.tsx
-function nt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPreviewEnd: i, children: a }) {
-	let o = u(null), { svg: s, isSwapping: c, swapProps: l, cloneSwapProps: d } = tt({
+function rt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPreviewEnd: i, children: a }) {
+	let o = d(null), { svg: s, isSwapping: c, swapProps: l, cloneSwapProps: u } = nt({
 		track: e,
 		titleSize: t,
 		disabled: n,
@@ -940,11 +943,11 @@ function nt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPr
 		onPreviewEnd: i,
 		cloneRef: o
 	});
-	return /* @__PURE__ */ g(m, { children: [/* @__PURE__ */ h("g", {
+	return /* @__PURE__ */ _(h, { children: [/* @__PURE__ */ g("g", {
 		opacity: +!c,
 		pointerEvents: c ? "none" : void 0,
 		children: a(l)
-	}), c && s && _(/* @__PURE__ */ h("g", {
+	}), c && s && v(/* @__PURE__ */ g("g", {
 		ref: o,
 		transform: "translate(0,0)",
 		style: {
@@ -952,26 +955,26 @@ function nt({ track: e, titleSize: t, disabled: n = !1, onPreviewChange: r, onPr
 			filter: "drop-shadow(2px 2px 2px gray)",
 			pointerEvents: "none"
 		},
-		children: a(d)
+		children: a(u)
 	}), s)] });
 }
 //#endregion
 //#region src/modules/interaction.ts
-var rt = e(null);
-function it({ interaction: e, children: n }) {
-	return t(rt.Provider, { value: e ?? null }, n);
+var it = e(null);
+function at({ interaction: e, children: n }) {
+	return t(it.Provider, { value: e ?? null }, n);
 }
 function z() {
-	return r(rt);
+	return r(it);
 }
 //#endregion
 //#region src/browser/track-row/icons.tsx
-function at(e) {
-	return /* @__PURE__ */ h("svg", {
+function ot(e) {
+	return /* @__PURE__ */ g("svg", {
 		...e,
 		viewBox: "0 0 24 24",
 		xmlns: "http://www.w3.org/2000/svg",
-		children: /* @__PURE__ */ h("path", {
+		children: /* @__PURE__ */ g("path", {
 			stroke: e.fill || "#000000",
 			strokeLinecap: "round",
 			strokeLinejoin: "round",
@@ -980,12 +983,12 @@ function at(e) {
 		})
 	});
 }
-function ot(e) {
-	return /* @__PURE__ */ h("svg", {
+function st(e) {
+	return /* @__PURE__ */ g("svg", {
 		...e,
 		viewBox: "0 0 24 24",
 		xmlns: "http://www.w3.org/2000/svg",
-		children: /* @__PURE__ */ h("path", {
+		children: /* @__PURE__ */ g("path", {
 			stroke: e.fill || "#000000",
 			strokeLinecap: "round",
 			strokeLinejoin: "round",
@@ -994,36 +997,36 @@ function ot(e) {
 		})
 	});
 }
-function st(e) {
-	return /* @__PURE__ */ h("svg", {
+function ct(e) {
+	return /* @__PURE__ */ g("svg", {
 		...e,
 		viewBox: "0 0 24 24",
 		xmlns: "http://www.w3.org/2000/svg",
-		children: /* @__PURE__ */ h("path", {
+		children: /* @__PURE__ */ g("path", {
 			fill: e.fill || "#000000",
 			d: "M19.43 12.98c.04-.32.07-.65.07-.98s-.02-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.37-.31-.6-.22l-2.49 1a7.28 7.28 0 0 0-1.69-.98l-.38-2.65A.49.49 0 0 0 14.01 2h-4c-.25 0-.46.18-.5.42l-.38 2.65c-.61.24-1.18.56-1.69.98l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65a7.93 7.93 0 0 0 0 1.96l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.12.22.37.31.6.22l2.49-1c.51.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.38-2.65c.61-.24 1.18-.56 1.69-.98l2.49 1c.23.08.48 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"
 		})
 	});
 }
-function ct({ width: e, height: t, outline: n, inside: r }) {
-	return /* @__PURE__ */ g("svg", {
+function lt({ width: e, height: t, outline: n, inside: r }) {
+	return /* @__PURE__ */ _("svg", {
 		width: e,
 		height: t,
 		viewBox: "0 0 451.74 481.74",
 		children: [
-			/* @__PURE__ */ h("path", {
+			/* @__PURE__ */ g("path", {
 				fill: n,
 				d: "M446.324,367.381L262.857,41.692c-15.644-28.444-58.311-28.444-73.956,0L5.435,367.381c-15.644,28.444,4.267,64,36.978,64h365.511C442.057,429.959,461.968,395.825,446.324,367.381z"
 			}),
-			/* @__PURE__ */ h("path", {
+			/* @__PURE__ */ g("path", {
 				fill: r,
 				d: "M225.879,63.025l183.467,325.689H42.413L225.879,63.025L225.879,63.025z"
 			}),
-			/* @__PURE__ */ h("path", {
+			/* @__PURE__ */ g("path", {
 				fill: "#3F4448",
 				d: "M196.013,212.359l11.378,75.378c1.422,8.533,8.533,15.644,18.489,15.644l0,0c8.533,0,17.067-7.111,18.489-15.644l11.378-75.378c2.844-18.489-11.378-34.133-29.867-34.133l0,0C207.39,178.225,194.59,193.87,196.013,212.359z"
 			}),
-			/* @__PURE__ */ h("circle", {
+			/* @__PURE__ */ g("circle", {
 				fill: "#3F4448",
 				cx: "225.879",
 				cy: "336.092",
@@ -1032,19 +1035,19 @@ function ct({ width: e, height: t, outline: n, inside: r }) {
 		]
 	});
 }
-function lt({ width: e, height: t, color: n }) {
-	return /* @__PURE__ */ g("svg", {
+function ut({ width: e, height: t, color: n }) {
+	return /* @__PURE__ */ _("svg", {
 		width: e,
 		height: t,
 		viewBox: "0 0 40 40",
-		children: [/* @__PURE__ */ h("path", {
+		children: [/* @__PURE__ */ g("path", {
 			opacity: "0.2",
 			fill: n,
 			d: "M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"
-		}), /* @__PURE__ */ h("path", {
+		}), /* @__PURE__ */ g("path", {
 			fill: n,
 			d: "M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0C22.32,8.481,24.301,9.057,26.013,10.047z",
-			children: /* @__PURE__ */ h("animateTransform", {
+			children: /* @__PURE__ */ g("animateTransform", {
 				attributeType: "xml",
 				attributeName: "transform",
 				type: "rotate",
@@ -1058,16 +1061,16 @@ function lt({ width: e, height: t, color: n }) {
 }
 //#endregion
 //#region src/browser/track-row/ErrorState.tsx
-function ut({ x: e, y: t, width: n, height: r, message: i }) {
+function dt({ x: e, y: t, width: n, height: r, message: i }) {
 	let a = Math.max(18, Math.min(r / 3, 40));
-	return /* @__PURE__ */ g("g", {
+	return /* @__PURE__ */ _("g", {
 		transform: `translate(${e + (n - a) / 2},${t + (r - a) / 2})`,
-		children: [/* @__PURE__ */ h(ct, {
+		children: [/* @__PURE__ */ g(lt, {
 			outline: "#000000",
 			inside: "#ffffff",
 			width: a,
 			height: a
-		}), /* @__PURE__ */ h("text", {
+		}), /* @__PURE__ */ g("text", {
 			fill: "#000000",
 			textAnchor: "middle",
 			fontSize: "12px",
@@ -1079,11 +1082,11 @@ function ut({ x: e, y: t, width: n, height: r, message: i }) {
 }
 //#endregion
 //#region src/browser/track-row/LoadingState.tsx
-function dt({ x: e, y: t, width: n, height: r }) {
+function ft({ x: e, y: t, width: n, height: r }) {
 	let i = Math.max(18, Math.min(r / 3, 40));
-	return /* @__PURE__ */ h("g", {
+	return /* @__PURE__ */ g("g", {
 		transform: `translate(${e + (n - i) / 2},${t + (r - i) / 2})`,
-		children: /* @__PURE__ */ h(lt, {
+		children: /* @__PURE__ */ g(ut, {
 			width: i,
 			height: i,
 			color: "#000000"
@@ -1092,15 +1095,15 @@ function dt({ x: e, y: t, width: n, height: r }) {
 }
 //#endregion
 //#region src/browser/track-row/TrackContent.tsx
-var ft = n(function({ track: e, dataState: t, region: n, width: r, height: i, titleMargin: a }) {
-	let o = Ve();
-	if (t.status === "loading") return /* @__PURE__ */ h(dt, {
+var pt = n(function({ track: e, dataState: t, region: n, width: r, height: i, titleMargin: a }) {
+	let o = He();
+	if (t.status === "loading") return /* @__PURE__ */ g(ft, {
 		x: 0,
 		y: 0,
 		width: r,
 		height: i
 	});
-	if (t.status === "error") return /* @__PURE__ */ h(ut, {
+	if (t.status === "error") return /* @__PURE__ */ g(dt, {
 		x: 0,
 		y: 0,
 		width: r,
@@ -1109,9 +1112,9 @@ var ft = n(function({ track: e, dataState: t, region: n, width: r, height: i, ti
 	});
 	try {
 		let a = o.get(e.type).render[e.base.display];
-		return a ? /* @__PURE__ */ h(it, {
+		return a ? /* @__PURE__ */ g(at, {
 			interaction: e.interaction,
-			children: /* @__PURE__ */ h(a, {
+			children: /* @__PURE__ */ g(a, {
 				id: e.base.id,
 				config: e.config,
 				color: e.base.color,
@@ -1120,7 +1123,7 @@ var ft = n(function({ track: e, dataState: t, region: n, width: r, height: i, ti
 				width: r,
 				height: i
 			})
-		}) : /* @__PURE__ */ h(ut, {
+		}) : /* @__PURE__ */ g(dt, {
 			x: 0,
 			y: 0,
 			width: r,
@@ -1128,7 +1131,7 @@ var ft = n(function({ track: e, dataState: t, region: n, width: r, height: i, ti
 			message: `Display "${e.base.display}" is not supported by "${e.type}"`
 		});
 	} catch (e) {
-		return /* @__PURE__ */ h(ut, {
+		return /* @__PURE__ */ g(dt, {
 			x: 0,
 			y: 0,
 			width: r,
@@ -1139,9 +1142,9 @@ var ft = n(function({ track: e, dataState: t, region: n, width: r, height: i, ti
 });
 //#endregion
 //#region src/browser/track-row/PanTrack.tsx
-function pt({ panDrag: e, disabled: t, width: n, height: r, children: i }) {
-	let [a, o] = d(!1);
-	return e ? /* @__PURE__ */ g("g", {
+function mt({ panDrag: e, disabled: t, width: n, height: r, children: i }) {
+	let [a, o] = f(!1);
+	return e ? /* @__PURE__ */ _("g", {
 		style: { cursor: t ? "default" : a ? "grabbing" : "grab" },
 		onPointerDown: (t) => {
 			let n = e.onPointerDown(t);
@@ -1155,7 +1158,7 @@ function pt({ panDrag: e, disabled: t, width: n, height: r, children: i }) {
 			e.onPointerCancel(t), o(!1);
 		},
 		onClickCapture: e.onClickCapture,
-		children: [/* @__PURE__ */ h("rect", {
+		children: [/* @__PURE__ */ g("rect", {
 			width: n,
 			height: r,
 			fill: "transparent",
@@ -1165,13 +1168,13 @@ function pt({ panDrag: e, disabled: t, width: n, height: r, children: i }) {
 }
 //#endregion
 //#region src/browser/track-row/TrackControls.tsx
-function mt({ track: e, marginWidth: t, wrapperHeight: n }) {
-	let r = u(null), i = P((e) => e.openSettings), a = M((e) => e.order), o = M((e) => e.reorderTracks), { isInteractionBlocked: s, runTrackMutation: c } = ve(), l = e.base.id, d = a.indexOf(l), f = !s && d > 0, p = !s && d >= 0 && d < a.length - 1, m = (e) => {
+function ht({ track: e, marginWidth: t, wrapperHeight: n }) {
+	let r = d(null), i = P((e) => e.openSettings), a = M((e) => e.order), o = M((e) => e.reorderTracks), { isInteractionBlocked: s, runTrackMutation: c } = ye(), l = e.base.id, u = a.indexOf(l), f = !s && u > 0, p = !s && u >= 0 && u < a.length - 1, m = (e) => {
 		let t = a.filter((e) => e !== l);
 		e === "top" && t.unshift(l), e === "bottom" && t.push(l), c(() => o(t));
 	};
-	return /* @__PURE__ */ g("g", { children: [
-		/* @__PURE__ */ g("g", {
+	return /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ _("g", {
 			ref: r,
 			onClick: (e) => {
 				e.stopPropagation();
@@ -1186,13 +1189,13 @@ function mt({ track: e, marginWidth: t, wrapperHeight: n }) {
 			},
 			onMouseDown: (e) => e.stopPropagation(),
 			style: { cursor: "pointer" },
-			children: [/* @__PURE__ */ h("circle", {
+			children: [/* @__PURE__ */ g("circle", {
 				cx: t / 10 + 7.5,
 				cy: n / 2 + 10,
 				r: 7.5,
 				strokeWidth: 0,
 				fill: "transparent"
-			}), /* @__PURE__ */ h(st, {
+			}), /* @__PURE__ */ g(ct, {
 				x: t / 10,
 				y: n / 2 + 3,
 				height: 15,
@@ -1200,17 +1203,17 @@ function mt({ track: e, marginWidth: t, wrapperHeight: n }) {
 				fill: "#000000"
 			})]
 		}),
-		/* @__PURE__ */ g("g", {
+		/* @__PURE__ */ _("g", {
 			onClick: f ? () => m("top") : void 0,
 			onMouseDown: (e) => e.stopPropagation(),
 			style: { cursor: f ? "pointer" : "default" },
-			children: [/* @__PURE__ */ h("circle", {
+			children: [/* @__PURE__ */ g("circle", {
 				cx: t / 10 + 22.5,
 				cy: n / 2 + 10,
 				r: 7.5,
 				strokeWidth: 0,
 				fill: "transparent"
-			}), /* @__PURE__ */ h(ot, {
+			}), /* @__PURE__ */ g(st, {
 				x: t / 10 + 15,
 				y: n / 2 + 3,
 				height: 15,
@@ -1218,17 +1221,17 @@ function mt({ track: e, marginWidth: t, wrapperHeight: n }) {
 				fill: f ? "#000000" : "#cccccc"
 			})]
 		}),
-		/* @__PURE__ */ g("g", {
+		/* @__PURE__ */ _("g", {
 			onClick: p ? () => m("bottom") : void 0,
 			onMouseDown: (e) => e.stopPropagation(),
 			style: { cursor: p ? "pointer" : "default" },
-			children: [/* @__PURE__ */ h("circle", {
+			children: [/* @__PURE__ */ g("circle", {
 				cx: t / 10 + 37.5,
 				cy: n / 2 + 10,
 				r: 7.5,
 				strokeWidth: 0,
 				fill: "transparent"
-			}), /* @__PURE__ */ h(at, {
+			}), /* @__PURE__ */ g(ot, {
 				x: t / 10 + 30,
 				y: n / 2 + 2,
 				height: 15,
@@ -1240,51 +1243,51 @@ function mt({ track: e, marginWidth: t, wrapperHeight: n }) {
 }
 //#endregion
 //#region src/browser/track-row/TrackFrame.tsx
-function ht({ track: e, y: t, previewOffsetY: n = 0, marginWidth: r, trackWidth: i, contentX: s = r, contentWidth: c = i, registerContentGroup: l, panDrag: f, isPanLocked: p = !1, onSwapMouseDown: m, swapping: _ = !1, isDragClone: v = !1, disableHover: y = !1, titleSize: b, children: x }) {
-	let [ee, S] = d(!1), C = u(null), w = L(e, b), T = Ye(e, b), te = o(), ne = N((e) => e.openContextMenu), E = ee && !y;
+function gt({ track: e, y: t, previewOffsetY: n = 0, marginWidth: r, trackWidth: i, contentX: o = r, contentWidth: c = i, registerContentGroup: l, panDrag: u, isPanLocked: p = !1, onSwapMouseDown: m, swapping: h = !1, isDragClone: v = !1, disableHover: y = !1, titleSize: b, children: x }) {
+	let [S, ee] = f(!1), C = d(null), w = L(e, b), T = Xe(e, b), E = s(), D = N((e) => e.openContextMenu), te = S && !y;
 	a(() => {
 		if (!(v || !l || !C.current)) return l(C.current);
 	}, [v, l]);
-	let re = (t) => {
-		t.preventDefault(), ne(e.base.id, {
+	let ne = (t) => {
+		t.preventDefault(), D(e.base.id, {
 			x: t.pageX,
 			y: t.pageY
 		});
 	};
-	return /* @__PURE__ */ g("g", {
+	return /* @__PURE__ */ _("g", {
 		transform: `translate(0,${t + n})`,
 		onMouseMove: () => {
-			y || S(!0);
+			y || ee(!0);
 		},
-		onMouseLeave: () => S(!1),
+		onMouseLeave: () => ee(!1),
 		children: [
-			/* @__PURE__ */ h("defs", { children: /* @__PURE__ */ h("clipPath", {
-				id: te,
-				children: /* @__PURE__ */ h("rect", {
+			/* @__PURE__ */ g("defs", { children: /* @__PURE__ */ g("clipPath", {
+				id: E,
+				children: /* @__PURE__ */ g("rect", {
 					x: r,
 					y: T,
 					width: i,
 					height: e.base.height
 				})
 			}) }),
-			/* @__PURE__ */ h("rect", {
+			/* @__PURE__ */ g("rect", {
 				x: r,
 				y: 0,
 				width: i,
 				height: w,
 				fill: "#ffffff",
-				onContextMenu: re
+				onContextMenu: ne
 			}),
-			/* @__PURE__ */ h("g", {
-				clipPath: `url(#${te})`,
-				onContextMenu: re,
-				children: /* @__PURE__ */ h("g", {
+			/* @__PURE__ */ g("g", {
+				clipPath: `url(#${E})`,
+				onContextMenu: ne,
+				children: /* @__PURE__ */ g("g", {
 					ref: C,
-					transform: `translate(${s},0)`,
-					children: /* @__PURE__ */ h("g", {
+					transform: `translate(${o},0)`,
+					children: /* @__PURE__ */ g("g", {
 						transform: `translate(0,${T})`,
-						children: /* @__PURE__ */ h(pt, {
-							panDrag: f,
+						children: /* @__PURE__ */ g(mt, {
+							panDrag: u,
 							disabled: p,
 							width: c,
 							height: e.base.height,
@@ -1293,7 +1296,7 @@ function ht({ track: e, y: t, previewOffsetY: n = 0, marginWidth: r, trackWidth:
 					})
 				})
 			}),
-			/* @__PURE__ */ h("text", {
+			/* @__PURE__ */ g("text", {
 				fill: "#000000",
 				x: r + i / 2,
 				y: b / 2 + 5,
@@ -1302,16 +1305,16 @@ function ht({ track: e, y: t, previewOffsetY: n = 0, marginWidth: r, trackWidth:
 				alignmentBaseline: "baseline",
 				children: e.base.title
 			}),
-			/* @__PURE__ */ h("rect", {
+			/* @__PURE__ */ g("rect", {
 				x: 0,
 				y: 0,
 				width: r,
 				height: w,
 				fill: "#ffffff",
 				onMouseDown: m,
-				style: { cursor: m ? _ ? "grabbing" : "grab" : "default" }
+				style: { cursor: m ? h ? "grabbing" : "grab" : "default" }
 			}),
-			/* @__PURE__ */ h("rect", {
+			/* @__PURE__ */ g("rect", {
 				x: 0,
 				y: 0,
 				width: r / 15,
@@ -1320,19 +1323,19 @@ function ht({ track: e, y: t, previewOffsetY: n = 0, marginWidth: r, trackWidth:
 				strokeWidth: .5,
 				fill: e.base.color || "#ffffff"
 			}),
-			/* @__PURE__ */ h(mt, {
+			/* @__PURE__ */ g(ht, {
 				track: e,
 				marginWidth: r,
 				wrapperHeight: w
 			}),
-			/* @__PURE__ */ h("line", {
+			/* @__PURE__ */ g("line", {
 				stroke: "#cccccc",
 				x1: r,
 				x2: r,
 				y1: 0,
 				y2: w
 			}),
-			E && /* @__PURE__ */ h("rect", {
+			te && /* @__PURE__ */ g("rect", {
 				width: r + i,
 				height: w,
 				fill: e.base.color || "transparent",
@@ -1344,21 +1347,21 @@ function ht({ track: e, y: t, previewOffsetY: n = 0, marginWidth: r, trackWidth:
 }
 //#endregion
 //#region src/browser/track-row/TrackStack.tsx
-function gt({ tracks: e, dataStates: t, region: n, marginWidth: r, trackWidth: a, contentX: o, contentWidth: s, registerContentGroup: c, panDrag: l, isPanLocked: u, titleSize: f, startY: p }) {
-	let [m, g] = d(null), _ = i((e) => {
-		g((t) => Ze(t, e) ? t : e);
+function _t({ tracks: e, dataStates: t, region: n, marginWidth: r, trackWidth: a, contentX: o, contentWidth: s, registerContentGroup: c, panDrag: l, isPanLocked: u, titleSize: d, startY: p }) {
+	let [m, h] = f(null), _ = i((e) => {
+		h((t) => Qe(t, e) ? t : e);
 	}, []), v = i(() => {
-		g(null);
+		h(null);
 	}, []), y = p;
-	return e.map((i, d) => {
-		let p = y, g = L(i, f), b = Ye(i, f), x = $e(d, i.base.id, e, f, m);
-		return y += g, /* @__PURE__ */ h(nt, {
+	return e.map((i, f) => {
+		let p = y, h = L(i, d), b = Xe(i, d), x = et(f, i.base.id, e, d, m);
+		return y += h, /* @__PURE__ */ g(rt, {
 			track: i,
-			titleSize: f,
+			titleSize: d,
 			disabled: u,
 			onPreviewChange: _,
 			onPreviewEnd: v,
-			children: (e) => /* @__PURE__ */ h(ht, {
+			children: (e) => /* @__PURE__ */ g(gt, {
 				...e,
 				track: i,
 				y: p,
@@ -1371,8 +1374,8 @@ function gt({ tracks: e, dataStates: t, region: n, marginWidth: r, trackWidth: a
 				panDrag: l,
 				isPanLocked: u,
 				disableHover: !!m,
-				titleSize: f,
-				children: /* @__PURE__ */ h(ft, {
+				titleSize: d,
+				children: /* @__PURE__ */ g(pt, {
 					track: i,
 					dataState: t[i.base.id],
 					region: n,
@@ -1386,53 +1389,53 @@ function gt({ tracks: e, dataStates: t, region: n, marginWidth: r, trackWidth: a
 }
 //#endregion
 //#region src/modules/schemas.ts
-function _t(e) {
+function vt(e) {
 	return e.issues.map((e) => `${e.path.join(".") || "input"}: ${e.message}`).join("; ");
 }
 function B(e, t, n) {
 	let r = e.safeParse(t);
-	if (!r.success) throw Error(`${n} is invalid: ${_t(r.error)}`);
+	if (!r.success) throw Error(`${n} is invalid: ${vt(r.error)}`);
 	return r.data;
 }
 //#endregion
 //#region src/modules/utils/region.ts
-var vt = p.object({
-	chromosome: p.string().min(1),
-	start: p.number().int(),
-	end: p.number().int()
+var yt = m.object({
+	chromosome: m.string().min(1),
+	start: m.number().int(),
+	end: m.number().int()
 }).refine((e) => e.start < e.end, {
 	message: "start must be less than end",
 	path: ["start"]
 });
-function yt(e) {
-	if (typeof e != "string") return B(vt, e, "Region");
+function bt(e) {
+	if (typeof e != "string") return B(yt, e, "Region");
 	let t = e.replace(/,/g, ""), n = /^(?<chromosome>[^:]+):(?<start>\d+)-(?<end>\d+)$/.exec(t);
 	if (!n?.groups) throw Error(`Invalid region: ${e}`);
-	return B(vt, {
+	return B(yt, {
 		chromosome: n.groups.chromosome,
 		start: Number(n.groups.start),
 		end: Number(n.groups.end)
 	}, "Region");
 }
-function bt(e) {
+function xt(e) {
 	return e >= 1e9 ? `${Math.round(e / 1e9)} Gb` : e >= 1e6 ? `${Math.round(e / 1e6)} Mb` : e >= 1e3 ? `${Math.round(e / 1e3)} kb` : `${e} bp`;
 }
-function xt({ region: e, width: t }) {
-	let n = c(() => {
+function St({ region: e, width: t }) {
+	let n = l(() => {
 		let n = e.end - e.start, r = 10 ** Math.floor(Math.log10(Math.ceil(n / 20))) * 6, i = I(e, t), a = (Math.ceil(e.end / r) - Math.ceil(e.start / r)) * r / 2, o = {
 			start: e.start + a / 2,
 			end: e.end - a / 2
 		}, s = [];
 		for (let t = Math.ceil(e.start / r); t < Math.ceil(e.end / r); t += 1) {
 			let e = t * r;
-			s.push(/* @__PURE__ */ g("g", { children: [/* @__PURE__ */ h("line", {
+			s.push(/* @__PURE__ */ _("g", { children: [/* @__PURE__ */ g("line", {
 				x1: i(e),
 				x2: i(e),
 				y1: 80 * .6,
 				y2: 80 * .9,
 				stroke: "#000000",
 				strokeWidth: .5
-			}), /* @__PURE__ */ h("text", {
+			}), /* @__PURE__ */ g("text", {
 				fill: "#000000",
 				textAnchor: "end",
 				fontSize: `${80 / 6}px`,
@@ -1451,11 +1454,11 @@ function xt({ region: e, width: t }) {
 			ticks: s
 		};
 	}, [e, t]);
-	return /* @__PURE__ */ g("g", {
+	return /* @__PURE__ */ _("g", {
 		width: t,
 		height: 80,
 		children: [
-			/* @__PURE__ */ h("line", {
+			/* @__PURE__ */ g("line", {
 				x1: n.x(n.scaleDomain.start),
 				x2: n.x(n.scaleDomain.start),
 				y1: 80 * .1,
@@ -1463,7 +1466,7 @@ function xt({ region: e, width: t }) {
 				stroke: "#000000",
 				strokeWidth: .5
 			}),
-			/* @__PURE__ */ h("line", {
+			/* @__PURE__ */ g("line", {
 				x1: n.x(n.scaleDomain.end),
 				x2: n.x(n.scaleDomain.end),
 				y1: 80 * .1,
@@ -1471,7 +1474,7 @@ function xt({ region: e, width: t }) {
 				stroke: "#000000",
 				strokeWidth: .5
 			}),
-			/* @__PURE__ */ h("line", {
+			/* @__PURE__ */ g("line", {
 				x1: n.x(n.scaleDomain.start),
 				x2: n.x(n.scaleDomain.end),
 				y1: 80 * .25,
@@ -1479,7 +1482,7 @@ function xt({ region: e, width: t }) {
 				stroke: "#000000",
 				strokeWidth: .5
 			}),
-			/* @__PURE__ */ h("text", {
+			/* @__PURE__ */ g("text", {
 				x: n.x(n.scaleDomain.start) - 5,
 				y: 80 * .35,
 				fontSize: `${80 / 6}px`,
@@ -1489,7 +1492,7 @@ function xt({ region: e, width: t }) {
 					userSelect: "none",
 					pointerEvents: "none"
 				},
-				children: bt(n.scaleDomain.end - n.scaleDomain.start)
+				children: xt(n.scaleDomain.end - n.scaleDomain.start)
 			}),
 			n.ticks
 		]
@@ -1497,8 +1500,8 @@ function xt({ region: e, width: t }) {
 }
 //#endregion
 //#region src/browser/viewport/SelectRegion.tsx
-function St({ svg: e, marginWidth: t, trackWidth: n, totalHeight: r, region: o, setRegion: s, disabled: c = !1, children: d }) {
-	let [f, p] = l(Ct, null), _ = u(!1), v = u(f), y = u(null);
+function Ct({ svg: e, marginWidth: t, trackWidth: n, totalHeight: r, region: o, setRegion: s, disabled: c = !1, children: l }) {
+	let [f, p] = u(wt, null), m = d(!1), v = d(f), y = d(null);
 	v.current = f;
 	let b = i(() => {
 		y.current?.();
@@ -1508,20 +1511,20 @@ function St({ svg: e, marginWidth: t, trackWidth: n, totalHeight: r, region: o, 
 		if (!e) return;
 		b();
 		let r = (r) => {
-			if (!_.current) return;
+			if (!m.current) return;
 			let i = R(e, r.clientX, r.clientY);
 			i && p({
 				type: "move",
 				x: Math.max(t, Math.min(t + n, i.x))
 			});
 		}, i = () => {
-			if (!_.current) return;
-			b(), _.current = !1, p({ type: "clear" });
+			if (!m.current) return;
+			b(), m.current = !1, p({ type: "clear" });
 			let e = v.current;
 			if (!e) return;
 			let r = Math.min(e.start, e.end), i = Math.max(e.start, e.end);
 			if (i - r >= 10) {
-				let e = Ie(o, n);
+				let e = Le(o, n);
 				s({
 					chromosome: o.chromosome,
 					start: e(r - t),
@@ -1533,8 +1536,8 @@ function St({ svg: e, marginWidth: t, trackWidth: n, totalHeight: r, region: o, 
 			document.removeEventListener("mousemove", r), document.removeEventListener("mouseup", i), y.current = null;
 		};
 	};
-	return /* @__PURE__ */ g(m, { children: [
-		/* @__PURE__ */ h("rect", {
+	return /* @__PURE__ */ _(h, { children: [
+		/* @__PURE__ */ g("rect", {
 			fill: "#ffffff",
 			width: n,
 			height: 80,
@@ -1546,11 +1549,11 @@ function St({ svg: e, marginWidth: t, trackWidth: n, totalHeight: r, region: o, 
 				i && (p({
 					type: "start",
 					x: Math.max(t, Math.min(t + n, i.x))
-				}), _.current = !0, x());
+				}), m.current = !0, x());
 			}
 		}),
-		d,
-		f && /* @__PURE__ */ h("rect", {
+		l,
+		f && /* @__PURE__ */ g("rect", {
 			id: "selectRegion",
 			fill: "#6666aaaa",
 			stroke: "#000000",
@@ -1564,7 +1567,7 @@ function St({ svg: e, marginWidth: t, trackWidth: n, totalHeight: r, region: o, 
 		})
 	] });
 }
-function Ct(e, t) {
+function wt(e, t) {
 	switch (t.type) {
 		case "start": return {
 			start: t.x,
@@ -1579,8 +1582,8 @@ function Ct(e, t) {
 }
 //#endregion
 //#region src/browser/viewport/useContentTransform.ts
-function wt(e) {
-	let t = u(0), n = u(null);
+function Tt(e) {
+	let t = d(0), n = d(null);
 	n.current ||= /* @__PURE__ */ new Set();
 	let r = i(() => t.current, []), o = i((r) => {
 		t.current = r;
@@ -1598,14 +1601,14 @@ function wt(e) {
 }
 //#endregion
 //#region src/browser/viewport/usePanDrag.ts
-var Tt = 10;
-function Et({ disabled: e, svg: t, getCurrentDelta: n, setDelta: r, onStart: a, onCommit: o, onCancel: s }) {
-	let c = u(!1), l = u(null), d = u(null), f = u(0), p = u(0), m = u(!1), h = i((e) => t ? R(t, e.clientX, e.clientY)?.x ?? null : null, [t]), g = i((e) => {
-		e.currentTarget.hasPointerCapture(e.pointerId) && e.currentTarget.releasePointerCapture(e.pointerId), d.current === e.pointerId && (d.current = null);
+var Et = 10;
+function Dt({ disabled: e, svg: t, getCurrentDelta: n, setDelta: r, onStart: a, onCommit: o, onCancel: s }) {
+	let c = d(!1), l = d(null), u = d(null), f = d(0), p = d(0), m = d(!1), h = i((e) => t ? R(t, e.clientX, e.clientY)?.x ?? null : null, [t]), g = i((e) => {
+		e.currentTarget.hasPointerCapture(e.pointerId) && e.currentTarget.releasePointerCapture(e.pointerId), u.current === e.pointerId && (u.current = null);
 	}, []), _ = i(() => {
-		l.current = null, d.current = null, c.current = !1;
+		l.current = null, u.current = null, c.current = !1;
 	}, []), v = i((e) => {
-		d.current !== e.pointerId && (e.currentTarget.setPointerCapture(e.pointerId), d.current = e.pointerId);
+		u.current !== e.pointerId && (e.currentTarget.setPointerCapture(e.pointerId), u.current = e.pointerId);
 	}, []), y = i((t) => {
 		if (e || !t.isPrimary || t.button !== 0) return !1;
 		let r = h(t);
@@ -1624,7 +1627,7 @@ function Et({ disabled: e, svg: t, getCurrentDelta: n, setDelta: r, onStart: a, 
 			let t = h(e);
 			if (t === null) return;
 			let n = p.current + t - f.current;
-			Math.abs(n) >= Tt && (e.preventDefault(), v(e)), r(n);
+			Math.abs(n) >= Et && (e.preventDefault(), v(e)), r(n);
 		}, [
 			v,
 			h,
@@ -1634,7 +1637,7 @@ function Et({ disabled: e, svg: t, getCurrentDelta: n, setDelta: r, onStart: a, 
 			if (l.current !== e.pointerId) return;
 			g(e), _();
 			let t = n();
-			if (Math.abs(t) < Tt) {
+			if (Math.abs(t) < Et) {
 				m.current = !1, s();
 				return;
 			}
@@ -1660,7 +1663,7 @@ function Et({ disabled: e, svg: t, getCurrentDelta: n, setDelta: r, onStart: a, 
 }
 //#endregion
 //#region src/browser/viewport/usePanController.ts
-function Dt(e, t) {
+function Ot(e, t) {
 	let n = e.end - e.start, r = Math.floor(n * (t - 1) / 2);
 	return {
 		chromosome: e.chromosome,
@@ -1668,7 +1671,7 @@ function Dt(e, t) {
 		end: e.end + r
 	};
 }
-function Ot(e, t, n) {
+function kt(e, t, n) {
 	let r = e.end - e.start, i = Math.floor(n / t * r);
 	return {
 		chromosome: e.chromosome,
@@ -1676,15 +1679,15 @@ function Ot(e, t, n) {
 		end: e.end - i
 	};
 }
-function kt({ svg: e, region: t, trackWidth: n, getContentOffset: r, setContentOffset: a, setRegion: o, onPanStart: s }) {
-	let [c, l] = d(!1), f = u(t), p = u(n);
-	f.current = t, p.current = n;
+function At({ svg: e, region: t, trackWidth: n, getContentOffset: r, setContentOffset: a, setRegion: o, onPanStart: s }) {
+	let [c, l] = f(!1), u = d(t), p = d(n);
+	u.current = t, p.current = n;
 	let m = i(() => {
 		l(!1);
 	}, []);
 	return {
 		isPanLocked: c,
-		panDrag: Et({
+		panDrag: Dt({
 			disabled: c,
 			svg: e,
 			getCurrentDelta: r,
@@ -1692,7 +1695,7 @@ function kt({ svg: e, region: t, trackWidth: n, getContentOffset: r, setContentO
 			onCancel: () => a(0),
 			onStart: s,
 			onCommit: (e) => {
-				l(!0), o(Ot(f.current, p.current, e));
+				l(!0), o(kt(u.current, p.current, e));
 			}
 		}),
 		unlockPan: m
@@ -1700,67 +1703,67 @@ function kt({ svg: e, region: t, trackWidth: n, getContentOffset: r, setContentO
 }
 //#endregion
 //#region src/browser/viewport/useRenderWindow.ts
-function At(e, t, n) {
+function jt(e, t, n) {
 	return {
-		targetRenderRegion: Dt(e, n),
+		targetRenderRegion: Ot(e, n),
 		renderWidth: t * n
 	};
 }
-function jt(e, t) {
+function Mt(e, t) {
 	return JSON.stringify({
 		region: e,
-		trackIds: Mt(t)
+		trackIds: Nt(t)
 	});
 }
-function Mt(e) {
+function Nt(e) {
 	return JSON.stringify(e.map((e) => e.base.id).sort());
 }
-function Nt({ region: e, tracks: t, trackWidth: n, overscanMultiplier: r }) {
-	let { targetRenderRegion: a, renderWidth: o } = c(() => At(e, n, r), [
+function Pt({ region: e, tracks: t, trackWidth: n, overscanMultiplier: r }) {
+	let { targetRenderRegion: a, renderWidth: o } = l(() => jt(e, n, r), [
 		r,
 		e,
 		n
-	]), [s, l] = d(a), f = c(() => jt(a, t), [a, t]), p = u(f);
-	return p.current = f, {
+	]), [s, c] = f(a), u = l(() => Mt(a, t), [a, t]), p = d(u);
+	return p.current = u, {
 		targetRenderRegion: a,
 		displayedRenderRegion: s,
 		renderWidth: o,
-		dataKey: f,
-		settleData: i((e) => e === p.current ? (l(a), !0) : !1, [a])
+		dataKey: u,
+		settleData: i((e) => e === p.current ? (c(a), !0) : !1, [a])
 	};
 }
 //#endregion
 //#region src/browser/GenomeBrowser.tsx
-var Pt = 3;
-function Ft({ browserStore: e, trackStore: t, settingsStore: n }) {
-	let [r, a] = d(null), o = e((e) => e.region), s = e((e) => e.marginWidth), l = e((e) => e.trackWidth), u = e((e) => e.titleSize), f = e((e) => e.setRegion), p = t((e) => e.tracks), m = t((e) => e.registry), _ = c(() => ee(), []), v = c(() => Ne(), []), y = c(() => Me(), []), b = n ?? y, x = l, S = s + l, C = 80 + Xe(p, u), w = s - x, { getContentOffset: T, registerContentGroup: te, setContentOffset: E } = wt(w), { dataKey: re, displayedRenderRegion: ie, renderWidth: ae, settleData: D, targetRenderRegion: oe } = Nt({
+var Ft = 3;
+function It({ browserStore: e, trackStore: t, settingsStore: n }) {
+	let [r, a] = f(null), o = e((e) => e.region), s = e((e) => e.marginWidth), c = e((e) => e.trackWidth), u = e((e) => e.titleSize), d = e((e) => e.setRegion), p = t((e) => e.tracks), m = t((e) => e.registry), h = l(() => ee(), []), v = l(() => Pe(), []), y = l(() => Ne(), []), b = n ?? y, x = c, S = s + c, C = 80 + Ze(p, u), w = s - x, { getContentOffset: T, registerContentGroup: E, setContentOffset: D } = Tt(w), { dataKey: ne, displayedRenderRegion: re, renderWidth: ie, settleData: ae, targetRenderRegion: O } = Pt({
 		region: o,
 		tracks: p,
-		trackWidth: l,
-		overscanMultiplier: Pt
-	}), { isPanLocked: se, panDrag: ce, unlockPan: O } = kt({
+		trackWidth: c,
+		overscanMultiplier: Ft
+	}), { isPanLocked: oe, panDrag: se, unlockPan: ce } = At({
 		svg: r,
 		region: o,
-		trackWidth: l,
+		trackWidth: c,
 		getContentOffset: T,
-		setContentOffset: E,
-		setRegion: f,
+		setContentOffset: D,
+		setRegion: d,
 		onPanStart: () => void 0
 	}), k = i((e) => {
-		D(e) && (E(0), O());
+		ae(e) && (D(0), ce());
 	}, [
+		ae,
 		D,
-		E,
-		O
-	]), { dataStates: ue, isFetching: fe } = ne({
-		useDataStore: _,
+		ce
+	]), { dataStates: A, isFetching: ue } = te({
+		useDataStore: h,
 		registry: m,
 		tracks: p,
-		region: oe,
-		onSettled: () => k(re)
-	}), A = se || fe;
-	return /* @__PURE__ */ h(he, {
-		value: c(() => ({
+		region: O,
+		onSettled: () => k(ne)
+	}), j = oe || ue;
+	return /* @__PURE__ */ g(ge, {
+		value: l(() => ({
 			browserStore: e,
 			trackStore: t,
 			contextMenuStore: v,
@@ -1771,75 +1774,75 @@ function Ft({ browserStore: e, trackStore: t, settingsStore: n }) {
 			v,
 			t
 		]),
-		children: /* @__PURE__ */ h(ge, {
-			value: c(() => ({ isInteractionBlocked: A }), [A]),
-			children: /* @__PURE__ */ h(Be, {
+		children: /* @__PURE__ */ g(_e, {
+			value: l(() => ({ isInteractionBlocked: j }), [j]),
+			children: /* @__PURE__ */ g(Ve, {
 				registry: m,
-				children: /* @__PURE__ */ h(pe, {
+				children: /* @__PURE__ */ g(fe, {
 					svg: r,
-					children: /* @__PURE__ */ h(be, { children: /* @__PURE__ */ g(de, {
-						isDisabled: ce.isDragging,
+					children: /* @__PURE__ */ g(xe, { children: /* @__PURE__ */ _(de, {
+						isDisabled: se.isDragging,
 						getTooltipComponent: (e) => m.get(e).tooltipComponent,
 						children: [
-							/* @__PURE__ */ g(Je, {
+							/* @__PURE__ */ _(Ye, {
 								width: S,
 								height: C,
 								setSvg: a,
 								children: [
-									/* @__PURE__ */ g(St, {
+									/* @__PURE__ */ _(Ct, {
 										svg: r,
 										marginWidth: s,
-										trackWidth: l,
+										trackWidth: c,
 										totalHeight: C,
 										region: o,
-										setRegion: f,
-										disabled: A,
+										setRegion: d,
+										disabled: j,
 										children: [
-											/* @__PURE__ */ h("g", {
+											/* @__PURE__ */ g("g", {
 												transform: `translate(${s},0)`,
-												children: /* @__PURE__ */ h(xt, {
+												children: /* @__PURE__ */ g(St, {
 													region: o,
-													width: l
+													width: c
 												})
 											}),
-											/* @__PURE__ */ h("g", { children: /* @__PURE__ */ h(gt, {
+											/* @__PURE__ */ g("g", { children: /* @__PURE__ */ g(_t, {
 												tracks: p,
-												dataStates: ue,
-												region: ie,
+												dataStates: A,
+												region: re,
 												marginWidth: s,
-												trackWidth: l,
+												trackWidth: c,
 												contentX: w,
-												contentWidth: ae,
-												registerContentGroup: te,
-												panDrag: ce,
-												isPanLocked: A,
+												contentWidth: ie,
+												registerContentGroup: E,
+												panDrag: se,
+												isPanLocked: j,
 												titleSize: u,
 												startY: 80
 											}) }),
-											/* @__PURE__ */ h(Re, {
-												region: ie,
+											/* @__PURE__ */ g(ze, {
+												region: re,
 												marginWidth: s,
-												renderWidth: ae,
+												renderWidth: ie,
 												contentX: w,
 												browserWidth: S,
 												totalHeight: C,
-												registerContentGroup: te
+												registerContentGroup: E
 											})
 										]
 									}),
-									/* @__PURE__ */ h(le, {
+									/* @__PURE__ */ g(le, {
 										width: S,
 										height: C
 									}),
-									/* @__PURE__ */ h(Fe, {
-										active: A,
+									/* @__PURE__ */ g(Ie, {
+										active: j,
 										width: S,
 										height: C
 									})
 								]
 							}),
-							/* @__PURE__ */ h(He, {}),
-							/* @__PURE__ */ h(qe, {})
+							/* @__PURE__ */ g(Ue, {}),
+							/* @__PURE__ */ g(Je, {})
 						]
 					}) })
 				})
@@ -1849,45 +1852,45 @@ function Ft({ browserStore: e, trackStore: t, settingsStore: n }) {
 }
 //#endregion
 //#region src/modules/defineTrackModule.ts
-var It = p.strictObject({
-	id: p.string().min(1),
-	title: p.string().min(1),
-	display: p.string().min(1),
-	height: p.number().positive(),
-	color: p.string().optional()
-}), Lt = p.custom((e) => typeof e == "function", { error: "Input must be a function" }), Rt = p.strictObject({
-	onClick: Lt.optional(),
-	onHover: Lt.optional(),
-	onLeave: Lt.optional()
+var Lt = m.strictObject({
+	id: m.string().min(1),
+	title: m.string().min(1),
+	display: m.string().min(1),
+	height: m.number().positive(),
+	color: m.string().optional()
+}), Rt = m.custom((e) => typeof e == "function", { error: "Input must be a function" }), zt = m.strictObject({
+	onClick: Rt.optional(),
+	onHover: Rt.optional(),
+	onLeave: Rt.optional()
 });
 function V(e) {
-	return e === void 0 ? zt : zt(e);
+	return e === void 0 ? Bt : Bt(e);
 }
-function zt(e) {
+function Bt(e) {
 	let t = e.configSchema.strict(), n = Object.keys(e.render);
-	Vt(e.type, n);
+	Ht(e.type, n);
 	let r = e.defaults?.display ?? n[0];
 	if (!n.includes(r)) throw Error(`Track module "${e.type}" default display "${r}" is not supported`);
-	let i = p.enum(n), a = It.extend({ display: i }).strict(), o = p.strictObject({
-		id: p.string().min(1),
-		title: p.string().min(1),
+	let i = m.enum(n), a = Lt.extend({ display: i }).strict(), o = m.strictObject({
+		id: m.string().min(1),
+		title: m.string().min(1),
 		display: i.default(r),
-		height: p.number().positive().default(e.defaults?.height ?? 80),
-		color: p.string().optional(),
+		height: m.number().positive().default(e.defaults?.height ?? 80),
+		color: m.string().optional(),
 		config: t
-	}), s = p.strictObject({
-		type: p.literal(e.type),
+	}), s = m.strictObject({
+		type: m.literal(e.type),
 		base: a,
 		config: t,
-		interaction: Rt.optional()
+		interaction: zt.optional()
 	});
-	return Bt(e.type, e.defaults, r, a), {
+	return Vt(e.type, e.defaults, r, a), {
 		type: e.type,
 		displays: n,
 		configSchema: t,
 		createInputSchema: o,
 		create(t, n) {
-			let r = B(o, t, `${e.type} input`), i = n === void 0 ? void 0 : B(Rt, n, `${e.type} interaction`);
+			let r = B(o, t, `${e.type} input`), i = n === void 0 ? void 0 : B(zt, n, `${e.type} interaction`);
 			return {
 				type: e.type,
 				base: {
@@ -1910,7 +1913,7 @@ function zt(e) {
 		tooltipComponent: e.tooltipComponent
 	};
 }
-function Bt(e, t, n, r) {
+function Vt(e, t, n, r) {
 	B(r, {
 		id: "__default_validation__",
 		title: "Default validation",
@@ -1919,13 +1922,13 @@ function Bt(e, t, n, r) {
 		color: t?.color
 	}, `${e} defaults`);
 }
-function Vt(e, t) {
+function Ht(e, t) {
 	if (t.length === 0) throw Error(`Track module "${e}" must define at least one renderer`);
 	for (let n of t) if (n.trim() === "") throw Error(`Track module "${e}" cannot define an empty display mode`);
 }
 //#endregion
 //#region src/modules/registry.ts
-function Ht(e) {
+function Ut(e) {
 	let t = Object.freeze([...e]), n = /* @__PURE__ */ new Map();
 	for (let e of t) {
 		if (n.has(e.type)) throw Error(`Duplicate track module type: ${e.type}`);
@@ -1941,14 +1944,14 @@ function Ht(e) {
 		get: r
 	};
 }
-function Ut(e, t) {
+function Wt(e, t) {
 	let n = e.get(t.type), { type: r, metadata: i, ...a } = t;
 	return n.create(a);
 }
 //#endregion
 //#region src/browser/track-row/useAutoTrackHeight.ts
-function Wt(e, t, { rowHeight: n = 12, minHeight: i = 30 } = {}) {
-	let o = r(ye);
+function Gt(e, t, { rowHeight: n = 12, minHeight: i = 30 } = {}) {
+	let o = r(be);
 	if (!o) throw Error("useAutoTrackHeight must be used within a GenomeBrowser");
 	let { getTrackHeight: s, updateHeight: c } = o, l = s(e);
 	return a(() => {
@@ -1966,73 +1969,73 @@ function Wt(e, t, { rowHeight: n = 12, minHeight: i = 30 } = {}) {
 }
 //#endregion
 //#region src/browser/svg/useSvgPoint.ts
-function Gt() {
-	let e = A();
+function Kt() {
+	let e = pe();
 	return (t, n) => e ? R(e, t, n) : null;
 }
 //#endregion
 //#region src/browser/tooltip/useTooltip.tsx
 function H({ type: e, config: n }) {
-	let r = O((e) => e.show), i = O((e) => e.hide), a = se(), o = ce(e), s = Gt(), c = u(void 0), l = () => {
-		c.current !== void 0 && (cancelAnimationFrame(c.current), c.current = void 0), i();
-	};
-	return {
-		hide: l,
-		show: (e, i) => {
-			if (a()) {
-				l();
-				return;
-			}
-			if (!o) return;
-			let u = t(o, {
-				item: e,
-				config: n
-			}), d = s(i.clientX, i.clientY) ?? {
-				x: i.clientX,
-				y: i.clientY
-			};
-			c.current !== void 0 && cancelAnimationFrame(c.current), c.current = requestAnimationFrame(() => {
-				c.current = void 0, r(u, d);
-			});
+	let r = s(), i = k((e) => e.show), c = k((e) => e.hide), l = se(), u = ce(e), f = Kt(), p = d(void 0), m = () => {
+		p.current !== void 0 && (cancelAnimationFrame(p.current), p.current = void 0), c(r);
+	}, h = (e, a) => {
+		if (l()) {
+			m();
+			return;
 		}
+		if (!u) return;
+		let o = t(u, {
+			item: e,
+			config: n
+		}), s = f(a.clientX, a.clientY) ?? {
+			x: a.clientX,
+			y: a.clientY
+		};
+		p.current !== void 0 && cancelAnimationFrame(p.current), p.current = requestAnimationFrame(() => {
+			p.current = void 0, i(r, o, s);
+		});
+	}, g = o(m);
+	return a(() => () => g(), []), {
+		hide: m,
+		show: h
 	};
 }
 //#endregion
 //#region src/browser/state/browserStore.ts
-var Kt = p.object({
-	id: p.string().min(1),
-	region: p.object({
-		chromosome: p.string().min(1).optional(),
-		start: p.number().int(),
-		end: p.number().int()
+var qt = m.object({
+	id: m.string().min(1),
+	region: m.object({
+		chromosome: m.string().min(1).optional(),
+		start: m.number().int(),
+		end: m.number().int()
 	}).refine((e) => e.start < e.end, {
 		message: "start must be less than end",
 		path: ["start"]
 	}),
-	color: p.string().min(1),
-	opacity: p.number().min(0).max(1).optional()
-}), qt = p.object({
-	region: p.union([p.string().min(1), p.object({
-		chromosome: p.string().min(1),
-		start: p.number().int(),
-		end: p.number().int()
+	color: m.string().min(1),
+	opacity: m.number().min(0).max(1).optional()
+}), Jt = m.object({
+	region: m.union([m.string().min(1), m.object({
+		chromosome: m.string().min(1),
+		start: m.number().int(),
+		end: m.number().int()
 	})]),
-	marginWidth: p.number().positive().optional(),
-	trackWidth: p.number().positive().optional(),
-	fontSize: p.number().positive().optional(),
-	titleSize: p.number().positive().optional(),
-	highlights: p.array(Kt).optional()
+	marginWidth: m.number().positive().optional(),
+	trackWidth: m.number().positive().optional(),
+	fontSize: m.number().positive().optional(),
+	titleSize: m.number().positive().optional(),
+	highlights: m.array(qt).optional()
 });
-function Jt(e) {
-	let t = B(qt, e, "Browser store input");
-	return f((e, n) => ({
-		region: yt(t.region),
+function Yt(e) {
+	let t = B(Jt, e, "Browser store input");
+	return p((e, n) => ({
+		region: bt(t.region),
 		marginWidth: t.marginWidth ?? 120,
 		trackWidth: t.trackWidth ?? 1e3,
 		fontSize: t.fontSize ?? 10,
 		titleSize: t.titleSize ?? 12,
 		highlights: t.highlights ?? [],
-		setRegion: (t) => e({ region: yt(t) }),
+		setRegion: (t) => e({ region: bt(t) }),
 		setTrackWidth: (t) => e({ trackWidth: t }),
 		zoom: (t, r) => {
 			if (t <= 0) throw Error("Zoom factor must be greater than 0");
@@ -2044,7 +2047,7 @@ function Jt(e) {
 			} });
 		},
 		addHighlight: (t) => {
-			let r = B(Kt, t, "Highlight");
+			let r = B(qt, t, "Highlight");
 			n().highlights.some((e) => e.id === r.id) || e((e) => ({ highlights: [...e.highlights, r] }));
 		},
 		removeHighlight: (t) => {
@@ -2054,16 +2057,16 @@ function Jt(e) {
 }
 //#endregion
 //#region src/browser/state/trackStore.ts
-function Yt(e) {
-	let t = Ht(e.modules), n = Qt(e.tracks ?? [], t);
-	return rn(n), f((e, r) => ({
+function Xt(e) {
+	let t = Ut(e.modules), n = $t(e.tracks ?? [], t);
+	return an(n), p((e, r) => ({
 		tracks: n,
 		order: n.map(U),
 		registry: t,
 		setTracks: (n) => {
-			let r = tn(n, t);
+			let r = nn(n, t);
 			if (!r.ok) return r;
-			let i = nn(r.tracks);
+			let i = rn(r.tracks);
 			if (!i.ok) return i;
 			let a = r.tracks;
 			return e({
@@ -2072,7 +2075,7 @@ function Yt(e) {
 			}), W;
 		},
 		addTrack: (n, i) => {
-			let a = en(n, t);
+			let a = tn(n, t);
 			if (!a.ok) return a;
 			let o = a.track, s = [...r().tracks], c = U(o);
 			return s.some((e) => U(e) === c) ? G(`Duplicate track id: ${c}`) : (s.splice(i ?? s.length, 0, o), e({
@@ -2089,18 +2092,18 @@ function Yt(e) {
 			}), W;
 		},
 		applyTrackChanges: (n) => {
-			let i = tn(n.add ?? [], t);
+			let i = nn(n.add ?? [], t);
 			if (!i.ok) return i;
 			let a = r().tracks, o = new Set(n.remove ?? []);
 			for (let e of o) if (!a.some((t) => U(t) === e)) return G(`No track found for id: ${e}`);
-			let s = [...a.filter((e) => !o.has(U(e))), ...i.tracks], c = nn(s);
+			let s = [...a.filter((e) => !o.has(U(e))), ...i.tracks], c = rn(s);
 			return c.ok ? (e({
 				tracks: s,
 				order: s.map(U)
 			}), W) : c;
 		},
 		reorderTracks: (t) => {
-			let n = new Map(r().tracks.map((e) => [U(e), e])), i = an(t, n);
+			let n = new Map(r().tracks.map((e) => [U(e), e])), i = on(t, n);
 			return i.ok ? (e({
 				tracks: t.map((e) => n.get(e)),
 				order: t
@@ -2109,7 +2112,7 @@ function Yt(e) {
 		updateBase: (n, i) => {
 			let a = r().tracks.find((e) => U(e) === n);
 			if (!a) return G(`No track found for id: ${n}`);
-			let o = en({
+			let o = tn({
 				...a,
 				base: {
 					...a.base,
@@ -2125,7 +2128,7 @@ function Yt(e) {
 		updateConfig: (n, i) => {
 			let a = r().tracks.find((e) => U(e) === n);
 			if (!a) return G(`No track found for id: ${n}`);
-			let o = Xt(a.config) ? a.config : {}, s = en({
+			let o = Zt(a.config) ? a.config : {}, s = tn({
 				...a,
 				config: {
 					...o,
@@ -2143,7 +2146,7 @@ function Yt(e) {
 			let o = {
 				...a.interaction,
 				...i
-			}, s = en({
+			}, s = tn({
 				...a,
 				interaction: o
 			}, t);
@@ -2158,14 +2161,14 @@ function Yt(e) {
 function U(e) {
 	return e.base.id;
 }
-function Xt(e) {
+function Zt(e) {
 	return typeof e == "object" && !!e && !Array.isArray(e);
 }
-function Zt(e, t) {
+function Qt(e, t) {
 	return t.get(e.type).validate(e);
 }
-function Qt(e, t) {
-	return e.map((e) => Zt(e, t));
+function $t(e, t) {
+	return e.map((e) => Qt(e, t));
 }
 var W = { ok: !0 };
 function G(e) {
@@ -2174,43 +2177,43 @@ function G(e) {
 		error: e
 	};
 }
-function $t(e) {
+function en(e) {
 	return e instanceof Error ? e.message : "Unknown error";
-}
-function en(e, t) {
-	try {
-		return {
-			ok: !0,
-			track: Zt(e, t)
-		};
-	} catch (e) {
-		return {
-			ok: !1,
-			error: $t(e)
-		};
-	}
 }
 function tn(e, t) {
 	try {
 		return {
 			ok: !0,
-			tracks: Qt(e, t)
+			track: Qt(e, t)
 		};
 	} catch (e) {
 		return {
 			ok: !1,
-			error: $t(e)
+			error: en(e)
 		};
 	}
 }
-function nn(e) {
+function nn(e, t) {
 	try {
-		return rn(e), W;
+		return {
+			ok: !0,
+			tracks: $t(e, t)
+		};
 	} catch (e) {
-		return G($t(e));
+		return {
+			ok: !1,
+			error: en(e)
+		};
 	}
 }
 function rn(e) {
+	try {
+		return an(e), W;
+	} catch (e) {
+		return G(en(e));
+	}
+}
+function an(e) {
 	let t = /* @__PURE__ */ new Set();
 	for (let n of e) {
 		let e = U(n);
@@ -2218,7 +2221,7 @@ function rn(e) {
 		t.add(e);
 	}
 }
-function an(e, t) {
+function on(e, t) {
 	if (e.length !== t.size) return G("Invalid track order");
 	let n = /* @__PURE__ */ new Set();
 	for (let r of e) {
@@ -2229,15 +2232,15 @@ function an(e, t) {
 }
 //#endregion
 //#region src/tracks/shared/TrackTooltip.tsx
-var on = 6, sn = 4;
+var sn = 6, cn = 4;
 function K({ children: e }) {
-	let t = u(null), [n, r] = d({
+	let t = d(null), [n, r] = f({
 		x: 0,
 		y: -14,
 		width: 0,
 		height: 18
 	});
-	return s(() => {
+	return c(() => {
 		if (!t.current) return;
 		let e = t.current.getBBox();
 		r({
@@ -2246,17 +2249,17 @@ function K({ children: e }) {
 			width: e.width,
 			height: e.height
 		});
-	}, [e]), /* @__PURE__ */ g("g", {
+	}, [e]), /* @__PURE__ */ _("g", {
 		filter: "drop-shadow(0 0 2px #999999)",
-		children: [/* @__PURE__ */ h("rect", {
-			x: n.x - on,
-			y: n.y - sn,
-			width: n.width + on * 2,
-			height: n.height + sn * 2,
+		children: [/* @__PURE__ */ g("rect", {
+			x: n.x - sn,
+			y: n.y - cn,
+			width: n.width + sn * 2,
+			height: n.height + cn * 2,
 			rx: 2,
 			fill: "#ffffff",
 			stroke: "#cccccc"
-		}), /* @__PURE__ */ h("g", {
+		}), /* @__PURE__ */ g("g", {
 			ref: t,
 			children: e
 		})]
@@ -2264,7 +2267,7 @@ function K({ children: e }) {
 }
 //#endregion
 //#region src/tracks/bigbed/schema.ts
-function cn(e) {
+function ln(e) {
 	let t = Object.keys(e.shape);
 	return (n, r, i, a) => {
 		try {
@@ -2276,48 +2279,48 @@ function cn(e) {
 			], s = {};
 			return t.forEach((e, t) => {
 				s[e] = o[t];
-			}), ln(e.parse(s), n, r, i);
+			}), un(e.parse(s), n, r, i);
 		} catch (e) {
-			throw e instanceof p.ZodError ? Error(`BigBed row does not match schema: ${p.prettifyError(e)}`) : e;
+			throw e instanceof m.ZodError ? Error(`BigBed row does not match schema: ${m.prettifyError(e)}`) : e;
 		}
 	};
 }
-function ln(e, t, n, r) {
-	let i = un(e.start) ?? un(e.chromStart) ?? n, a = un(e.end) ?? un(e.chromEnd) ?? r, o = dn(e.chrom) ?? dn(e.chr) ?? t;
+function un(e, t, n, r) {
+	let i = dn(e.start) ?? dn(e.chromStart) ?? n, a = dn(e.end) ?? dn(e.chromEnd) ?? r, o = fn(e.chrom) ?? fn(e.chr) ?? t;
 	return {
 		...e,
 		chrom: o,
-		chr: dn(e.chr) ?? o,
+		chr: fn(e.chr) ?? o,
 		start: i,
 		end: a
 	};
 }
-function un(e) {
+function dn(e) {
 	return typeof e == "number" && !Number.isNaN(e) ? e : void 0;
 }
-function dn(e) {
+function fn(e) {
 	return typeof e == "string" ? e : void 0;
 }
 //#endregion
 //#region src/tracks/bigbed/fetch.ts
-async function fn({ config: e, region: t }) {
-	return pn({
+async function pn({ config: e, region: t }) {
+	return mn({
 		url: e.url,
 		region: t
 	});
 }
-async function pn({ url: e, schema: t, region: n }) {
-	await hn();
-	let r = new b(new y(e, v.create()));
-	if ((await r.getHeader()).fileType !== x.BigBed) throw Error("BigBed module only supports BigBed files");
-	let i = t ? await r.readBigBedData(n.chromosome, n.start, n.chromosome, n.end, cn(t)) : await r.readBigBedData(n.chromosome, n.start, n.chromosome, n.end), a = [];
+async function mn({ url: e, schema: t, region: n }) {
+	await gn();
+	let r = new x(new b(e, y.create()));
+	if ((await r.getHeader()).fileType !== S.BigBed) throw Error("BigBed module only supports BigBed files");
+	let i = t ? await r.readBigBedData(n.chromosome, n.start, n.chromosome, n.end, ln(t)) : await r.readBigBedData(n.chromosome, n.start, n.chromosome, n.end), a = [];
 	for (let e of i) {
-		let t = mn(e);
+		let t = hn(e);
 		t.end >= n.start && t.start <= n.end && a.push(t);
 	}
 	return a;
 }
-function mn(e) {
+function hn(e) {
 	return {
 		...e,
 		chr: e.chr ?? e.chrom,
@@ -2325,14 +2328,14 @@ function mn(e) {
 		end: e.end ?? e.chromEnd ?? 0
 	};
 }
-async function hn() {
+async function gn() {
 	if (typeof window > "u" || globalThis.Buffer !== void 0) return;
 	let { Buffer: e } = await import("buffer");
 	globalThis.Buffer = e;
 }
 //#endregion
 //#region src/tracks/bigbed/helpers.ts
-function gn(e, t) {
+function _n(e, t) {
 	let n = e.toSorted((e, t) => e.start - t.start), r = [];
 	for (let e of n) {
 		let n = r[r.length - 1];
@@ -2350,8 +2353,8 @@ function gn(e, t) {
 	}
 	return r;
 }
-function _n(e, t) {
-	return vn(e.toSorted((e, t) => e.start - t.start).map((e) => ({
+function vn(e, t) {
+	return yn(e.toSorted((e, t) => e.start - t.start).map((e) => ({
 		row: e,
 		coordinates: {
 			start: e.start,
@@ -2367,7 +2370,7 @@ function _n(e, t) {
 		score: e.row.score
 	})));
 }
-function vn(e, t, n, r = 10) {
+function yn(e, t, n, r = 10) {
 	return e.reduce((e, i) => {
 		for (let a of e) {
 			let o = a[a.length - 1];
@@ -2378,17 +2381,17 @@ function vn(e, t, n, r = 10) {
 }
 //#endregion
 //#region src/tracks/bigbed/render.tsx
-function yn({ config: e, color: t = "#4b9560", data: n, region: r, width: i, height: a }) {
-	let o = gn(n, I(r, i)), s = a * .6, c = a * .2, l = z(), u = H({
+function bn({ config: e, color: t = "#4b9560", data: n, region: r, width: i, height: a }) {
+	let o = _n(n, I(r, i)), s = a * .6, c = a * .2, l = z(), u = H({
 		type: "bigbed",
 		config: e
 	});
-	return /* @__PURE__ */ g("g", { children: [/* @__PURE__ */ h("rect", {
+	return /* @__PURE__ */ _("g", { children: [/* @__PURE__ */ g("rect", {
 		width: i,
 		height: a,
 		fill: "#ffffff",
 		pointerEvents: "none"
-	}), o.map((e, n) => /* @__PURE__ */ h("rect", {
+	}), o.map((e, n) => /* @__PURE__ */ g("rect", {
 		x: e.start,
 		y: c,
 		width: Math.max(1, e.end - e.start),
@@ -2404,19 +2407,19 @@ function yn({ config: e, color: t = "#4b9560", data: n, region: r, width: i, hei
 		}
 	}, `${e.row.start}-${e.row.end}-${n}`))] });
 }
-function bn({ id: e, config: t, color: n = "#4b9560", data: r, region: i, width: a, height: o }) {
-	let s = _n(r, I(i, a)), c = Wt(e, s.length), l = z(), u = H({
+function xn({ id: e, config: t, color: n = "#4b9560", data: r, region: i, width: a, height: o }) {
+	let s = vn(r, I(i, a)), c = Gt(e, s.length), l = z(), u = H({
 		type: "bigbed",
 		config: t
 	});
-	return /* @__PURE__ */ g("g", { children: [/* @__PURE__ */ h("rect", {
+	return /* @__PURE__ */ _("g", { children: [/* @__PURE__ */ g("rect", {
 		width: a,
 		height: o,
 		fill: "#ffffff",
 		pointerEvents: "none"
-	}), s.map((e, t) => /* @__PURE__ */ h("g", {
+	}), s.map((e, t) => /* @__PURE__ */ g("g", {
 		transform: `translate(0,${t * c})`,
-		children: e.map((e, t) => /* @__PURE__ */ h("rect", {
+		children: e.map((e, t) => /* @__PURE__ */ g("rect", {
 			x: e.start,
 			y: c * .2,
 			width: Math.max(1, e.end - e.start),
@@ -2435,12 +2438,12 @@ function bn({ id: e, config: t, color: n = "#4b9560", data: r, region: i, width:
 }
 //#endregion
 //#region src/tracks/bigbed/settings.tsx
-function xn({ config: e, updateConfig: t }) {
-	return /* @__PURE__ */ h(F, {
+function Sn({ config: e, updateConfig: t }) {
+	return /* @__PURE__ */ g(F, {
 		title: "BigBed",
-		children: /* @__PURE__ */ g("label", {
-			style: Sn,
-			children: ["URL", /* @__PURE__ */ h("input", {
+		children: /* @__PURE__ */ _("label", {
+			style: Cn,
+			children: ["URL", /* @__PURE__ */ g("input", {
 				type: "text",
 				value: e.url,
 				onChange: (e) => t({ url: e.target.value })
@@ -2448,52 +2451,52 @@ function xn({ config: e, updateConfig: t }) {
 		})
 	});
 }
-var Sn = {
+var Cn = {
 	display: "grid",
 	gap: "4px"
-}, Cn = p.object({ url: C(p.string().min(1)) }), wn = V()({
+}, wn = m.object({ url: w(m.string().min(1)) }), Tn = V()({
 	type: "bigbed",
 	defaults: {
 		height: 60,
 		color: "#4b9560"
 	},
-	tooltipComponent: ({ item: e }) => /* @__PURE__ */ h(K, { children: /* @__PURE__ */ h("text", {
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: /* @__PURE__ */ g("text", {
 		fill: "#000000",
 		fontSize: 12,
 		dominantBaseline: "middle",
 		children: e.name || `${e.start}-${e.end}`
 	}) }),
-	configSchema: Cn,
-	fetch: fn,
+	configSchema: wn,
+	fetch: pn,
 	render: {
-		dense: yn,
-		squish: bn
+		dense: bn,
+		squish: xn
 	},
-	settingsComponent: xn
+	settingsComponent: Sn
 });
 //#endregion
 //#region src/tracks/bigwig/fetch.ts
-async function Tn({ config: e, region: t }) {
-	return En({
+async function En({ config: e, region: t }) {
+	return Dn({
 		url: e.url,
 		region: t
 	});
 }
-async function En({ url: e, region: t }) {
-	await Dn();
-	let n = new b(new y(e, v.create()));
-	if ((await n.getHeader()).fileType !== x.BigWig) throw Error("BigWig module only supports BigWig files");
+async function Dn({ url: e, region: t }) {
+	await On();
+	let n = new x(new b(e, y.create()));
+	if ((await n.getHeader()).fileType !== S.BigWig) throw Error("BigWig module only supports BigWig files");
 	return await n.readBigWigData(t.chromosome, t.start, t.chromosome, t.end);
 }
-async function Dn() {
+async function On() {
 	if (typeof window > "u" || globalThis.Buffer !== void 0) return;
 	let { Buffer: e } = await import("buffer");
 	globalThis.Buffer = e;
 }
 //#endregion
 //#region src/tracks/bigwig/helpers.ts
-function On(e, t, n) {
-	let r = Math.max(1, Math.floor(n)), i = Pn(r), a = (e) => (e - t.start) * r / (t.end - t.start);
+function kn(e, t, n) {
+	let r = Math.max(1, Math.floor(n)), i = Fn(r), a = (e) => (e - t.start) * r / (t.end - t.start);
 	for (let n of e) {
 		let e = Math.max(0, Math.min(r - 1, Math.floor(a(Math.max(n.start, t.start))))), o = Math.max(e, Math.min(r - 1, Math.floor(a(Math.min(n.end, t.end)))));
 		for (let t = e; t <= o; t += 1) {
@@ -2503,7 +2506,7 @@ function On(e, t, n) {
 	}
 	return i;
 }
-function kn(e) {
+function An(e) {
 	let t = Infinity, n = -Infinity;
 	for (let r of e) r.min !== null && (t = Math.min(t, r.min)), r.max !== null && (n = Math.max(n, r.max));
 	return t === Infinity || n === -Infinity ? {
@@ -2517,49 +2520,49 @@ function kn(e) {
 		max: n
 	};
 }
-function An(e) {
+function jn(e) {
 	for (let t of e) t.min === null && (t.min = 0), t.max === null && (t.max = 0);
 }
-function jn(e, t, n) {
+function Mn(e, t, n) {
 	if (e.length === 0 || n <= 0) return;
 	let r = e.length / n, i = e[Math.max(0, Math.min(e.length - 1, Math.round(t * r)))];
 	if (!(!i || i.min === null && i.max === null)) return i;
 }
-function Mn(e, t) {
+function Nn(e, t) {
 	let n = e.max - e.min;
 	return (r) => n === 0 ? t : t - (r - e.min) * t / n;
 }
-function Nn(e, t) {
-	let n = Fn(e), r = "#";
+function Pn(e, t) {
+	let n = In(e), r = "#";
 	for (let e = 0; e < 3; e += 1) {
 		let i = Number.parseInt(n.slice(e * 2, e * 2 + 2), 16), a = Math.round(Math.min(Math.max(0, i + t * 255), 255)).toString(16);
 		r += a.padStart(2, "0");
 	}
 	return r;
 }
-function Pn(e) {
+function Fn(e) {
 	return Array.from({ length: e }, (e, t) => ({
 		x: t,
 		min: null,
 		max: null
 	}));
 }
-function Fn(e) {
+function In(e) {
 	let t = e.replace(/[^0-9a-f]/gi, "");
 	return t.length === 3 && (t = t.split("").map((e) => e + e).join("")), t.length >= 6 ? t.slice(0, 6) : "000000";
 }
 //#endregion
 //#region src/tracks/bigwig/render.tsx
-function In({ config: e, color: t = "#2266aa", data: n, width: r, height: i, region: a }) {
-	let o = Bn(e, n, a, r), s = Vn(e, o), c = Mn(s, i)(q(0, s)), l = Hn(o, s, i);
-	return /* @__PURE__ */ g("g", { children: [
-		/* @__PURE__ */ h("rect", {
+function Ln({ config: e, color: t = "#2266aa", data: n, width: r, height: i, region: a }) {
+	let o = Vn(e, n, a, r), s = Hn(e, o), c = Nn(s, i)(q(0, s)), l = Un(o, s, i);
+	return /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("rect", {
 			width: r,
 			height: i,
 			fill: "#ffffff",
 			pointerEvents: "none"
 		}),
-		/* @__PURE__ */ h("line", {
+		/* @__PURE__ */ g("line", {
 			x1: 0,
 			x2: r,
 			y1: c,
@@ -2567,27 +2570,27 @@ function In({ config: e, color: t = "#2266aa", data: n, width: r, height: i, reg
 			stroke: "#dddddd",
 			strokeWidth: 1
 		}),
-		s.min < 0 && /* @__PURE__ */ h("path", {
+		s.min < 0 && /* @__PURE__ */ g("path", {
 			d: l.minPath,
-			fill: Nn(t, .2)
+			fill: Pn(t, .2)
 		}),
-		/* @__PURE__ */ h("path", {
+		/* @__PURE__ */ g("path", {
 			d: l.maxPath,
 			fill: t
 		}),
-		/* @__PURE__ */ h("path", {
+		/* @__PURE__ */ g("path", {
 			d: l.clampHighPath,
 			stroke: "#ff0000",
 			strokeWidth: 2,
 			fill: "none"
 		}),
-		/* @__PURE__ */ h("path", {
+		/* @__PURE__ */ g("path", {
 			d: l.clampLowPath,
 			stroke: "#ff0000",
 			strokeWidth: 2,
 			fill: "none"
 		}),
-		/* @__PURE__ */ h(Rn, {
+		/* @__PURE__ */ g(zn, {
 			config: e,
 			points: o,
 			width: r,
@@ -2595,10 +2598,10 @@ function In({ config: e, color: t = "#2266aa", data: n, width: r, height: i, reg
 		})
 	] });
 }
-function Ln({ config: e, color: t = "#2266aa", data: n, width: r, height: i, region: a }) {
-	let o = Bn(e, n, a, r), s = Vn(e, o), c = i / 3, l = i / 3;
-	return /* @__PURE__ */ g("g", { children: [
-		/* @__PURE__ */ h("rect", {
+function Rn({ config: e, color: t = "#2266aa", data: n, width: r, height: i, region: a }) {
+	let o = Vn(e, n, a, r), s = Hn(e, o), c = i / 3, l = i / 3;
+	return /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("rect", {
 			width: r,
 			height: i,
 			fill: "#ffffff",
@@ -2606,15 +2609,15 @@ function Ln({ config: e, color: t = "#2266aa", data: n, width: r, height: i, reg
 		}),
 		o.map((e) => {
 			let n = e.max ?? e.min, r = n === null ? 0 : (q(n, s) - s.min) / (s.max - s.min || 1);
-			return /* @__PURE__ */ h("rect", {
+			return /* @__PURE__ */ g("rect", {
 				x: e.x,
 				y: c,
 				width: 1,
 				height: l,
-				fill: Nn(t, .65 - r * .65)
+				fill: Pn(t, .65 - r * .65)
 			}, e.x);
 		}),
-		/* @__PURE__ */ h(Rn, {
+		/* @__PURE__ */ g(zn, {
 			config: e,
 			points: o,
 			width: r,
@@ -2622,12 +2625,12 @@ function Ln({ config: e, color: t = "#2266aa", data: n, width: r, height: i, reg
 		})
 	] });
 }
-function Rn({ config: e, points: t, width: n, height: r }) {
-	let [i, a] = d(), o = z(), s = H({
+function zn({ config: e, points: t, width: n, height: r }) {
+	let [i, a] = f(), o = z(), s = H({
 		type: "bigwig",
 		config: e
 	});
-	return /* @__PURE__ */ g(m, { children: [i && /* @__PURE__ */ h("line", {
+	return /* @__PURE__ */ _(h, { children: [i && /* @__PURE__ */ g("line", {
 		x1: i.x,
 		x2: i.x,
 		y1: 0,
@@ -2635,13 +2638,13 @@ function Rn({ config: e, points: t, width: n, height: r }) {
 		stroke: "#000000",
 		strokeWidth: 1,
 		pointerEvents: "none"
-	}), /* @__PURE__ */ h("rect", {
+	}), /* @__PURE__ */ g("rect", {
 		width: n,
 		height: r,
 		fill: "transparent",
 		pointerEvents: "all",
 		onMouseMove: (e) => {
-			let r = jn(t, zn(e, n), n);
+			let r = Mn(t, Bn(e, n), n);
 			if (!r) {
 				i && o?.onLeave?.(i), a(void 0), s.hide();
 				return;
@@ -2653,19 +2656,19 @@ function Rn({ config: e, points: t, width: n, height: r }) {
 		}
 	})] });
 }
-function zn(e, t) {
+function Bn(e, t) {
 	let n = e.currentTarget.getBoundingClientRect();
 	return n.width <= 0 ? 0 : (e.clientX - n.left) / n.width * t;
 }
-function Bn(e, t, n, r) {
-	let i = On(t, n, r);
-	return e.fillWithZero && An(i), i;
+function Vn(e, t, n, r) {
+	let i = kn(t, n, r);
+	return e.fillWithZero && jn(i), i;
 }
-function Vn(e, t) {
-	return e.yRange ?? kn(t);
+function Hn(e, t) {
+	return e.yRange ?? An(t);
 }
-function Hn(e, t, n) {
-	let r = Mn(t, n), i = r(q(0, t)), a = `M 0 ${i}`, o = `M 0 ${i}`, s = "", c = "";
+function Un(e, t, n) {
+	let r = Nn(t, n), i = r(q(0, t)), a = `M 0 ${i}`, o = `M 0 ${i}`, s = "", c = "";
 	for (let l of e) {
 		if (l.min === null || l.max === null) continue;
 		let e = q(l.min, t), u = q(l.max, t), d = r(e), f = r(u), p = l.x + 1;
@@ -2683,8 +2686,8 @@ function q(e, t) {
 }
 //#endregion
 //#region src/tracks/bigwig/settings.tsx
-function Un({ config: e, updateConfig: t }) {
-	let n = u(null), r = u(null), i = () => {
+function Wn({ config: e, updateConfig: t }) {
+	let n = d(null), r = d(null), i = () => {
 		let e = n.current?.value ?? "", i = r.current?.value ?? "";
 		if (e === "" || i === "") return;
 		let a = Number(e), o = Number(i);
@@ -2693,48 +2696,48 @@ function Un({ config: e, updateConfig: t }) {
 			max: o
 		} });
 	};
-	return /* @__PURE__ */ g(F, {
+	return /* @__PURE__ */ _(F, {
 		title: "BigWig",
 		children: [
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "grid",
 					gap: "4px"
 				},
-				children: ["URL", /* @__PURE__ */ h("input", {
+				children: ["URL", /* @__PURE__ */ g("input", {
 					type: "text",
 					value: e.url,
 					onChange: (e) => t({ url: e.target.value })
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "flex",
 					alignItems: "center",
 					gap: "6px"
 				},
-				children: [/* @__PURE__ */ h("input", {
+				children: [/* @__PURE__ */ g("input", {
 					type: "checkbox",
 					checked: e.fillWithZero ?? !1,
 					onChange: (e) => t({ fillWithZero: e.target.checked })
 				}), "Fill missing values with zero"]
 			}),
-			/* @__PURE__ */ g("div", {
+			/* @__PURE__ */ _("div", {
 				style: {
 					display: "grid",
 					gap: "6px"
 				},
 				children: [
-					/* @__PURE__ */ h("div", {
+					/* @__PURE__ */ g("div", {
 						style: { fontWeight: 600 },
 						children: "Y range"
 					}),
-					/* @__PURE__ */ g("div", {
+					/* @__PURE__ */ _("div", {
 						style: {
 							display: "flex",
 							gap: "6px"
 						},
-						children: [/* @__PURE__ */ h("input", {
+						children: [/* @__PURE__ */ g("input", {
 							type: "number",
 							step: "any",
 							"aria-label": "Minimum Y range",
@@ -2742,7 +2745,7 @@ function Un({ config: e, updateConfig: t }) {
 							defaultValue: e.yRange?.min ?? "",
 							ref: n,
 							onChange: i
-						}), /* @__PURE__ */ h("input", {
+						}), /* @__PURE__ */ g("input", {
 							type: "number",
 							step: "any",
 							"aria-label": "Maximum Y range",
@@ -2752,12 +2755,12 @@ function Un({ config: e, updateConfig: t }) {
 							onChange: i
 						})]
 					}),
-					/* @__PURE__ */ h("div", {
+					/* @__PURE__ */ g("div", {
 						style: {
 							display: "flex",
 							gap: "6px"
 						},
-						children: /* @__PURE__ */ h("button", {
+						children: /* @__PURE__ */ g("button", {
 							type: "button",
 							onClick: () => {
 								n.current && (n.current.value = ""), r.current && (r.current.value = ""), t({ yRange: void 0 });
@@ -2772,43 +2775,40 @@ function Un({ config: e, updateConfig: t }) {
 }
 //#endregion
 //#region src/tracks/bigwig/module.tsx
-var Wn = p.object({
-	min: p.number(),
-	max: p.number()
+var Gn = m.object({
+	min: m.number(),
+	max: m.number()
 }).refine((e) => e.min < e.max, {
 	error: "min must be less than max",
 	path: ["min"]
-}), Gn = p.object({
-	url: C(p.string().min(1)),
-	fillWithZero: p.boolean().default(!1),
-	yRange: Wn.optional()
-}), Kn = V()({
+}), Kn = m.object({
+	url: w(m.string().min(1)),
+	fillWithZero: m.boolean().default(!1),
+	yRange: Gn.optional()
+}), qn = V()({
 	type: "bigwig",
 	defaults: {
 		height: 80,
 		color: "#2266aa"
 	},
-	tooltipComponent: ({ item: e }) => /* @__PURE__ */ h(K, { children: /* @__PURE__ */ h("text", {
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: /* @__PURE__ */ g("text", {
 		fill: "#000000",
 		fontSize: 12,
 		dominantBaseline: "middle",
 		children: e.max?.toFixed(2)
 	}) }),
-	configSchema: Gn,
-	fetch: Tn,
+	configSchema: Kn,
+	fetch: En,
 	render: {
-		full: In,
-		dense: Ln
+		full: Ln,
+		dense: Rn
 	},
-	settingsComponent: Un
-}), qn = "https://screen.api.wenglab.org/graphql", Jn = "api_sk_p4mf_1eRcHWwMB6xt_WBuVwF7hI6UnbG", Yn = "\n  query Gene($chromosome: String, $assembly: String!, $start: Int, $end: Int, $version: Int) {\n    gene(assembly: $assembly, chromosome: $chromosome, start: $start, end: $end, version: $version) {\n      strand\n      name\n      id\n      transcripts {\n        coordinates {\n          start\n          end\n        }\n        name\n        id\n        exons {\n          coordinates {\n            start\n            end\n          }\n          UTRs {\n            coordinates {\n              start\n              end\n            }\n          }\n        }\n        tag\n      }\n    }\n  }\n";
+	settingsComponent: Wn
+}), Jn = "/api/screen-graphql", Yn = "\n  query Gene($chromosome: String, $assembly: String!, $start: Int, $end: Int, $version: Int) {\n    gene(assembly: $assembly, chromosome: $chromosome, start: $start, end: $end, version: $version) {\n      strand\n      name\n      id\n      transcripts {\n        coordinates {\n          start\n          end\n        }\n        name\n        id\n        exons {\n          coordinates {\n            start\n            end\n          }\n          UTRs {\n            coordinates {\n              start\n              end\n            }\n          }\n        }\n        tag\n      }\n    }\n  }\n";
 async function Xn({ config: e, region: t }) {
-	let n = await fetch(qn, {
+	let n = await fetch(Jn, {
 		method: "POST",
-		headers: {
-			authorization: `Bearer ${Jn}`,
-			"content-type": "application/json"
-		},
+		headers: { "content-type": "application/json" },
 		body: JSON.stringify({
 			query: Yn,
 			variables: {
@@ -2949,36 +2949,36 @@ function ur(e) {
 		let r = Qn(n);
 		mr(r, e.region) && t.push(r);
 	}
-	return /* @__PURE__ */ h(fr, {
+	return /* @__PURE__ */ g(fr, {
 		...e,
 		transcripts: t
 	});
 }
 function dr(e) {
 	let t = $n(e.data).filter((t) => mr(t, e.region));
-	return /* @__PURE__ */ h(fr, {
+	return /* @__PURE__ */ g(fr, {
 		...e,
 		transcripts: t
 	});
 }
 function fr({ id: e, config: t, color: n = "#7a4fb3", region: r, width: i, height: a, transcripts: o }) {
-	let s = I(r, i), c = tr(o, s, lr), l = Wt(e, c.length), u = c.map((e, t) => ({
+	let s = I(r, i), c = tr(o, s, lr), l = Gt(e, c.length), u = c.map((e, t) => ({
 		y: t * l,
 		transcripts: e.map((e) => er(e, s, l, i))
 	})), d = z(), f = H({
 		type: "transcript",
 		config: t
 	});
-	return /* @__PURE__ */ g("g", { children: [/* @__PURE__ */ h("rect", {
+	return /* @__PURE__ */ _("g", { children: [/* @__PURE__ */ g("rect", {
 		width: i,
 		height: a,
 		fill: "#ffffff",
 		pointerEvents: "none"
-	}), u.map((e, r) => /* @__PURE__ */ h("g", {
+	}), u.map((e, r) => /* @__PURE__ */ g("g", {
 		transform: `translate(0,${e.y})`,
 		children: e.transcripts.map((e, r) => {
 			let i = pr(t, e.transcript, n);
-			return /* @__PURE__ */ g("g", { children: [/* @__PURE__ */ h("path", {
+			return /* @__PURE__ */ _("g", { children: [/* @__PURE__ */ g("path", {
 				stroke: i,
 				fill: i,
 				strokeWidth: Math.max(.5, l / 16),
@@ -2991,7 +2991,7 @@ function fr({ id: e, config: t, color: n = "#7a4fb3", region: r, width: i, heigh
 				onMouseLeave: () => {
 					d?.onLeave?.(e.transcript), f.hide();
 				}
-			}), /* @__PURE__ */ h("text", {
+			}), /* @__PURE__ */ g("text", {
 				fill: i,
 				fontSize: lr,
 				x: e.transcript.coordinates.end + 5,
@@ -3013,37 +3013,37 @@ function mr(e, t) {
 //#endregion
 //#region src/tracks/transcript/settings.tsx
 function hr({ config: e, updateConfig: t }) {
-	return /* @__PURE__ */ g(F, {
+	return /* @__PURE__ */ _(F, {
 		title: "Transcript",
 		children: [
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "grid",
 					gap: "4px"
 				},
-				children: ["Highlight gene", /* @__PURE__ */ h("input", {
+				children: ["Highlight gene", /* @__PURE__ */ g("input", {
 					type: "text",
 					value: e.geneName ?? "",
 					onChange: (e) => t({ geneName: e.target.value || void 0 })
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "grid",
 					gap: "4px"
 				},
-				children: ["Assembly", /* @__PURE__ */ h("input", {
+				children: ["Assembly", /* @__PURE__ */ g("input", {
 					type: "text",
 					value: e.assembly,
 					onChange: (e) => t({ assembly: e.target.value })
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "grid",
 					gap: "4px"
 				},
-				children: ["Version", /* @__PURE__ */ h("input", {
+				children: ["Version", /* @__PURE__ */ g("input", {
 					type: "number",
 					min: 1,
 					step: 1,
@@ -3054,24 +3054,24 @@ function hr({ config: e, updateConfig: t }) {
 					}
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "grid",
 					gap: "4px"
 				},
-				children: ["Canonical color", /* @__PURE__ */ h("input", {
+				children: ["Canonical color", /* @__PURE__ */ g("input", {
 					type: "text",
 					value: e.canonicalColor ?? "",
 					placeholder: "#000000",
 					onChange: (e) => t({ canonicalColor: e.target.value || void 0 })
 				})]
 			}),
-			/* @__PURE__ */ g("label", {
+			/* @__PURE__ */ _("label", {
 				style: {
 					display: "grid",
 					gap: "4px"
 				},
-				children: ["Highlight color", /* @__PURE__ */ h("input", {
+				children: ["Highlight color", /* @__PURE__ */ g("input", {
 					type: "text",
 					value: e.highlightColor ?? "",
 					placeholder: "#000000",
@@ -3083,19 +3083,19 @@ function hr({ config: e, updateConfig: t }) {
 }
 //#endregion
 //#region src/tracks/transcript/module.tsx
-var gr = p.object({
-	assembly: C(p.string().min(1)),
-	version: C(p.number().int().positive()),
-	geneName: p.string().optional(),
-	canonicalColor: p.string().optional(),
-	highlightColor: p.string().optional()
+var gr = m.object({
+	assembly: w(m.string().min(1)),
+	version: w(m.number().int().positive()),
+	geneName: m.string().optional(),
+	canonicalColor: m.string().optional(),
+	highlightColor: m.string().optional()
 }), _r = V()({
 	type: "transcript",
 	defaults: {
 		height: 90,
 		color: "#7a4fb3"
 	},
-	tooltipComponent: ({ item: e }) => /* @__PURE__ */ h(K, { children: /* @__PURE__ */ h("text", {
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: /* @__PURE__ */ g("text", {
 		fill: "#000000",
 		fontSize: 12,
 		dominantBaseline: "middle",
@@ -3112,7 +3112,7 @@ var gr = p.object({
 //#endregion
 //#region src/tracks/bulkbed/fetch.ts
 async function vr({ config: e, region: t }) {
-	return Promise.all(e.datasets.map(async (e, n) => (await pn({
+	return Promise.all(e.datasets.map(async (e, n) => (await mn({
 		url: e.url,
 		region: t
 	})).map((t) => ({
@@ -3127,21 +3127,21 @@ function yr({ config: e, color: t = "#4b9560", data: n, region: r, width: i, hei
 		type: "bulkbed",
 		config: e
 	});
-	return /* @__PURE__ */ g("g", { children: [/* @__PURE__ */ h("rect", {
+	return /* @__PURE__ */ _("g", { children: [/* @__PURE__ */ g("rect", {
 		width: i,
 		height: a,
 		fill: "#ffffff",
 		pointerEvents: "none"
 	}), n.map((n, r) => {
-		let i = e.datasets[r]?.name || `Dataset ${r + 1}`, a = r * (l + s), c = gn(n, o);
-		return /* @__PURE__ */ h("g", {
+		let i = e.datasets[r]?.name || `Dataset ${r + 1}`, a = r * (l + s), c = _n(n, o);
+		return /* @__PURE__ */ g("g", {
 			transform: `translate(0,${a})`,
 			children: c.map((e, n) => {
 				let r = typeof e.row.datasetName == "string" ? e.row.datasetName : void 0, a = {
 					...e.row,
 					datasetName: r ?? i
 				};
-				return /* @__PURE__ */ h("rect", {
+				return /* @__PURE__ */ g("rect", {
 					x: e.start,
 					y: 0,
 					width: Math.max(1, e.end - e.start),
@@ -3163,15 +3163,15 @@ function yr({ config: e, color: t = "#4b9560", data: n, region: r, width: i, hei
 //#endregion
 //#region src/tracks/bulkbed/settings.tsx
 function br({ config: e, updateConfig: t }) {
-	let n = u([]), r = u(0);
+	let n = d([]), r = d(0);
 	for (; n.current.length < e.datasets.length;) n.current.push(`bulkbed-dataset-${r.current++}`);
 	n.current.length > e.datasets.length && (n.current = n.current.slice(0, e.datasets.length));
 	let i = e.datasets.length === 0 || e.datasets.some((e) => e.name.trim() === "" || e.url.trim() === "");
-	return /* @__PURE__ */ g(F, {
+	return /* @__PURE__ */ _(F, {
 		title: "BulkBed",
-		children: [/* @__PURE__ */ g("label", {
+		children: [/* @__PURE__ */ _("label", {
 			style: Sr,
-			children: ["Gap", /* @__PURE__ */ h("input", {
+			children: ["Gap", /* @__PURE__ */ g("input", {
 				type: "number",
 				min: 0,
 				step: 1,
@@ -3181,36 +3181,36 @@ function br({ config: e, updateConfig: t }) {
 					Number.isFinite(n) && n >= 0 && t({ gap: n });
 				}
 			})]
-		}), /* @__PURE__ */ g("div", {
+		}), /* @__PURE__ */ _("div", {
 			style: {
 				display: "grid",
 				gap: "8px"
 			},
 			children: [
-				/* @__PURE__ */ h("div", {
+				/* @__PURE__ */ g("div", {
 					style: { fontWeight: 600 },
 					children: "Datasets"
 				}),
-				e.datasets.map((r, i) => /* @__PURE__ */ g("div", {
+				e.datasets.map((r, i) => /* @__PURE__ */ _("div", {
 					style: Cr,
 					children: [
-						/* @__PURE__ */ g("label", {
+						/* @__PURE__ */ _("label", {
 							style: Sr,
-							children: ["Name", /* @__PURE__ */ h("input", {
+							children: ["Name", /* @__PURE__ */ g("input", {
 								type: "text",
 								value: r.name,
 								onChange: (n) => t({ datasets: xr(e.datasets, i, "name", n.target.value) })
 							})]
 						}),
-						/* @__PURE__ */ g("label", {
+						/* @__PURE__ */ _("label", {
 							style: Sr,
-							children: ["URL", /* @__PURE__ */ h("input", {
+							children: ["URL", /* @__PURE__ */ g("input", {
 								type: "text",
 								value: r.url,
 								onChange: (n) => t({ datasets: xr(e.datasets, i, "url", n.target.value) })
 							})]
 						}),
-						/* @__PURE__ */ h("button", {
+						/* @__PURE__ */ g("button", {
 							type: "button",
 							disabled: e.datasets.length === 1,
 							onClick: () => {
@@ -3220,12 +3220,12 @@ function br({ config: e, updateConfig: t }) {
 						})
 					]
 				}, n.current[i])),
-				/* @__PURE__ */ h("div", {
+				/* @__PURE__ */ g("div", {
 					style: {
 						display: "flex",
 						gap: "6px"
 					},
-					children: /* @__PURE__ */ h("button", {
+					children: /* @__PURE__ */ g("button", {
 						type: "button",
 						onClick: () => {
 							n.current.push(`bulkbed-dataset-${r.current++}`), t({ datasets: [...e.datasets, {
@@ -3236,7 +3236,7 @@ function br({ config: e, updateConfig: t }) {
 						children: "Add dataset"
 					})
 				}),
-				i && /* @__PURE__ */ h("div", {
+				i && /* @__PURE__ */ g("div", {
 					style: { color: "#b00020" },
 					children: "Dataset names and URLs are required."
 				})
@@ -3259,19 +3259,19 @@ var Sr = {
 	padding: "8px",
 	border: "1px solid #d0d0d0",
 	borderRadius: "4px"
-}, wr = p.object({
-	name: p.string().min(1),
-	url: C(p.string().min(1))
-}), Tr = p.object({
-	datasets: p.array(wr).min(1),
-	gap: p.number().nonnegative().optional()
+}, wr = m.object({
+	name: m.string().min(1),
+	url: w(m.string().min(1))
+}), Tr = m.object({
+	datasets: m.array(wr).min(1),
+	gap: m.number().nonnegative().optional()
 }), Er = V()({
 	type: "bulkbed",
 	defaults: {
 		height: 80,
 		color: "#4b9560"
 	},
-	tooltipComponent: ({ item: e }) => /* @__PURE__ */ h(K, { children: /* @__PURE__ */ h("text", {
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: /* @__PURE__ */ g("text", {
 		fill: "#000000",
 		fontSize: 12,
 		dominantBaseline: "middle",
@@ -3299,8 +3299,8 @@ async function Dr({ config: e, region: t }) {
 async function X(e, t) {
 	if (!e) return [];
 	await Or();
-	let n = new b(new y(e, v.create()));
-	if ((await n.getHeader()).fileType !== x.BigWig) throw Error("MethylC module only supports BigWig files");
+	let n = new x(new b(e, y.create()));
+	if ((await n.getHeader()).fileType !== S.BigWig) throw Error("MethylC module only supports BigWig files");
 	return await n.readBigWigData(t.chromosome, t.start, t.chromosome, t.end);
 }
 async function Or() {
@@ -3311,7 +3311,7 @@ async function Or() {
 //#endregion
 //#region src/tracks/methylc/helpers.tsx
 function kr(e, t, n) {
-	return e.map((e) => e.length > 0 ? On(e, t, n) : []);
+	return e.map((e) => e.length > 0 ? kn(e, t, n) : []);
 }
 function Z(e, t, n, r = !1, i, a, o = !1) {
 	let s = Mr(e, i);
@@ -3322,12 +3322,12 @@ function Z(e, t, n, r = !1, i, a, o = !1) {
 		let i = Nr(e, c, l, t, r);
 		f += Q(e.x, u) + Q(i.x, r ? t : 0) + Q(i.x + 1, r ? t : 0) + Q(e.x + 1, u), d += Q(e.x, u) + Q(i.x, i.y) + Q(i.x + 1, i.y) + Q(e.x + 1, u);
 	}), {
-		indicator: /* @__PURE__ */ h("path", {
+		indicator: /* @__PURE__ */ g("path", {
 			d: f,
 			fill: n,
 			fillOpacity: .2
 		}),
-		values: /* @__PURE__ */ h("path", {
+		values: /* @__PURE__ */ g("path", {
 			d,
 			fill: n
 		})
@@ -3341,7 +3341,7 @@ function Ar(e, t, n, r = !1, i) {
 		if (e.min === null || e.max === null) return;
 		let n = Nr(e, o, s, t, r);
 		l ? c += Q(n.x, n.y) : (c += Fr(n.x, n.y), l = !0);
-	}), c ? /* @__PURE__ */ h("path", {
+	}), c ? /* @__PURE__ */ g("path", {
 		d: c,
 		stroke: n,
 		fill: "none",
@@ -3389,18 +3389,18 @@ function Q(e, t) {
 //#endregion
 //#region src/tracks/methylc/render.tsx
 function Ir({ id: e, config: t, data: n, region: r, width: i, height: a }) {
-	let o = c(() => kr(n, r, i), [
+	let o = l(() => kr(n, r, i), [
 		n,
 		r,
 		i
-	]), s = a / 2, l = c(() => jr([
+	]), s = a / 2, c = l(() => jr([
 		o[0],
 		o[1],
 		o[2],
 		o[4],
 		o[5],
 		o[6]
-	]), [o]), u = t.range || l, d = c(() => jr([o[3], o[7]]), [o]), f = c(() => ({
+	]), [o]), u = t.range || c, d = l(() => jr([o[3], o[7]]), [o]), f = l(() => ({
 		cpgPlus: Z(o[0], s, t.colors.cpg, !1, u, o[3], t.maskCpgByCoverage),
 		chgPlus: Z(o[1], s, t.colors.chg, !1, u),
 		chhPlus: Z(o[2], s, t.colors.chh, !1, u),
@@ -3416,7 +3416,7 @@ function Ir({ id: e, config: t, data: n, region: r, width: i, height: a }) {
 		u,
 		s,
 		o
-	]), p = c(() => ({
+	]), p = l(() => ({
 		fwdCpg: !!t.urls.plusStrand.cpg.url,
 		fwdChg: !!t.urls.plusStrand.chg.url,
 		fwdChh: !!t.urls.plusStrand.chh.url,
@@ -3426,14 +3426,14 @@ function Ir({ id: e, config: t, data: n, region: r, width: i, height: a }) {
 		revChh: !!t.urls.minusStrand.chh.url,
 		revDepth: !!t.urls.minusStrand.depth.url
 	}), [t.urls]);
-	return /* @__PURE__ */ g("g", { children: [
-		/* @__PURE__ */ h("rect", {
+	return /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("rect", {
 			width: i,
 			height: a,
 			fill: "#ffffff",
 			pointerEvents: "none"
 		}),
-		/* @__PURE__ */ g("g", {
+		/* @__PURE__ */ _("g", {
 			id: `${e}-plusStrand`,
 			children: [
 				f.cpgPlus?.indicator,
@@ -3445,7 +3445,7 @@ function Ir({ id: e, config: t, data: n, region: r, width: i, height: a }) {
 				f.depthPlus
 			]
 		}),
-		/* @__PURE__ */ g("g", {
+		/* @__PURE__ */ _("g", {
 			id: `${e}-minusStrand`,
 			transform: `translate(0, ${s})`,
 			children: [
@@ -3458,7 +3458,7 @@ function Ir({ id: e, config: t, data: n, region: r, width: i, height: a }) {
 				f.depthMinus
 			]
 		}),
-		/* @__PURE__ */ h(Lr, {
+		/* @__PURE__ */ g(Lr, {
 			config: t,
 			data: o,
 			showRows: p,
@@ -3468,18 +3468,18 @@ function Ir({ id: e, config: t, data: n, region: r, width: i, height: a }) {
 	] });
 }
 function Lr({ config: e, data: t, showRows: n, width: r, height: i }) {
-	let [a, o] = d(), s = z(), l = H({
+	let [a, o] = f(), s = z(), c = H({
 		type: "methylc",
 		config: e
-	}), u = c(() => a === void 0 ? [] : t.map((e) => e[a]), [t, a]);
-	return /* @__PURE__ */ g(m, { children: [a !== void 0 && /* @__PURE__ */ h("line", {
+	}), u = l(() => a === void 0 ? [] : t.map((e) => e[a]), [t, a]);
+	return /* @__PURE__ */ _(h, { children: [a !== void 0 && /* @__PURE__ */ g("line", {
 		stroke: "#000000",
 		x1: a,
 		x2: a,
 		y1: 0,
 		y2: i,
 		pointerEvents: "none"
-	}), /* @__PURE__ */ h("rect", {
+	}), /* @__PURE__ */ g("rect", {
 		width: r,
 		height: i,
 		fill: "transparent",
@@ -3489,13 +3489,13 @@ function Lr({ config: e, data: t, showRows: n, width: r, height: i }) {
 				tooltipValues: t.map((e) => e[i]),
 				showRows: n
 			};
-			o(i), s?.onHover?.(a), l.show(a, e);
+			o(i), s?.onHover?.(a), c.show(a, e);
 		},
 		onMouseOut: () => {
 			s?.onLeave?.({
 				tooltipValues: u,
 				showRows: n
-			}), o(void 0), l.hide();
+			}), o(void 0), c.hide();
 		}
 	})] });
 }
@@ -3506,7 +3506,7 @@ function Rr(e, t) {
 //#endregion
 //#region src/tracks/methylc/tooltip.tsx
 function zr({ item: e }) {
-	return /* @__PURE__ */ h(K, { children: /* @__PURE__ */ h("g", { children: Br(e).map((e, t) => /* @__PURE__ */ g("text", {
+	return /* @__PURE__ */ g(K, { children: /* @__PURE__ */ g("g", { children: Br(e).map((e, t) => /* @__PURE__ */ _("text", {
 		y: t * 14,
 		fill: "#000000",
 		fontSize: 12,
@@ -3572,29 +3572,29 @@ var Vr = {
 	chg: "#ff944d",
 	chh: "#ff00ff",
 	depth: "#525252"
-}, Hr = p.object({
-	min: p.number(),
-	max: p.number()
+}, Hr = m.object({
+	min: m.number(),
+	max: m.number()
 }).refine((e) => e.min < e.max, {
 	error: "min must be less than max",
 	path: ["min"]
-}), Ur = p.object({ url: C(p.string()) }), Wr = p.object({
+}), Ur = m.object({ url: w(m.string()) }), Wr = m.object({
 	cpg: Ur,
 	chg: Ur,
 	chh: Ur,
 	depth: Ur
-}), Gr = p.object({
-	urls: p.object({
+}), Gr = m.object({
+	urls: m.object({
 		plusStrand: Wr,
 		minusStrand: Wr
 	}),
-	colors: p.object({
-		cpg: p.string().default(Vr.cpg),
-		chg: p.string().default(Vr.chg),
-		chh: p.string().default(Vr.chh),
-		depth: p.string().default(Vr.depth)
+	colors: m.object({
+		cpg: m.string().default(Vr.cpg),
+		chg: m.string().default(Vr.chg),
+		chh: m.string().default(Vr.chh),
+		depth: m.string().default(Vr.depth)
 	}).default(Vr),
-	maskCpgByCoverage: p.boolean().default(!1),
+	maskCpgByCoverage: m.boolean().default(!1),
 	range: Hr.optional()
 }), Kr = V()({
 	type: "methylc",
@@ -3610,15 +3610,15 @@ function qr({ config: e, color: t = "#3333ff", data: n, width: r, height: i, reg
 	let o = {
 		min: 0,
 		max: 1
-	}, s = On(n.top, a, r), c = On(n.bottom, a, r), l = Jr(s, o, i, "top"), u = Jr(c, o, i, "bottom");
-	return /* @__PURE__ */ g("g", { children: [
-		/* @__PURE__ */ h("rect", {
+	}, s = kn(n.top, a, r), c = kn(n.bottom, a, r), l = Jr(s, o, i, "top"), u = Jr(c, o, i, "bottom");
+	return /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("rect", {
 			width: r,
 			height: i,
 			fill: "#ffffff",
 			pointerEvents: "none"
 		}),
-		/* @__PURE__ */ h("line", {
+		/* @__PURE__ */ g("line", {
 			x1: 0,
 			x2: r,
 			y1: i / 2,
@@ -3626,15 +3626,15 @@ function qr({ config: e, color: t = "#3333ff", data: n, width: r, height: i, reg
 			stroke: "#dddddd",
 			strokeWidth: 1
 		}),
-		/* @__PURE__ */ h("path", {
+		/* @__PURE__ */ g("path", {
 			d: l,
-			fill: Nn(t, .4)
+			fill: Pn(t, .4)
 		}),
-		/* @__PURE__ */ h("path", {
+		/* @__PURE__ */ g("path", {
 			d: u,
 			fill: t
 		}),
-		/* @__PURE__ */ h(Xr, {
+		/* @__PURE__ */ g(Xr, {
 			config: e,
 			topPoints: s,
 			bottomPoints: c,
@@ -3657,11 +3657,11 @@ function Yr(e, t, n, r) {
 	return r === "top" ? a * n : n - a * n;
 }
 function Xr({ config: e, topPoints: t, bottomPoints: n, width: r, height: i }) {
-	let [a, o] = d(), s = u(void 0), c = z(), l = H({
+	let [a, o] = f(), s = d(void 0), c = z(), l = H({
 		type: "cave",
 		config: e
 	});
-	return /* @__PURE__ */ g(m, { children: [a !== void 0 && /* @__PURE__ */ h("line", {
+	return /* @__PURE__ */ _(h, { children: [a !== void 0 && /* @__PURE__ */ g("line", {
 		x1: a,
 		x2: a,
 		y1: 0,
@@ -3669,13 +3669,13 @@ function Xr({ config: e, topPoints: t, bottomPoints: n, width: r, height: i }) {
 		stroke: "#000000",
 		strokeWidth: 1,
 		pointerEvents: "none"
-	}), /* @__PURE__ */ h("rect", {
+	}), /* @__PURE__ */ g("rect", {
 		width: r,
 		height: i,
 		fill: "transparent",
 		pointerEvents: "all",
 		onMouseMove: (e) => {
-			let i = Zr(e, r), u = jn(t, i, r), d = jn(n, i, r);
+			let i = Zr(e, r), u = Mn(t, i, r), d = Mn(n, i, r);
 			if (!u && !d) {
 				s.current && c?.onLeave?.(s.current), s.current = void 0, a !== void 0 && o(void 0), l.hide();
 				return;
@@ -3703,10 +3703,10 @@ function Qr(e, t) {
 //#region src/tracks/cave/fetch.ts
 var $r = "https://users.wenglab.org/phanh/PsychENCODE/hg38/", ei = "data/brainome/Methylation_BS_OXBS_bw/";
 async function ti({ config: e, region: t }) {
-	let n = ni(e.neurotransmitter, "hmC", e.age), r = ni(e.neurotransmitter, "OXBS", e.age), [i, a] = await Promise.all([En({
+	let n = ni(e.neurotransmitter, "hmC", e.age), r = ni(e.neurotransmitter, "OXBS", e.age), [i, a] = await Promise.all([Dn({
 		url: n,
 		region: t
-	}), En({
+	}), Dn({
 		url: r,
 		region: t
 	})]);
@@ -3720,9 +3720,9 @@ function ni(e, t, n) {
 }
 //#endregion
 //#region src/tracks/cave/module.tsx
-var ri = p.object({
-	neurotransmitter: C(p.enum(["GABA", "GLU"])),
-	age: C(p.enum([
+var ri = m.object({
+	neurotransmitter: w(m.enum(["GABA", "GLU"])),
+	age: w(m.enum([
 		"Infancy",
 		"Early_Childhood",
 		"Late_Childhood",
@@ -3736,12 +3736,12 @@ var ri = p.object({
 		height: 35,
 		color: "#3333ff"
 	},
-	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: [/* @__PURE__ */ g("text", {
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ _(K, { children: [/* @__PURE__ */ _("text", {
 		fill: "#000000",
 		fontSize: 12,
 		dominantBaseline: "middle",
 		children: ["hmC: ", ai(e.top)]
-	}), /* @__PURE__ */ g("text", {
+	}), /* @__PURE__ */ _("text", {
 		fill: "#000000",
 		fontSize: 12,
 		y: 12,
@@ -3756,6 +3756,372 @@ function ai(e) {
 	return e?.max === null || e?.max === void 0 ? "n/a" : e.max.toFixed(2);
 }
 //#endregion
-export { yn as DenseBigBed, Ft as GenomeBrowser, F as SettingsSection, bn as SquishBigBed, it as TrackInteractionProvider, wn as bigBedModule, Kn as bigWigModule, Er as bulkBedModule, ii as caveModule, Jt as createBrowserStore, Ne as createContextMenuStore, Ht as createModuleRegistry, Me as createSettingsStore, Ut as createTrackFromEntry, Yt as createTrackStore, V as defineTrackModule, pn as fetchBigBedRows, C as fetchOnChange, Kr as methylCModule, _r as transcriptModule, Wt as useAutoTrackHeight, _e as useBrowserStore, N as useContextMenuStore, Ee as useDraggableSettingsModal, z as useInteraction, Ve as useRegistry, P as useSettingsStore, H as useTooltip, M as useTrackStore };
+//#region src/tracks/manhattan/fetch.ts
+async function oi({ config: e, region: t }) {
+	return si(await mn({
+		url: e.url,
+		region: t
+	}));
+}
+function si(e) {
+	return e.map(ci);
+}
+function ci(e) {
+	let t = e.chr ?? e.chrom, n = e.name, r = n?.lastIndexOf("_") ?? -1, i = r > 0 ? n?.slice(0, r).trim() : void 0, a = r > 0 ? n?.slice(r + 1).trim() : void 0, o = a ? Number(a) : NaN;
+	if (!t || !i || !Number.isFinite(o)) throw Error(`Manhattan BigBed row at ${t ?? "unknown"}:${e.start}-${e.end} must have a name formatted as <id>_<numeric value>`);
+	return {
+		id: i,
+		chromosome: t,
+		start: e.start,
+		end: e.end,
+		value: o
+	};
+}
+//#endregion
+//#region src/tracks/manhattan/helpers.ts
+function li(e, t) {
+	let n = Infinity, r = -Infinity;
+	for (let t of e) n = Math.min(n, t.value), r = Math.max(r, t.value);
+	let i = n !== Infinity && r !== -Infinity, a = t?.min ?? (i ? n : 0), o = t?.max ?? (i ? r : 1);
+	if (o <= a) if (t?.min !== void 0 && t.max === void 0) o = a + 1;
+	else if (t?.max !== void 0 && t.min === void 0) a = o - 1;
+	else {
+		let e = Math.abs(a) * .05 || 1;
+		a -= e, o += e;
+	}
+	return {
+		min: a,
+		max: o
+	};
+}
+function ui(e, t) {
+	let n = e.max - e.min;
+	return (r) => t - (Math.max(e.min, Math.min(e.max, r)) - e.min) * t / n;
+}
+//#endregion
+//#region src/tracks/manhattan/render.tsx
+var di = 3.25, fi = "\n  .gb-manhattan-points:has(.gb-manhattan-point:hover) .gb-manhattan-point:not(:hover) {\n    opacity: 0.15;\n  }\n";
+function pi({ config: e, color: t = "#c43d3d", data: n, region: r, width: i, height: s }) {
+	let c = I(r, i), l = ui(li(n, e.yDomain), s), u = z(), d = H({
+		type: "manhattan",
+		config: e
+	}), f = o(d.hide);
+	return a(() => {
+		f();
+	}, [n]), /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("rect", {
+			width: i,
+			height: s,
+			fill: "#ffffff",
+			pointerEvents: "none"
+		}),
+		/* @__PURE__ */ g("style", { children: fi }),
+		/* @__PURE__ */ g("g", {
+			className: "gb-manhattan-points",
+			children: n.map((e, n) => /* @__PURE__ */ g("circle", {
+				className: "gb-manhattan-point",
+				cx: c((e.start + e.end) / 2),
+				cy: l(e.value),
+				r: di,
+				fill: t,
+				style: { cursor: u?.onClick ? "pointer" : "default" },
+				onClick: () => u?.onClick?.(e),
+				onMouseEnter: (t) => {
+					u?.onHover?.(e), d.show(e, t);
+				},
+				onMouseLeave: () => {
+					u?.onLeave?.(e), d.hide();
+				}
+			}, `${e.id}-${e.start}-${e.end}-${n}`))
+		})
+	] });
+}
+//#endregion
+//#region src/tracks/manhattan/settings.tsx
+function mi({ config: e, updateConfig: t }) {
+	let n = (n, r) => {
+		let i = r === "" ? void 0 : Number(r);
+		if (i !== void 0 && !Number.isFinite(i)) return;
+		let a = {
+			...e.yDomain,
+			[n]: i
+		};
+		t({ yDomain: a.min === void 0 && a.max === void 0 ? void 0 : a });
+	};
+	return /* @__PURE__ */ _(F, {
+		title: "Manhattan",
+		children: [/* @__PURE__ */ _("label", {
+			style: hi,
+			children: ["URL", /* @__PURE__ */ g("input", {
+				type: "text",
+				value: e.url,
+				onChange: (e) => t({ url: e.target.value })
+			})]
+		}), /* @__PURE__ */ _("div", {
+			style: hi,
+			children: ["Y domain", /* @__PURE__ */ _("div", {
+				style: {
+					display: "flex",
+					gap: "6px"
+				},
+				children: [/* @__PURE__ */ g("input", {
+					"aria-label": "Minimum Y domain",
+					type: "number",
+					step: "any",
+					placeholder: "auto min",
+					value: e.yDomain?.min ?? "",
+					onChange: (e) => n("min", e.target.value)
+				}), /* @__PURE__ */ g("input", {
+					"aria-label": "Maximum Y domain",
+					type: "number",
+					step: "any",
+					placeholder: "auto max",
+					value: e.yDomain?.max ?? "",
+					onChange: (e) => n("max", e.target.value)
+				})]
+			})]
+		})]
+	});
+}
+var hi = {
+	display: "grid",
+	gap: "4px"
+}, gi = m.strictObject({
+	min: m.number().optional(),
+	max: m.number().optional()
+}).refine((e) => e.min === void 0 || e.max === void 0 || e.min < e.max, {
+	error: "min must be less than max",
+	path: ["min"]
+}), _i = m.object({
+	url: w(m.string().min(1)),
+	yDomain: gi.optional()
+}), vi = V()({
+	type: "manhattan",
+	defaults: {
+		height: 75,
+		color: "#c43d3d"
+	},
+	configSchema: _i,
+	fetch: oi,
+	render: { full: pi },
+	settingsComponent: mi,
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("text", {
+			fill: "#000000",
+			fontSize: 12,
+			dominantBaseline: "middle",
+			children: e.id
+		}),
+		/* @__PURE__ */ _("text", {
+			y: 14,
+			fill: "#000000",
+			fontSize: 12,
+			dominantBaseline: "middle",
+			children: [
+				e.chromosome,
+				":",
+				e.start,
+				"-",
+				e.end
+			]
+		}),
+		/* @__PURE__ */ _("text", {
+			y: 28,
+			fill: "#000000",
+			fontSize: 12,
+			dominantBaseline: "middle",
+			children: ["Value: ", e.value]
+		})
+	] }) })
+}), yi = "/api/screen-graphql", bi = "\n  query getSNPsIdentifiedbyGivenStudy($studyid: [String!]!) {\n    getSNPsforGivenGWASStudy(studyid: $studyid) {\n      snpid\n      ldblocksnpid\n      rsquare\n      stop\n      start\n      chromosome\n    }\n  }\n", xi = m.object({
+	snpid: m.string().min(1),
+	ldblocksnpid: m.string(),
+	rsquare: m.string(),
+	stop: m.number(),
+	start: m.number(),
+	chromosome: m.string().min(1)
+}).refine((e) => e.start <= e.stop, { error: "start must be less than or equal to stop" }), Si = m.object({
+	data: m.object({ getSNPsforGivenGWASStudy: m.array(xi).nullish() }).optional(),
+	errors: m.array(m.object({ message: m.string().optional() })).optional()
+});
+async function Ci({ config: e, region: t }) {
+	let n = await fetch(yi, {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({
+			query: bi,
+			variables: { studyid: e.studyIds }
+		})
+	});
+	if (!n.ok) throw Error(`LD request failed with ${n.status}`);
+	let r = Si.parse(await n.json());
+	if (r.errors?.length) throw Error(r.errors.map((e) => e.message ?? "GraphQL error").join("; "));
+	if (!r.data) throw Error("LD response did not include data");
+	return wi(r.data.getSNPsforGivenGWASStudy ?? [], t);
+}
+function wi(e, t) {
+	let n = m.array(xi).parse(e), r = /* @__PURE__ */ new Map(), i = /* @__PURE__ */ new Set(), a = [];
+	for (let e of n) {
+		let t = Ti(e.ldblocksnpid), n = e.rsquare.includes("*") || e.ldblocksnpid.trim() === "Lead", o = r.get(e.snpid);
+		if (o && (o.chromosome !== e.chromosome || o.start !== e.start || o.end !== e.stop)) throw Error(`LD variant ${e.snpid} has conflicting coordinates`);
+		r.set(e.snpid, {
+			id: e.snpid,
+			chromosome: e.chromosome,
+			start: e.start,
+			end: e.stop,
+			isLead: o?.isLead || n || void 0
+		});
+		for (let n of t) {
+			if (n === e.snpid) continue;
+			let [t, r] = [e.snpid, n].toSorted(), o = `${t}\u0000${r}`;
+			i.has(o) || (i.add(o), a.push({
+				sourceId: t,
+				targetId: r
+			}));
+		}
+	}
+	let o = [...r.values()].filter((e) => e.chromosome === t.chromosome && e.end >= t.start && e.start <= t.end), s = new Set(o.map((e) => e.id));
+	return {
+		variants: o,
+		connections: a.filter((e) => s.has(e.sourceId) && s.has(e.targetId))
+	};
+}
+function Ti(e) {
+	return e.split(",").map((e) => e.trim()).filter((e) => e !== "" && e !== "Lead");
+}
+//#endregion
+//#region src/tracks/ld/helpers.ts
+function Ei(e, t, n, r, i = {}) {
+	let a = I(t, n), o = i.minWidth ?? 3.25;
+	return e.map((e) => {
+		let t = a(e.start), n = a(e.end), s = (t + n) / 2, c = Math.max(o, Math.abs(n - t)), l = e.isLead || e.id === i.prominentId ? r * 2 / 3 : r / 3;
+		return {
+			variant: e,
+			centerX: s,
+			x: s - c / 2,
+			y: r - l,
+			width: c,
+			height: l
+		};
+	});
+}
+function Di(e, t) {
+	return t === null ? [] : e.filter((e) => e.sourceId === t || e.targetId === t);
+}
+function Oi(e, t, n) {
+	let r = (e.centerX + t.centerX) / 2, i = Math.max(2, Math.min(e.y, t.y) - n * .6);
+	return `M ${e.centerX} ${e.y} Q ${r} ${i} ${t.centerX} ${t.y}`;
+}
+function ki(e, t) {
+	return e === t ? null : t;
+}
+//#endregion
+//#region src/tracks/ld/render.tsx
+function Ai(e, t, n = {}) {
+	return function(r) {
+		return /* @__PURE__ */ g(Mi, {
+			...r,
+			data: n.transformData?.(r.data, r.config) ?? r.data,
+			moduleType: e,
+			activeVariantId: t?.(r.config),
+			controlledPinnedId: n.getPinnedVariantId?.(r.config),
+			isPinControlled: n.getPinnedVariantId !== void 0,
+			tooltipDataKey: r.data
+		});
+	};
+}
+var ji = Ai("ld");
+function Mi({ config: e, color: t = "#c43d3d", data: n, region: r, width: i, height: s, moduleType: c, activeVariantId: l, controlledPinnedId: u, isPinControlled: d, tooltipDataKey: p }) {
+	let [m, h] = f(null), [v, y] = f(null), b = d ? u ?? null : v, x = Ei(n.variants, r, i, s, { prominentId: b ?? void 0 }), S = new Map(x.map((e) => [e.variant.id, e])), ee = m && S.has(m) ? m : null, C = b && S.has(b) ? b : null, w = l && S.has(l) ? l : null, T = ee ?? w ?? C, E = Di(n.connections, T), D = z(), te = H({
+		type: c,
+		config: e
+	}), ne = o(te.hide);
+	return a(() => {
+		ne();
+	}, [p]), /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("rect", {
+			width: i,
+			height: s,
+			fill: "#ffffff",
+			pointerEvents: "none"
+		}),
+		E.map((e) => {
+			let n = S.get(e.sourceId), r = S.get(e.targetId);
+			return !n || !r ? null : /* @__PURE__ */ g("path", {
+				d: Oi(n, r, s),
+				fill: "none",
+				stroke: t,
+				strokeWidth: 2,
+				opacity: .55,
+				pointerEvents: "none"
+			}, `${e.sourceId}-${e.targetId}`);
+		}),
+		x.map((e) => {
+			let { variant: n } = e, r = b === n.id;
+			return /* @__PURE__ */ g("rect", {
+				x: e.x,
+				y: e.y,
+				width: e.width,
+				height: e.height,
+				fill: t,
+				fillOpacity: n.isLead ? 1 : .65,
+				stroke: r ? "#111111" : "none",
+				strokeWidth: +!!r,
+				style: { cursor: "pointer" },
+				onClick: () => {
+					d || y((e) => ki(e, n.id)), D?.onClick?.(n);
+				},
+				onMouseEnter: (e) => {
+					h(n.id), D?.onHover?.(n), te.show(n, e);
+				},
+				onMouseLeave: () => {
+					h(null), D?.onLeave?.(n), te.hide();
+				}
+			}, n.id);
+		})
+	] });
+}
+//#endregion
+//#region src/tracks/ld/module.tsx
+var Ni = m.object({ studyIds: w(m.array(m.string().min(1)).min(1)) }), Pi = V()({
+	type: "ld",
+	defaults: {
+		height: 60,
+		color: "#c43d3d"
+	},
+	configSchema: Ni,
+	fetch: Ci,
+	render: { full: ji },
+	tooltipComponent: ({ item: e }) => /* @__PURE__ */ g(K, { children: /* @__PURE__ */ _("g", { children: [
+		/* @__PURE__ */ g("text", {
+			fill: "#000000",
+			fontSize: 12,
+			dominantBaseline: "middle",
+			children: e.id
+		}),
+		/* @__PURE__ */ _("text", {
+			y: 14,
+			fill: "#000000",
+			fontSize: 12,
+			dominantBaseline: "middle",
+			children: [
+				e.chromosome,
+				":",
+				e.start,
+				"-",
+				e.end
+			]
+		}),
+		e.isLead ? /* @__PURE__ */ g("text", {
+			y: 28,
+			fill: "#000000",
+			fontSize: 12,
+			dominantBaseline: "middle",
+			children: "Lead variant"
+		}) : null
+	] }) })
+});
+//#endregion
+export { bn as DenseBigBed, It as GenomeBrowser, F as SettingsSection, xn as SquishBigBed, at as TrackInteractionProvider, K as TrackTooltip, Tn as bigBedModule, qn as bigWigModule, Er as bulkBedModule, ii as caveModule, Yt as createBrowserStore, Pe as createContextMenuStore, Ai as createFullLDRenderer, Ut as createModuleRegistry, Ne as createSettingsStore, Wt as createTrackFromEntry, Xt as createTrackStore, V as defineTrackModule, mn as fetchBigBedRows, w as fetchOnChange, Pi as ldModule, vi as manhattanModule, Kr as methylCModule, si as normalizeManhattanRows, _r as transcriptModule, Gt as useAutoTrackHeight, ve as useBrowserStore, N as useContextMenuStore, De as useDraggableSettingsModal, z as useInteraction, He as useRegistry, P as useSettingsStore, H as useTooltip, M as useTrackStore };
 
 //# sourceMappingURL=genomebrowser-v2.es.js.map

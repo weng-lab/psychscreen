@@ -1,37 +1,68 @@
 # Tracks
 
-Tracks are created by modules. A track instance has a shared base shape plus module-specific config and optional interaction callbacks.
+Tracks are created by registered modules. Every module `create` input has a unique `id`, a `title`, optional `display`, `height`, and `color`, plus module-specific `config`. A module always supplies a default display and height. Color and config defaults are module-specific; required config must still be provided.
 
-## Shared track fields
+## Current built-in modules
 
-Most module `create` helpers accept these shared fields:
+The package currently exports these first-party modules:
 
-- `id`: unique track ID
-- `title`: label shown in the browser margin
-- `display`: renderer mode for the module
-- `height`: track height in pixels
-- `color`: optional module-specific color
+- `bigWigModule`: quantitative BigWig signal
+- `bigBedModule`: generic BigBed intervals
+- `bulkBedModule`: multiple BigBed datasets in one row
+- `transcriptModule`: transcript models from the SCREEN service
+- `methylCModule`: split-strand methylation channels
+- `caveModule`: CAVE data
+- `manhattanModule`: regional association points from BigBed
+- `ldModule`: study-based linkage disequilibrium relationships
 
-Modules may provide defaults for `display`, `height`, and `color`. Module-owned config defaults come from the module's Zod `configSchema`.
+The built-in inventory and detailed support are still evolving. The minimum create inputs below reflect the current implementation; each module's `create` signature and runtime validation remain the source of truth for optional config. BigBed-derived renderer reuse is not a recommended public workflow at this stage.
 
-## Built-in modules
+| Module             | Minimum `config`                                           | Displays          |
+| ------------------ | ---------------------------------------------------------- | ----------------- |
+| `bigWigModule`     | `{ url: "YOUR_URL_HERE" }`                                 | `full`, `dense`   |
+| `bigBedModule`     | `{ url: "YOUR_URL_HERE" }`                                 | `dense`, `squish` |
+| `bulkBedModule`    | `{ datasets: [{ name: "Sample", url: "YOUR_URL_HERE" }] }` | `full`            |
+| `transcriptModule` | `{ assembly: "GRCh38", version: 47 }`                      | `squish`, `pack`  |
+| `caveModule`       | `{ neurotransmitter: "GABA", age: "Adulthood" }`           | `full`            |
+| `manhattanModule`  | `{ url: "YOUR_URL_HERE" }`                                 | `full`            |
+| `ldModule`         | `{ studyIds: ["YOUR_STUDY_ID"] }`                          | `full`            |
 
-`@weng-lab/genomebrowser-v2` currently exports these first-party modules:
-
-- `bigWigModule` for BigWig signal data
-- `bigBedModule` for BigBed interval data
-- `bulkBedModule` for multiple BigBed datasets in one track
-- `transcriptModule` for transcript models
-- `methylCModule` for methylation signal tracks
-- `caveModule` for CAVE data tracks
-
-Register only the modules your browser needs:
+`methylCModule` requires a URL entry for each methylation and depth channel. A URL may be an empty string when that channel has no data:
 
 ```ts
-import { bigBedModule, bigWigModule, createTrackStore } from "@weng-lab/genomebrowser-v2";
+const methylCTrack = methylCModule.create({
+  id: "methylation",
+  title: "Methylation",
+  config: {
+    urls: {
+      plusStrand: {
+        cpg: { url: "YOUR_URL_HERE" },
+        chg: { url: "" },
+        chh: { url: "" },
+        depth: { url: "YOUR_URL_HERE" },
+      },
+      minusStrand: {
+        cpg: { url: "YOUR_URL_HERE" },
+        chg: { url: "" },
+        chh: { url: "" },
+        depth: { url: "YOUR_URL_HERE" },
+      },
+    },
+  },
+});
+```
+
+The Transcript and LD modules post GraphQL requests to `/api/screen-graphql`. The host application owns that proxy and any SCREEN credentials. CAVE selects from package-defined datasets rather than accepting a URL. These service-specific modules may not fit every deployment.
+
+## Registration
+
+Register every module used by initial tracks, later mutations, or catalog UI:
+
+```ts
+import { bigWigModule, createTrackStore } from "@weng-lab/genomebrowser-v2";
 
 const useTrackStore = createTrackStore({
-  modules: [bigWigModule, bigBedModule],
+  modules: [bigWigModule],
   tracks: [
     bigWigModule.create({
       id: "signal",
@@ -42,25 +73,6 @@ const useTrackStore = createTrackStore({
 });
 ```
 
-## Interaction callbacks
+The store resolves validation, requests, rendering, settings, and tooltips through `track.type`. An unregistered type is rejected. Track IDs must be unique.
 
-Track modules may support `onClick`, `onHover`, and `onLeave` callbacks. The callback item shape is module-specific, so use the exported module types when you need strong typing.
-
-```ts
-bigWigModule.create(
-  {
-    id: "signal",
-    title: "Signal",
-    config: { url: "YOUR_URL_HERE" },
-  },
-  {
-    onHover: (point) => {
-      console.log(point.max);
-    },
-  },
-);
-```
-
-## Sharp edges
-
-The track store validates a track by looking up `track.type` in the registered modules. If a track's module is not registered, the track cannot be used. Duplicate track IDs are rejected because ordering, updates, settings, and removal are all keyed by ID.
+Optional interaction callbacks are passed as the second argument to `module.create(...)`; their item type and actual callback support are module-specific.

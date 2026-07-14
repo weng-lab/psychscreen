@@ -5774,7 +5774,7 @@ __metadata:
 
 "@weng-lab/genomebrowser-v2@file:.yalc/@weng-lab/genomebrowser-v2::locator=psychscreen2.0%40workspace%3A.":
   version: 0.0.0
-  resolution: "@weng-lab/genomebrowser-v2@file:.yalc/@weng-lab/genomebrowser-v2#.yalc/@weng-lab/genomebrowser-v2::hash=c160d1&locator=psychscreen2.0%40workspace%3A."
+  resolution: "@weng-lab/genomebrowser-v2@file:.yalc/@weng-lab/genomebrowser-v2#.yalc/@weng-lab/genomebrowser-v2::hash=964030&locator=psychscreen2.0%40workspace%3A."
   dependencies:
     axios: "npm:0.33.0"
     buffer: "npm:^6.0.3"
@@ -5784,7 +5784,7 @@ __metadata:
   peerDependencies:
     react: ^19.0.0
     react-dom: ^19.0.0
-  checksum: 10c0/0020693d4102f6370b2b1399effd651bc40ee96da94985154e84a0987dd89b49d18b1168d10b7ab52a5ba483154bb73c9bffd1df3ad86446b160ac2caec6ae00
+  checksum: 10c0/61e6809320f6aae32ba42af035d0e970518911c08644c37572e567df437fa3bc9163112f62300ce08580a8de6aa2d0a18884f3f4c0edef9b97ffb62d576d42bb
   languageName: node
   linkType: hard
 
@@ -12943,6 +12943,7 @@ __metadata:
     uuid: "npm:^11.1.0"
     vitessce: "npm:4.0.0-test.3"
     web-vitals: "npm:2.1.4"
+    zod: "npm:^4.4.3"
   languageName: unknown
   linkType: soft
 

@@ -11,8 +11,9 @@ export type TooltipState = {
     isVisible: boolean;
     content: ReactElement | undefined;
     anchor: TooltipAnchor;
+    owner: string | undefined;
 };
 export type TooltipStore = TooltipState & {
-    show: (content: ReactElement, anchor: TooltipAnchor) => void;
-    hide: () => void;
+    show: (owner: string, content: ReactElement, anchor: TooltipAnchor) => void;
+    hide: (owner: string) => void;
 };

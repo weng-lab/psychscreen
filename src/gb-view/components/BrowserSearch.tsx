@@ -3,10 +3,12 @@ import { IconButton, useTheme } from "@mui/material";
 import type { ButtonProps } from "@mui/material";
 import { Box } from "@mui/system";
 import { GenomeSearch, Result } from "@weng-lab/ui-components";
-import { useBrowserStore } from "../stores";
+import type { BrowserStoreInstance } from "@weng-lab/genomebrowser-v2";
 
 const ASSEMBLY = "GRCh38";
 const GENE_VERSION = [29, 40];
+const PSYCHSCREEN_GRAPHQL_ENDPOINT =
+  "https://psychscreen.api.wenglab.org/graphql";
 
 function SearchButton(props: ButtonProps) {
   return (
@@ -16,7 +18,11 @@ function SearchButton(props: ButtonProps) {
   );
 }
 
-export default function BrowserSearch() {
+export default function BrowserSearch({
+  useBrowserStore,
+}: {
+  useBrowserStore: BrowserStoreInstance;
+}) {
   const theme = useTheme();
   const setRegion = useBrowserStore((state) => state.setRegion);
 
@@ -42,9 +48,9 @@ export default function BrowserSearch() {
         size="small"
         assembly={ASSEMBLY}
         geneVersion={GENE_VERSION}
-        graphqlUrl="/api/screen-graphql"
+        graphqlUrl={PSYCHSCREEN_GRAPHQL_ENDPOINT}
         onSearchSubmit={handleSearchSubmit}
-        queries={["Gene", "SNP", "cCRE", "Coordinate"]}
+        queries={["Gene", "SNP", "Coordinate"]}
         limit={3}
         sx={{ width: "100%" }}
         slots={{

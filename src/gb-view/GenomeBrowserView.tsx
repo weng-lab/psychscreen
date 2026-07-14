@@ -2,7 +2,11 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import HighlightIcon from "@mui/icons-material/Highlight";
-import { GenomeBrowser } from "@weng-lab/genomebrowser-v2";
+import {
+  GenomeBrowser,
+  type BrowserStoreInstance,
+  type TrackStoreInstance,
+} from "@weng-lab/genomebrowser-v2";
 
 import tracks from "./tracks.json";
 
@@ -11,12 +15,21 @@ import { useState } from "react";
 import BrowserSearch from "./components/BrowserSearch";
 import ControlButtons from "./components/ControlButtons";
 import DomainDisplay from "./components/DomainDisplay";
-import { useBrowserStore, useTrackStore } from "./stores";
+import {
+  useBrowserStore as useDefaultBrowserStore,
+  useTrackStore as useDefaultTrackStore,
+} from "./stores";
 import HighlightDialog from "./components/HighlightDialog";
 
 const trackCatalogs = [tracks];
 
-export default function GenomeBrowserView() {
+export default function GenomeBrowserView({
+  useBrowserStore = useDefaultBrowserStore,
+  useTrackStore = useDefaultTrackStore,
+}: {
+  useBrowserStore?: BrowserStoreInstance;
+  useTrackStore?: TrackStoreInstance;
+}) {
   const [trackSelectOpen, setTrackSelectOpen] = useState(false);
   const [highlightOpen, setHighlightOpen] = useState(false);
 
@@ -29,7 +42,7 @@ export default function GenomeBrowserView() {
           justifyContent="space-between"
           alignItems={{ xs: "stretch", md: "center" }}
         >
-          <BrowserSearch />
+          <BrowserSearch useBrowserStore={useBrowserStore} />
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={1}
@@ -68,8 +81,8 @@ export default function GenomeBrowserView() {
           p={1}
           mt={2}
         >
-          <DomainDisplay />
-          <ControlButtons />
+          <DomainDisplay useBrowserStore={useBrowserStore} />
+          <ControlButtons useBrowserStore={useBrowserStore} />
         </Stack>
         <GenomeBrowser
           browserStore={useBrowserStore}
@@ -79,6 +92,7 @@ export default function GenomeBrowserView() {
       <HighlightDialog
         open={highlightOpen}
         onClose={() => setHighlightOpen(false)}
+        useBrowserStore={useBrowserStore}
       />
       <TrackSelect
         open={trackSelectOpen}

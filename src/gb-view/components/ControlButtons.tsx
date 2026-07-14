@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useBrowserStore } from "../stores";
+import type { BrowserStoreInstance } from "@weng-lab/genomebrowser-v2";
 
 type ButtonConfig = {
   label: string;
@@ -67,7 +67,11 @@ function TwoSidedControl({
   );
 }
 
-export default function ControlButtons() {
+export default function ControlButtons({
+  useBrowserStore,
+}: {
+  useBrowserStore: BrowserStoreInstance;
+}) {
   const region = useBrowserStore((state) => state.region);
   const setRegion = useBrowserStore((state) => state.setRegion);
   const zoom = useBrowserStore((state) => state.zoom);

@@ -1,7 +1,11 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useBrowserStore } from "../stores";
+import type { BrowserStoreInstance } from "@weng-lab/genomebrowser-v2";
 
-export default function DomainDisplay() {
+export default function DomainDisplay({
+  useBrowserStore,
+}: {
+  useBrowserStore: BrowserStoreInstance;
+}) {
   const region = useBrowserStore((state) => state.region);
 
   return (

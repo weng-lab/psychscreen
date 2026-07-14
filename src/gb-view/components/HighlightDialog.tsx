@@ -15,10 +15,10 @@ import Grid from "@mui/material/Grid";
 import { Add, Delete, ExpandMore } from "@mui/icons-material";
 import type {
   BrowserRegion,
+  BrowserStoreInstance,
   Highlight as GBHighlight,
 } from "@weng-lab/genomebrowser-v2";
 import { useState } from "react";
-import { useBrowserStore } from "../stores";
 
 const VALID_CHROMOSOMES = [
   "chr1",
@@ -396,9 +396,11 @@ function HighlightsList({ highlights, removeHighlight }: HighlightsListProps) {
 export default function HighlightDialog({
   open,
   onClose,
+  useBrowserStore,
 }: {
   open: boolean;
   onClose: () => void;
+  useBrowserStore: BrowserStoreInstance;
 }) {
   const region = useBrowserStore((state) => state.region);
   const highlights = useBrowserStore((state) => state.highlights);
