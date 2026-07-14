@@ -33,7 +33,7 @@ export type LDEntry = {
 
 export function expandCoordinates(
   coordinates: GenomicRange,
-  l = 20000
+  l = 20000,
 ): GenomicRange {
   return {
     chromosome: coordinates.chromosome,
@@ -255,7 +255,7 @@ export function useGenePageData(
   expandedCoordinates: GenomicRange,
   assembly: string,
   name: string,
-  resolvedTranscript?: boolean
+  resolvedTranscript?: boolean,
 ) {
   const { data, loading } = useQuery<GeneQueryResponse>(QUERY, {
     variables: {
@@ -276,7 +276,7 @@ export function useGenePageData(
         id: [
           ...(data?.queriedGene[0]?.fetal_eqtls.eqtls.map((x) => x.snp) || []),
           ...(data?.queriedTranscript[0]?.fetal_isoqtls.isoqtls.map(
-            (x) => x.snp
+            (x) => x.snp,
           ) || []),
         ],
       },
@@ -284,7 +284,7 @@ export function useGenePageData(
         clientName: "psychscreen",
       },
       skip: loading,
-    }
+    },
   );
 
   const coordinates = useMemo(
@@ -295,14 +295,15 @@ export function useGenePageData(
         start: Math.min(...(snpCoordinateResponse.data?.snpQuery.map(x => x.coordinates.start) || [0])),
         end: Math.max(...(snpCoordinateResponse.data?.snpQuery.map(x => x.coordinates.end) || [0]))
     }*/ expandedCoordinates,
-        100000
+        100000,
       ),
-    [expandedCoordinates]
+    [expandedCoordinates],
   );
 
   const snpResponse = useQuery<SNPQueryResponse>(SNP_QUERY, {
     variables: { ...coordinates, coordinates, assembly },
     skip: loading || snpCoordinateResponse.loading,
+    context: { clientName: "staging" },
   });
 
   const groupedTranscripts = useMemo(
@@ -315,7 +316,7 @@ export function useGenePageData(
             (resolvedTranscript ? xx : x).name === name ? "#880000" : "#aaaaaa",
         })),
       })),
-    [resolvedTranscript, name, snpResponse]
+    [resolvedTranscript, name, snpResponse],
   );
 
   return {
@@ -332,7 +333,7 @@ function useGenePageDataWithQTL(
   assembly: string,
   name: string,
   resolvedTranscript?: boolean,
-  geneid?: string
+  geneid?: string,
 ) {
   const { data, loading } = useQuery<GeneQueryResponse>(QUERYQTL, {
     variables: {
@@ -357,7 +358,7 @@ function useGenePageDataWithQTL(
         clientName: "psychscreen",
       },
       skip: !geneid,
-    }
+    },
   );
 
   console.log("qtlsigassocData", qtlsigassocData);
@@ -376,7 +377,7 @@ function useGenePageDataWithQTL(
         clientName: "psychscreen",
       },
       skip: loading || qtlsigassocLoading || !geneid,
-    }
+    },
   );
 
   const coordinates = useMemo(
@@ -387,14 +388,15 @@ function useGenePageDataWithQTL(
         start: Math.min(...(snpCoordinateResponse.data?.snpQuery.map(x => x.coordinates.start) || [0])),
         end: Math.max(...(snpCoordinateResponse.data?.snpQuery.map(x => x.coordinates.end) || [0]))
     }*/ expandedCoordinates,
-        100000
+        100000,
       ),
-    [expandedCoordinates]
+    [expandedCoordinates],
   );
 
   const snpResponse = useQuery<SNPQueryResponse>(SNP_QUERY, {
     variables: { ...coordinates, coordinates, assembly },
     skip: loading || snpCoordinateResponse.loading,
+    context: { clientName: "staging" },
   });
 
   const groupedTranscripts = useMemo(
@@ -407,7 +409,7 @@ function useGenePageDataWithQTL(
             (resolvedTranscript ? xx : x).name === name ? "#880000" : "#aaaaaa",
         })),
       })),
-    [resolvedTranscript, name, snpResponse]
+    [resolvedTranscript, name, snpResponse],
   );
 
   return {
@@ -580,7 +582,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
 
   const eexpandedCoordinates = useMemo(
     () => expandCoordinates(props.coordinates),
-    [props.coordinates]
+    [props.coordinates],
   );
 
   const { data, loading, snpCoordinateData } = useGenePageDataWithQTL(
@@ -588,13 +590,14 @@ const AssociatedxQTL: React.FC<any> = (props) => {
     "GRCh38",
     props.name,
     props.resolvedTranscript,
-    props.geneid
+    props.geneid,
   );
 
   const { data: eqtlData, loading: eqtlLoading } = useQuery(DECONQTL_QUERY, {
     variables: {
       geneid: props.geneid,
     },
+    context: { clientName: "staging" },
   });
 
   console.log(props.geneid, "geneid");
@@ -606,7 +609,8 @@ const AssociatedxQTL: React.FC<any> = (props) => {
         geneid: props.geneid,
         qtltype: "eQTL",
       },
-    }
+      context: { clientName: "staging" },
+    },
   );
 
   const groupedQTLs: Map<string, EQTL> = useMemo(
@@ -623,9 +627,9 @@ const AssociatedxQTL: React.FC<any> = (props) => {
           })) ||
           [],
         (x: EQTL) => x.snp,
-        (x) => x
+        (x) => x,
       ),
-    [qtlsigassocData]
+    [qtlsigassocData],
   );
   const allQTLs = useMemo(
     () =>
@@ -635,7 +639,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
       })) ||
       //.sort((a, b) => a.eQTL.fdr - b.eQTL.fdr)
       [],
-    [snpCoordinateData, groupedQTLs]
+    [snpCoordinateData, groupedQTLs],
   );
 
   useEffect(() => {
@@ -644,7 +648,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
       .then((x: string) => {
         const q = x.split("\n");
         const bcres = q.map((a) => {
-          let r = a.split("\t");
+          const r = a.split("\t");
           return {
             accession: r[4],
             chrom: r[0],
@@ -685,7 +689,7 @@ const AssociatedxQTL: React.FC<any> = (props) => {
                       bccre.find(
                         (b) =>
                           b.accession ===
-                          x.intersecting_ccres.intersecting_ccres[0]?.accession
+                          x.intersecting_ccres.intersecting_ccres[0]?.accession,
                       ),
                   };
                 })}

@@ -159,6 +159,7 @@ function useLoci(trait: string) {
         },
       ],
     },
+    context: { clientName: "staging" },
   });
 
   const loci = useMemo(() => {
@@ -228,6 +229,7 @@ const DiseaseTraitDetails: React.FC = () => {
       //  limit: 1000,
       skip: disease === "",
     },
+    context: { clientName: "staging" },
   });
   const { data: gwasIntersectingSnpWithCcresData } = useQuery(
     GwasIntersectingSnpswithCcresQuery,
@@ -236,6 +238,7 @@ const DiseaseTraitDetails: React.FC = () => {
         disease: disease,
       },
       skip: disease === "",
+      context: { clientName: "staging" },
     },
   );
   const { data: adultgwasIntersectingSnpWithBcresData } = useQuery(
@@ -246,6 +249,7 @@ const DiseaseTraitDetails: React.FC = () => {
         bcre_group: "adult",
       },
       skip: disease === "",
+      context: { clientName: "staging" },
     },
   );
   const { data: fetalgwasIntersectingSnpWithBcresData } = useQuery(
@@ -256,6 +260,7 @@ const DiseaseTraitDetails: React.FC = () => {
         bcre_group: "fetal",
       },
       skip: disease === "",
+      context: { clientName: "staging" },
     },
   );
   const trait = disease ? URL_MAP[disease] : "";

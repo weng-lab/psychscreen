@@ -1,10 +1,39 @@
+import { gql } from "@apollo/client";
 import type { TrackStoreInstance } from "@weng-lab/genomebrowser-v2";
 import { z } from "zod";
+import { apolloClient } from "../../../graphql/client";
 import { parsePsychscreenLDAnchor } from "./module";
 import type { PsychscreenLDAnchor, PsychscreenLDConfig } from "./types";
 
+const R_SQUARED_THRESHOLD = 0.7;
+const HOVER_REQUEST_DELAY_MS = 200;
+
+const PSYCHSCREEN_LD_QUERY = gql`
+  query PsychscreenLD($ids: [String!]!) {
+    snp: snpQuery(assembly: "hg38", snpids: $ids) {
+      linkageDisequilibrium(rSquaredThreshold: 0.7, population: EUROPEAN) {
+        id
+        rSquared
+      }
+    }
+  }
+`;
+
 const responseSchema = z.object({
-  associatedVariantIds: z.array(z.string().min(1)),
+  snp: z
+    .array(
+      z.object({
+        linkageDisequilibrium: z
+          .array(
+            z.object({
+              id: z.string().min(1),
+              rSquared: z.coerce.number(),
+            }),
+          )
+          .nullish(),
+      }),
+    )
+    .nullish(),
 });
 
 export function attachPsychscreenLDInteractions({
@@ -21,7 +50,14 @@ export function attachPsychscreenLDInteractions({
   let pinnedAnchor: PsychscreenLDAnchor | undefined;
   let activeRequest:
     { anchorId: string; controller: AbortController } | undefined;
+  let pendingHover:
+    { anchorId: string; timeout: ReturnType<typeof setTimeout> } | undefined;
   const relationshipCache = new Map<string, string[]>();
+
+  const cancelPendingHover = () => {
+    if (pendingHover) clearTimeout(pendingHover.timeout);
+    pendingHover = undefined;
+  };
 
   const updateConfig = (
     anchor: PsychscreenLDAnchor | undefined,
@@ -38,6 +74,7 @@ export function attachPsychscreenLDInteractions({
   };
 
   const clear = () => {
+    cancelPendingHover();
     activeRequest?.controller.abort();
     activeRequest = undefined;
     updateConfig(undefined, []);
@@ -61,18 +98,26 @@ export function attachPsychscreenLDInteractions({
     activeRequest = request;
 
     try {
-      const response = await fetch("/api/genome-browser/ld", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({ id: anchor.id }),
+      const response = await apolloClient.query({
+        query: PSYCHSCREEN_LD_QUERY,
+        variables: { ids: [anchor.id] },
+        context: {
+          clientName: "psychscreen",
+          fetchOptions: { signal: controller.signal },
+          queryDeduplication: false,
+        },
+        fetchPolicy: "no-cache",
       });
-      if (!response.ok)
-        throw new Error(`LD request failed with ${response.status}`);
-
-      const { associatedVariantIds } = responseSchema.parse(
-        await response.json(),
-      );
+      const data = responseSchema.parse(response.data);
+      const associatedVariantIds = [
+        ...new Set(
+          (data.snp?.[0]?.linkageDisequilibrium ?? [])
+            .filter(
+              (relationship) => relationship.rSquared >= R_SQUARED_THRESHOLD,
+            )
+            .map((relationship) => relationship.id),
+        ),
+      ];
       // Hover/selection can change while the request is in flight; ignore stale data.
       if (controller.signal.aborted || activeRequest !== request) return;
 
@@ -95,13 +140,33 @@ export function attachPsychscreenLDInteractions({
     const anchor = parsePsychscreenLDAnchor(item);
     if (!anchor) return;
     hoveredAnchor = anchor;
-    void show(anchor);
+
+    if (
+      relationshipCache.has(anchor.id) ||
+      activeRequest?.anchorId === anchor.id
+    ) {
+      cancelPendingHover();
+      void show(anchor);
+      return;
+    }
+    if (pendingHover?.anchorId === anchor.id) return;
+
+    cancelPendingHover();
+    updateConfig(anchor, []);
+    pendingHover = {
+      anchorId: anchor.id,
+      timeout: setTimeout(() => {
+        pendingHover = undefined;
+        if (hoveredAnchor?.id === anchor.id) void show(anchor);
+      }, HOVER_REQUEST_DELAY_MS),
+    };
   };
 
   const handleLeave = (item: unknown) => {
     const anchor = parsePsychscreenLDAnchor(item);
     if (!anchor || hoveredAnchor?.id !== anchor.id) return;
     hoveredAnchor = undefined;
+    cancelPendingHover();
     if (pinnedAnchor) void show(pinnedAnchor);
     else clear();
   };
@@ -109,6 +174,7 @@ export function attachPsychscreenLDInteractions({
   const handleClick = (item: unknown) => {
     const anchor = parsePsychscreenLDAnchor(item);
     if (!anchor) return;
+    cancelPendingHover();
     pinnedAnchor = pinnedAnchor?.id === anchor.id ? undefined : anchor;
     const activeAnchor = hoveredAnchor ?? pinnedAnchor;
     if (activeAnchor) void show(activeAnchor);
@@ -138,6 +204,7 @@ export function attachPsychscreenLDInteractions({
       clear();
     },
     dispose() {
+      cancelPendingHover();
       activeRequest?.controller.abort();
       activeRequest = undefined;
     },

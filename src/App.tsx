@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { AboutUsPage, HomePage as WebHomePage } from "./web/HomePage";
+import { AboutUsPage, HomePage as WebHomePage } from "./web/Portals/DiseaseTraitPortal/HomePage";
 import { DownloadsPage } from "./web/DownloadsPage";
 import {
   DiseaseTraitPortal,
@@ -29,10 +29,10 @@ import SingleCellCelltypeQTL from "./web/Portals/SingleCellPortal/SingleCellCell
 import SingleCelldegdisease from "./web/Portals/SingleCellPortal/SingleCelldegdisease";
 import SingleCelldegdiseasect from "./web/Portals/SingleCellPortal/SingleCelldegdiseasect";
 import { SingleCellGeneDetails } from "./web/Portals/SingleCellPortal/SingleCellGeneDetails";
-import FooterPanel from "./web/HomePage/FooterPanel";
+import FooterPanel from "./web/Portals/DiseaseTraitPortal/HomePage/FooterPanel";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import AppBar from "./web/HomePage/AppBar";
+import AppBar from "./web/Portals/DiseaseTraitPortal/HomePage/AppBar";
 
 export const PORTALS: [string, React.FC][] = [
   ["/traits", DiseaseTraitPortal],

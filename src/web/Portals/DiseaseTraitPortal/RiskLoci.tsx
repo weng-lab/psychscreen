@@ -38,12 +38,14 @@ const HUMAN_CYTOBAND_QUERY = gql`
 `;
 
 function useCytobands() {
-  return useQuery<CytobandQueryResponse>(HUMAN_CYTOBAND_QUERY);
+  return useQuery<CytobandQueryResponse>(HUMAN_CYTOBAND_QUERY, {
+    context: { clientName: "staging" },
+  });
 }
 
 function cappedLinearTransform(
   a: [number, number],
-  b: [number, number]
+  b: [number, number],
 ): (x: number) => number {
   const l = linearTransform(a, b);
   return (x: number) => l(x > a[1] ? a[1] : x);
@@ -53,7 +55,7 @@ function colorGradient(v: number): string {
   const start = [235, 168, 12];
   const end = [235, 168, 12];
   const c = start.map((v, i) =>
-    cappedLinearTransform([-Math.log10(5e-8), 20], [v, end[i]])
+    cappedLinearTransform([-Math.log10(5e-8), 20], [v, end[i]]),
   );
   return `rgb(${c.map((x) => x(v)).join(",")})`;
 }
@@ -69,7 +71,7 @@ const RiskLocusView: React.FC<{
   disease: string;
   onLocusClick?: (
     locus: GenomicRange,
-    gwasLocusSNPs?: { SNPCount: number; minimump: number }
+    gwasLocusSNPs?: { SNPCount: number; minimump: number },
   ) => void;
 }> = (props) => {
   const groupedLoci = useMemo(
@@ -77,9 +79,9 @@ const RiskLocusView: React.FC<{
       groupBy(
         props.loci,
         (x) => x.chromosome,
-        (x) => x
+        (x) => x,
       ),
-    [props.loci]
+    [props.loci],
   );
   const { data: cytobands } = useCytobands();
   const groupedCytobands = useMemo(
@@ -87,9 +89,9 @@ const RiskLocusView: React.FC<{
       groupBy(
         cytobands?.cytoband || [],
         (x) => x.coordinates.chromosome,
-        (x) => x
+        (x) => x,
       ),
-    [cytobands]
+    [cytobands],
   );
   const maxes = useMemo(
     () =>
@@ -99,11 +101,11 @@ const RiskLocusView: React.FC<{
           Math.max(
             ...(groupedCytobands.get(k)!.length === 0
               ? [1]
-              : groupedCytobands.get(k)!.map((x) => x.coordinates.end))
+              : groupedCytobands.get(k)!.map((x) => x.coordinates.end)),
           ),
-        ])
+        ]),
       ),
-    [groupedCytobands]
+    [groupedCytobands],
   );
   const [selected, setSelected] = useState<
     [string, number, number, number] | null
@@ -125,7 +127,7 @@ const RiskLocusView: React.FC<{
         has identified{" "}
         {[...groupedLoci.keys()].reduce<number>(
           (v, c) => v + groupedLoci.get(c)!.length,
-          0
+          0,
         )}{" "}
         risk loci (orange boxes below). Mouse over a locus to view its
         coordinates and summary statistics.
@@ -140,7 +142,7 @@ const RiskLocusView: React.FC<{
                   .replace(/chr/g, "")
                   .replace(/X/g, "23")
                   .replace(/Y/g, "24") -
-                +b!.replace(/chr/g, "").replace(/X/g, "23").replace(/Y/g, "24")
+                +b!.replace(/chr/g, "").replace(/X/g, "23").replace(/Y/g, "24"),
             )
             .map((chromosome, i) => (
               <g key={i}>
@@ -188,7 +190,7 @@ const RiskLocusView: React.FC<{
                         minimump: +groupedLoci
                           .get(selected[0])!
                           [selected[1]].minimump.toExponential(1),
-                      }
+                      },
                     )
                   }
                   opacity={0.4}
@@ -201,8 +203,8 @@ const RiskLocusView: React.FC<{
                 selected[2] < 180
                   ? 30
                   : selected[2] > 700
-                  ? 700
-                  : selected[2] - 150
+                    ? 700
+                    : selected[2] - 150
               },${selected[3] + (selected[3] >= 550 ? -105 : 30)})`}
               fontFamily="roboto"
               fontSize="18px"
@@ -239,7 +241,7 @@ const RiskLocusView: React.FC<{
                 lowest <tspan fontStyle="italic">P</tspan> at locus:{" "}
                 {toScientificNotation(
                   groupedLoci.get(selected[0])![selected[1]].minimump,
-                  2
+                  2,
                 )}
               </text>
               {props.onLocusClick && (

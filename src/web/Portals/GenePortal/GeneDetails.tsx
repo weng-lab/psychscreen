@@ -149,6 +149,7 @@ const GeneDetails: React.FC = () => {
         assembly: "GRCh38",
       },
       skip: !gene,
+      context: { clientName: "staging" },
     });
   const selectedGene = useMemo(
     () =>
@@ -172,6 +173,7 @@ const GeneDetails: React.FC = () => {
       gene_id: gid || selectedGene?.id.split(".")[0],
     },
     skip: gid === "" && !selectedGene,
+    context: { clientName: "staging" },
   });
 
   const grouped = useMemo(

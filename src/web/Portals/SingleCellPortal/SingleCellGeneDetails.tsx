@@ -44,6 +44,7 @@ export const SingleCellGeneDetails = (props) => {
       assembly: "GRCh38",
     },
     skip: gene === "",
+    context: { clientName: "staging" },
   });
   const handleTabChange = (_: any, newTabIndex: number) => {
     setTabIndex(newTabIndex);
@@ -53,7 +54,8 @@ export const SingleCellGeneDetails = (props) => {
     <Grid container {...props} style={{ marginTop: "0.5em" }}>
       <Grid size={{ sm: 1, lg: 1.5 }} />
       <Grid size={{ sm: 9 }}>
-        <Typography variant="h4"
+        <Typography
+          variant="h4"
           style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
         >
           <img

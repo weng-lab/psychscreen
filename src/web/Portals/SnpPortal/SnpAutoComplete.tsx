@@ -8,18 +8,20 @@ import { debounce } from "@mui/material/utils";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
+import { gql } from "@apollo/client";
+import { apolloClient } from "../../../graphql/client";
 
-const SNP_AUTOCOMPLETE_QUERY = `
-query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
+const SNP_AUTOCOMPLETE_QUERY = gql`
+  query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
     snpAutocompleteQuery(snpid: $snpid, assembly: $assembly) {
-        id
-        coordinates {
-            chromosome
-            start
-            end
-        }
+      id
+      coordinates {
+        chromosome
+        start
+        end
+      }
     }
-}
+  }
 `;
 export const SnpAutoComplete = (props) => {
   const [inputValue, setInputValue] = React.useState("");
@@ -29,18 +31,15 @@ export const SnpAutoComplete = (props) => {
 
   const onSearchChange = async (value: any) => {
     setOptions([]);
-    const response = await fetch("https://ga.staging.wenglab.org/graphql", {
-      method: "POST",
-      body: JSON.stringify({
-        query: SNP_AUTOCOMPLETE_QUERY,
-        variables: {
-          assembly: "grch38",
-          snpid: value,
-        },
-      }),
-      headers: { "Content-Type": "application/json" },
+    const { data } = await apolloClient.query({
+      query: SNP_AUTOCOMPLETE_QUERY,
+      variables: {
+        assembly: "grch38",
+        snpid: value,
+      },
+      context: { clientName: "staging" },
     });
-    const snpSuggestion = (await response.json()).data?.snpAutocompleteQuery;
+    const snpSuggestion = data?.snpAutocompleteQuery;
     if (snpSuggestion && snpSuggestion.length > 0) {
       const r = snpSuggestion.map((g: any) => g.id);
       const snp = snpSuggestion.map((g: any) => {
@@ -63,7 +62,7 @@ export const SnpAutoComplete = (props) => {
 
   const onSubmit = () => {
     const submittedSNP = snpids.find(
-      (g) => g.id.toLowerCase() === inputValue.toLowerCase()
+      (g) => g.id.toLowerCase() === inputValue.toLowerCase(),
     );
     if (submittedSNP) {
       props.onSelected &&
