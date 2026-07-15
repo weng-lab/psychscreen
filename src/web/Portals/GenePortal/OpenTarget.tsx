@@ -1,12 +1,14 @@
-import { gql, useQuery } from "@apollo/client";
 import { Typography } from "@mui/material";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 // import {
 //   CustomizedTable
 // } from "@weng-lab/psychscreen-ui-components";
 
-const OpenTargetQuery = gql`
+const OPEN_TARGETS_GRAPHQL_ENDPOINT =
+  "https://api.genetics.opentargets.org/graphql";
+
+const OPEN_TARGETS_QUERY = `
   query GenePageQuery($geneId: String!) {
     geneInfo(geneId: $geneId) {
       id
@@ -155,21 +157,55 @@ type OpenTargetsQueryResponse = {
 };
 
 export function useOpenTargetsData(geneID: string) {
-  const { data, loading } = useQuery<OpenTargetsQueryResponse>(
-    OpenTargetQuery,
-    {
-      variables: {
-        geneId: geneID, //.split('.')[0]
-      },
-      context: {
-        clientName: "opentarget",
-      },
-    }
-  );
+  const [data, setData] = useState<OpenTargetsQueryResponse>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetch(OPEN_TARGETS_GRAPHQL_ENDPOINT, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            query: OPEN_TARGETS_QUERY,
+            variables: { geneId: geneID },
+          }),
+          signal: controller.signal,
+        });
+        const result = (await response.json()) as {
+          data?: OpenTargetsQueryResponse;
+          errors?: { message: string }[];
+        };
+
+        if (!response.ok || result.errors?.length || !result.data) {
+          throw new Error(
+            result.errors?.map((error) => error.message).join("; ") ||
+              `OpenTargets request failed with status ${response.status}`,
+          );
+        }
+
+        if (!controller.signal.aborted) setData(result.data);
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Failed to fetch OpenTargets data", error);
+          setData(undefined);
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+
+    void fetchData();
+    return () => controller.abort();
+  }, [geneID]);
 
   return {
     data: { ...data },
-    loading: loading,
+    loading,
   };
 }
 

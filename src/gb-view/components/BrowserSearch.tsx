@@ -4,7 +4,7 @@ import type { ButtonProps } from "@mui/material";
 import { Box } from "@mui/system";
 import { GenomeSearch, Result } from "@weng-lab/ui-components";
 import type { BrowserStoreInstance } from "@weng-lab/genomebrowser-v2";
-import { PSYCHSCREEN_GRAPHQL_PATH } from "../../graphql/client";
+import { SCREEN_GRAPHQL_PATH } from "../../graphql/client";
 
 const ASSEMBLY = "GRCh38";
 const GENE_VERSION = [29, 40];
@@ -47,7 +47,7 @@ export default function BrowserSearch({
         size="small"
         assembly={ASSEMBLY}
         geneVersion={GENE_VERSION}
-        graphqlUrl={PSYCHSCREEN_GRAPHQL_PATH}
+        graphqlUrl={SCREEN_GRAPHQL_PATH}
         onSearchSubmit={handleSearchSubmit}
         queries={["Gene", "SNP", "Coordinate"]}
         limit={3}

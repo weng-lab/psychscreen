@@ -1,5 +1,4 @@
-const PSYCHSCREEN_GRAPHQL_ENDPOINT =
-  "https://psychscreen.api.wenglab.org/graphql";
+const SCREEN_GRAPHQL_ENDPOINT = "https://screen.api.wenglab.org/graphql";
 
 export async function POST(request: Request) {
   const apiKey = process.env.SCREEN_API_KEY;
@@ -12,11 +11,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    const response = await fetch(PSYCHSCREEN_GRAPHQL_ENDPOINT, {
+    const response = await fetch(SCREEN_GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "api-key": apiKey,
+        authorization: `Bearer ${apiKey}`,
       },
       body: await request.text(),
       cache: "no-store",

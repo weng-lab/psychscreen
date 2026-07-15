@@ -1,18 +1,13 @@
-import type {
-  BrowserRegion,
-  LDData,
-  LDVariant,
-  ManhattanPoint,
-} from "@weng-lab/genomebrowser-v2";
-import type { PsychscreenLDConfig } from "./types";
+import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { GwasPoint } from "../shared/gwasBigBed";
+import type { LDConfig, LDData, LDVariant } from "./types";
 
-export function createPsychscreenLDBaseline(
-  points: ManhattanPoint[],
+export function createLDBaseline(
+  points: GwasPoint[],
   region: BrowserRegion,
 ): LDData {
   const variantsById = new Map<string, LDVariant>();
 
-  // Start with the visible GWAS points; LD edges are added after an anchor is chosen.
   for (const point of points) {
     if (!isVisible(point, region)) continue;
     variantsById.set(point.id, {
@@ -26,10 +21,7 @@ export function createPsychscreenLDBaseline(
   return { variants: [...variantsById.values()], connections: [] };
 }
 
-export function applyPsychscreenLDConfig(
-  data: LDData,
-  config: PsychscreenLDConfig,
-): LDData {
+export function applyLDConfig(data: LDData, config: LDConfig): LDData {
   const anchorId = config.anchor?.id;
   if (!anchorId) return data;
 

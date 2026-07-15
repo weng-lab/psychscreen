@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 import type { TrackStoreInstance } from "@weng-lab/genomebrowser-v2";
 import { z } from "zod";
 import { apolloClient } from "../../../graphql/client";
-import { parsePsychscreenLDAnchor } from "./module";
-import type { PsychscreenLDAnchor, PsychscreenLDConfig } from "./types";
+import { parseLDAnchor } from "./module";
+import type { LDAnchor, LDConfig } from "./types";
 
 const R_SQUARED_THRESHOLD = 0.7;
 const HOVER_REQUEST_DELAY_MS = 200;
@@ -36,7 +36,7 @@ const responseSchema = z.object({
     .nullish(),
 });
 
-export function attachPsychscreenLDInteractions({
+export function attachLDInteractions({
   useTrackStore,
   manhattanTrackId,
   ldTrackId,
@@ -45,9 +45,9 @@ export function attachPsychscreenLDInteractions({
   manhattanTrackId: string;
   ldTrackId: string;
 }) {
-  // The genome browser calls these handlers outside React, so keep interaction state here.
-  let hoveredAnchor: PsychscreenLDAnchor | undefined;
-  let pinnedAnchor: PsychscreenLDAnchor | undefined;
+  // Browser interaction callbacks run outside React, so this state is session-local.
+  let hoveredAnchor: LDAnchor | undefined;
+  let pinnedAnchor: LDAnchor | undefined;
   let activeRequest:
     { anchorId: string; controller: AbortController } | undefined;
   let pendingHover:
@@ -60,16 +60,14 @@ export function attachPsychscreenLDInteractions({
   };
 
   const updateConfig = (
-    anchor: PsychscreenLDAnchor | undefined,
+    anchor: LDAnchor | undefined,
     associatedVariantIds: string[],
   ) => {
-    const result = useTrackStore
-      .getState()
-      .updateConfig<PsychscreenLDConfig>(ldTrackId, {
-        anchor,
-        associatedVariantIds,
-        pinnedVariantId: pinnedAnchor?.id,
-      });
+    const result = useTrackStore.getState().updateConfig<LDConfig>(ldTrackId, {
+      anchor,
+      associatedVariantIds,
+      pinnedVariantId: pinnedAnchor?.id,
+    });
     if (!result.ok) console.error(result.error);
   };
 
@@ -80,7 +78,7 @@ export function attachPsychscreenLDInteractions({
     updateConfig(undefined, []);
   };
 
-  const show = async (anchor: PsychscreenLDAnchor) => {
+  const show = async (anchor: LDAnchor) => {
     const cached = relationshipCache.get(anchor.id);
     if (cached) {
       activeRequest?.controller.abort();
@@ -118,13 +116,14 @@ export function attachPsychscreenLDInteractions({
             .map((relationship) => relationship.id),
         ),
       ];
-      // Hover/selection can change while the request is in flight; ignore stale data.
+      // Hover or selection can change while a request is in flight.
       if (controller.signal.aborted || activeRequest !== request) return;
 
       relationshipCache.set(anchor.id, associatedVariantIds);
       const currentAnchor = hoveredAnchor ?? pinnedAnchor;
-      if (currentAnchor?.id === anchor.id)
+      if (currentAnchor?.id === anchor.id) {
         updateConfig(currentAnchor, associatedVariantIds);
+      }
     } catch (error) {
       if (!controller.signal.aborted) {
         console.error(error);
@@ -137,7 +136,7 @@ export function attachPsychscreenLDInteractions({
   };
 
   const handleHover = (item: unknown) => {
-    const anchor = parsePsychscreenLDAnchor(item);
+    const anchor = parseLDAnchor(item);
     if (!anchor) return;
     hoveredAnchor = anchor;
 
@@ -163,7 +162,7 @@ export function attachPsychscreenLDInteractions({
   };
 
   const handleLeave = (item: unknown) => {
-    const anchor = parsePsychscreenLDAnchor(item);
+    const anchor = parseLDAnchor(item);
     if (!anchor || hoveredAnchor?.id !== anchor.id) return;
     hoveredAnchor = undefined;
     cancelPendingHover();
@@ -172,7 +171,7 @@ export function attachPsychscreenLDInteractions({
   };
 
   const handleClick = (item: unknown) => {
-    const anchor = parsePsychscreenLDAnchor(item);
+    const anchor = parseLDAnchor(item);
     if (!anchor) return;
     cancelPendingHover();
     pinnedAnchor = pinnedAnchor?.id === anchor.id ? undefined : anchor;

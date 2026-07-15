@@ -111,8 +111,8 @@ const AboutUsPage: React.FC = () => {
         databases and GraphQL application programming interfaces (APIs),
         ensuring efficient data retrieval and extensibility. For programmatic
         access, PsychSCREEN provides a publicly available GraphQL API (
-        <a href="https://psychscreen.api.wenglab.org/graphql">
-          psychscreen.api.wenglab.org/graphql
+        <a href="https://screen.api.wenglab.org/graphql">
+          screen.api.wenglab.org/graphql
         </a>
         ), allowing advanced users to query the datasets directly and integrate
         them into their research workflows.

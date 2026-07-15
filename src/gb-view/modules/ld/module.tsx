@@ -1,20 +1,14 @@
 import {
   TrackTooltip,
-  createFullLDRenderer,
   defineTrackModule,
-  fetchBigBedRows,
   fetchOnChange,
-  normalizeManhattanRows,
-  type LDData,
-  type LDVariant,
   type TrackFetchContext,
 } from "@weng-lab/genomebrowser-v2";
 import { z } from "zod";
-import {
-  applyPsychscreenLDConfig,
-  createPsychscreenLDBaseline,
-} from "./normalize";
-import type { PsychscreenLDConfig } from "./types";
+import { fetchGwasPoints } from "../shared/gwasBigBed";
+import { createLDBaseline } from "./normalize";
+import { FullLD } from "./render";
+import type { LDConfig, LDData, LDVariant } from "./types";
 
 const anchorSchema = z.object({
   id: z.string().min(1),
@@ -30,29 +24,20 @@ const configSchema = z.object({
   pinnedVariantId: z.string().min(1).optional(),
 });
 
-export function parsePsychscreenLDAnchor(value: unknown) {
+export function parseLDAnchor(value: unknown) {
   const result = anchorSchema.safeParse(value);
   return result.success ? result.data : undefined;
 }
 
-const PsychscreenLD = createFullLDRenderer<PsychscreenLDConfig>(
-  "psychscreenLD",
-  (config) => config.anchor?.id,
-  {
-    transformData: applyPsychscreenLDConfig,
-    getPinnedVariantId: (config) => config.pinnedVariantId,
-  },
-);
-
-export const psychscreenLDModule = defineTrackModule<LDVariant>()({
+export const ldModule = defineTrackModule<LDVariant>()({
   type: "psychscreenLD",
   defaults: {
     height: 60,
     color: "#7c97c4",
   },
   configSchema,
-  fetch: fetchPsychscreenLDBaseline,
-  render: { full: PsychscreenLD },
+  fetch: fetchLD,
+  render: { full: FullLD },
   tooltipComponent: ({ item }) => (
     <TrackTooltip>
       <g>
@@ -72,10 +57,10 @@ export const psychscreenLDModule = defineTrackModule<LDVariant>()({
   ),
 });
 
-async function fetchPsychscreenLDBaseline({
+async function fetchLD({
   config,
   region,
-}: TrackFetchContext<PsychscreenLDConfig>): Promise<LDData> {
-  const rows = await fetchBigBedRows({ url: config.url, region });
-  return createPsychscreenLDBaseline(normalizeManhattanRows(rows), region);
+}: TrackFetchContext<LDConfig>): Promise<LDData> {
+  const points = await fetchGwasPoints(config.url, region);
+  return createLDBaseline(points, region);
 }
