@@ -156,7 +156,7 @@ export function InteractionRenderer({
   );
 }
 
-export function layoutInteractions(
+function layoutInteractions(
   data: GenomicInteraction[],
   region: BrowserRegion,
   width: number,

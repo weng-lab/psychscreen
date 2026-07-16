@@ -24,6 +24,7 @@ import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { GENE_PORTAL_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
 import { createGenePortalBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 
@@ -82,6 +83,7 @@ function GeneBrowserPanel({
       <GenomeBrowserView
         browserStore={session.browserStore}
         trackStore={session.trackStore}
+        defaultTrackIds={GENE_PORTAL_DEFAULT_TRACK_IDS}
       />
     </Box>
   );

@@ -24,6 +24,7 @@ import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import Button from "@mui/material/Button";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { DISEASE_TRAIT_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
 import { createDiseaseTraitBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 
@@ -51,6 +52,7 @@ function DiseaseTraitBrowserPanel({
       <GenomeBrowserView
         browserStore={session.browserStore}
         trackStore={session.trackStore}
+        defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
       />
     </Stack>
   );

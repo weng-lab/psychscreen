@@ -22,6 +22,7 @@ import SingleCell from "../GenePortal/SingleCell";
 
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { SINGLE_CELL_GENE_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
 import { createSingleCellGeneBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
@@ -64,6 +65,7 @@ function SingleCellGeneBrowserPanel({
         browserStore={session.browserStore}
         trackStore={session.trackStore}
         trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
+        defaultTrackIds={SINGLE_CELL_GENE_DEFAULT_TRACK_IDS}
       />
     </Box>
   );

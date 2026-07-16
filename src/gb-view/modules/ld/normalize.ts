@@ -1,6 +1,6 @@
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 import type { GwasPoint } from "../shared/gwasBigBed";
-import type { LDConfig, LDData, LDVariant } from "./types";
+import type { LDConfig, LDConnection, LDData, LDVariant } from "./types";
 
 export function createLDBaseline(
   points: GwasPoint[],
@@ -28,13 +28,18 @@ export function applyLDConfig(data: LDData, config: LDConfig): LDData {
   const visibleIds = new Set(data.variants.map((variant) => variant.id));
   if (!visibleIds.has(anchorId)) return data;
 
+  const connections: LDConnection[] = [];
+  for (const targetId of config.associatedVariantIds) {
+    if (targetId !== anchorId && visibleIds.has(targetId)) {
+      connections.push({ sourceId: anchorId, targetId });
+    }
+  }
+
   return {
     variants: data.variants.map((variant) =>
       variant.id === anchorId ? { ...variant, isLead: true } : variant,
     ),
-    connections: config.associatedVariantIds
-      .filter((targetId) => targetId !== anchorId && visibleIds.has(targetId))
-      .map((targetId) => ({ sourceId: anchorId, targetId })),
+    connections,
   };
 }
 

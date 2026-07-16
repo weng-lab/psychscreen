@@ -8,6 +8,11 @@ import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import {
+  SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
+  SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
+  SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
+} from "../../../gb-view/defaultTrackIds";
 import { createSingleCellBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 import type { SelectChangeEvent } from "@mui/material/Select";
@@ -31,6 +36,9 @@ const SingleCellCellTypeDetails: React.FC = () => {
     grn: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
     qtl: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
   }));
+  const [visitedBrowserTabs, setVisitedBrowserTabs] = React.useState<
+    ReadonlySet<number>
+  >(() => new Set([0]));
 
   useEffect(
     () => () => {
@@ -43,6 +51,13 @@ const SingleCellCellTypeDetails: React.FC = () => {
 
   const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
+    if (newTabIndex <= 2) {
+      setVisitedBrowserTabs((visitedTabs) =>
+        visitedTabs.has(newTabIndex)
+          ? visitedTabs
+          : new Set([...visitedTabs, newTabIndex]),
+      );
+    }
   };
 
   const degDiseases: string[] = [];
@@ -134,34 +149,42 @@ const SingleCellCellTypeDetails: React.FC = () => {
           </Tabs>
           <Divider />
         </Box>
-        {tabIndex === 0 ? (
-          <GenomeBrowserView
-            browserStore={browserSessions.atac.browserStore}
-            trackStore={browserSessions.atac.trackStore}
-            trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-          />
-        ) : tabIndex === 1 ? (
-          <GenomeBrowserView
-            browserStore={browserSessions.grn.browserStore}
-            trackStore={browserSessions.grn.trackStore}
-            trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-          />
-        ) : tabIndex === 2 ? (
-          <GenomeBrowserView
-            browserStore={browserSessions.qtl.browserStore}
-            trackStore={browserSessions.qtl.trackStore}
-            trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-          />
-        ) : (
-          tabIndex == 3 &&
-          degDiseases &&
-          degDiseases.length == 0 && (
-            <>
-              <br />{" "}
-              {"No data diff. expressed genes available for " +
-                celltype?.replace(" or ", "/")}{" "}
-            </>
-          )
+        {visitedBrowserTabs.has(0) && (
+          <Box sx={{ display: tabIndex === 0 ? "block" : "none" }}>
+            <GenomeBrowserView
+              browserStore={browserSessions.atac.browserStore}
+              trackStore={browserSessions.atac.trackStore}
+              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
+              defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
+            />
+          </Box>
+        )}
+        {visitedBrowserTabs.has(1) && (
+          <Box sx={{ display: tabIndex === 1 ? "block" : "none" }}>
+            <GenomeBrowserView
+              browserStore={browserSessions.grn.browserStore}
+              trackStore={browserSessions.grn.trackStore}
+              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
+              defaultTrackIds={SINGLE_CELL_GRN_DEFAULT_TRACK_IDS}
+            />
+          </Box>
+        )}
+        {visitedBrowserTabs.has(2) && (
+          <Box sx={{ display: tabIndex === 2 ? "block" : "none" }}>
+            <GenomeBrowserView
+              browserStore={browserSessions.qtl.browserStore}
+              trackStore={browserSessions.qtl.trackStore}
+              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
+              defaultTrackIds={SINGLE_CELL_QTL_DEFAULT_TRACK_IDS}
+            />
+          </Box>
+        )}
+        {tabIndex == 3 && degDiseases && degDiseases.length == 0 && (
+          <>
+            <br />{" "}
+            {"No data diff. expressed genes available for " +
+              celltype?.replace(" or ", "/")}{" "}
+          </>
         )}
         {tabIndex == 3 && degDiseases.length > 0 && dataset && (
           <SingleCelldegCelltypeDotplot

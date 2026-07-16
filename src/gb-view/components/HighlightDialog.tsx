@@ -65,6 +65,34 @@ type HighlightsListProps = {
   removeHighlight: (id: string) => void;
 };
 
+function validateChromosome(chromosome: string) {
+  if (!chromosome) {
+    return "Chromosome is required";
+  }
+  if (
+    !VALID_CHROMOSOMES.includes(
+      chromosome as (typeof VALID_CHROMOSOMES)[number],
+    )
+  ) {
+    return "Invalid chromosome. Use format: chr1, chr2, ..., chr22, chrX, chrY";
+  }
+  return "";
+}
+
+function validatePosition(position: string, field: "start" | "end") {
+  if (!position) {
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} position is required`;
+  }
+  const numericPosition = parseInt(position, 10);
+  if (Number.isNaN(numericPosition)) {
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} must be a number`;
+  }
+  if (numericPosition < 0) {
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} must be positive`;
+  }
+  return "";
+}
+
 function HighlightCreationForm({
   currentRegion,
   addHighlight,
@@ -85,34 +113,6 @@ function HighlightCreationForm({
     start: "",
     end: "",
   });
-
-  const validateChromosome = (chromosome: string) => {
-    if (!chromosome) {
-      return "Chromosome is required";
-    }
-    if (
-      !VALID_CHROMOSOMES.includes(
-        chromosome as (typeof VALID_CHROMOSOMES)[number],
-      )
-    ) {
-      return "Invalid chromosome. Use format: chr1, chr2, ..., chr22, chrX, chrY";
-    }
-    return "";
-  };
-
-  const validatePosition = (position: string, field: "start" | "end") => {
-    if (!position) {
-      return `${field.charAt(0).toUpperCase() + field.slice(1)} position is required`;
-    }
-    const numericPosition = parseInt(position, 10);
-    if (Number.isNaN(numericPosition)) {
-      return `${field.charAt(0).toUpperCase() + field.slice(1)} must be a number`;
-    }
-    if (numericPosition < 0) {
-      return `${field.charAt(0).toUpperCase() + field.slice(1)} must be positive`;
-    }
-    return "";
-  };
 
   const handleInputChange = (
     field: keyof HighlightFormState,

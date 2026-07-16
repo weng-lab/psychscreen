@@ -107,15 +107,13 @@ export function attachLDInteractions({
         fetchPolicy: "no-cache",
       });
       const data = responseSchema.parse(response.data);
-      const associatedVariantIds = [
-        ...new Set(
-          (data.snp?.[0]?.linkageDisequilibrium ?? [])
-            .filter(
-              (relationship) => relationship.rSquared >= R_SQUARED_THRESHOLD,
-            )
-            .map((relationship) => relationship.id),
-        ),
-      ];
+      const associatedVariantIdSet = new Set<string>();
+      for (const relationship of data.snp?.[0]?.linkageDisequilibrium ?? []) {
+        if (relationship.rSquared >= R_SQUARED_THRESHOLD) {
+          associatedVariantIdSet.add(relationship.id);
+        }
+      }
+      const associatedVariantIds = [...associatedVariantIdSet];
       // Hover or selection can change while a request is in flight.
       if (controller.signal.aborted || activeRequest !== request) return;
 
