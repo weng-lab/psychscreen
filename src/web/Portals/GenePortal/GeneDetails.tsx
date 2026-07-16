@@ -24,7 +24,7 @@ import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import { createGeneBrowserSession } from "../../../gb-view/stores";
+import { createGenePortalBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 
 type GTExGeneQueryResponse = {
@@ -58,7 +58,7 @@ function GeneBrowserPanel({
   visible: boolean;
 }) {
   // Keep one browser session mounted so switching tabs does not recreate stores.
-  const [session] = useState(() => createGeneBrowserSession(region));
+  const [session] = useState(() => createGenePortalBrowserSession(region));
   const previousRegionRef = useRef(region);
 
   useEffect(() => {
@@ -80,8 +80,8 @@ function GeneBrowserPanel({
   return (
     <Box sx={{ display: visible ? "block" : "none" }}>
       <GenomeBrowserView
-        useBrowserStore={session.useBrowserStore}
-        useTrackStore={session.useTrackStore}
+        browserStore={session.browserStore}
+        trackStore={session.trackStore}
       />
     </Box>
   );

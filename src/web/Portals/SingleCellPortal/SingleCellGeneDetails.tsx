@@ -1,13 +1,71 @@
-﻿import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+﻿import {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  type SyntheticEvent,
+} from "react";
+import { useParams } from "react-router-dom";
 
-import { Divider, Box, Tabs, Tab, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import {
+  Divider,
+  Box,
+  Tabs,
+  Tab,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import Grid, { type GridProps } from "@mui/material/Grid";
 
 import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
 
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { createSingleCellGeneBrowserSession } from "../../../gb-view/stores";
+import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+
+type GeneCoordinatesQueryResponse = {
+  gene: Array<{
+    name: string;
+    coordinates: BrowserRegion;
+  }>;
+};
+
+function SingleCellGeneBrowserPanel({
+  region,
+  visible,
+}: {
+  region: BrowserRegion;
+  visible: boolean;
+}) {
+  const [session] = useState(() => createSingleCellGeneBrowserSession(region));
+  const previousRegionRef = useRef(region);
+
+  useEffect(() => {
+    const previous = previousRegionRef.current;
+    if (
+      previous.chromosome === region.chromosome &&
+      previous.start === region.start &&
+      previous.end === region.end
+    )
+      return;
+
+    previousRegionRef.current = region;
+    session.setRegion(region);
+  }, [region, session]);
+
+  useEffect(() => () => session.dispose(), [session]);
+
+  return (
+    <Box sx={{ display: visible ? "block" : "none" }}>
+      <GenomeBrowserView
+        browserStore={session.browserStore}
+        trackStore={session.trackStore}
+      />
+    </Box>
+  );
+}
 
 const GENE_COORDS_QUERY = gql`
   query ($assembly: String!, $name_prefix: [String!]) {
@@ -22,31 +80,37 @@ const GENE_COORDS_QUERY = gql`
     }
   }
 `;
-export const SingleCellGeneDetails = (props) => {
+export const SingleCellGeneDetails = (props: GridProps) => {
   const { gene } = useParams();
-  const { state }: any = useLocation();
-  let { geneid } = state ? state : { geneid: "" };
   const [tabIndex, setTabIndex] = useState(0);
-
-  const [gid, setGid] = useState(geneid);
-
-  useEffect(() => {
-    setTabIndex(0);
-  }, []);
-
-  useEffect(() => {
-    let { geneid } = state ? state : { geneid: "" };
-    setGid(geneid);
-  }, [gene, state]);
-  const { data: geneCoords } = useQuery(GENE_COORDS_QUERY, {
+  const {
+    data: geneCoords,
+    loading: geneCoordsLoading,
+    error: geneCoordsError,
+  } = useQuery<GeneCoordinatesQueryResponse>(GENE_COORDS_QUERY, {
     variables: {
-      name_prefix: [gene],
+      name_prefix: gene ? [gene] : [],
       assembly: "GRCh38",
     },
-    skip: gene === "",
+    skip: !gene,
     context: { clientName: "staging" },
   });
-  const handleTabChange = (_: any, newTabIndex: number) => {
+  const selectedGene = useMemo(
+    () =>
+      geneCoords?.gene.find(
+        (candidate) => candidate.name.toLowerCase() === gene?.toLowerCase(),
+      ),
+    [gene, geneCoords],
+  );
+  const geneBrowserRegion = useMemo<BrowserRegion | undefined>(() => {
+    if (!selectedGene) return undefined;
+    return {
+      chromosome: selectedGene.coordinates.chromosome,
+      start: Math.max(0, selectedGene.coordinates.start - 20_000),
+      end: selectedGene.coordinates.end + 20_000,
+    };
+  }, [selectedGene]);
+  const handleTabChange = (_: SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
   };
 
@@ -87,6 +151,7 @@ export const SingleCellGeneDetails = (props) => {
         <Box>
           <Tabs value={tabIndex} onChange={handleTabChange}>
             <Tab label="Brain Single Cell Expression" />
+            <Tab label="Brain Epigenome Browser" />
           </Tabs>
           <Divider />
         </Box>
@@ -100,6 +165,24 @@ export const SingleCellGeneDetails = (props) => {
               />
             </Box>
           )}
+          {geneBrowserRegion ? (
+            <SingleCellGeneBrowserPanel
+              region={geneBrowserRegion}
+              visible={tabIndex === 1}
+            />
+          ) : tabIndex === 1 ? (
+            geneCoordsLoading ? (
+              <Box display="flex" justifyContent="center" p={4}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Typography color="error">
+                {geneCoordsError
+                  ? `Unable to load browser coordinates for ${gene}.`
+                  : `No browser coordinates found for ${gene}.`}
+              </Typography>
+            )
+          ) : null}
         </Box>
       </Grid>
     </Grid>

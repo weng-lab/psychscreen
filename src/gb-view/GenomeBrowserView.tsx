@@ -15,20 +15,20 @@ import { useState } from "react";
 import BrowserSearch from "./components/BrowserSearch";
 import ControlButtons from "./components/ControlButtons";
 import DomainDisplay from "./components/DomainDisplay";
-import {
-  useBrowserStore as useDefaultBrowserStore,
-  useTrackStore as useDefaultTrackStore,
-} from "./stores";
 import HighlightDialog from "./components/HighlightDialog";
 
-const trackCatalogs = [tracks];
+const DEFAULT_TRACK_CATALOGS: unknown[] = [tracks];
 
 export default function GenomeBrowserView({
-  useBrowserStore = useDefaultBrowserStore,
-  useTrackStore = useDefaultTrackStore,
+  browserStore,
+  trackStore,
+  trackCatalogs = DEFAULT_TRACK_CATALOGS,
+  defaultTrackIds,
 }: {
-  useBrowserStore?: BrowserStoreInstance;
-  useTrackStore?: TrackStoreInstance;
+  browserStore: BrowserStoreInstance;
+  trackStore: TrackStoreInstance;
+  trackCatalogs?: unknown[];
+  defaultTrackIds?: readonly string[];
 }) {
   const [trackSelectOpen, setTrackSelectOpen] = useState(false);
   const [highlightOpen, setHighlightOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function GenomeBrowserView({
           justifyContent="space-between"
           alignItems={{ xs: "stretch", md: "center" }}
         >
-          <BrowserSearch useBrowserStore={useBrowserStore} />
+          <BrowserSearch useBrowserStore={browserStore} />
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={1}
@@ -81,25 +81,23 @@ export default function GenomeBrowserView({
           p={1}
           mt={2}
         >
-          <DomainDisplay useBrowserStore={useBrowserStore} />
-          <ControlButtons useBrowserStore={useBrowserStore} />
+          <DomainDisplay useBrowserStore={browserStore} />
+          <ControlButtons useBrowserStore={browserStore} />
         </Stack>
-        <GenomeBrowser
-          browserStore={useBrowserStore}
-          trackStore={useTrackStore}
-        />
+        <GenomeBrowser browserStore={browserStore} trackStore={trackStore} />
       </Stack>
       <HighlightDialog
         open={highlightOpen}
         onClose={() => setHighlightOpen(false)}
-        useBrowserStore={useBrowserStore}
+        useBrowserStore={browserStore}
       />
       <TrackSelect
         open={trackSelectOpen}
         onClose={() => setTrackSelectOpen(false)}
         trackCatalogs={trackCatalogs}
-        useTrackStore={useTrackStore}
+        useTrackStore={trackStore}
         title="Psychscreen Tracks"
+        defaultTrackIds={defaultTrackIds}
       />
     </>
   );

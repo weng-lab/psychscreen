@@ -5751,7 +5751,7 @@ __metadata:
 
 "@weng-lab/genomebrowser-ui-v2@file:.yalc/@weng-lab/genomebrowser-ui-v2::locator=psychscreen2.0%40workspace%3A.":
   version: 0.0.0
-  resolution: "@weng-lab/genomebrowser-ui-v2@file:.yalc/@weng-lab/genomebrowser-ui-v2#.yalc/@weng-lab/genomebrowser-ui-v2::hash=9cdfee&locator=psychscreen2.0%40workspace%3A."
+  resolution: "@weng-lab/genomebrowser-ui-v2@file:.yalc/@weng-lab/genomebrowser-ui-v2#.yalc/@weng-lab/genomebrowser-ui-v2::hash=bfa4f4&locator=psychscreen2.0%40workspace%3A."
   dependencies:
     "@weng-lab/genomebrowser-v2": "npm:*"
     jiti: "npm:^2.6.2"
@@ -5768,7 +5768,7 @@ __metadata:
     react-dom: ^19.0.0
   bin:
     trackselect: ./dist/trackselect.js
-  checksum: 10c0/b32ef98bf9be00f4199e7c022148e2fc8e7bc88c242cb2ba2cfb73826955228c30d1aa64937a4a65fed74f2cbdee04d3ec63a0696535b7bc1719ea4f586dab04
+  checksum: 10c0/b09334a9af4cf2fef40d689f51f764206abf46b5654f49317f73fced5856dc895d6816f7e0e3768372b93d23b12c03e296432f0ac3f3982bbd195e4610f72868
   languageName: node
   linkType: hard
 

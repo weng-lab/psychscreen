@@ -8,24 +8,43 @@ import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { createSingleCellBrowserSession } from "../../../gb-view/stores";
+import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { SelectChangeEvent } from "@mui/material/Select";
+
+const SINGLE_CELL_BROWSER_REGION: BrowserRegion = {
+  chromosome: "chr11",
+  start: 6_192_271,
+  end: 6_680_547,
+};
 
 const SingleCellCellTypeDetails: React.FC = () => {
   const { celltype } = useParams();
 
-  const handleChange = (event) => {
+  const handleChange = (event: SelectChangeEvent) => {
     setDataset(event.target.value);
   };
   const [tabIndex, setTabIndex] = React.useState(0);
+  const [browserSessions] = React.useState(() => ({
+    atac: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+    grn: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+    qtl: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+  }));
 
-  useEffect(() => {
-    setTabIndex(0);
-  }, []);
+  useEffect(
+    () => () => {
+      browserSessions.atac.dispose();
+      browserSessions.grn.dispose();
+      browserSessions.qtl.dispose();
+    },
+    [browserSessions],
+  );
 
-  const handleTabChange = (_: any, newTabIndex: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
   };
 
-  let degDiseases: string[] = [];
+  const degDiseases: string[] = [];
   if (
     diseaseCT["ASD"].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))
   )
@@ -115,11 +134,20 @@ const SingleCellCellTypeDetails: React.FC = () => {
           <Divider />
         </Box>
         {tabIndex === 0 ? (
-          <GenomeBrowserView />
+          <GenomeBrowserView
+            browserStore={browserSessions.atac.browserStore}
+            trackStore={browserSessions.atac.trackStore}
+          />
         ) : tabIndex === 1 ? (
-          <GenomeBrowserView />
+          <GenomeBrowserView
+            browserStore={browserSessions.grn.browserStore}
+            trackStore={browserSessions.grn.trackStore}
+          />
         ) : tabIndex === 2 ? (
-          <GenomeBrowserView />
+          <GenomeBrowserView
+            browserStore={browserSessions.qtl.browserStore}
+            trackStore={browserSessions.qtl.trackStore}
+          />
         ) : (
           tabIndex == 3 &&
           degDiseases &&
