@@ -11,6 +11,7 @@ import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 import { createSingleCellBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
 
 const SINGLE_CELL_BROWSER_REGION: BrowserRegion = {
   chromosome: "chr11",
@@ -137,16 +138,19 @@ const SingleCellCellTypeDetails: React.FC = () => {
           <GenomeBrowserView
             browserStore={browserSessions.atac.browserStore}
             trackStore={browserSessions.atac.trackStore}
+            trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
           />
         ) : tabIndex === 1 ? (
           <GenomeBrowserView
             browserStore={browserSessions.grn.browserStore}
             trackStore={browserSessions.grn.trackStore}
+            trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
           />
         ) : tabIndex === 2 ? (
           <GenomeBrowserView
             browserStore={browserSessions.qtl.browserStore}
             trackStore={browserSessions.qtl.trackStore}
+            trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
           />
         ) : (
           tabIndex == 3 &&

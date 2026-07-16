@@ -1368,7 +1368,11 @@
       "height": 50,
       "color": "#c0a9e2",
       "config": {
-        "url": "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig"
+        "url": "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig",
+        "yRange": {
+          "min": -2,
+          "max": 9
+        }
       },
       "metadata": {
         "sourceId": "conservation/240-mammal-phylop-vertical-range",
@@ -1433,7 +1437,7 @@
       "id": "human-psychscreen/atac-seq-peaks/astrocytes",
       "title": "Astrocytes",
       "display": "dense",
-      "height": 30,
+      "height": 35,
       "color": "#9479bc",
       "config": {
         "url": "https://downloads.wenglab.org/Astro.PeakCalls.bb"
@@ -1450,7 +1454,7 @@
       "id": "human-psychscreen/atac-seq-peaks/endothelial-cells",
       "title": "Endothelial Cells",
       "display": "dense",
-      "height": 30,
+      "height": 35,
       "color": "#9479bc",
       "config": {
         "url": "https://downloads.wenglab.org/Endo.PeakCalls.bb"
@@ -1467,7 +1471,7 @@
       "id": "human-psychscreen/atac-seq-peaks/opcs",
       "title": "Oligodendrocyte Precursor Cells",
       "display": "dense",
-      "height": 30,
+      "height": 35,
       "color": "#9479bc",
       "config": {
         "url": "https://downloads.wenglab.org/OPC.PeakCalls.bb"

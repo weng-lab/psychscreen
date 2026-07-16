@@ -8,21 +8,18 @@ import {
   type TrackStoreInstance,
 } from "@weng-lab/genomebrowser-v2";
 
-import tracks from "./tracks.json";
-
 import { TrackSelect } from "@weng-lab/genomebrowser-ui-v2";
 import { useState } from "react";
+import { MAIN_TRACK_CATALOGS } from "./catalogs";
 import BrowserSearch from "./components/BrowserSearch";
 import ControlButtons from "./components/ControlButtons";
 import DomainDisplay from "./components/DomainDisplay";
 import HighlightDialog from "./components/HighlightDialog";
 
-const DEFAULT_TRACK_CATALOGS: unknown[] = [tracks];
-
 export default function GenomeBrowserView({
   browserStore,
   trackStore,
-  trackCatalogs = DEFAULT_TRACK_CATALOGS,
+  trackCatalogs = MAIN_TRACK_CATALOGS,
   defaultTrackIds,
 }: {
   browserStore: BrowserStoreInstance;

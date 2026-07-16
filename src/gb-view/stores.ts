@@ -4,6 +4,7 @@ import {
   createBrowserStore,
   createTrackStore,
   transcriptModule,
+  type AnyTrackModule,
   type BrowserRegion,
   type BrowserStoreInstance,
   type TrackStoreInstance,
@@ -11,6 +12,8 @@ import {
 import { attachLDInteractions } from "./modules/ld/interactions";
 import { ldModule } from "./modules/ld/module";
 import { manhattanModule } from "./modules/manhattan/module";
+import { singleCellGrnModule } from "./modules/grn/module";
+import { singleCellQtlModule } from "./modules/qtl/module";
 
 const BELLENGUEZ_SUMMARY_STATISTICS_URL =
   "https://downloads.wenglab.org/pyschscreensumstats/GWAS_fullsumstats/Alzheimers_Bellenguez_meta.formatted.bigBed";
@@ -21,6 +24,12 @@ const PORTAL_MODULES = [
   transcriptModule,
   manhattanModule,
   ldModule,
+];
+
+const SINGLE_CELL_PORTAL_MODULES = [
+  ...PORTAL_MODULES,
+  singleCellGrnModule,
+  singleCellQtlModule,
 ];
 
 export type GenomeBrowserSession = {
@@ -34,12 +43,14 @@ type PortalBrowserSessionOptions = {
   initialRegion: BrowserRegion;
   trackIdPrefix: string;
   summaryStatisticsUrl?: string;
+  modules?: readonly AnyTrackModule[];
 };
 
 function createPortalBrowserSession({
   initialRegion,
   trackIdPrefix,
   summaryStatisticsUrl,
+  modules = PORTAL_MODULES,
 }: PortalBrowserSessionOptions): GenomeBrowserSession {
   const browserStore = createBrowserStore({
     region: initialRegion,
@@ -81,7 +92,7 @@ function createPortalBrowserSession({
     : undefined;
 
   const trackStore = createTrackStore({
-    modules: PORTAL_MODULES,
+    modules,
     tracks:
       manhattanTrack && ldTrack
         ? [geneTrack, manhattanTrack, ldTrack]
@@ -137,6 +148,7 @@ export function createSingleCellGeneBrowserSession(
     initialRegion,
     trackIdPrefix: "single-cell-gene",
     summaryStatisticsUrl: BELLENGUEZ_SUMMARY_STATISTICS_URL,
+    modules: SINGLE_CELL_PORTAL_MODULES,
   });
 }
 
@@ -146,5 +158,6 @@ export function createSingleCellBrowserSession(
   return createPortalBrowserSession({
     initialRegion,
     trackIdPrefix: "single-cell",
+    modules: SINGLE_CELL_PORTAL_MODULES,
   });
 }

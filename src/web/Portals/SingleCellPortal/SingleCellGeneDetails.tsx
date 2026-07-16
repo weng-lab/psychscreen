@@ -24,6 +24,7 @@ import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 import { createSingleCellGeneBrowserSession } from "../../../gb-view/stores";
 import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
 
 type GeneCoordinatesQueryResponse = {
   gene: Array<{
@@ -62,6 +63,7 @@ function SingleCellGeneBrowserPanel({
       <GenomeBrowserView
         browserStore={session.browserStore}
         trackStore={session.trackStore}
+        trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
       />
     </Box>
   );
