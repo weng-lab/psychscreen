@@ -18,7 +18,7 @@ import {
   URL_MAP,
 } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
-import { riskLoci } from "./utils";
+import { diseaseRiskLocusHighlights, riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
@@ -26,15 +26,17 @@ import Button from "@mui/material/Button";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 import { DISEASE_TRAIT_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
 import { createDiseaseTraitBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion, Highlight } from "@weng-lab/genomebrowser-v2";
 
 function DiseaseTraitBrowserPanel({
   region,
   summaryStatisticsUrl,
+  cytobandMarkers,
   visible,
 }: {
   region: BrowserRegion;
   summaryStatisticsUrl?: string;
+  cytobandMarkers?: readonly Highlight[];
   visible: boolean;
 }) {
   const [session] = useState(() =>
@@ -53,6 +55,7 @@ function DiseaseTraitBrowserPanel({
         browserStore={session.browserStore}
         trackStore={session.trackStore}
         defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
+        cytobandMarkers={cytobandMarkers}
       />
     </Stack>
   );
@@ -248,6 +251,10 @@ const DiseaseTraitDetails: React.FC = () => {
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
 
   const { loci, data } = useLoci(disease || "");
+  const riskLocusMarkers = useMemo(
+    () => diseaseRiskLocusHighlights(disease || "", loci || []),
+    [disease, loci],
+  );
   const locusCoordinates = useMemo<BrowserRegion | undefined>(() => {
     const firstLocus = loci?.[0];
     if (!firstLocus?.chromosome) return undefined;
@@ -498,6 +505,7 @@ const DiseaseTraitDetails: React.FC = () => {
             key={disease}
             region={browserCoordinates}
             summaryStatisticsUrl={summaryStatisticsUrl}
+            cytobandMarkers={riskLocusMarkers}
             visible={page === 3}
           />
         ) : null}

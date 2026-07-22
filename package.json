@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test:brainome": "node --experimental-strip-types --test src/gb-view/brainome-catalog.test.mjs",
     "test:mukamel": "node --experimental-strip-types --test src/gb-view/mukamel-catalog.test.mjs",
+    "test:risk-loci": "node --experimental-strip-types --test src/web/Portals/DiseaseTraitPortal/risk-locus-highlights.test.mjs && node --experimental-loader ./src/gb-view/components/domain-display.test-loader.mjs --test src/gb-view/components/domain-display.integration.test.mjs",
     "prettier": "prettier --write src app"
   },
   "dependencies": {
@@ -65,6 +66,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.0.0",
     "eslint-config-next": "16.2.9",
+    "jsdom": "11.10.0",
     "prettier": "^3.5.0",
     "typescript": "^5.9.0"
   },

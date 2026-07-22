@@ -12780,6 +12780,7 @@ __metadata:
     eslint-config-next: "npm:16.2.9"
     graphql: "npm:^16.6.0"
     html2canvas: "npm:^1.4.1"
+    jsdom: "npm:11.10.0"
     jubilant-carnival: "npm:^0.2.8"
     logo-test: "npm:^0.0.5"
     next: "npm:16.2.9"

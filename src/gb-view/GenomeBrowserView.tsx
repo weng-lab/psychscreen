@@ -5,6 +5,7 @@ import HighlightIcon from "@mui/icons-material/Highlight";
 import {
   GenomeBrowser,
   type BrowserStoreInstance,
+  type Highlight,
   type TrackStoreInstance,
 } from "@weng-lab/genomebrowser-v2";
 
@@ -21,11 +22,13 @@ export default function GenomeBrowserView({
   trackStore,
   trackCatalogs = MAIN_TRACK_CATALOGS,
   defaultTrackIds,
+  cytobandMarkers,
 }: {
   browserStore: BrowserStoreInstance;
   trackStore: TrackStoreInstance;
   trackCatalogs?: unknown[];
   defaultTrackIds?: readonly string[];
+  cytobandMarkers?: readonly Highlight[];
 }) {
   const [trackSelectOpen, setTrackSelectOpen] = useState(false);
   const [highlightOpen, setHighlightOpen] = useState(false);
@@ -78,7 +81,10 @@ export default function GenomeBrowserView({
           p={1}
           mt={2}
         >
-          <DomainDisplay useBrowserStore={browserStore} />
+          <DomainDisplay
+            useBrowserStore={browserStore}
+            cytobandMarkers={cytobandMarkers}
+          />
           <ControlButtons useBrowserStore={browserStore} />
         </Stack>
         <GenomeBrowser browserStore={browserStore} trackStore={trackStore} />

@@ -7,7 +7,7 @@ import { linearTransform } from "../GenePortal/violin/utils";
 
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { DISEASE_CARDS } from "./config/constants";
-import { toScientificNotation } from "./utils";
+import { focusedRiskLocus, toScientificNotation } from "./utils";
 
 type RiskLocus = {
   chromosome?: string;
@@ -190,17 +190,10 @@ const RiskLocusView: React.FC<{
                           ? (highlight) => {
                               const locus = lociByHighlightId.get(highlight.id);
                               if (!locus) return;
-                              props.onLocusClick?.(
-                                {
-                                  chromosome: locus.chromosome,
-                                  start: locus.start + 1_400_000,
-                                  end: locus.end - 1_400_000,
-                                },
-                                {
-                                  SNPCount: locus.count,
-                                  minimump: +locus.minimump.toExponential(1),
-                                },
-                              );
+                              props.onLocusClick?.(focusedRiskLocus(locus), {
+                                SNPCount: locus.count,
+                                minimump: +locus.minimump.toExponential(1),
+                              });
                             }
                           : undefined
                       }
@@ -223,8 +216,7 @@ function RiskLocusTooltip({
   locus: RiskLocus;
   clickable: boolean;
 }) {
-  const start = locus.start + 1_400_000;
-  const end = locus.end - 1_400_000;
+  const { start, end } = focusedRiskLocus(locus);
 
   return (
     <g>
