@@ -3,7 +3,7 @@ import { IconButton, useTheme } from "@mui/material";
 import type { ButtonProps } from "@mui/material";
 import { Box } from "@mui/system";
 import { GenomeSearch, Result } from "@weng-lab/ui-components";
-import type { BrowserStoreInstance } from "@weng-lab/genomebrowser-v2";
+import type { BrowserStoreInstance } from "@weng-lab/genomebrowser";
 import { SCREEN_GRAPHQL_PATH } from "../../graphql/client";
 
 const ASSEMBLY = "GRCh38";

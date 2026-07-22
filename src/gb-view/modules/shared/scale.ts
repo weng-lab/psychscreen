@@ -1,4 +1,4 @@
-import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion } from "@weng-lab/genomebrowser";
 
 export function createXScale(region: BrowserRegion, width: number) {
   const span = region.end - region.start;

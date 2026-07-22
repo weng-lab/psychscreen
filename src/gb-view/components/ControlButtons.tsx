@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { BrowserStoreInstance } from "@weng-lab/genomebrowser-v2";
+import type { BrowserStoreInstance } from "@weng-lab/genomebrowser";
 
 type ButtonConfig = {
   label: string;

@@ -2,7 +2,7 @@ import {
   useInteraction,
   useTooltip,
   type TrackRendererProps,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import { useEffect, useEffectEvent } from "react";
 import { createXScale } from "../shared/scale";
 import { createManhattanYScale, resolveManhattanYDomain } from "./helpers";

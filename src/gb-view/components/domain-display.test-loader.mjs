@@ -7,7 +7,7 @@ const mocksUrl = new URL("./domain-display.test-mocks.mjs", import.meta.url).hre
 export async function resolve(specifier, context, nextResolve) {
   if (
     specifier === "@mui/material" ||
-    specifier === "@weng-lab/genomebrowser-ui-v2"
+    specifier === "@weng-lab/genomebrowser-ui"
   ) {
     return { url: mocksUrl, shortCircuit: true };
   }

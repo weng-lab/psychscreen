@@ -14,7 +14,7 @@ import {
   SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
 } from "../../../gb-view/defaultTrackIds";
 import { createSingleCellBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion } from "@weng-lab/genomebrowser";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
 

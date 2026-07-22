@@ -2,7 +2,7 @@ import {
   fetchBigBedRows,
   type BigBedRow,
   type BrowserRegion,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 
 export type GwasPoint = {
   id: string;

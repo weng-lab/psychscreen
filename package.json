@@ -7,9 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test:brainome": "node --experimental-strip-types --test src/gb-view/brainome-catalog.test.mjs",
-    "test:mukamel": "node --experimental-strip-types --test src/gb-view/mukamel-catalog.test.mjs",
-    "test:risk-loci": "node --experimental-strip-types --test src/web/Portals/DiseaseTraitPortal/risk-locus-highlights.test.mjs && node --experimental-loader ./src/gb-view/components/domain-display.test-loader.mjs --test src/gb-view/components/domain-display.integration.test.mjs",
     "prettier": "prettier --write src app"
   },
   "dependencies": {
@@ -26,8 +23,8 @@
     "@mui/x-tree-view": "^8.18.0",
     "@visx/tooltip": "^3.3.0",
     "@visx/visx": "^3.12.0",
-    "@weng-lab/genomebrowser-ui-v2": "file:.yalc/@weng-lab/genomebrowser-ui-v2",
-    "@weng-lab/genomebrowser-v2": "file:.yalc/@weng-lab/genomebrowser-v2",
+    "@weng-lab/genomebrowser": "2.0.0-alpha.0",
+    "@weng-lab/genomebrowser-ui": "2.0.0-alpha.0",
     "@weng-lab/ui-components": "3.1.3",
     "@weng-lab/visualization": "1.6.1",
     "bpnet-ui": "^0.2.9",
@@ -52,8 +49,7 @@
   },
   "resolutions": {
     "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@weng-lab/genomebrowser-v2": "file:.yalc/@weng-lab/genomebrowser-v2"
+    "@types/react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "latest",

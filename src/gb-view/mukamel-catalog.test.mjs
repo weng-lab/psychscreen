@@ -3,8 +3,8 @@ import test from "node:test";
 import {
   createModuleRegistry,
   methylCModule,
-} from "@weng-lab/genomebrowser-v2";
-import { validateJson } from "@weng-lab/genomebrowser-ui-v2";
+} from "@weng-lab/genomebrowser";
+import { validateJson } from "@weng-lab/genomebrowser-ui";
 import {
   MUKAMEL_CELL_TYPES,
   MUKAMEL_TRACK_CATALOG,

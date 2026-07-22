@@ -26,7 +26,7 @@ import Button from "@mui/material/Button";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 import { DISEASE_TRAIT_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
 import { createDiseaseTraitBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion, Highlight } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion, Highlight } from "@weng-lab/genomebrowser";
 
 function DiseaseTraitBrowserPanel({
   region,

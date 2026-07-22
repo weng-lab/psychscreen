@@ -2,7 +2,7 @@ import {
   useInteraction,
   useTooltip,
   type TrackRendererProps,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import { useEffect, useEffectEvent, useState } from "react";
 import {
   createLDArcPath,

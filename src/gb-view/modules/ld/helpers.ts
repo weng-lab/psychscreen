@@ -1,4 +1,4 @@
-import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion } from "@weng-lab/genomebrowser";
 import { createXScale } from "../shared/scale";
 import type { LDConnection, LDVariant } from "./types";
 

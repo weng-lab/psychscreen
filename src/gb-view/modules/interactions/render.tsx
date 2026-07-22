@@ -3,7 +3,7 @@ import {
   useTooltip,
   type BrowserRegion,
   type TrackRendererProps,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import {
   createElement,
   useEffect,

@@ -1,4 +1,4 @@
-import type { BigBedRow } from "@weng-lab/genomebrowser-v2";
+import type { BigBedRow } from "@weng-lab/genomebrowser";
 import {
   createEndpoint,
   createRelationshipId,

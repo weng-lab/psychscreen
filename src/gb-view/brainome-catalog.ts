@@ -1,4 +1,4 @@
-import type { TrackSelectCatalog } from "@weng-lab/genomebrowser-ui-v2";
+import type { TrackSelectCatalog } from "@weng-lab/genomebrowser-ui";
 
 export const BRAINOME_NEUROTRANSMITTERS = ["GABA", "GLU"] as const;
 

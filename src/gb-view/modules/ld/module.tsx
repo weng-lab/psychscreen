@@ -2,7 +2,7 @@ import {
   defineTrackModule,
   fetchOnChange,
   type TrackFetchContext,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import { z } from "zod";
 import { fetchGwasPoints } from "../shared/gwasBigBed";
 import { createLDBaseline } from "./normalize";

@@ -7,9 +7,9 @@ import {
   type BrowserStoreInstance,
   type Highlight,
   type TrackStoreInstance,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 
-import { TrackSelect } from "@weng-lab/genomebrowser-ui-v2";
+import { TrackSelect } from "@weng-lab/genomebrowser-ui";
 import { useState } from "react";
 import { MAIN_TRACK_CATALOGS } from "./catalogs";
 import BrowserSearch from "./components/BrowserSearch";

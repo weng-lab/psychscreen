@@ -3,7 +3,7 @@ import test from "node:test";
 import { JSDOM } from "jsdom";
 import { act, createElement } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserStore } from "@weng-lab/genomebrowser-v2";
+import { createBrowserStore } from "@weng-lab/genomebrowser";
 
 import DomainDisplay from "./DomainDisplay.tsx";
 

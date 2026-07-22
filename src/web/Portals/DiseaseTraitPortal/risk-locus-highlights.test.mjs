@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createBrowserStore } from "@weng-lab/genomebrowser-v2";
+import { createBrowserStore } from "@weng-lab/genomebrowser";
 
 import {
   combineCytobandHighlights,

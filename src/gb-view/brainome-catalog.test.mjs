@@ -4,8 +4,8 @@ import test from "node:test";
 import {
   caveModule,
   createModuleRegistry,
-} from "@weng-lab/genomebrowser-v2";
-import { validateJson } from "@weng-lab/genomebrowser-ui-v2";
+} from "@weng-lab/genomebrowser";
+import { validateJson } from "@weng-lab/genomebrowser-ui";
 import {
   BRAINOME_AGES,
   BRAINOME_NEUROTRANSMITTERS,

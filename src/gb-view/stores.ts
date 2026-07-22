@@ -10,7 +10,7 @@ import {
   type BrowserRegion,
   type BrowserStoreInstance,
   type TrackStoreInstance,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import { attachLDInteractions } from "./modules/ld/interactions";
 import { ldModule } from "./modules/ld/module";
 import { manhattanModule } from "./modules/manhattan/module";

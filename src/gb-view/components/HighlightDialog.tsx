@@ -17,7 +17,7 @@ import type {
   BrowserRegion,
   BrowserStoreInstance,
   Highlight as GBHighlight,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import { useState } from "react";
 
 const VALID_CHROMOSOMES = [

@@ -1,4 +1,4 @@
-import type { Highlight } from "@weng-lab/genomebrowser-v2";
+import type { Highlight } from "@weng-lab/genomebrowser";
 import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
 
 const RISK_LOCUS_FOCUS_INSET = 1_400_000;

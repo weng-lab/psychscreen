@@ -3,7 +3,7 @@ import {
   fetchOnChange,
   type TrackFetchContext,
   type TrackRendererProps,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import { createElement } from "react";
 import { z } from "zod";
 import { fetchInteractions } from "../interactions/fetch";

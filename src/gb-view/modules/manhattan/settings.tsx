@@ -1,7 +1,7 @@
 import {
   SettingsSection,
   type TrackSettingsProps,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import type { CSSProperties } from "react";
 import type { ManhattanConfig, ManhattanYDomain } from "./types";
 

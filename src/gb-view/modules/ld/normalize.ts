@@ -1,4 +1,4 @@
-import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion } from "@weng-lab/genomebrowser";
 import type { GwasPoint } from "../shared/gwasBigBed";
 import type { LDConfig, LDConnection, LDData, LDVariant } from "./types";
 

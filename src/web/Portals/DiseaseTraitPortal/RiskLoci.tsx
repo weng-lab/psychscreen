@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
-import { Cytobands } from "@weng-lab/genomebrowser-ui-v2";
-import type { Highlight } from "@weng-lab/genomebrowser-v2";
+import { Cytobands } from "@weng-lab/genomebrowser-ui";
+import type { Highlight } from "@weng-lab/genomebrowser";
 import { groupBy } from "queryz";
 import React, { useMemo } from "react";
 import { linearTransform } from "../GenePortal/violin/utils";

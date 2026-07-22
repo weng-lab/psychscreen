@@ -1,4 +1,4 @@
-import type { TrackFetchContext } from "@weng-lab/genomebrowser-v2";
+import type { TrackFetchContext } from "@weng-lab/genomebrowser";
 import { fetchGwasPoints } from "../shared/gwasBigBed";
 import type { ManhattanConfig, ManhattanData } from "./types";
 

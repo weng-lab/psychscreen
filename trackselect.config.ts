@@ -4,8 +4,8 @@ import {
   caveModule,
   methylCModule,
   transcriptModule,
-} from "@weng-lab/genomebrowser-v2";
-import { defineTrackSelectConfig } from "@weng-lab/genomebrowser-ui-v2/cli";
+} from "@weng-lab/genomebrowser";
+import { defineTrackSelectConfig } from "@weng-lab/genomebrowser-ui/cli";
 import { singleCellGrnModule } from "./src/gb-view/modules/grn/module";
 import { singleCellQtlModule } from "./src/gb-view/modules/qtl/module";
 

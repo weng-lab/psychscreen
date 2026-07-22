@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import type { TrackStoreInstance } from "@weng-lab/genomebrowser-v2";
+import type { TrackStoreInstance } from "@weng-lab/genomebrowser";
 import { z } from "zod";
 import { apolloClient } from "../../../graphql/client";
 import { parseLDAnchor } from "./module";

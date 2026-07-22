@@ -1,4 +1,4 @@
-import type { TrackSelectCatalog } from "@weng-lab/genomebrowser-ui-v2";
+import type { TrackSelectCatalog } from "@weng-lab/genomebrowser-ui";
 
 const MUKAMEL_BASE_URL =
   "https://users.wenglab.org/phanh/PsychENCODE/hg38/data/Mukamel_2024/binsize1/level3/";

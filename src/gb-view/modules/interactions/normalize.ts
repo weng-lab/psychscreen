@@ -1,4 +1,4 @@
-import type { BigBedRow, BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BigBedRow, BrowserRegion } from "@weng-lab/genomebrowser";
 import type {
   GenomicInteraction,
   InteractionEndpoint,

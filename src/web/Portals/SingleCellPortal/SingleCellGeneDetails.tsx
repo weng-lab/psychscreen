@@ -24,7 +24,7 @@ import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
 import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
 import { SINGLE_CELL_GENE_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
 import { createSingleCellGeneBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser-v2";
+import type { BrowserRegion } from "@weng-lab/genomebrowser";
 import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
 
 type GeneCoordinatesQueryResponse = {

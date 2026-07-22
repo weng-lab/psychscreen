@@ -1,7 +1,7 @@
 import type {
   BrowserRegion,
   Highlight,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 
 export function combineCytobandHighlights(
   cytobandMarkers: readonly Highlight[] | undefined,

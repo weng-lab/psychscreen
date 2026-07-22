@@ -1,4 +1,4 @@
-import { defineTrackModule, fetchOnChange } from "@weng-lab/genomebrowser-v2";
+import { defineTrackModule, fetchOnChange } from "@weng-lab/genomebrowser";
 import { z } from "zod";
 import { fetchManhattan } from "./fetch";
 import { FullManhattan } from "./render";

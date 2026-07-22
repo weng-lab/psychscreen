@@ -1,9 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { Cytobands } from "@weng-lab/genomebrowser-ui-v2";
+import { Cytobands } from "@weng-lab/genomebrowser-ui";
 import type {
   BrowserStoreInstance,
   Highlight,
-} from "@weng-lab/genomebrowser-v2";
+} from "@weng-lab/genomebrowser";
 import {
   combineCytobandHighlights,
   cytobandHighlightRegion,
