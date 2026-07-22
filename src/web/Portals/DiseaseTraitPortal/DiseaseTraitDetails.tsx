@@ -235,6 +235,10 @@ function useLoci(trait: string) {
 const DiseaseTraitDetails: React.FC = () => {
   const { disease } = useParams();
   const [page, setPage] = useState<number>(-1);
+  const [selectedBrowserRegion, setSelectedBrowserRegion] = useState<{
+    disease?: string;
+    region: BrowserRegion;
+  }>();
   const { state } = useLocation() as {
     state: { diseaseDesc?: string } | null;
   };
@@ -254,7 +258,7 @@ const DiseaseTraitDetails: React.FC = () => {
       end: firstLocus.end - 1_500_000,
     };
   }, [loci]);
-  const browserCoordinates = useMemo<BrowserRegion | undefined>(() => {
+  const defaultBrowserCoordinates = useMemo<BrowserRegion | undefined>(() => {
     if (!locusCoordinates) return undefined;
 
     const range = locusCoordinates.end - locusCoordinates.start;
@@ -269,6 +273,10 @@ const DiseaseTraitDetails: React.FC = () => {
       end: midpoint + 2_000_000,
     };
   }, [locusCoordinates]);
+  const browserCoordinates =
+    selectedBrowserRegion && selectedBrowserRegion.disease === disease
+      ? selectedBrowserRegion.region
+      : defaultBrowserCoordinates;
   const summaryStatisticsUrl = disease
     ? FULLSUMSTAT_URL_MAP[disease as keyof typeof FULLSUMSTAT_URL_MAP]
     : undefined;
@@ -428,7 +436,22 @@ const DiseaseTraitDetails: React.FC = () => {
       </Grid>
       <Grid size={12}>
         {page === -1 ? (
-          <RiskLocusView loci={loci || []} disease={disease || ""} />
+          <RiskLocusView
+            loci={loci || []}
+            disease={disease || ""}
+            onLocusClick={(region) => {
+              if (!region.chromosome) return;
+              setSelectedBrowserRegion({
+                disease,
+                region: {
+                  chromosome: region.chromosome,
+                  start: region.start,
+                  end: region.end,
+                },
+              });
+              setPage(3);
+            }}
+          />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
           <GeneAssociations disease={disease || ""} data={gassoc} />
         ) : page === 1 &&
