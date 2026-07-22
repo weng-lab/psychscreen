@@ -79,7 +79,7 @@ const qtlsigColumns: TableColDef[] = [
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`/psychscreen/gene/${params.value}`}
+          href={`/gene/${params.value}`}
           style={{ color: "#0000EE" }}
         >
           <i>{params.value}</i>
@@ -163,7 +163,7 @@ const egenesColumns: TableColDef[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${params.value}`}
+        href={`/gene/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         <i>{params.value}</i>

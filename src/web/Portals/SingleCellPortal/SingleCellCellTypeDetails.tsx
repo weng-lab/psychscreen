@@ -128,7 +128,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
             Switch to another celltype:
           </span>
           <CelltypeAutoComplete
-            navigateto="/psychscreen/single-cell/celltype/"
+            navigateto="/single-cell/celltype/"
             gridsize={3.5}
           />
         </div>

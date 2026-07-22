@@ -103,13 +103,13 @@ const MainPanel: React.FC = () => {
               </Select>
             </FormControl>
             {selectedPortal === "Disease/Trait" ? (
-              <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" />
+              <DiseaseTraitAutoComplete navigateto="/traits/" />
             ) : selectedPortal === "Gene/b-cCRE" ? (
-              <GeneAutoComplete navigateto="/psychscreen/gene/" />
+              <GeneAutoComplete navigateto="/gene/" />
             ) : selectedPortal === "Single-Cell" ? (
-              <CelltypeAutoComplete navigateto="/psychscreen/single-cell/celltype/" />
+              <CelltypeAutoComplete navigateto="/single-cell/celltype/" />
             ) : (
-              <SnpAutoComplete navigateto="/psychscreen/snp/" />
+              <SnpAutoComplete navigateto="/snp/" />
             )}
           </Stack>
         </Grid>

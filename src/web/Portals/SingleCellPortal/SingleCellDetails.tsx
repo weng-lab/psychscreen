@@ -86,7 +86,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
             Search Gene to show Dot Plot
           </Typography>
           <GeneAutoComplete
-            navigateto={`/psychscreen/single-cell/${disease}/`}
+            navigateto={`/single-cell/${disease}/`}
           />
           {0 > 1 && (
             <></>
@@ -147,7 +147,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                         onCardClick={(v?: string) => {
                           let f = geneCards!!.find((g: any) => g.val === v);
                           navigate(
-                            `/psychscreen/single-cell/${disease}/${f?.cardLabel}`
+                            `/single-cell/${disease}/${f?.cardLabel}`
                           );
                         }}
                         cardContentText={geneCards!!}

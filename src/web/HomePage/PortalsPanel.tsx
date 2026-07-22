@@ -53,11 +53,11 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
       `,
       stats: ["17 total traits cataloged", "5,848 b-cCRE/trait associations"],
       buttonText: "Explore Diseases/Traits",
-      buttonLink: "/psychscreen/traits",
+      buttonLink: "/traits",
       imageSRC: "/disease-trait.png",
       imgAltText: "Disease/Trait Portal",
       searchComponent: (
-        <DiseaseTraitAutoComplete navigateto="/psychscreen/traits/" showTitle />
+        <DiseaseTraitAutoComplete navigateto="/traits/" showTitle />
       ),
     },
     Gene: {
@@ -74,11 +74,11 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         "Gene expression and gene regulatory networks across 27 cell types",
       ],
       buttonText: "Explore Genes/b-cCREs",
-      buttonLink: "/psychscreen/gene",
+      buttonLink: "/gene",
       imageSRC: "/gene-bcre.png",
       imgAltText: "Gene b-cCRE portal",
       searchComponent: (
-        <GeneAutoComplete navigateto="/psychscreen/gene/" showTitle />
+        <GeneAutoComplete navigateto="/gene/" showTitle />
       ),
     },
     SNP: {
@@ -95,11 +95,11 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         "510,062 variants in b-cCREs",
       ],
       buttonText: "Explore SNPs/QTLs",
-      buttonLink: "/psychscreen/snp",
+      buttonLink: "/snp",
       imageSRC: "/snp-qtl.png",
       imgAltText: "SNP/QTL Portal",
       searchComponent: (
-        <SnpAutoComplete navigateto="/psychscreen/snp/" showTitle />
+        <SnpAutoComplete navigateto="/snp/" showTitle />
       ),
     },
     SingleCell: {
@@ -115,12 +115,12 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         "Chromatin accessibility for 344,135 single cells",
       ],
       buttonText: "Explore Single Cells",
-      buttonLink: "/psychscreen/single-cell",
+      buttonLink: "/single-cell",
       imageSRC: "/single-cell.png",
       imgAltText: "Single cell portal",
       searchComponent: (
         <CelltypeAutoComplete
-          navigateto="/psychscreen/single-cell/celltype/"
+          navigateto="/single-cell/celltype/"
           showTitle
         />
       ),
@@ -134,7 +134,7 @@ export const PortalPanel: React.FC<PortalPanelProps> = (props) => {
         at UMass Chan Medical School as a product of the PsychENCODE Consortium.
       `,
       buttonText: "Learn More",
-      buttonLink: "/psychscreen/aboutus",
+      buttonLink: "/aboutus",
       imageSRC: "/umass.png",
       imgAltText: "UMass Chan Medical School Logo",
     },

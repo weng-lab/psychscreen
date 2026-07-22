@@ -143,7 +143,7 @@ export const SingleCellGeneDetails = (props: GridProps) => {
         >
           <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
           <GeneAutoComplete
-            navigateto="/psychscreen/single-cell/gene/"
+            navigateto="/single-cell/gene/"
             gridsize={3.5}
           />
         </div>

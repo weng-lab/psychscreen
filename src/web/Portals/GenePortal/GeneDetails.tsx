@@ -257,7 +257,7 @@ const GeneDetails: React.FC = () => {
         <Typography variant="body1" mb={1}>
           Switch to another gene:
         </Typography>
-        <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
+        <GeneAutoComplete navigateto="/gene/" gridsize={3.5} />
       </Grid>
       <Grid size={12}>
         <Box>

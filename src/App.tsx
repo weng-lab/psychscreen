@@ -50,66 +50,66 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<WebHomePage />} />
                 <Route
-                  path="/psychscreen/downloads"
+                  path="/downloads"
                   element={<DownloadsPage />}
                 />
-                <Route path="/psychscreen/aboutus" element={<AboutUsPage />} />
+                <Route path="/aboutus" element={<AboutUsPage />} />
                 <Route
-                  path="/psychscreen/traits/:disease"
+                  path="/traits/:disease"
                   element={<DiseaseTraitDetails />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/celltype/:celltype"
+                  path="/single-cell/celltype/:celltype"
                   element={<SingleCellCellTypeDetails />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease"
+                  path="/single-cell/datasets/Diff-expressed-genes/:disease"
                   element={<SingleCelldegdisease />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/datasets/Diff-expressed-genes/:disease/:celltype"
+                  path="/single-cell/datasets/Diff-expressed-genes/:disease/:celltype"
                   element={<SingleCelldegdiseasect />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/datasets/Gene-regulatory-networks/:celltype"
+                  path="/single-cell/datasets/Gene-regulatory-networks/:celltype"
                   element={<SingleCellGeneRegulatoryDatasets />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/datasets/Cell-type-specific-eQTLs/:celltype"
+                  path="/single-cell/datasets/Cell-type-specific-eQTLs/:celltype"
                   element={<SingleCellCelltypeQTL />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/:disease/:gene"
+                  path="/single-cell/:disease/:gene"
                   element={<SingleCellDotPlot />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/:disease"
+                  path="/single-cell/:disease"
                   element={<SingleCellDetails />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/gene/:gene"
+                  path="/single-cell/gene/:gene"
                   element={<SingleCellGeneDetails />}
                 />
                 <Route
-                  path="/psychscreen/single-cell/datasets/:disease"
+                  path="/single-cell/datasets/:disease"
                   element={<SingleCellDatasets />}
                 />
                 <Route
-                  path="/psychscreen/gene/:gene"
+                  path="/gene/:gene"
                   element={<GeneDetails />}
                 />
                 <Route
-                  path="/psychscreen/gene/gtexumap"
+                  path="/gene/gtexumap"
                   element={<GTexUMAP />}
                 />
                 <Route
-                  path="/psychscreen/snp/:snpid"
+                  path="/snp/:snpid"
                   element={<SNPDetails />}
                 />
                 {PORTALS.map((portal, i) => (
                   <Route
                     key={i}
-                    path={`/psychscreen${portal[0] as string}`}
+                    path={portal[0] as string}
                     element={React.createElement(portal[1], {})}
                   />
                 ))}

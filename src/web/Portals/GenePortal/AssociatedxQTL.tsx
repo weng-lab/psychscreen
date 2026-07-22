@@ -459,7 +459,7 @@ const deconqtlColumns: TableColDef[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/snp/${params.value}`}
+        href={`/snp/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         {params.value}
@@ -516,7 +516,7 @@ const allQTLsColumns: TableColDef[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/snp/${params.value}`}
+        href={`/snp/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         {params.value}

@@ -1,6 +1,6 @@
 # Ticket 02: Remove the application URL prefix
 
-**Status:** Ready
+**Status:** Reviewed
 **Spec:** `./spec.md`
 **Requirements:** R2, R3, R4, R6
 **Blocked by:** None
@@ -15,11 +15,11 @@ Migrate the React Router route table and every first-party link, navigation call
 
 ## Acceptance Criteria
 
-- [ ] Every application route is defined without the `/psychscreen` prefix.
-- [ ] Every first-party link, navigation call, and autocomplete target points to an unprefixed route.
-- [ ] Runtime source and configuration contain no `/psychscreen` path literal or compatibility redirect.
-- [ ] Representative home, portal, detail, and cross-portal navigation paths retain their intended destination.
-- [ ] TypeScript validation, focused tests, and a production build pass.
+- [x] Every application route is defined without the `/psychscreen` prefix.
+- [x] Every first-party link, navigation call, and autocomplete target points to an unprefixed route.
+- [x] Runtime source and configuration contain no `/psychscreen` path literal or compatibility redirect.
+- [x] Representative home, portal, detail, and cross-portal navigation paths retain their intended destination.
+- [x] TypeScript validation, focused tests, and a production build pass.
 
 ## Verification
 
