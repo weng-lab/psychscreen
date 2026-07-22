@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "./graphql/client";
 import { AboutUsPage, HomePage as WebHomePage } from "./web/HomePage";
@@ -53,11 +48,7 @@ const App: React.FC = () => {
             </div>
             <div className="main">
               <Routes>
-                <Route
-                  path="/"
-                  element={<Navigate replace to="/psychscreen" />}
-                />
-                <Route path="/psychscreen" element={<WebHomePage />} />
+                <Route path="/" element={<WebHomePage />} />
                 <Route
                   path="/psychscreen/downloads"
                   element={<DownloadsPage />}
