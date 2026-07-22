@@ -1,8 +1,10 @@
 import {
   bigBedModule,
   bigWigModule,
+  caveModule,
   createBrowserStore,
   createTrackStore,
+  methylCModule,
   transcriptModule,
   type AnyTrackModule,
   type BrowserRegion,
@@ -22,6 +24,8 @@ const PORTAL_MODULES = [
   bigWigModule,
   bigBedModule,
   transcriptModule,
+  caveModule,
+  methylCModule,
   manhattanModule,
   ldModule,
 ];

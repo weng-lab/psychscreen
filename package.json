@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "test:brainome": "node --experimental-strip-types --test src/gb-view/brainome-catalog.test.mjs",
+    "test:mukamel": "node --experimental-strip-types --test src/gb-view/mukamel-catalog.test.mjs",
     "prettier": "prettier --write src app"
   },
   "dependencies": {
