@@ -25,7 +25,6 @@ function FullGrn(
 ) {
   return createElement(InteractionRenderer, {
     ...props,
-    moduleType: "singleCellGrn",
   });
 }
 

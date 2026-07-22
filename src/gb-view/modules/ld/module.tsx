@@ -1,5 +1,4 @@
 import {
-  TrackTooltip,
   defineTrackModule,
   fetchOnChange,
   type TrackFetchContext,
@@ -39,21 +38,19 @@ export const ldModule = defineTrackModule<LDVariant>()({
   fetch: fetchLD,
   render: { full: FullLD },
   tooltipComponent: ({ item }) => (
-    <TrackTooltip>
-      <g>
-        <text fill="#000000" fontSize={12} dominantBaseline="middle">
-          {item.id}
+    <g>
+      <text fill="#000000" fontSize={12} dominantBaseline="middle">
+        {item.id}
+      </text>
+      <text y={14} fill="#000000" fontSize={12} dominantBaseline="middle">
+        {item.chromosome}:{item.start}-{item.end}
+      </text>
+      {item.isLead ? (
+        <text y={28} fill="#000000" fontSize={12} dominantBaseline="middle">
+          Lead variant
         </text>
-        <text y={14} fill="#000000" fontSize={12} dominantBaseline="middle">
-          {item.chromosome}:{item.start}-{item.end}
-        </text>
-        {item.isLead ? (
-          <text y={28} fill="#000000" fontSize={12} dominantBaseline="middle">
-            Lead variant
-          </text>
-        ) : null}
-      </g>
-    </TrackTooltip>
+      ) : null}
+    </g>
   ),
 });
 

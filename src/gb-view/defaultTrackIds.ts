@@ -1,23 +1,23 @@
 const SHARED_EPIGENETIC_PREDICTION_TRACK_IDS = [
-  "human-psychscreen::human-psychscreen/epigenetic/adult-bcres",
-  "human-psychscreen::human-psychscreen/epigenetic/fans-all-neun-plus",
-  "human-psychscreen::human-psychscreen/epigenetic/fans-all-neun-minus",
-  "human-psychscreen::human-psychscreen/deep-learned/vlpfc-neurons-atac-signal",
-  "human-psychscreen::human-psychscreen/deep-learned/vlpfc-glia-atac-signal",
+  "psychscreen::epigenetic/adult-bcres",
+  "psychscreen::epigenetic/fans-all-neun-plus",
+  "psychscreen::epigenetic/fans-all-neun-minus",
+  "psychscreen::deep-learned/vlpfc-neurons-atac-signal",
+  "psychscreen::deep-learned/vlpfc-glia-atac-signal",
 ] as const;
 
 const GENE_PSEUDOBULK_TRACK_IDS = [
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/microglia",
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/astrocytes",
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/excitatory-neurons",
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/oligodendrocytes",
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/inhibitory-neurons",
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/opcs",
-  "human-psychscreen::human-psychscreen/pseudobulk-atac/nigral-neurons",
+  "psychscreen::pseudobulk-atac/microglia",
+  "psychscreen::pseudobulk-atac/astrocytes",
+  "psychscreen::pseudobulk-atac/excitatory-neurons",
+  "psychscreen::pseudobulk-atac/oligodendrocytes",
+  "psychscreen::pseudobulk-atac/inhibitory-neurons",
+  "psychscreen::pseudobulk-atac/opcs",
+  "psychscreen::pseudobulk-atac/nigral-neurons",
 ] as const;
 
 const CONSERVATION_TRACK_ID =
-  "human-psychscreen::human-psychscreen/conservation/240-mammal-phylop-vertical-range";
+  "psychscreen::conservation/240-mammal-phylop-vertical-range";
 
 export const GENE_PORTAL_DEFAULT_TRACK_IDS = [
   ...SHARED_EPIGENETIC_PREDICTION_TRACK_IDS,
@@ -34,9 +34,9 @@ export const SINGLE_CELL_GENE_DEFAULT_TRACK_IDS =
   DISEASE_TRAIT_DEFAULT_TRACK_IDS;
 
 export const SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS = [
-  "human-psychscreen::human-psychscreen/atac-seq-peaks/astrocytes",
-  "human-psychscreen::human-psychscreen/atac-seq-peaks/endothelial-cells",
-  "human-psychscreen::human-psychscreen/atac-seq-peaks/opcs",
+  "psychscreen::atac-seq-peaks/astrocytes",
+  "psychscreen::atac-seq-peaks/endothelial-cells",
+  "psychscreen::atac-seq-peaks/opcs",
 ] as const;
 
 export const SINGLE_CELL_GRN_DEFAULT_TRACK_IDS = [

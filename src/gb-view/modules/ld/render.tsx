@@ -45,10 +45,7 @@ export function FullLD({
   const activeId = visibleHoveredId ?? visibleAnchorId ?? visiblePinnedId;
   const activeConnections = getActiveLDConnections(data.connections, activeId);
   const interaction = useInteraction<LDVariant>();
-  const tooltip = useTooltip<LDVariant, LDConfig>({
-    type: "psychscreenLD",
-    config,
-  });
+  const tooltip = useTooltip<LDVariant, LDConfig>();
   const hideTooltip = useEffectEvent(tooltip.hide);
 
   useEffect(() => {

@@ -32,13 +32,9 @@ type RenderedEndpoint = {
 type InteractionRendererProps = TrackRendererProps<
   InteractionConfig,
   GenomicInteraction[]
-> & {
-  moduleType: "singleCellGrn" | "singleCellQtl";
-};
+>;
 
 export function InteractionRenderer({
-  moduleType,
-  config,
   color = "#000000",
   data,
   region,
@@ -50,10 +46,7 @@ export function InteractionRenderer({
   );
   const [pinnedEndpointId, setPinnedEndpointId] = useState<string | null>(null);
   const interaction = useInteraction<InteractionTooltipItem>();
-  const tooltip = useTooltip<InteractionTooltipItem, InteractionConfig>({
-    type: moduleType,
-    config,
-  });
+  const tooltip = useTooltip<InteractionTooltipItem, InteractionConfig>();
   const hideTooltip = useEffectEvent(tooltip.hide);
   const { endpoints, relationships } = layoutInteractions(
     data,

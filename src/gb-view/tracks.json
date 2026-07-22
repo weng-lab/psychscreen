@@ -1,6 +1,6 @@
 {
   "$schema": "./schema.json",
-  "id": "human-psychscreen",
+  "id": "psychscreen",
   "label": "PsychSCREEN",
   "description": "PsychSCREEN browser tracks",
   "views": [
@@ -36,7 +36,7 @@
   "tracks": [
     {
       "type": "bigbed",
-      "id": "human-psychscreen/epigenetic/adult-bcres",
+      "id": "epigenetic/adult-bcres",
       "title": "Adult candidate brain cis-Regulatory Elements (b-cCREs)",
       "display": "dense",
       "height": 30,
@@ -53,7 +53,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/epigenetic/fetal-bcres",
+      "id": "epigenetic/fetal-bcres",
       "title": "Fetal candidate brain cis-Regulatory Elements (b-cCREs)",
       "display": "dense",
       "height": 30,
@@ -70,7 +70,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/epigenetic/encode-ccres-all-tissues",
+      "id": "epigenetic/encode-ccres-all-tissues",
       "title": "ENCODE cCREs, all tissues",
       "display": "dense",
       "height": 30,
@@ -87,7 +87,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-all-neun-plus",
+      "id": "epigenetic/fans-all-neun-plus",
       "title": "all brain regions, aggregated NeuN+",
       "display": "full",
       "height": 50,
@@ -104,7 +104,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-all-neun-minus",
+      "id": "epigenetic/fans-all-neun-minus",
       "title": "all brain regions, aggregated NeuN-",
       "display": "full",
       "height": 50,
@@ -121,7 +121,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-dlpfc-neun-plus",
+      "id": "epigenetic/fans-dlpfc-neun-plus",
       "title": "dorsolateral prefrontal cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -138,7 +138,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-dlpfc-neun-minus",
+      "id": "epigenetic/fans-dlpfc-neun-minus",
       "title": "dorsolateral prefrontal cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -155,7 +155,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-fppfc-neun-plus",
+      "id": "epigenetic/fans-fppfc-neun-plus",
       "title": "frontopolar prefrontal cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -172,7 +172,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-fppfc-neun-minus",
+      "id": "epigenetic/fans-fppfc-neun-minus",
       "title": "frontopolar prefrontal cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -189,7 +189,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-hipp-neun-plus",
+      "id": "epigenetic/fans-hipp-neun-plus",
       "title": "hippocampus NeuN+",
       "display": "full",
       "height": 50,
@@ -206,7 +206,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-hipp-neun-minus",
+      "id": "epigenetic/fans-hipp-neun-minus",
       "title": "hippocampus NeuN-",
       "display": "full",
       "height": 50,
@@ -223,7 +223,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-ins-neun-plus",
+      "id": "epigenetic/fans-ins-neun-plus",
       "title": "insular cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -240,7 +240,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-ins-neun-minus",
+      "id": "epigenetic/fans-ins-neun-minus",
       "title": "insular cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -257,7 +257,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-itc-neun-plus",
+      "id": "epigenetic/fans-itc-neun-plus",
       "title": "inferior temporal gyrus NeuN+",
       "display": "full",
       "height": 50,
@@ -274,7 +274,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-itc-neun-minus",
+      "id": "epigenetic/fans-itc-neun-minus",
       "title": "inferior temporal gyrus NeuN-",
       "display": "full",
       "height": 50,
@@ -291,7 +291,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-mdt-neun-plus",
+      "id": "epigenetic/fans-mdt-neun-plus",
       "title": "mediodorsal thalamic nucleus NeuN+",
       "display": "full",
       "height": 50,
@@ -308,7 +308,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-mdt-neun-minus",
+      "id": "epigenetic/fans-mdt-neun-minus",
       "title": "mediodorsal thalamic nucleus NeuN-",
       "display": "full",
       "height": 50,
@@ -325,7 +325,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-mofc-neun-plus",
+      "id": "epigenetic/fans-mofc-neun-plus",
       "title": "medial orbital frontal cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -342,7 +342,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-mofc-neun-minus",
+      "id": "epigenetic/fans-mofc-neun-minus",
       "title": "medial orbital frontal cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -359,7 +359,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-na-neun-plus",
+      "id": "epigenetic/fans-na-neun-plus",
       "title": "nucleus accumbens NeuN+",
       "display": "full",
       "height": 50,
@@ -376,7 +376,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-na-neun-minus",
+      "id": "epigenetic/fans-na-neun-minus",
       "title": "nucleus accumbens NeuN-",
       "display": "full",
       "height": 50,
@@ -393,7 +393,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-pmc-neun-plus",
+      "id": "epigenetic/fans-pmc-neun-plus",
       "title": "premotor cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -410,7 +410,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-pmc-neun-minus",
+      "id": "epigenetic/fans-pmc-neun-minus",
       "title": "premotor cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -427,7 +427,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-ptm-neun-plus",
+      "id": "epigenetic/fans-ptm-neun-plus",
       "title": "putamen NeuN+",
       "display": "full",
       "height": 50,
@@ -444,7 +444,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-ptm-neun-minus",
+      "id": "epigenetic/fans-ptm-neun-minus",
       "title": "putamen NeuN-",
       "display": "full",
       "height": 50,
@@ -461,7 +461,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-pvc-neun-plus",
+      "id": "epigenetic/fans-pvc-neun-plus",
       "title": "primary visual cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -478,7 +478,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-pvc-neun-minus",
+      "id": "epigenetic/fans-pvc-neun-minus",
       "title": "primary visual cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -495,7 +495,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-vlpfc-neun-plus",
+      "id": "epigenetic/fans-vlpfc-neun-plus",
       "title": "ventrolateral prefrontal cortex NeuN+",
       "display": "full",
       "height": 50,
@@ -512,7 +512,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/fans-vlpfc-neun-minus",
+      "id": "epigenetic/fans-vlpfc-neun-minus",
       "title": "ventrolateral prefrontal cortex NeuN-",
       "display": "full",
       "height": 50,
@@ -529,7 +529,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/dlpfc-healthy-donors",
+      "id": "epigenetic/dlpfc-healthy-donors",
       "title": "healthy donors",
       "display": "full",
       "height": 50,
@@ -546,7 +546,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/dlpfc-bipolar-donors",
+      "id": "epigenetic/dlpfc-bipolar-donors",
       "title": "bipolar donors",
       "display": "full",
       "height": 50,
@@ -563,7 +563,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/dlpfc-schizophrenia-donors",
+      "id": "epigenetic/dlpfc-schizophrenia-donors",
       "title": "schizophrenia donors",
       "display": "full",
       "height": 50,
@@ -580,7 +580,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c1-child-adult-neuron-l4-rorb",
+      "id": "epigenetic/sc-atac-c1-child-adult-neuron-l4-rorb",
       "title": "child/adult layer 4 neuron, RORβ+",
       "display": "full",
       "height": 50,
@@ -597,7 +597,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c2-infant-1month-astrocyte",
+      "id": "epigenetic/sc-atac-c2-infant-1month-astrocyte",
       "title": "infant (1 month old) astrocyte",
       "display": "full",
       "height": 50,
@@ -614,7 +614,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c3-infant-6month-astrocyte",
+      "id": "epigenetic/sc-atac-c3-infant-6month-astrocyte",
       "title": "infant (6 month old) astrocyte",
       "display": "full",
       "height": 50,
@@ -631,7 +631,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c4-child-adult-astrocyte-cluster-1",
+      "id": "epigenetic/sc-atac-c4-child-adult-astrocyte-cluster-1",
       "title": "child/adult astrocyte (cluster 1)",
       "display": "full",
       "height": 50,
@@ -648,7 +648,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c5-child-adult-astrocyte-cluster-2",
+      "id": "epigenetic/sc-atac-c5-child-adult-astrocyte-cluster-2",
       "title": "child/adult astrocyte (cluster 2)",
       "display": "full",
       "height": 50,
@@ -665,7 +665,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c6-child-astrocyte-cluster-3",
+      "id": "epigenetic/sc-atac-c6-child-astrocyte-cluster-3",
       "title": "child/adult astrocyte (cluster 3)",
       "display": "full",
       "height": 50,
@@ -682,7 +682,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c7-infant-10month-astrocyte",
+      "id": "epigenetic/sc-atac-c7-infant-10month-astrocyte",
       "title": "infant (10 month old) astrocyte",
       "display": "full",
       "height": 50,
@@ -699,7 +699,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c8-child-adult-neuron-id2-cluster-1",
+      "id": "epigenetic/sc-atac-c8-child-adult-neuron-id2-cluster-1",
       "title": "child/adult neuron, ID2+ (cluster 1)",
       "display": "full",
       "height": 50,
@@ -716,7 +716,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c9-child-adult-neuron-id2-cluster-2",
+      "id": "epigenetic/sc-atac-c9-child-adult-neuron-id2-cluster-2",
       "title": "child/adult neuron, ID2+ (cluster 2)",
       "display": "full",
       "height": 50,
@@ -733,7 +733,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c10-infant-1month-neuron-tle4",
+      "id": "epigenetic/sc-atac-c10-infant-1month-neuron-tle4",
       "title": "infant (1 month old) neuron, TLE4+",
       "display": "full",
       "height": 50,
@@ -750,7 +750,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c11-infant-3month-neuron-cux2",
+      "id": "epigenetic/sc-atac-c11-infant-3month-neuron-cux2",
       "title": "infant (3 month old) neuron, layer 2-3 CUX2+",
       "display": "full",
       "height": 50,
@@ -767,7 +767,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c12-fetal-22week-neuron-themis",
+      "id": "epigenetic/sc-atac-c12-fetal-22week-neuron-themis",
       "title": "fetal (22 week) neuron, THEMIS+",
       "display": "full",
       "height": 50,
@@ -784,7 +784,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c13-child-inhibitory-neuron-sst",
+      "id": "epigenetic/sc-atac-c13-child-inhibitory-neuron-sst",
       "title": "child inhibitory neuron, SST+",
       "display": "full",
       "height": 50,
@@ -801,7 +801,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c14-child-adult-inhibitory-neuron-sst",
+      "id": "epigenetic/sc-atac-c14-child-adult-inhibitory-neuron-sst",
       "title": "child/adult inhibitory neuron, SST+",
       "display": "full",
       "height": 50,
@@ -818,7 +818,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c15-child-neuron-cux2",
+      "id": "epigenetic/sc-atac-c15-child-neuron-cux2",
       "title": "child neuron, layer 2/3, CUX2+",
       "display": "full",
       "height": 50,
@@ -835,7 +835,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c16-child-adult-neuron-cux2",
+      "id": "epigenetic/sc-atac-c16-child-adult-neuron-cux2",
       "title": "child/adult neuron, layer 2/3, CUX2+",
       "display": "full",
       "height": 50,
@@ -852,7 +852,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c17-fetal-24week-neuron-cux2",
+      "id": "epigenetic/sc-atac-c17-fetal-24week-neuron-cux2",
       "title": "fetal (24 week) neuron, CUX2+",
       "display": "full",
       "height": 50,
@@ -869,7 +869,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c18-infant-10month-developing-neuron",
+      "id": "epigenetic/sc-atac-c18-infant-10month-developing-neuron",
       "title": "infant (10 month old) developing neuron",
       "display": "full",
       "height": 50,
@@ -886,7 +886,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c20-child-adult-oligodendrocyte-cluster-1",
+      "id": "epigenetic/sc-atac-c20-child-adult-oligodendrocyte-cluster-1",
       "title": "child/adult oligodendrocyte (cluster 1)",
       "display": "full",
       "height": 50,
@@ -903,7 +903,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c21-child-adult-oligodendrocyte-cluster-2",
+      "id": "epigenetic/sc-atac-c21-child-adult-oligodendrocyte-cluster-2",
       "title": "child/adult oligodendrocyte (cluster 2)",
       "display": "full",
       "height": 50,
@@ -920,7 +920,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c22-infant-6month-opc",
+      "id": "epigenetic/sc-atac-c22-infant-6month-opc",
       "title": "infant (6 month old) oligodendrocyte precursor",
       "display": "full",
       "height": 50,
@@ -937,7 +937,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c23-child-opc",
+      "id": "epigenetic/sc-atac-c23-child-opc",
       "title": "child oligodendrocyte precursor",
       "display": "full",
       "height": 50,
@@ -954,7 +954,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/epigenetic/sc-atac-c24-child-adult-opc",
+      "id": "epigenetic/sc-atac-c24-child-adult-opc",
       "title": "child/adult oligodendrocyte precursor",
       "display": "full",
       "height": 50,
@@ -971,7 +971,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/vlpfc-glia-atac-signal",
+      "id": "deep-learned/vlpfc-glia-atac-signal",
       "title": "VLPFC glia ATAC signal",
       "display": "full",
       "height": 50,
@@ -988,7 +988,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/vlpfc-neurons-atac-signal",
+      "id": "deep-learned/vlpfc-neurons-atac-signal",
       "title": "VLPFC neurons ATAC signal",
       "display": "full",
       "height": 50,
@@ -1005,7 +1005,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/putamen-glia",
+      "id": "deep-learned/putamen-glia",
       "title": "putamen glia",
       "display": "full",
       "height": 50,
@@ -1022,7 +1022,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/putamen-neurons",
+      "id": "deep-learned/putamen-neurons",
       "title": "putamen neurons",
       "display": "full",
       "height": 50,
@@ -1039,7 +1039,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/astrocytes",
+      "id": "deep-learned/astrocytes",
       "title": "astrocytes",
       "display": "full",
       "height": 50,
@@ -1056,7 +1056,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/gaba-ergic-type-i",
+      "id": "deep-learned/gaba-ergic-type-i",
       "title": "GABA-ergic type I",
       "display": "full",
       "height": 50,
@@ -1073,7 +1073,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/gaba-ergic-type-ii",
+      "id": "deep-learned/gaba-ergic-type-ii",
       "title": "GABA-ergic type II",
       "display": "full",
       "height": 50,
@@ -1090,7 +1090,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/glutaminergic-type-i",
+      "id": "deep-learned/glutaminergic-type-i",
       "title": "glutaminergic type I",
       "display": "full",
       "height": 50,
@@ -1107,7 +1107,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/glutaminergic-type-ii",
+      "id": "deep-learned/glutaminergic-type-ii",
       "title": "glutaminergic type II",
       "display": "full",
       "height": 50,
@@ -1124,7 +1124,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/microglia",
+      "id": "deep-learned/microglia",
       "title": "microglia",
       "display": "full",
       "height": 50,
@@ -1141,7 +1141,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/oligodendrocytes",
+      "id": "deep-learned/oligodendrocytes",
       "title": "oligodendrocytes",
       "display": "full",
       "height": 50,
@@ -1158,7 +1158,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/oligodendrocyte-precursors",
+      "id": "deep-learned/oligodendrocyte-precursors",
       "title": "oligodendrocyte precursors",
       "display": "full",
       "height": 50,
@@ -1175,7 +1175,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/fetal-50-days",
+      "id": "deep-learned/fetal-50-days",
       "title": "fetal-50-days",
       "display": "full",
       "height": 50,
@@ -1192,7 +1192,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/fetal-80-days",
+      "id": "deep-learned/fetal-80-days",
       "title": "fetal-80-days",
       "display": "full",
       "height": 50,
@@ -1209,7 +1209,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/fetal-105-days",
+      "id": "deep-learned/fetal-105-days",
       "title": "fetal-105-days",
       "display": "full",
       "height": 50,
@@ -1226,7 +1226,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/deep-learned/241-way-mammalian-phylop",
+      "id": "deep-learned/241-way-mammalian-phylop",
       "title": "241-way mammalian phylo-P",
       "display": "full",
       "height": 50,
@@ -1243,7 +1243,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/microglia",
+      "id": "pseudobulk-atac/microglia",
       "title": "Microglia",
       "display": "full",
       "height": 50,
@@ -1260,7 +1260,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/astrocytes",
+      "id": "pseudobulk-atac/astrocytes",
       "title": "Astrocytes",
       "display": "full",
       "height": 50,
@@ -1277,7 +1277,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/excitatory-neurons",
+      "id": "pseudobulk-atac/excitatory-neurons",
       "title": "ExcitatoryNeurons",
       "display": "full",
       "height": 50,
@@ -1294,7 +1294,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/oligodendrocytes",
+      "id": "pseudobulk-atac/oligodendrocytes",
       "title": "Oligodendrocytes",
       "display": "full",
       "height": 50,
@@ -1311,7 +1311,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/inhibitory-neurons",
+      "id": "pseudobulk-atac/inhibitory-neurons",
       "title": "InhibitoryNeurons",
       "display": "full",
       "height": 50,
@@ -1328,7 +1328,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/opcs",
+      "id": "pseudobulk-atac/opcs",
       "title": "OPCs",
       "display": "full",
       "height": 50,
@@ -1345,7 +1345,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/pseudobulk-atac/nigral-neurons",
+      "id": "pseudobulk-atac/nigral-neurons",
       "title": "NigralNeurons",
       "display": "full",
       "height": 50,
@@ -1362,7 +1362,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/conservation/240-mammal-phylop-vertical-range",
+      "id": "conservation/240-mammal-phylop-vertical-range",
       "title": "240-mammal phyloP conservation score (Vertical Viewing Range [-2 to 9])",
       "display": "full",
       "height": 50,
@@ -1383,7 +1383,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/conservation/100-vertebrate-phylop",
+      "id": "conservation/100-vertebrate-phylop",
       "title": "100-vertebrate phyloP conservation score",
       "display": "full",
       "height": 50,
@@ -1400,7 +1400,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/conservation/240-mammal-phylop",
+      "id": "conservation/240-mammal-phylop",
       "title": "240-mammal phyloP conservation score",
       "display": "full",
       "height": 50,
@@ -1417,7 +1417,7 @@
     },
     {
       "type": "bigwig",
-      "id": "human-psychscreen/conservation/43-primate-phastcons",
+      "id": "conservation/43-primate-phastcons",
       "title": "43-primate conservation score",
       "display": "full",
       "height": 50,
@@ -1434,7 +1434,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/astrocytes",
+      "id": "atac-seq-peaks/astrocytes",
       "title": "Astrocytes",
       "display": "dense",
       "height": 35,
@@ -1451,7 +1451,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/endothelial-cells",
+      "id": "atac-seq-peaks/endothelial-cells",
       "title": "Endothelial Cells",
       "display": "dense",
       "height": 35,
@@ -1468,7 +1468,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/opcs",
+      "id": "atac-seq-peaks/opcs",
       "title": "Oligodendrocyte Precursor Cells",
       "display": "dense",
       "height": 35,
@@ -1485,7 +1485,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/excitatory-neurons",
+      "id": "atac-seq-peaks/excitatory-neurons",
       "title": "Excitatory Neurons",
       "display": "dense",
       "height": 30,
@@ -1502,7 +1502,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/oligodendrocytes",
+      "id": "atac-seq-peaks/oligodendrocytes",
       "title": "Oligodendrocytes",
       "display": "dense",
       "height": 30,
@@ -1519,7 +1519,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/inhibitory-neurons",
+      "id": "atac-seq-peaks/inhibitory-neurons",
       "title": "Inhibitory Neurons",
       "display": "dense",
       "height": 30,
@@ -1536,7 +1536,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/microglia",
+      "id": "atac-seq-peaks/microglia",
       "title": "Microglia",
       "display": "dense",
       "height": 30,
@@ -1553,7 +1553,7 @@
     },
     {
       "type": "bigbed",
-      "id": "human-psychscreen/atac-seq-peaks/all-celltypes",
+      "id": "atac-seq-peaks/all-celltypes",
       "title": "All CellTypes",
       "display": "dense",
       "height": 30,

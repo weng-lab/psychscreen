@@ -29,10 +29,7 @@ export function FullManhattan({
     height,
   );
   const interaction = useInteraction<ManhattanPoint>();
-  const tooltip = useTooltip<ManhattanPoint, ManhattanConfig>({
-    type: "manhattan",
-    config,
-  });
+  const tooltip = useTooltip<ManhattanPoint, ManhattanConfig>();
   const hideTooltip = useEffectEvent(tooltip.hide);
 
   useEffect(() => {

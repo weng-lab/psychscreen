@@ -1,4 +1,3 @@
-import { TrackTooltip } from "@weng-lab/genomebrowser-v2";
 import { createElement } from "react";
 import type { InteractionTooltipItem } from "./types";
 
@@ -25,23 +24,19 @@ export function InteractionTooltip({
   }
 
   return createElement(
-    TrackTooltip,
+    "g",
     null,
-    createElement(
-      "g",
-      null,
-      ...lines.map((line, index) =>
-        createElement(
-          "text",
-          {
-            key: line,
-            y: index * 14,
-            fill: "#000000",
-            fontSize: 12,
-            dominantBaseline: "middle",
-          },
-          line,
-        ),
+    ...lines.map((line, index) =>
+      createElement(
+        "text",
+        {
+          key: line,
+          y: index * 14,
+          fill: "#000000",
+          fontSize: 12,
+          dominantBaseline: "middle",
+        },
+        line,
       ),
     ),
   );

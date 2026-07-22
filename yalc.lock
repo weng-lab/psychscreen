@@ -2,11 +2,11 @@
   "version": "v1",
   "packages": {
     "@weng-lab/genomebrowser-v2": {
-      "signature": "a6706fb4a9bfb075fd404da3b8c52209",
+      "signature": "1efc9b8d0b64c0227592251e1960f0a8",
       "file": true
     },
     "@weng-lab/genomebrowser-ui-v2": {
-      "signature": "9e8a4194f2703d5ac1a4ec607aca9587",
+      "signature": "296dfea3afdcaa4a731b57abf75c1580",
       "file": true
     }
   }

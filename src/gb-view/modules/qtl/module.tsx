@@ -25,7 +25,6 @@ function FullQtl(
 ) {
   return createElement(InteractionRenderer, {
     ...props,
-    moduleType: "singleCellQtl",
   });
 }
 

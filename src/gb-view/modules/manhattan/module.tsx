@@ -1,8 +1,4 @@
-import {
-  TrackTooltip,
-  defineTrackModule,
-  fetchOnChange,
-} from "@weng-lab/genomebrowser-v2";
+import { defineTrackModule, fetchOnChange } from "@weng-lab/genomebrowser-v2";
 import { z } from "zod";
 import { fetchManhattan } from "./fetch";
 import { FullManhattan } from "./render";
@@ -41,18 +37,16 @@ export const manhattanModule = defineTrackModule<ManhattanPoint>()({
   render: { full: FullManhattan },
   settingsComponent: ManhattanSettings,
   tooltipComponent: ({ item }) => (
-    <TrackTooltip>
-      <g>
-        <text fill="#000000" fontSize={12} dominantBaseline="middle">
-          {item.id}
-        </text>
-        <text y={14} fill="#000000" fontSize={12} dominantBaseline="middle">
-          {item.chromosome}:{item.start}-{item.end}
-        </text>
-        <text y={28} fill="#000000" fontSize={12} dominantBaseline="middle">
-          Value: {item.value}
-        </text>
-      </g>
-    </TrackTooltip>
+    <g>
+      <text fill="#000000" fontSize={12} dominantBaseline="middle">
+        {item.id}
+      </text>
+      <text y={14} fill="#000000" fontSize={12} dominantBaseline="middle">
+        {item.chromosome}:{item.start}-{item.end}
+      </text>
+      <text y={28} fill="#000000" fontSize={12} dominantBaseline="middle">
+        Value: {item.value}
+      </text>
+    </g>
   ),
 });
