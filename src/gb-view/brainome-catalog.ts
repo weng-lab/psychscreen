@@ -2,25 +2,35 @@ import type { TrackSelectCatalog } from "@weng-lab/genomebrowser-ui";
 
 export const BRAINOME_NEUROTRANSMITTERS = ["GABA", "GLU"] as const;
 
+function lightenHexColor(color: string, amount: number) {
+  const value = Number.parseInt(color.slice(1), 16);
+  const channels = [value >> 16, (value >> 8) & 0xff, value & 0xff];
+
+  return `#${channels
+    .map((channel) => Math.round(channel + (255 - channel) * amount))
+    .map((channel) => channel.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
 export const BRAINOME_AGES = [
-  { value: "Infancy", label: "Infancy", color: "#ff0000" },
+  { value: "Infancy", label: "Infancy", color: "#F7C98A" },
   {
     value: "Early_Childhood",
     label: "Early Childhood",
-    color: "#ff6f00",
+    color: "#F4A154",
   },
   {
     value: "Late_Childhood",
     label: "Late Childhood",
-    color: "#008000",
+    color: "#EF7A3B",
   },
-  { value: "Adolescence", label: "Adolescence", color: "#0000ff" },
+  { value: "Adolescence", label: "Adolescence", color: "#D2614D" },
   {
     value: "Early_Adulthood",
     label: "Early Adulthood",
-    color: "#880088",
+    color: "#9D4255",
   },
-  { value: "Adulthood", label: "Adulthood", color: "#000000" },
+  { value: "Adulthood", label: "Adulthood", color: "#774147" },
 ] as const;
 
 function createBrainomeTrack(
@@ -35,6 +45,8 @@ function createBrainomeTrack(
     config: {
       neurotransmitter,
       age: age.value,
+      topColor: lightenHexColor(age.color, 0.5),
+      bottomColor: age.color,
     },
     metadata: {
       neurotransmitter,
