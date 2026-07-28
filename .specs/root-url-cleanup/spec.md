@@ -41,3 +41,21 @@ Verify the root route renders the home page directly, inspect application source
 ## Risks and Edge Cases
 
 Hard-coded paths are distributed across route declarations, links, grid cells, and autocomplete targets. Missing one can produce navigation that works initially but fails from a specific portal. Route ordering must continue to prevent generic parameter routes from shadowing more specific paths.
+
+## Amendments
+
+### A001 - Preserve legacy prefixed URLs
+
+- **Supersedes:** Requirement R4.
+- **Replacement:** Runtime application source and configuration use unprefixed routes as canonical URLs while preserving `/psychscreen` and `/psychscreen/...` legacy URLs through compatibility routing that retains the corresponding destination, path parameters, query string, and fragment.
+- **Reason:** Existing references and previously shared URLs must remain functional.
+
+### A002 - Compatibility routing decision
+
+- **Supersedes:** The Technical Decisions statement that existing `/psychscreen` URLs are intentionally not preserved through redirects or duplicate route definitions.
+- **Replacement:** The domain root and unprefixed application routes remain canonical. Legacy `/psychscreen` URLs are compatibility entry points and must resolve to their corresponding canonical unprefixed URLs without restoring prefixed first-party navigation.
+
+### A003 - Compatibility scope
+
+- **Supersedes:** The Out of Scope item excluding redirects or compatibility behavior for historical `/psychscreen` URLs.
+- **Replacement:** Compatibility behavior for historical `/psychscreen` URLs is in scope; unrelated routing-framework changes remain out of scope.

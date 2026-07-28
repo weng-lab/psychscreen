@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "./graphql/client";
 import { AboutUsPage, HomePage as WebHomePage } from "./web/HomePage";
@@ -27,6 +33,7 @@ import FooterPanel from "./web/HomePage/FooterPanel";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import AppBar from "./web/HomePage/AppBar";
+import { getLegacyRouteTarget } from "./legacy-route";
 
 export const PORTALS: [string, React.FC][] = [
   ["/traits", DiseaseTraitPortal],
@@ -34,6 +41,13 @@ export const PORTALS: [string, React.FC][] = [
   ["/snp", SNPPortal],
   ["/single-cell", SingleCellPortal],
 ];
+
+const LegacyRouteRedirect: React.FC = () => {
+  const location = useLocation();
+  const target = getLegacyRouteTarget(location);
+
+  return <Navigate replace to={target ?? "/"} />;
+};
 
 const App: React.FC = () => {
   return (
@@ -113,6 +127,10 @@ const App: React.FC = () => {
                     element={React.createElement(portal[1], {})}
                   />
                 ))}
+                <Route
+                  path="/psychscreen/*"
+                  element={<LegacyRouteRedirect />}
+                />
               </Routes>
             </div>
             <div className="footer">
