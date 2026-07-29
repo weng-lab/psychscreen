@@ -9,7 +9,6 @@ import {
   Stack,
   FormLabel,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 
 import Grid from "@mui/material/Grid";
@@ -20,13 +19,8 @@ import {
   DownloadPlotHandle,
   DotPlot,
 } from "@weng-lab/visualization";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { TwoPaneLayout } from "@weng-lab/ui-components";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -171,13 +165,6 @@ function useSingleCellUMAPData(dataset: string) {
     },
     context: { clientName: "staging" },
   });
-}
-
-function generateColors(n: number) {
-  const colors: string[] = [];
-  for (let i = 0; i < n; ++i)
-    colors.push(`hsl(${(360 / n) * (n - i)}, 80%, 50%)`);
-  return colors;
 }
 
 const celltypeColors = {
@@ -479,41 +466,6 @@ const SingleCell: React.FC<{
     return () => observer.disconnect();
   }, []);
 
-  // Match the table's height to the UMAP column (plot + legend + download row) so they end at the same line.
-  // Uses callback refs (not useRef + useEffect([])) since these elements only mount once data resolves,
-  // which happens after the initial render -- a one-time effect would miss the later mount.
-  const [umapColumnHeight, setUmapColumnHeight] = useState(0);
-  const umapColumnObserver = useRef<ResizeObserver | null>(null);
-  const umapColumnRef = useCallback((el: HTMLDivElement | null) => {
-    umapColumnObserver.current?.disconnect();
-    if (!el) return;
-    const observer = new ResizeObserver(([entry]) =>
-      setUmapColumnHeight(entry.contentRect.height),
-    );
-    observer.observe(el);
-    umapColumnObserver.current = observer;
-  }, []);
-  // Height (including margin) of the "By Cell Type"/"By Broader Cell Type" buttons sitting above the
-  // table in its column, subtracted from umapColumnHeight so the table itself (not its column) ends
-  // level with the UMAP column.
-  const [tableHeaderHeight, setTableHeaderHeight] = useState(0);
-  const tableHeaderObserver = useRef<ResizeObserver | null>(null);
-  const tableHeaderRef = useCallback(
-    (el: HTMLDivElement | null) => {
-      tableHeaderObserver.current?.disconnect();
-      if (!el) return;
-      const measure = () =>
-        setTableHeaderHeight(
-          el.getBoundingClientRect().height + parseFloat(theme.spacing(1)),
-        );
-      measure();
-      const observer = new ResizeObserver(measure);
-      observer.observe(el);
-      tableHeaderObserver.current = observer;
-    },
-    [theme],
-  );
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
@@ -656,45 +608,47 @@ const SingleCell: React.FC<{
           )}
         </Grid>
       ) : (
-        <>
+        <Grid size={12}>
+          <Stack direction="row" spacing={1} mb={1}>
+            <Button
+              variant={ctClass === "by Cell type" ? "contained" : "outlined"}
+              key={"by Cell type"}
+              onClick={() => setCtClass("by Cell type")}
+            >
+              By Cell Type
+            </Button>
+            <Button
+              variant={
+                ctClass === "by Broader Cell type" ? "contained" : "outlined"
+              }
+              key={"by Broader Cell type"}
+              onClick={() => setCtClass("by Broader Cell type")}
+            >
+              By Broader Cell Type
+            </Button>
+          </Stack>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : (
-            <Grid size={{ xs: 12, md: 5 }}>
-              <Stack direction="row" spacing={1} mb={1} ref={tableHeaderRef}>
-                <Button
-                  variant={
-                    ctClass === "by Cell type" ? "contained" : "outlined"
-                  }
-                  key={"by Cell type"}
-                  onClick={() => setCtClass("by Cell type")}
-                >
-                  By Cell Type
-                </Button>
-                <Button
-                  variant={
-                    ctClass === "by Broader Cell type"
-                      ? "contained"
-                      : "outlined"
-                  }
-                  key={"by Broader Cell type"}
-                  onClick={() => setCtClass("by Broader Cell type")}
-                >
-                  By Broader Cell Type
-                </Button>
-              </Stack>
-              {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
-                <SingleCellExpressionTable
-                  rows={
-                    ctClass === "by Cell type"
-                      ? scrows
-                          .filter((s) => s.celltype !== "RB")
-                          .filter((e) => e.dataset === dataset)
-                      : ctrows.filter((e) => e.dataset === dataset)
-                  }
-                  onRowMouseEnter={(row) => setHighlighted(row.celltype)}
-                  onRowMouseLeave={() => setHighlighted("")}
-                />
+            <TwoPaneLayout
+              direction={{ xs: "column", md: "row" }}
+              rowHeight="700px"
+              TableComponent={
+                scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
+                  <SingleCellExpressionTable
+                    rows={
+                      ctClass === "by Cell type"
+                        ? scrows
+                            .filter((s) => s.celltype !== "RB")
+                            .filter((e) => e.dataset === dataset)
+                        : ctrows.filter((e) => e.dataset === dataset)
+                    }
+                    onRowMouseEnter={(row) => setHighlighted(row.celltype)}
+                    onRowMouseLeave={() => setHighlighted("")}
+                  />
+                ) : (
+                  <>{"Data Not available"}</>
+                )
               }
               plots={[
                 {
