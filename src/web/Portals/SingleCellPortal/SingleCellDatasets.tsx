@@ -312,7 +312,7 @@ const SingleCellDatasets: React.FC = () => {
                   width={500}
                   onCardClick={(v?: string) => {
                     navigate(
-                      `/psychscreen/single-cell/datasets/Diff-expressed-genes/${v}`,
+                      `/single-cell/datasets/Diff-expressed-genes/${v}`,
                       { state: { searchvalue: v } }
                     );
                   }}
@@ -411,7 +411,7 @@ const SingleCellDatasets: React.FC = () => {
                     width={500}
                     onCardClick={(v?: string) => {
                       navigate(
-                        `/psychscreen/single-cell/datasets/Gene-regulatory-networks/${v}`,
+                        `/single-cell/datasets/Gene-regulatory-networks/${v}`,
                         { state: { searchvalue: v } }
                       );
                     }}
@@ -453,7 +453,7 @@ const SingleCellDatasets: React.FC = () => {
                     width={500}
                     onCardClick={(v?: string) => {
                       navigate(
-                        `/psychscreen/single-cell/datasets/Cell-type-specific-eQTLs/${v}`,
+                        `/single-cell/datasets/Cell-type-specific-eQTLs/${v}`,
                         { state: { searchvalue: v } }
                       );
                     }}
@@ -472,7 +472,7 @@ const SingleCellDatasets: React.FC = () => {
               {/* <HorizontalCard
                 width={500}
                 onCardClick={(v?: string) => {
-                  navigate(`/psychscreen/single-cell/${v}`, {
+                  navigate(`/single-cell/${v}`, {
                     state: { searchvalue: v },
                   });
                 }}

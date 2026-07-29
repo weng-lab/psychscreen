@@ -136,7 +136,7 @@ type QueryResponse = {
 
 export function expandCoordinates(
   coordinates: GenomicRange,
-  l = 20000
+  l = 20000,
 ): GenomicRange {
   return {
     chromosome: coordinates.chromosome,
@@ -154,6 +154,7 @@ const SNPDetails: React.FC = () => {
     variables: {
       snpid,
     },
+    context: { clientName: "staging" },
   });
 
   const { chromosome, start, end } = state
@@ -165,11 +166,11 @@ const SNPDetails: React.FC = () => {
       start: parseInt(start),
       end: parseInt(end),
     }),
-    [chromosome, start, end]
+    [chromosome, start, end],
   );
   const expandedCoordinates = useMemo(
     () => expandCoordinates(coordinates, 25000),
-    [coordinates]
+    [coordinates],
   );
 
   const handleTabChange = (_: any, newTabIndex: number) => {
@@ -202,9 +203,7 @@ const SNPDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid size={12}>
-        <Typography variant="h4">
-          SNP details: {snpid}
-        </Typography>
+        <Typography variant="h4">SNP details: {snpid}</Typography>
       </Grid>
       <Grid size={12}>
         <Box>

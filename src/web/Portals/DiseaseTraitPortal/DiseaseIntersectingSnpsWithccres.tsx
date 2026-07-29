@@ -43,7 +43,7 @@ const formatEntry: TableColDef<GwasIntersectingSnpsWithCcres>[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/snp/${params.value}`}
+        href={`/snp/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         {params.value}
@@ -66,7 +66,7 @@ const formatEntry: TableColDef<GwasIntersectingSnpsWithCcres>[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${params.value}`}
+        href={`/gene/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         <i>{params.value}</i>
@@ -115,7 +115,7 @@ const bcreformatEntry: TableColDef<GwasIntersectingSnpsWithCcres>[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/snp/${params.value}`}
+        href={`/snp/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         {params.value}
@@ -138,7 +138,7 @@ const bcreformatEntry: TableColDef<GwasIntersectingSnpsWithCcres>[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${params.value}`}
+        href={`/gene/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         <i>{params.value}</i>

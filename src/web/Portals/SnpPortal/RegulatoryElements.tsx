@@ -156,23 +156,25 @@ const RegulatoryElements: React.FC<RegulatoryElementsProps> = (props) => {
       assembly: props.assembly,
       coordinates: props.coordinates,
     },
+    context: { clientName: "staging" },
   });
   const ur = useMemo(
     () => new Set((data?.cCREQuery || []).map((x) => x.rDHS)),
-    [data]
+    [data],
   );
   const allResults = useMemo(
     () => [
       ...(data?.cCREQuery || []),
       ...(data?.rDHSQuery || []).filter((x) => !ur.has(x.accession)),
     ],
-    [data, ur]
+    [data, ur],
   );
   const combinedResults = useMemo(() => [...allResults], [allResults]);
 
   return loading ? (
     <>
-      <Typography variant="body1"
+      <Typography
+        variant="body1"
         style={{
           display: "flex",
           alignItems: "center",

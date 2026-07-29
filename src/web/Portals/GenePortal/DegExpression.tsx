@@ -97,6 +97,7 @@ export const DegExpression = (props) => {
       gene: props.gene,
       disease: dataset,
     },
+    context: { clientName: "staging" },
   });
   const handleChange = (event) => {
     setDataset(event.target.value);
@@ -125,17 +126,12 @@ export const DegExpression = (props) => {
   return (
     <>
       <Grid container>
-        <Grid
-          size={12}
-          style={{ marginBottom: "2em", marginTop: "2em" }}
-        >
+        <Grid size={12} style={{ marginBottom: "2em", marginTop: "2em" }}>
           {
             <>
-              <Grid
-                size={12}
-                style={{ marginBottom: "2em" }}
-              >
-                <Typography variant="body1"
+              <Grid size={12} style={{ marginBottom: "2em" }}>
+                <Typography
+                  variant="body1"
                   style={{ marginLeft: "1em", marginTop: "0.1em" }}
                 >
                   Select PsychENCODE Dataset:
@@ -176,7 +172,7 @@ export const DegExpression = (props) => {
           ) : dotplotData.length == 0 ? (
             <>{"No data available for " + props.gene}</>
           ) : (
-            <div style={{height: 250}}>
+            <div style={{ height: 250 }}>
               <DotPlot
                 deg={true}
                 data={dotplotData.map((k) => ({

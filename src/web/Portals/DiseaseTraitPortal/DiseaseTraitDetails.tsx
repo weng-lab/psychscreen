@@ -13,15 +13,53 @@ import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
 import {
   DISEASE_CARDS,
+  FULLSUMSTAT_URL_MAP,
   URL_CHROM_MAP,
   URL_MAP,
 } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
-import { riskLoci } from "./utils";
+import { diseaseRiskLocusHighlights, riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
-import { GenomicRange } from "../GenePortal/AssociatedxQTL";
+import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import Button from "@mui/material/Button";
+import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { DISEASE_TRAIT_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
+import { createDiseaseTraitBrowserSession } from "../../../gb-view/stores";
+import type { BrowserRegion, Highlight } from "@weng-lab/genomebrowser";
+
+function DiseaseTraitBrowserPanel({
+  region,
+  summaryStatisticsUrl,
+  cytobandMarkers,
+  visible,
+}: {
+  region: BrowserRegion;
+  summaryStatisticsUrl?: string;
+  cytobandMarkers?: readonly Highlight[];
+  visible: boolean;
+}) {
+  const [session] = useState(() =>
+    createDiseaseTraitBrowserSession(region, summaryStatisticsUrl),
+  );
+
+  useEffect(() => {
+    session.setRegion(region);
+  }, [region, session]);
+
+  useEffect(() => () => session.dispose(), [session]);
+
+  return (
+    <Stack sx={{ display: visible ? "block" : "none" }}>
+      <GenomeBrowserView
+        browserStore={session.browserStore}
+        trackStore={session.trackStore}
+        defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
+        cytobandMarkers={cytobandMarkers}
+      />
+    </Stack>
+  );
+}
 
 const AssociatedSnpQuery = gql`
   query gwassnpAssoQuery(
@@ -162,6 +200,7 @@ function useLoci(trait: string) {
         },
       ],
     },
+    context: { clientName: "staging" },
   });
 
   const loci = useMemo(() => {
@@ -175,7 +214,7 @@ function useLoci(trait: string) {
           start: x.start,
           end: x.stop,
           p: Math.min(...x.association_p_val),
-        })) || []
+        })) || [],
       );
     const d = data as {
       bigRequests: [{ data: (GenomicRange & { name: string; chr: string })[] }];
@@ -187,11 +226,11 @@ function useLoci(trait: string) {
           start: x.start,
           end: x.end,
           p: Math.exp(-+x.name.split("_")[1]),
-        })
+        }),
       ) || [],
-      trait
+      trait,
     );
-  }, [data]);
+  }, [data, trait]);
 
   return { loci, loading, data };
 }
@@ -199,31 +238,55 @@ function useLoci(trait: string) {
 const DiseaseTraitDetails: React.FC = () => {
   const { disease } = useParams();
   const [page, setPage] = useState<number>(-1);
-  const { state }: any = useLocation();
-  const { searchvalue, diseaseDesc } = state
-    ? state
-    : { searchvalue: "", diseaseDesc: "" };
-
-  //This needs to be set to the diseases first risk loci
-  const [browserCoordinates, setBrowserCoordinates] = useState<GenomicRange>({
-    chromosome: "chr1",
-    start: 161033654,
-    end: 161317875,
-  });
+  const [selectedBrowserRegion, setSelectedBrowserRegion] = useState<{
+    disease?: string;
+    region: BrowserRegion;
+  }>();
+  const { state } = useLocation() as {
+    state: { diseaseDesc?: string } | null;
+  };
+  const diseaseDesc = state?.diseaseDesc ?? "";
 
   const diseaseLabel =
     disease && DISEASE_CARDS.find((d) => d.val === disease)?.cardLabel;
 
   const { loci, data } = useLoci(disease || "");
+  const riskLocusMarkers = useMemo(
+    () => diseaseRiskLocusHighlights(disease || "", loci || []),
+    [disease, loci],
+  );
+  const locusCoordinates = useMemo<BrowserRegion | undefined>(() => {
+    const firstLocus = loci?.[0];
+    if (!firstLocus?.chromosome) return undefined;
 
-  useEffect(() => {
-    loci &&
-      setBrowserCoordinates({
-        chromosome: loci[0].chromosome,
-        start: loci[0].start + 1500000,
-        end: loci[0].end - 1500000,
-      });
+    return {
+      chromosome: firstLocus.chromosome,
+      start: firstLocus.start + 1_500_000,
+      end: firstLocus.end - 1_500_000,
+    };
   }, [loci]);
+  const defaultBrowserCoordinates = useMemo<BrowserRegion | undefined>(() => {
+    if (!locusCoordinates) return undefined;
+
+    const range = locusCoordinates.end - locusCoordinates.start;
+    if (range < 4_000_000) return locusCoordinates;
+
+    const midpoint = Math.floor(
+      (locusCoordinates.start + locusCoordinates.end) / 2,
+    );
+    return {
+      chromosome: locusCoordinates.chromosome,
+      start: midpoint - 2_000_000,
+      end: midpoint + 2_000_000,
+    };
+  }, [locusCoordinates]);
+  const browserCoordinates =
+    selectedBrowserRegion && selectedBrowserRegion.disease === disease
+      ? selectedBrowserRegion.region
+      : defaultBrowserCoordinates;
+  const summaryStatisticsUrl = disease
+    ? FULLSUMSTAT_URL_MAP[disease as keyof typeof FULLSUMSTAT_URL_MAP]
+    : undefined;
 
   const { data: genesdata } = useQuery(AssociatedGenesQuery, {
     variables: {
@@ -231,6 +294,7 @@ const DiseaseTraitDetails: React.FC = () => {
       //  limit: 1000,
       skip: disease === "",
     },
+    context: { clientName: "staging" },
   });
   const { data: gwasIntersectingSnpWithCcresData } = useQuery(
     GwasIntersectingSnpswithCcresQuery,
@@ -239,7 +303,8 @@ const DiseaseTraitDetails: React.FC = () => {
         disease: disease,
       },
       skip: disease === "",
-    }
+      context: { clientName: "staging" },
+    },
   );
   const { data: adultgwasIntersectingSnpWithBcresData } = useQuery(
     GwasIntersectingSnpswithBcresQuery,
@@ -249,7 +314,8 @@ const DiseaseTraitDetails: React.FC = () => {
         bcre_group: "adult",
       },
       skip: disease === "",
-    }
+      context: { clientName: "staging" },
+    },
   );
   const { data: fetalgwasIntersectingSnpWithBcresData } = useQuery(
     GwasIntersectingSnpswithBcresQuery,
@@ -259,7 +325,8 @@ const DiseaseTraitDetails: React.FC = () => {
         bcre_group: "fetal",
       },
       skip: disease === "",
-    }
+      context: { clientName: "staging" },
+    },
   );
   const trait = disease ? URL_MAP[disease] : "";
   const significantSNPs = useSNPs(traitKey(trait));
@@ -278,7 +345,8 @@ const DiseaseTraitDetails: React.FC = () => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid size={12}>
-        <Typography variant="h2"
+        <Typography
+          variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "48px",
@@ -290,7 +358,8 @@ const DiseaseTraitDetails: React.FC = () => {
         </Typography>
       </Grid>
       <Grid size={12}>
-        <Typography variant="body1"
+        <Typography
+          variant="body1"
           style={{
             fontSize: "16px",
             lineHeight: "24px",
@@ -353,6 +422,14 @@ const DiseaseTraitDetails: React.FC = () => {
                 Associated SNPs in locus
               </Button>
             )}
+          {browserCoordinates && (
+            <Button
+              variant={page === 3 ? "contained" : "outlined"}
+              onClick={() => setPage(3)}
+            >
+              Brain Epigenome Browser
+            </Button>
+          )}
           {/* Unused, can I remove? */}
           {significantSNPs && significantSNPs.length > 0 && 0 > 1 && (
             <Button
@@ -369,6 +446,18 @@ const DiseaseTraitDetails: React.FC = () => {
           <RiskLocusView
             loci={loci || []}
             disease={disease || ""}
+            onLocusClick={(region) => {
+              if (!region.chromosome) return;
+              setSelectedBrowserRegion({
+                disease,
+                region: {
+                  chromosome: region.chromosome,
+                  start: region.start,
+                  end: region.end,
+                },
+              });
+              setPage(3);
+            }}
           />
         ) : page === 0 && gassoc && gassoc.length > 0 ? (
           <GeneAssociations disease={disease || ""} data={gassoc} />
@@ -385,13 +474,14 @@ const DiseaseTraitDetails: React.FC = () => {
             }
           />
         ) : page === 2 &&
+          locusCoordinates &&
           gwasIntersectingSnpWithCcresData &&
           adultgwasIntersectingSnpWithBcresData &&
           fetalgwasIntersectingSnpWithBcresData &&
           gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
             .length > 0 ? (
           <DiseaseIntersectingSnpsWithccres
-            coordinates={browserCoordinates}
+            coordinates={locusCoordinates}
             disease={disease || ""}
             ccredata={
               gwasIntersectingSnpWithCcresData.gwasintersectingSnpsWithCcreQuery
@@ -403,12 +493,21 @@ const DiseaseTraitDetails: React.FC = () => {
               fetalgwasIntersectingSnpWithBcresData.gwasintersectingSnpsWithBcreQuery
             }
           />
-        ) : page === 4 &&
+        ) : page === 3 ? null : page === 4 &&
           significantSNPs &&
           significantSNPs.length > 0 &&
           0 > 1 ? (
           // Unused, can I remove?
           <SignifcantSNPs trait={trait} />
+        ) : null}
+        {browserCoordinates ? (
+          <DiseaseTraitBrowserPanel
+            key={disease}
+            region={browserCoordinates}
+            summaryStatisticsUrl={summaryStatisticsUrl}
+            cytobandMarkers={riskLocusMarkers}
+            visible={page === 3}
+          />
         ) : null}
       </Grid>
     </Grid>

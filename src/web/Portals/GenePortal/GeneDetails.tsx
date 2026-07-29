@@ -1,7 +1,17 @@
 ﻿import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
-import { Divider, Box, Tabs, Tab, Stack, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  Divider,
+  Box,
+  Tabs,
+  Tab,
+  Stack,
+  Typography,
+  ToggleButton,
+  ToggleButtonGroup,
+  CircularProgress,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ViolinPlot from "./violin/violin";
 import { gql, useQuery } from "@apollo/client";
@@ -13,6 +23,10 @@ import SingleCell from "./SingleCell";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
+import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
+import { GENE_PORTAL_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
+import { createGenePortalBrowserSession } from "../../../gb-view/stores";
+import type { BrowserRegion } from "@weng-lab/genomebrowser";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -23,6 +37,57 @@ type GTExGeneQueryResponse = {
     tissue_type_detail: string;
   }[];
 };
+
+type GeneCoordinatesQueryResponse = {
+  gene: Array<{
+    name: string;
+    id: string;
+    coordinates: BrowserRegion;
+  }>;
+};
+
+type GeneLocationState = {
+  geneid?: string;
+  tabind?: number;
+};
+
+function GeneBrowserPanel({
+  region,
+  visible,
+}: {
+  region: BrowserRegion;
+  visible: boolean;
+}) {
+  // Keep one browser session mounted so switching tabs does not recreate stores.
+  const [session] = useState(() => createGenePortalBrowserSession(region));
+  const previousRegionRef = useRef(region);
+
+  useEffect(() => {
+    const previous = previousRegionRef.current;
+    if (
+      previous.chromosome === region.chromosome &&
+      previous.start === region.start &&
+      previous.end === region.end
+    )
+      return;
+
+    previousRegionRef.current = region;
+    // The session captures its initial region; route changes update the store explicitly.
+    session.setRegion(region);
+  }, [region, session]);
+
+  useEffect(() => () => session.dispose(), [session]);
+
+  return (
+    <Box sx={{ display: visible ? "block" : "none" }}>
+      <GenomeBrowserView
+        browserStore={session.browserStore}
+        trackStore={session.trackStore}
+        defaultTrackIds={GENE_PORTAL_DEFAULT_TRACK_IDS}
+      />
+    </Box>
+  );
+}
 
 const GTEX_GENES_QUERY = gql`
   query gtexgenes($gene_id: [String]!) {
@@ -50,53 +115,67 @@ const GENE_COORDS_QUERY = gql`
   }
 `;
 
-const GeneDetails: React.FC = (props) => {
+const GeneDetails: React.FC = () => {
   const { gene } = useParams();
-  const { state }: any = useLocation();
+  const { state } = useLocation() as { state: GeneLocationState | null };
 
-  let { geneid, tabind } = state ? state : { geneid: "", tabind: 0 };
+  const geneid = state?.geneid ?? "";
+  const tabind = state?.tabind ?? 0;
   const [tabIndex, setTabIndex] = useState(Math.max((tabind || 1) - 1, 0));
   const ref = useRef<SVGSVGElement>(null);
-  const [gid, setGid] = useState(geneid);
+  const gid = geneid;
   const [tissueCategory, setTissueCategory] = React.useState<string | null>(
-    "granular"
+    "granular",
   );
 
   //const [ partialGeneId, setPartialGeneId ] = useState<string | null>(null);
   //const [ trueGeneId, setTrueGeneId ] = useState<string | null>(null);
   //const [ trueGeneName, setTrueGeneName ] = useState<string | null>(null);
 
-  useEffect(() => {
-    setTabIndex(0);
-  }, []);
-
-  useEffect(() => {
-    let { geneid } = state ? state : { geneid: "" };
-    setGid(geneid);
-  }, [gene, state]);
-
   //if (trueGeneId) geneid = trueGeneId;
-  const params = useParams();
-  const handleTissueCategory = (_: any, newTissueCategory: string | null) => {
+  const handleTissueCategory = (
+    _: React.MouseEvent<HTMLElement>,
+    newTissueCategory: string | null,
+  ) => {
     setTissueCategory(newTissueCategory);
   };
 
-  const handleTabChange = (_: any, newTabIndex: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
   };
 
-  const { data: geneCoords } = useQuery(GENE_COORDS_QUERY, {
-    variables: {
-      name_prefix: [params.gene],
-      assembly: "GRCh38",
-    },
-    skip: params.gene === "",
-  });
+  const { data: geneCoords, loading: geneCoordsLoading } =
+    useQuery<GeneCoordinatesQueryResponse>(GENE_COORDS_QUERY, {
+      variables: {
+        name_prefix: gene ? [gene] : [],
+        assembly: "GRCh38",
+      },
+      skip: !gene,
+      context: { clientName: "staging" },
+    });
+  const selectedGene = useMemo(
+    () =>
+      geneCoords?.gene.find(
+        (candidate) => candidate.name.toLowerCase() === gene?.toLowerCase(),
+      ),
+    [gene, geneCoords],
+  );
+  const geneBrowserRegion = useMemo<BrowserRegion | undefined>(() => {
+    if (!selectedGene) return undefined;
+    return {
+      chromosome: selectedGene.coordinates.chromosome,
+      // Show context around the gene so nearby GWAS/LD points are visible.
+      start: Math.max(0, selectedGene.coordinates.start - 20_000),
+      end: selectedGene.coordinates.end + 20_000,
+    };
+  }, [selectedGene]);
+
   const { data } = useQuery<GTExGeneQueryResponse>(GTEX_GENES_QUERY, {
     variables: {
-      gene_id: gid || (geneCoords && geneCoords.gene[0].id.split(".")[0]),
+      gene_id: gid || selectedGene?.id.split(".")[0],
     },
-    skip: gid === "" && !geneCoords,
+    skip: gid === "" && !selectedGene,
+    context: { clientName: "staging" },
   });
 
   const grouped = useMemo(
@@ -105,9 +184,9 @@ const GeneDetails: React.FC = (props) => {
         data?.gtex_genes || [],
         (x) =>
           tissueCategory === "granular" ? x.tissue_type_detail : x.tissue_type,
-        (x) => x
+        (x) => x,
       ),
-    [data, tissueCategory, gid, geneCoords]
+    [data, tissueCategory],
   );
 
   const sortedKeys = useMemo(
@@ -115,7 +194,7 @@ const GeneDetails: React.FC = (props) => {
       [...grouped.keys()]
         .filter((x) => x !== null && grouped.get(x)!)
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
-    [grouped, gid, geneCoords]
+    [grouped],
   );
 
   const toPlot = useMemo(
@@ -136,11 +215,11 @@ const GeneDetails: React.FC = (props) => {
                       .map((x) => Math.log10(x! + 0.01)),
                   ],
                 ]),
-              ] as [string, Map<string, number[]>]
+              ] as [string, Map<string, number[]>],
           )
-          .filter((x) => x[1].get("all")!.length > 1)
+          .filter((x) => x[1].get("all")!.length > 1),
       ),
-    [sortedKeys, grouped, gid, geneCoords]
+    [sortedKeys, grouped],
   );
 
   const domain: [number, number] = useMemo(() => {
@@ -178,7 +257,7 @@ const GeneDetails: React.FC = (props) => {
         <Typography variant="body1" mb={1}>
           Switch to another gene:
         </Typography>
-        <GeneAutoComplete navigateto="/psychscreen/gene/" gridsize={3.5} />
+        <GeneAutoComplete navigateto="/gene/" gridsize={3.5} />
       </Grid>
       <Grid size={12}>
         <Box>
@@ -189,6 +268,7 @@ const GeneDetails: React.FC = (props) => {
             scrollButtons="auto"
             allowScrollButtonsMobile
           >
+            <Tab label="Epigenome Browser" />
             <Tab label="Single Cell Expression" />
             <Tab label="Spatial Expression" />
             <Tab label="Tissue Expression (GTEx)" />
@@ -198,38 +278,48 @@ const GeneDetails: React.FC = (props) => {
           <Divider />
         </Box>
         <Box sx={{ padding: 2 }}>
-          {
-            //region.chromosome==='' && !region.start && !region.end && <CircularProgress/>
-          }
+          {geneBrowserRegion ? (
+            <GeneBrowserPanel
+              region={geneBrowserRegion}
+              visible={tabIndex === 0}
+            />
+          ) : tabIndex === 0 ? (
+            geneCoordsLoading ? (
+              <Box display="flex" justifyContent="center" p={4}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Typography color="error">
+                No browser coordinates found for {gene}.
+              </Typography>
+            )
+          ) : null}
           {tabIndex === 2 && 0 > 1 ? (
             <Box>
               <GeneExpressionPage id={geneid} />
             </Box>
-          ) : tabIndex === 3 && geneCoords ? (
+          ) : tabIndex === 4 && selectedGene ? (
             <Box>
               <AssociatedxQTL
                 name={gene?.toUpperCase()}
-                geneid={
-                  gid || (geneCoords && geneCoords.gene[0].id.split(".")[0])
-                }
+                geneid={gid || selectedGene.id.split(".")[0]}
                 coordinates={{
-                  chromosome:
-                    geneCoords.gene[0].coordinates.chromosome,
-                  start: +geneCoords.gene[0].coordinates.start,
-                  end: +geneCoords.gene[0].coordinates.end,
+                  chromosome: selectedGene.coordinates.chromosome,
+                  start: selectedGene.coordinates.start,
+                  end: selectedGene.coordinates.end,
                 }}
                 //coordinates={ {chromosome: region.chromosome,start: parseInt(region.start),end: parseInt(region.end)}}
               />
             </Box>
-          ) : tabIndex === 4 ? (
+          ) : tabIndex === 5 ? (
             <Box>
               <DegExpression gene={gene || "APOE"} disease={"Schizophrenia"} />
             </Box>
-          ) : tabIndex === 1 ? (
+          ) : tabIndex === 2 ? (
             <Box>
               <BrainSpatial gene={gene || "MBP"} />
             </Box>
-          ) : tabIndex === 0 ? (
+          ) : tabIndex === 1 ? (
             <Box>
               <SingleCell
                 gene={gene || "APOE"}
@@ -237,7 +327,7 @@ const GeneDetails: React.FC = (props) => {
                 selectDatasets
               />
             </Box>
-          ) : tabIndex === 2 ? (
+          ) : tabIndex === 3 ? (
             <Box>
               {data && data?.gtex_genes.length === 0 ? (
                 <Typography variant="body1">

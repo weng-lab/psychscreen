@@ -1,6 +1,6 @@
 {
     "graphql": {
-        "service": "https://ga.staging.wenglab.org/graphql"
+        "service": "https://screen.api.wenglab.org/graphql"
     },
     "restapis": {        
         "streampeaksService": "https://ga.staging.wenglab.org/streampeaks",

@@ -8,10 +8,21 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Container, Slide } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
+import { gql } from "@apollo/client";
+import { apolloClient } from "../../../graphql/client";
 
-const GENE_AUTOCOMPLETE_QUERY = `
-query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit, version: 40) {
+const GENE_AUTOCOMPLETE_QUERY = gql`
+  query SingleCellGeneAutocomplete(
+    $assembly: String!
+    $name_prefix: [String!]
+    $limit: Int
+  ) {
+    gene(
+      assembly: $assembly
+      name_prefix: $name_prefix
+      limit: $limit
+      version: 40
+    ) {
       name
       id
       coordinates {
@@ -21,7 +32,7 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
       }
     }
   }
- `;
+`;
 
 const SingleCellDetails: React.FC<GridProps> = (props) => {
   const { disease } = useParams();
@@ -33,19 +44,16 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
   >(undefined);
   const onSearchChange = useCallback(async (value: any) => {
     setFetching(true);
-    const response = await fetch("https://ga.staging.wenglab.org/graphql", {
-      method: "POST",
-      body: JSON.stringify({
-        query: GENE_AUTOCOMPLETE_QUERY,
-        variables: {
-          assembly: "GRCh38",
-          name_prefix: value,
-          limit: 5,
-        },
-      }),
-      headers: { "Content-Type": "application/json" },
+    const { data } = await apolloClient.query({
+      query: GENE_AUTOCOMPLETE_QUERY,
+      variables: {
+        assembly: "GRCh38",
+        name_prefix: value,
+        limit: 5,
+      },
+      context: { clientName: "staging" },
     });
-    const genesSuggestion = (await response.json()).data?.gene;
+    const genesSuggestion = data?.gene;
     if (genesSuggestion && genesSuggestion.length > 0) {
       const r = genesSuggestion.map((g: any) => {
         return {
@@ -65,7 +73,8 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
       <Grid size={{ sm: 2 }}></Grid>
       <Grid size={{ sm: 4 }}>
         <Container style={{ width: "741px", marginTop: "147px" }} fixed>
-          <Typography variant="body2"
+          <Typography
+            variant="body2"
             style={{
               fontWeight: 500,
               fontSize: "23px",
@@ -77,11 +86,10 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
             Search Gene to show Dot Plot
           </Typography>
           <GeneAutoComplete
-            navigateto={`/psychscreen/single-cell/${disease}/`}
+            navigateto={`/single-cell/${disease}/`}
           />
           {0 > 1 && (
-            <>
-            </>
+            <></>
             // <SearchBox
             //   value={val}
             //   onChange={(e) => {
@@ -107,7 +115,8 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
           <Container style={{ marginLeft: "12px", marginTop: "150px" }}>
             {" "}
             <>
-              <Typography variant="body1"
+              <Typography
+                variant="body1"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -138,7 +147,7 @@ const SingleCellDetails: React.FC<GridProps> = (props) => {
                         onCardClick={(v?: string) => {
                           let f = geneCards!!.find((g: any) => g.val === v);
                           navigate(
-                            `/psychscreen/single-cell/${disease}/${f?.cardLabel}`
+                            `/single-cell/${disease}/${f?.cardLabel}`
                           );
                         }}
                         cardContentText={geneCards!!}

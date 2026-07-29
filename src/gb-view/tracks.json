@@ -1,0 +1,1572 @@
+{
+  "$schema": "./schema.json",
+  "id": "psychscreen",
+  "label": "PsychSCREEN",
+  "description": "PsychSCREEN browser tracks",
+  "views": [
+    {
+      "id": "default",
+      "label": "Default",
+      "columns": [
+        {
+          "field": "title",
+          "label": "Title",
+          "width": 240
+        },
+        {
+          "field": "category",
+          "label": "Category",
+          "width": 180
+        },
+        {
+          "field": "subcategory",
+          "label": "Subcategory",
+          "width": 240
+        },
+        {
+          "field": "trackType",
+          "label": "Track Type",
+          "width": 120
+        }
+      ],
+      "grouping": ["category", "subcategory"],
+      "leaf": "title"
+    }
+  ],
+  "tracks": [
+    {
+      "type": "bigbed",
+      "id": "epigenetic/adult-bcres",
+      "title": "Adult candidate brain cis-Regulatory Elements (b-cCREs)",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/adult_bCREs.bb"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/adult-bcres",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Candidate cis-Regulatory Elements",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "epigenetic/fetal-bcres",
+      "title": "Fetal candidate brain cis-Regulatory Elements (b-cCREs)",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/fetal_bCREs.bb"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fetal-bcres",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Candidate cis-Regulatory Elements",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "epigenetic/encode-ccres-all-tissues",
+      "title": "ENCODE cCREs, all tissues",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/GRCh38-cCREs.DCC.bigBed"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/encode-ccres-all-tissues",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Candidate cis-Regulatory Elements",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-all-neun-plus",
+      "title": "all brain regions, aggregated NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/all-NeuN+-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-all-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-all-neun-minus",
+      "title": "all brain regions, aggregated NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/all-NeuN--ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-all-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-dlpfc-neun-plus",
+      "title": "dorsolateral prefrontal cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/DLPFC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-dlpfc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-dlpfc-neun-minus",
+      "title": "dorsolateral prefrontal cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/DLPFC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-dlpfc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-fppfc-neun-plus",
+      "title": "frontopolar prefrontal cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/FPPFC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-fppfc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-fppfc-neun-minus",
+      "title": "frontopolar prefrontal cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/FPPFC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-fppfc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-hipp-neun-plus",
+      "title": "hippocampus NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/HIPP-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-hipp-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-hipp-neun-minus",
+      "title": "hippocampus NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/HIPP-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-hipp-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-ins-neun-plus",
+      "title": "insular cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/INS-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-ins-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-ins-neun-minus",
+      "title": "insular cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/INS-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-ins-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-itc-neun-plus",
+      "title": "inferior temporal gyrus NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/ITC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-itc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-itc-neun-minus",
+      "title": "inferior temporal gyrus NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/ITC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-itc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-mdt-neun-plus",
+      "title": "mediodorsal thalamic nucleus NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/MDT-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-mdt-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-mdt-neun-minus",
+      "title": "mediodorsal thalamic nucleus NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/MDT-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-mdt-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-mofc-neun-plus",
+      "title": "medial orbital frontal cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/MOFC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-mofc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-mofc-neun-minus",
+      "title": "medial orbital frontal cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/MOFC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-mofc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-na-neun-plus",
+      "title": "nucleus accumbens NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/NA-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-na-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-na-neun-minus",
+      "title": "nucleus accumbens NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/NA-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-na-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-pmc-neun-plus",
+      "title": "premotor cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/PMC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-pmc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-pmc-neun-minus",
+      "title": "premotor cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/PMC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-pmc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-ptm-neun-plus",
+      "title": "putamen NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/PTM-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-ptm-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-ptm-neun-minus",
+      "title": "putamen NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/PTM-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-ptm-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-pvc-neun-plus",
+      "title": "primary visual cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/PVC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-pvc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-pvc-neun-minus",
+      "title": "primary visual cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/PVC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-pvc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-vlpfc-neun-plus",
+      "title": "ventrolateral prefrontal cortex NeuN+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/VLPFC-NeuN+-healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-vlpfc-neun-plus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/fans-vlpfc-neun-minus",
+      "title": "ventrolateral prefrontal cortex NeuN-",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/VLPFC-NeuN--healthy-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/fans-vlpfc-neun-minus",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE neuron/non-neuron FANS-sorted ATAC-seq (healthy donors)",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/dlpfc-healthy-donors",
+      "title": "healthy donors",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/DLPFC-mixed-Norm-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/dlpfc-healthy-donors",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE SCZ/BP/healthy DLPFC ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/dlpfc-bipolar-donors",
+      "title": "bipolar donors",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/DLPFC-mixed-BD-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/dlpfc-bipolar-donors",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE SCZ/BP/healthy DLPFC ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/dlpfc-schizophrenia-donors",
+      "title": "schizophrenia donors",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/DLPFC-mixed-SCZ-ATAC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/dlpfc-schizophrenia-donors",
+        "category": "Epigenetic Tracks",
+        "subcategory": "PsychENCODE SCZ/BP/healthy DLPFC ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c1-child-adult-neuron-l4-rorb",
+      "title": "child/adult layer 4 neuron, RORβ+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C1_ChildAdult_Neuron_L4-RORB.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c1-child-adult-neuron-l4-rorb",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c2-infant-1month-astrocyte",
+      "title": "infant (1 month old) astrocyte",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C2_Infant-1Month_Astrocyte_Astrocyte.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c2-infant-1month-astrocyte",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c3-infant-6month-astrocyte",
+      "title": "infant (6 month old) astrocyte",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C3_Infant-6Month_Astrocyte_Astrocyte.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c3-infant-6month-astrocyte",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c4-child-adult-astrocyte-cluster-1",
+      "title": "child/adult astrocyte (cluster 1)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C4_ChildAdult_Astrocyte_Astrocyte.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c4-child-adult-astrocyte-cluster-1",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c5-child-adult-astrocyte-cluster-2",
+      "title": "child/adult astrocyte (cluster 2)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C5_ChildAdult_Astrocyte_Astrocyte.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c5-child-adult-astrocyte-cluster-2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c6-child-astrocyte-cluster-3",
+      "title": "child/adult astrocyte (cluster 3)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C6_Child_Astrocyte_Astrocyte.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c6-child-astrocyte-cluster-3",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c7-infant-10month-astrocyte",
+      "title": "infant (10 month old) astrocyte",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C7_Infant-10Month_Astrocyte_Astrocyte.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c7-infant-10month-astrocyte",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c8-child-adult-neuron-id2-cluster-1",
+      "title": "child/adult neuron, ID2+ (cluster 1)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C8_ChildAdult_Neuron_IN-ID2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c8-child-adult-neuron-id2-cluster-1",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c9-child-adult-neuron-id2-cluster-2",
+      "title": "child/adult neuron, ID2+ (cluster 2)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C9_ChildAdult_Neuron_IN-ID2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c9-child-adult-neuron-id2-cluster-2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c10-infant-1month-neuron-tle4",
+      "title": "infant (1 month old) neuron, TLE4+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C10_Infant-1Month_Neuron_TLE4.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c10-infant-1month-neuron-tle4",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c11-infant-3month-neuron-cux2",
+      "title": "infant (3 month old) neuron, layer 2-3 CUX2+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C11_Infant-3Month_Neuron_L2-3-CUX2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c11-infant-3month-neuron-cux2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c12-fetal-22week-neuron-themis",
+      "title": "fetal (22 week) neuron, THEMIS+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C12_Fetal-GA22_Neuron_Fetal-THEMIS.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c12-fetal-22week-neuron-themis",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c13-child-inhibitory-neuron-sst",
+      "title": "child inhibitory neuron, SST+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C13_Child_Neuron_IN-SST.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c13-child-inhibitory-neuron-sst",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c14-child-adult-inhibitory-neuron-sst",
+      "title": "child/adult inhibitory neuron, SST+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C14_ChildAdult_Neuron_IN-SST.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c14-child-adult-inhibitory-neuron-sst",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c15-child-neuron-cux2",
+      "title": "child neuron, layer 2/3, CUX2+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C15_Child_Neuron_L2-3-CUX2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c15-child-neuron-cux2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c16-child-adult-neuron-cux2",
+      "title": "child/adult neuron, layer 2/3, CUX2+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C16_ChildAdult_Neuron_L2-3-CUX2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c16-child-adult-neuron-cux2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c17-fetal-24week-neuron-cux2",
+      "title": "fetal (24 week) neuron, CUX2+",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C17_Fetal-GA24_Neuron_Fetal-CUX2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c17-fetal-24week-neuron-cux2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c18-infant-10month-developing-neuron",
+      "title": "infant (10 month old) developing neuron",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C18_Infant-10Month_Neuron_Developing.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c18-infant-10month-developing-neuron",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c20-child-adult-oligodendrocyte-cluster-1",
+      "title": "child/adult oligodendrocyte (cluster 1)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C20_ChildAdult_ODC_ODC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c20-child-adult-oligodendrocyte-cluster-1",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c21-child-adult-oligodendrocyte-cluster-2",
+      "title": "child/adult oligodendrocyte (cluster 2)",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C21_ChildAdult_ODC_ODC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c21-child-adult-oligodendrocyte-cluster-2",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c22-infant-6month-opc",
+      "title": "infant (6 month old) oligodendrocyte precursor",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C22_Infant-6Month_OPC_OPC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c22-infant-6month-opc",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c23-child-opc",
+      "title": "child oligodendrocyte precursor",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C23_Child_OPC_OPC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c23-child-opc",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "epigenetic/sc-atac-c24-child-adult-opc",
+      "title": "child/adult oligodendrocyte precursor",
+      "display": "full",
+      "height": 50,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/C24_ChildAdult_OPC_OPC.bigWig"
+      },
+      "metadata": {
+        "sourceId": "epigenetic/sc-atac-c24-child-adult-opc",
+        "category": "Epigenetic Tracks",
+        "subcategory": "Single cell ATAC-seq pseudobulk",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/vlpfc-glia-atac-signal",
+      "title": "VLPFC glia ATAC signal",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_VLPFC_glia_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/vlpfc-glia-atac-signal",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult brain bulk ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/vlpfc-neurons-atac-signal",
+      "title": "VLPFC neurons ATAC signal",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_VLPFC_neurons_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/vlpfc-neurons-atac-signal",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult brain bulk ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/putamen-glia",
+      "title": "putamen glia",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predicitons_NeuN-_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/putamen-glia",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult brain bulk ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/putamen-neurons",
+      "title": "putamen neurons",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_NeuN+_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/putamen-neurons",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult brain bulk ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/astrocytes",
+      "title": "astrocytes",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_Astrocyte_1_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/astrocytes",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/gaba-ergic-type-i",
+      "title": "GABA-ergic type I",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_GABAergic_Neuron_1_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/gaba-ergic-type-i",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/gaba-ergic-type-ii",
+      "title": "GABA-ergic type II",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_GABAergic_Neuron_2_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/gaba-ergic-type-ii",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/glutaminergic-type-i",
+      "title": "glutaminergic type I",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_Glutaminergic_Neuron_1_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/glutaminergic-type-i",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/glutaminergic-type-ii",
+      "title": "glutaminergic type II",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_Glutaminergic_Neuron_2_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/glutaminergic-type-ii",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/microglia",
+      "title": "microglia",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_Microglia_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/microglia",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/oligodendrocytes",
+      "title": "oligodendrocytes",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_Oligodendrocyte_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/oligodendrocytes",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/oligodendrocyte-precursors",
+      "title": "oligodendrocyte precursors",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_Oligodendrocyte_Precursor_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/oligodendrocyte-precursors",
+        "category": "Deep Learned Models",
+        "subcategory": "Adult cerebrum single cell ATAC-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/fetal-50-days",
+      "title": "fetal-50-days",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_fetal-50-days_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/fetal-50-days",
+        "category": "Deep Learned Models",
+        "subcategory": "Fetal brain DNase-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/fetal-80-days",
+      "title": "fetal-80-days",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_fetal-80-days_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/fetal-80-days",
+        "category": "Deep Learned Models",
+        "subcategory": "Fetal brain DNase-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/fetal-105-days",
+      "title": "fetal-105-days",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/predictions_fetal-105-days_chrombpnet_nobias.bw"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/fetal-105-days",
+        "category": "Deep Learned Models",
+        "subcategory": "Fetal brain DNase-seq",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "deep-learned/241-way-mammalian-phylop",
+      "title": "241-way mammalian phylo-P",
+      "display": "full",
+      "height": 50,
+      "color": "#758c7b",
+      "config": {
+        "url": "https://downloads.wenglab.org/psychscreen/241-mammalian-2020v2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "deep-learned/241-way-mammalian-phylop",
+        "category": "Deep Learned Models",
+        "subcategory": "Evolutionary conservation",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/microglia",
+      "title": "Microglia",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/Microglia.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/microglia",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/astrocytes",
+      "title": "Astrocytes",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/Astrocytes.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/astrocytes",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/excitatory-neurons",
+      "title": "ExcitatoryNeurons",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/ExcitatoryNeurons.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/excitatory-neurons",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/oligodendrocytes",
+      "title": "Oligodendrocytes",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/Oligodendrocytes.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/oligodendrocytes",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/inhibitory-neurons",
+      "title": "InhibitoryNeurons",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/InhibitoryNeurons.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/inhibitory-neurons",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/opcs",
+      "title": "OPCs",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/OPCs.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/opcs",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "pseudobulk-atac/nigral-neurons",
+      "title": "NigralNeurons",
+      "display": "full",
+      "height": 50,
+      "color": "#cd8c66",
+      "config": {
+        "url": "https://downloads.wenglab.org/pseudobulkatac/NigralNeurons.bigWig"
+      },
+      "metadata": {
+        "sourceId": "pseudobulk-atac/nigral-neurons",
+        "category": "Pseudo bulk ATAC",
+        "subcategory": "Pseudo bulk ATAC",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "conservation/240-mammal-phylop-vertical-range",
+      "title": "240-mammal phyloP conservation score (Vertical Viewing Range [-2 to 9])",
+      "display": "full",
+      "height": 50,
+      "color": "#c0a9e2",
+      "config": {
+        "url": "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig",
+        "yRange": {
+          "min": -2,
+          "max": 9
+        }
+      },
+      "metadata": {
+        "sourceId": "conservation/240-mammal-phylop-vertical-range",
+        "category": "Evolutionary Conservation",
+        "subcategory": "Conservation Tracks",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "conservation/100-vertebrate-phylop",
+      "title": "100-vertebrate phyloP conservation score",
+      "display": "full",
+      "height": 50,
+      "color": "#c0a9e2",
+      "config": {
+        "url": "https://downloads.wenglab.org/hg38.phyloP100way.bw"
+      },
+      "metadata": {
+        "sourceId": "conservation/100-vertebrate-phylop",
+        "category": "Evolutionary Conservation",
+        "subcategory": "Conservation Tracks",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "conservation/240-mammal-phylop",
+      "title": "240-mammal phyloP conservation score",
+      "display": "full",
+      "height": 50,
+      "color": "#c0a9e2",
+      "config": {
+        "url": "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig"
+      },
+      "metadata": {
+        "sourceId": "conservation/240-mammal-phylop",
+        "category": "Evolutionary Conservation",
+        "subcategory": "Conservation Tracks",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigwig",
+      "id": "conservation/43-primate-phastcons",
+      "title": "43-primate conservation score",
+      "display": "full",
+      "height": 50,
+      "color": "#c0a9e2",
+      "config": {
+        "url": "https://downloads.wenglab.org/hg38_43primates_phastCons.bw"
+      },
+      "metadata": {
+        "sourceId": "conservation/43-primate-phastcons",
+        "category": "Evolutionary Conservation",
+        "subcategory": "Conservation Tracks",
+        "trackType": "bigwig"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/astrocytes",
+      "title": "Astrocytes",
+      "display": "dense",
+      "height": 35,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/Astro.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/astrocytes",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/endothelial-cells",
+      "title": "Endothelial Cells",
+      "display": "dense",
+      "height": 35,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/Endo.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/endothelial-cells",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/opcs",
+      "title": "Oligodendrocyte Precursor Cells",
+      "display": "dense",
+      "height": 35,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/OPC.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/opcs",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/excitatory-neurons",
+      "title": "Excitatory Neurons",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/Exc.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/excitatory-neurons",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/oligodendrocytes",
+      "title": "Oligodendrocytes",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/Oligo.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/oligodendrocytes",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/inhibitory-neurons",
+      "title": "Inhibitory Neurons",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/Inh.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/inhibitory-neurons",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/microglia",
+      "title": "Microglia",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/Micro.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/microglia",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    },
+    {
+      "type": "bigbed",
+      "id": "atac-seq-peaks/all-celltypes",
+      "title": "All CellTypes",
+      "display": "dense",
+      "height": 30,
+      "color": "#9479bc",
+      "config": {
+        "url": "https://downloads.wenglab.org/All.celltypes.Union.PeakCalls.bb"
+      },
+      "metadata": {
+        "sourceId": "atac-seq-peaks/all-celltypes",
+        "category": "ATAC Seq Peaks",
+        "subcategory": "ATAC Seq Peaks",
+        "trackType": "bigbed"
+      }
+    }
+  ]
+}
