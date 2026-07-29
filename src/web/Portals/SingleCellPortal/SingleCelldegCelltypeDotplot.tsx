@@ -66,9 +66,10 @@ const SingleCelldegCelltypeDotplot = (props) => {
         props.disease === "Bipolar Disorder"
           ? "Bipolar"
           : props.disease === "Autism Specturm Disorder"
-          ? "ASD"
-          : props.disease,
+            ? "ASD"
+            : props.disease,
     },
+    context: { clientName: "staging" },
   });
   const [pValCutoff, setPValCutoff] = useState<number>(0.05);
 
@@ -103,9 +104,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
     <>
       <Grid container mt={2} mb={2} gap={2}>
         <Grid>
-          <Typography variant="body1">
-            Select Disease:
-          </Typography>
+          <Typography variant="body1">Select Disease:</Typography>
           <FormControl sx={{ minWidth: 300 }} style={{ marginTop: "0.5em" }}>
             <InputLabel id="simple-select-helper-label">Disease:</InputLabel>
             <MUISelect
@@ -186,7 +185,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
               onChange={(
                 event: Event,
                 value: number | number[],
-                activeThumb: number
+                activeThumb: number,
               ) => setPValCutoff(scale(value as number))} //Sets p value cutoff to scaled value
               getAriaValueText={(value: number, index: number) =>
                 value.toString()
@@ -213,7 +212,7 @@ const SingleCelldegCelltypeDotplot = (props) => {
                     .sort((a, b) =>
                       value === "log2(fold change)"
                         ? Math.abs(b.mean_count) - Math.abs(a.mean_count)
-                        : b.expr_frac - a.expr_frac
+                        : b.expr_frac - a.expr_frac,
                     )
                     .slice(0, 50)
                 : dotplotData

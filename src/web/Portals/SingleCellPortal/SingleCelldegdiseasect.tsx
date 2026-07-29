@@ -84,6 +84,7 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
       celltype,
       disease,
     },
+    context: { clientName: "staging" },
   });
 
   return (
@@ -97,7 +98,8 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
       maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
     >
       <Grid size={12}>
-        <Typography variant="h2"
+        <Typography
+          variant="h2"
           style={{
             fontWeight: 700,
             fontSize: "36px",
@@ -110,7 +112,8 @@ const SingleCelldegdiseasect: React.FC<GridProps> = (props) => {
         </Typography>
         <br />
         {!data && (
-          <Typography variant="body1"
+          <Typography
+            variant="body1"
             style={{
               display: "flex",
               alignItems: "center",

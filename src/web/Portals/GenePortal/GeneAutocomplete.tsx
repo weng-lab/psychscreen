@@ -9,10 +9,21 @@ import { useNavigate } from "react-router-dom";
 import { QueryResponse } from "./GeneOverview";
 import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
+import { gql } from "@apollo/client";
+import { apolloClient } from "../../../graphql/client";
 
-const GENE_AUTOCOMPLETE_QUERY = `
-query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
-    gene(assembly: $assembly, name_prefix: $name_prefix, limit: $limit, version: 40) {
+const GENE_AUTOCOMPLETE_QUERY = gql`
+  query GeneAutocomplete(
+    $assembly: String!
+    $name_prefix: [String!]
+    $limit: Int
+  ) {
+    gene(
+      assembly: $assembly
+      name_prefix: $name_prefix
+      limit: $limit
+      version: 40
+    ) {
       name
       id
       coordinates {
@@ -21,8 +32,8 @@ query ($assembly: String!, $name_prefix: [String!], $limit: Int) {
         end
       }
     }
-  }  
- `;
+  }
+`;
 
 export const GeneAutoComplete = (props) => {
   const [inputValue, setInputValue] = React.useState("");
@@ -40,14 +51,14 @@ export const GeneAutoComplete = (props) => {
         options.map((gene) =>
           fetch(
             "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" +
-              gene.toUpperCase()
+              gene.toUpperCase(),
           )
             .then((x) => x && x.json())
             .then((x) => {
               const matches =
                 (x as QueryResponse)[3] &&
                 (x as QueryResponse)[3].filter(
-                  (x) => x[3] === gene.toUpperCase()
+                  (x) => x[3] === gene.toUpperCase(),
                 );
               return {
                 desc:
@@ -59,8 +70,8 @@ export const GeneAutoComplete = (props) => {
             })
             .catch(() => {
               return { desc: "(no description available)", name: gene };
-            })
-        )
+            }),
+        ),
       );
       setgeneDesc(f);
     };
@@ -70,19 +81,16 @@ export const GeneAutoComplete = (props) => {
 
   const onSearchChange = async (value: string) => {
     setOptions([]);
-    const response = await fetch("https://ga.staging.wenglab.org/graphql", {
-      method: "POST",
-      body: JSON.stringify({
-        query: GENE_AUTOCOMPLETE_QUERY,
-        variables: {
-          assembly: "GRCh38",
-          name_prefix: value,
-          limit: 1000
-        },
-      }),
-      headers: { "Content-Type": "application/json" },
+    const { data } = await apolloClient.query({
+      query: GENE_AUTOCOMPLETE_QUERY,
+      variables: {
+        assembly: "GRCh38",
+        name_prefix: value,
+        limit: 1000,
+      },
+      context: { clientName: "staging" },
     });
-    const genesSuggestion = (await response.json()).data?.gene;
+    const genesSuggestion = data?.gene;
     if (genesSuggestion && genesSuggestion.length > 0) {
       const r = genesSuggestion.map((g) => g.name);
       const g = genesSuggestion.map((g) => {

@@ -60,7 +60,7 @@ const FooterPanel = () => {
           <Typography variant="h5" mb={1}>
             <MuiLink
               color="inherit"
-              href="/psychscreen/aboutus"
+              href="/aboutus"
               underline="hover"
             >
               About Us
@@ -101,26 +101,26 @@ const FooterPanel = () => {
           <Typography variant="body2">
             <MuiLink
               color="inherit"
-              href="/psychscreen/traits"
+              href="/traits"
               underline="hover"
             >
               Disease/Trait
             </MuiLink>
           </Typography>
           <Typography variant="body2">
-            <MuiLink color="inherit" href="/psychscreen/gene" underline="hover">
+            <MuiLink color="inherit" href="/gene" underline="hover">
               Gene/b-cCRE
             </MuiLink>
           </Typography>
           <Typography variant="body2">
-            <MuiLink color="inherit" href="/psychscreen/snp" underline="hover">
+            <MuiLink color="inherit" href="/snp" underline="hover">
               SNP/QTL
             </MuiLink>
           </Typography>
           <Typography variant="body2">
             <MuiLink
               color="inherit"
-              href="/psychscreen/single-cell"
+              href="/single-cell"
               underline="hover"
             >
               Single-Cell
@@ -131,7 +131,7 @@ const FooterPanel = () => {
           <Typography variant="h5">
             <MuiLink
               color="inherit"
-              href="/psychscreen/downloads"
+              href="/downloads"
               underline="hover"
             >
               Downloads

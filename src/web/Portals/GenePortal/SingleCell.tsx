@@ -8,13 +8,25 @@ import {
   Button,
   Stack,
   FormLabel,
-  Typography } from "@mui/material";
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 
 import Grid from "@mui/material/Grid";
 import { linearTransform } from "jubilant-carnival";
-import { Point, ScatterPlot, DownloadPlotHandle, DotPlot } from "@weng-lab/visualization";
-import { TwoPaneLayout } from "@weng-lab/ui-components";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Point,
+  ScatterPlot,
+  DownloadPlotHandle,
+  DotPlot,
+} from "@weng-lab/visualization";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -148,6 +160,7 @@ function useSingleCellGeneData(dataset: string, gene: string) {
       disease: dataset,
       featureKey: gene,
     },
+    context: { clientName: "staging" },
   });
 }
 
@@ -156,7 +169,15 @@ function useSingleCellUMAPData(dataset: string) {
     variables: {
       disease: dataset,
     },
+    context: { clientName: "staging" },
   });
+}
+
+function generateColors(n: number) {
+  const colors: string[] = [];
+  for (let i = 0; i < n; ++i)
+    colors.push(`hsl(${(360 / n) * (n - i)}, 80%, 50%)`);
+  return colors;
 }
 
 const celltypeColors = {
@@ -209,8 +230,8 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
 
   const maximumValue = Math.max(
     ...(expressionData?.singleCellGenesQuery || [{ val: 0 }, { val: 1 }]).map(
-      (x: { val: number }) => x.val
-    )
+      (x: { val: number }) => x.val,
+    ),
   );
   const results = useMemo(() => {
     if (expressionLoading || UMAPLoading)
@@ -220,14 +241,14 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
           SingleCellUMAPQueryItem & { expressionColor: string }
       >([]);
     const UMAP_map = new Map(
-      UMAPData?.singleCellUmapQuery.map((x) => [x.barcodekey, x]) || []
+      UMAPData?.singleCellUmapQuery.map((x) => [x.barcodekey, x]) || [],
     );
     const expression_map = new Map(
-      expressionData?.singleCellGenesQuery.map((x) => [x.barcodekey, x]) || []
+      expressionData?.singleCellGenesQuery.map((x) => [x.barcodekey, x]) || [],
     );
     const gradient = linearTransform(
       { start: 0, end: maximumValue },
-      { start: 215, end: 0 }
+      { start: 215, end: 0 },
     );
     return new Map<
       string,
@@ -242,24 +263,24 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
             ...UMAP_map.get(x)!,
             ...expression_map.get(x)!,
             expressionColor: `rgb(255,${gradient(
-              expression_map.get(x)!.val
+              expression_map.get(x)!.val,
             ).toFixed(0)},0)`,
           },
-        ])
+        ]),
     );
   }, [expressionLoading, expressionData, UMAPData, UMAPLoading, maximumValue]);
   const colors = useMemo(() => {
     const unique_celltypes = new Set(
       [...results.values()].map((x) =>
-        ctClass === "by Cell type" ? x.subclass : x.celltype
-      )
+        ctClass === "by Cell type" ? x.subclass : x.celltype,
+      ),
     );
 
     return new Map(
       [...unique_celltypes].map((x) => [
         x,
         ctClass === "by Cell type" ? subClassColors[x] : celltypeColors[x],
-      ])
+      ]),
     );
   }, [results, ctClass]);
 
@@ -352,11 +373,11 @@ const SingleCell: React.FC<{
   const { loading, data, colors, maximumValue } = useSingleCellData(
     dataset,
     gene,
-    ctClass
+    ctClass,
   );
   const [highlighted, setHighlighted] = useState("");
   const [colorScheme, setColorScheme] = React.useState<string | null>(
-    "expression"
+    "expression",
   );
   const [tabIndex, setTabIndex] = useState(0);
   const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
@@ -368,6 +389,7 @@ const SingleCell: React.FC<{
         dataset: [...DATASETS.keys()],
         gene: gene,
       },
+      context: { clientName: "staging" },
     });
   const { loading: byScDataLoading, data: byScData } =
     useQuery<PedatasetValuesbySubclassResponse>(GET_PEDATASET_VALS_BYSC_QUERY, {
@@ -375,6 +397,7 @@ const SingleCell: React.FC<{
         dataset: [...DATASETS.keys()],
         gene: gene,
       },
+      context: { clientName: "staging" },
     });
   const ctrows =
     !byCtDataLoading && byCtData
@@ -432,7 +455,7 @@ const SingleCell: React.FC<{
           metaData: { cluster, val: x.val },
         };
       }),
-    [data, highlighted, colorScheme, colors, ctClass]
+    [data, highlighted, colorScheme, colors, ctClass],
   );
 
   const [cttabIndex, setCtTabIndex] = useState(0);
@@ -450,12 +473,47 @@ const SingleCell: React.FC<{
     const el = plotContainerRef.current;
     if (!el) return;
     const observer = new ResizeObserver(([entry]) =>
-      setPlotContainerWidth(entry.contentRect.width)
+      setPlotContainerWidth(entry.contentRect.width),
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  // Match the table's height to the UMAP column (plot + legend + download row) so they end at the same line.
+  // Uses callback refs (not useRef + useEffect([])) since these elements only mount once data resolves,
+  // which happens after the initial render -- a one-time effect would miss the later mount.
+  const [umapColumnHeight, setUmapColumnHeight] = useState(0);
+  const umapColumnObserver = useRef<ResizeObserver | null>(null);
+  const umapColumnRef = useCallback((el: HTMLDivElement | null) => {
+    umapColumnObserver.current?.disconnect();
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) =>
+      setUmapColumnHeight(entry.contentRect.height),
+    );
+    observer.observe(el);
+    umapColumnObserver.current = observer;
+  }, []);
+  // Height (including margin) of the "By Cell Type"/"By Broader Cell Type" buttons sitting above the
+  // table in its column, subtracted from umapColumnHeight so the table itself (not its column) ends
+  // level with the UMAP column.
+  const [tableHeaderHeight, setTableHeaderHeight] = useState(0);
+  const tableHeaderObserver = useRef<ResizeObserver | null>(null);
+  const tableHeaderRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      tableHeaderObserver.current?.disconnect();
+      if (!el) return;
+      const measure = () =>
+        setTableHeaderHeight(
+          el.getBoundingClientRect().height + parseFloat(theme.spacing(1)),
+        );
+      measure();
+      const observer = new ResizeObserver(measure);
+      observer.observe(el);
+      tableHeaderObserver.current = observer;
+    },
+    [theme],
+  );
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
@@ -508,28 +566,36 @@ const SingleCell: React.FC<{
         </Tabs>
       </Grid>
       {tabIndex === 1 ? (
-        <Grid size={12} sx={{height: "600px"}}>
+        <Grid size={12} sx={{ height: "600px" }}>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : dotplotDataSc.length > 0 || dotplotDataCt.length > 0 ? (
             <>
               <Stack direction={"row"} spacing={1} mb={1}>
                 <Button
-                  variant={ctClass === "by Cell type" ? "contained" : "outlined"}
+                  variant={
+                    ctClass === "by Cell type" ? "contained" : "outlined"
+                  }
                   key={"by Cell type"}
                   onClick={() => setCtClass("by Cell type")}
                 >
                   By Cell Type
                 </Button>
                 <Button
-                  variant={ctClass === "by Broader Cell type" ? "contained" : "outlined"}
+                  variant={
+                    ctClass === "by Broader Cell type"
+                      ? "contained"
+                      : "outlined"
+                  }
                   key={"by Broader Cell type"}
                   onClick={() => setCtClass("by Broader Cell type")}
                 >
                   By Broader Cell Type
                 </Button>
                 <Button
-                  variant={ctClass === "All Datasets" ? "contained" : "outlined"}
+                  variant={
+                    ctClass === "All Datasets" ? "contained" : "outlined"
+                  }
                   key={"All Datasets"}
                   onClick={() => setCtClass("All Datasets")}
                 >
@@ -543,7 +609,10 @@ const SingleCell: React.FC<{
                     <Tab label="by Broader Cell type" />
                   </Tabs>
                   <DotPlot
-                    data={(cttabIndex === 0 ? dotplotDataSc : dotplotDataCt).map((k) => ({
+                    data={(cttabIndex === 0
+                      ? dotplotDataSc
+                      : dotplotDataCt
+                    ).map((k) => ({
                       x: k.celltype,
                       y: k.dataset,
                       radius: k.expr_frac,
@@ -556,22 +625,22 @@ const SingleCell: React.FC<{
                   />
                 </>
               ) : (
-                <div style={{height: 400}}>
-                <DotPlot
-                  data={(ctClass === "by Cell type"
-                    ? dotplotDataSc.filter((d) => d.dataset === dataset)
-                    : dotplotDataCt.filter((d) => d.dataset === dataset)
-                  ).map((k) => ({
-                    x: k.celltype,
-                    y: k.dataset,
-                    radius: k.expr_frac,
-                    color: k.mean_count,
-                  }))}
-                  yAxisLabel={gene}
-                  yLabelsRight
-                  downloadFileName={`${gene}-${dataset}-single-cell-dot-plot.svg`}
-                  ref={dotPlotRef}
-                />
+                <div style={{ height: 400 }}>
+                  <DotPlot
+                    data={(ctClass === "by Cell type"
+                      ? dotplotDataSc.filter((d) => d.dataset === dataset)
+                      : dotplotDataCt.filter((d) => d.dataset === dataset)
+                    ).map((k) => ({
+                      x: k.celltype,
+                      y: k.dataset,
+                      radius: k.expr_frac,
+                      color: k.mean_count,
+                    }))}
+                    yAxisLabel={gene}
+                    yLabelsRight
+                    downloadFileName={`${gene}-${dataset}-single-cell-dot-plot.svg`}
+                    ref={dotPlotRef}
+                  />
                 </div>
               )}
               <Button
@@ -587,30 +656,34 @@ const SingleCell: React.FC<{
           )}
         </Grid>
       ) : (
-        <Grid size={12}>
-          <Stack direction="row" spacing={1} mb={1}>
-            <Button
-              variant={ctClass === "by Cell type" ? "contained" : "outlined"}
-              key={"by Cell type"}
-              onClick={() => setCtClass("by Cell type")}
-            >
-              By Cell Type
-            </Button>
-            <Button
-              variant={ctClass === "by Broader Cell type" ? "contained" : "outlined"}
-              key={"by Broader Cell type"}
-              onClick={() => setCtClass("by Broader Cell type")}
-            >
-              By Broader Cell Type
-            </Button>
-          </Stack>
+        <>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : (
-            <TwoPaneLayout
-              direction={{ xs: "column", md: "row" }}
-              rowHeight="700px"
-              TableComponent={
+            <Grid size={{ xs: 12, md: 5 }}>
+              <Stack direction="row" spacing={1} mb={1} ref={tableHeaderRef}>
+                <Button
+                  variant={
+                    ctClass === "by Cell type" ? "contained" : "outlined"
+                  }
+                  key={"by Cell type"}
+                  onClick={() => setCtClass("by Cell type")}
+                >
+                  By Cell Type
+                </Button>
+                <Button
+                  variant={
+                    ctClass === "by Broader Cell type"
+                      ? "contained"
+                      : "outlined"
+                  }
+                  key={"by Broader Cell type"}
+                  onClick={() => setCtClass("by Broader Cell type")}
+                >
+                  By Broader Cell Type
+                </Button>
+              </Stack>
+              {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
                 <SingleCellExpressionTable
                   rows={
                     ctClass === "by Cell type"

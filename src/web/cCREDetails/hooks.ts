@@ -1,4 +1,4 @@
-import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useMemo } from "react";
 
 export type BiosampleEntry = {
@@ -64,42 +64,29 @@ const CCRE_QUERY = gql`
 `;
 
 export function useBiosamples() {
-  const client = useMemo(
-    () =>
-      new ApolloClient({
-        uri: "https://psychscreen.api.wenglab.org/graphql",
-        cache: new InMemoryCache(),
-      }),
-    []
-  );
   return useQuery<{ ccREBiosampleQuery: { biosamples: BiosampleEntry[] } }>(
     BIOSAMPLE_QUERY,
-    { client }
+    { context: { clientName: "psychscreen" } },
   );
 }
 
 export function useCCREInformation(rDHSAccession: string) {
-  const client = useMemo(
-    () =>
-      new ApolloClient({
-        uri: "https://psychscreen.api.wenglab.org/graphql",
-        cache: new InMemoryCache(),
-      }),
-    []
-  );
   const { data, loading } = useQuery<{ cCREQuery: CCREInformation[] }>(
     CCRE_QUERY,
-    { variables: { rDHS: rDHSAccession }, client }
+    {
+      variables: { rDHS: rDHSAccession },
+      context: { clientName: "psychscreen" },
+    },
   );
   const r = useMemo(
     () =>
       data?.cCREQuery[0] && {
         ...data?.cCREQuery[0],
         zScores: new Map<string, number>(
-          data?.cCREQuery[0].zScores.map((x) => [x.experiment, x.score]) || []
+          data?.cCREQuery[0].zScores.map((x) => [x.experiment, x.score]) || [],
         ),
       },
-    [data]
+    [data],
   );
   return { data: r, loading };
 }

@@ -1,49 +1,64 @@
-import { gql, useQuery } from "@apollo/client";
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import { Cytobands } from "@weng-lab/genomebrowser-ui";
+import type { Highlight } from "@weng-lab/genomebrowser";
 import { groupBy } from "queryz";
-import React, { useMemo, useState } from "react";
-import { Cytobands } from "umms-gb";
+import React, { useMemo } from "react";
 import { linearTransform } from "../GenePortal/violin/utils";
 
 import { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import { DISEASE_CARDS } from "./config/constants";
-import { toScientificNotation } from "./utils";
+import { focusedRiskLocus, toScientificNotation } from "./utils";
 
-type Cytoband = {
-  coordinates: {
-    chromosome: string;
-    start: number;
-    end: number;
-  };
-  stain: string;
-  bandname: string;
+type RiskLocus = {
+  chromosome?: string;
+  start: number;
+  end: number;
+  count: number;
+  minimump: number;
 };
 
-type CytobandQueryResponse = {
-  cytoband: Cytoband[];
-};
+const HG38_CHROMOSOME_LENGTHS = {
+  chr1: 248_956_422,
+  chr2: 242_193_529,
+  chr3: 198_295_559,
+  chr4: 190_214_555,
+  chr5: 181_538_259,
+  chr6: 170_805_979,
+  chr7: 159_345_973,
+  chr8: 145_138_636,
+  chr9: 138_394_717,
+  chr10: 133_797_422,
+  chr11: 135_086_622,
+  chr12: 133_275_309,
+  chr13: 114_364_328,
+  chr14: 107_043_718,
+  chr15: 101_991_189,
+  chr16: 90_338_345,
+  chr17: 83_257_441,
+  chr18: 80_373_285,
+  chr19: 58_617_616,
+  chr20: 64_444_167,
+  chr21: 46_709_983,
+  chr22: 50_818_468,
+  chrX: 156_040_895,
+  chrY: 57_227_415,
+} as const;
 
-const HUMAN_CYTOBAND_QUERY = gql`
-  query {
-    cytoband(assembly: "hg38") {
-      coordinates {
-        chromosome
-        start
-        end
-      }
-      stain
-      bandname
-    }
-  }
-`;
+type Hg38Chromosome = keyof typeof HG38_CHROMOSOME_LENGTHS;
 
-function useCytobands() {
-  return useQuery<CytobandQueryResponse>(HUMAN_CYTOBAND_QUERY);
+const HG38_CHROMOSOMES = Object.keys(
+  HG38_CHROMOSOME_LENGTHS,
+) as Hg38Chromosome[];
+
+function isHg38Chromosome(
+  chromosome: string | undefined,
+): chromosome is Hg38Chromosome {
+  return chromosome !== undefined && chromosome in HG38_CHROMOSOME_LENGTHS;
 }
 
 function cappedLinearTransform(
   a: [number, number],
-  b: [number, number]
+  b: [number, number],
 ): (x: number) => number {
   const l = linearTransform(a, b);
   return (x: number) => l(x > a[1] ? a[1] : x);
@@ -53,23 +68,17 @@ function colorGradient(v: number): string {
   const start = [235, 168, 12];
   const end = [235, 168, 12];
   const c = start.map((v, i) =>
-    cappedLinearTransform([-Math.log10(5e-8), 20], [v, end[i]])
+    cappedLinearTransform([-Math.log10(5e-8), 20], [v, end[i]]),
   );
   return `rgb(${c.map((x) => x(v)).join(",")})`;
 }
 
 const RiskLocusView: React.FC<{
-  loci: {
-    chromosome?: string;
-    start: number;
-    end: number;
-    count: number;
-    minimump: number;
-  }[];
+  loci: RiskLocus[];
   disease: string;
   onLocusClick?: (
     locus: GenomicRange,
-    gwasLocusSNPs?: { SNPCount: number; minimump: number }
+    gwasLocusSNPs?: { SNPCount: number; minimump: number },
   ) => void;
 }> = (props) => {
   const groupedLoci = useMemo(
@@ -77,37 +86,19 @@ const RiskLocusView: React.FC<{
       groupBy(
         props.loci,
         (x) => x.chromosome,
-        (x) => x
+        (x) => x,
       ),
-    [props.loci]
+    [props.loci],
   );
-  const { data: cytobands } = useCytobands();
-  const groupedCytobands = useMemo(
+  const chromosomes = useMemo(
     () =>
-      groupBy(
-        cytobands?.cytoband || [],
-        (x) => x.coordinates.chromosome,
-        (x) => x
-      ),
-    [cytobands]
+      [...groupedLoci.keys()]
+        .filter(isHg38Chromosome)
+        .sort(
+          (a, b) => HG38_CHROMOSOMES.indexOf(a) - HG38_CHROMOSOMES.indexOf(b),
+        ),
+    [groupedLoci],
   );
-  const maxes = useMemo(
-    () =>
-      new Map(
-        [...groupedCytobands.keys()].map((k) => [
-          k,
-          Math.max(
-            ...(groupedCytobands.get(k)!.length === 0
-              ? [1]
-              : groupedCytobands.get(k)!.map((x) => x.coordinates.end))
-          ),
-        ])
-      ),
-    [groupedCytobands]
-  );
-  const [selected, setSelected] = useState<
-    [string, number, number, number] | null
-  >(null);
 
   return props.loci.length === 0 ? (
     <CircularProgress />
@@ -125,133 +116,127 @@ const RiskLocusView: React.FC<{
         has identified{" "}
         {[...groupedLoci.keys()].reduce<number>(
           (v, c) => v + groupedLoci.get(c)!.length,
-          0
+          0,
         )}{" "}
         risk loci (orange boxes below). Mouse over a locus to view its
         coordinates and summary statistics.
       </Typography>
-      <Box minWidth={"700px"} maxWidth={"1000px"}>
-        <svg viewBox={`0 0 1000 ${groupedLoci.size * 30 + 100}`}>
-          {[...groupedLoci.keys()]
-            .filter((x) => x && groupedCytobands.get(x))
-            .sort(
-              (a, b) =>
-                +a!
-                  .replace(/chr/g, "")
-                  .replace(/X/g, "23")
-                  .replace(/Y/g, "24") -
-                +b!.replace(/chr/g, "").replace(/X/g, "23").replace(/Y/g, "24")
-            )
-            .map((chromosome, i) => (
-              <g key={i}>
-                <text
-                  transform={`translate(40,${i * 30 + 13})`}
-                  fontSize="30px"
-                  dominantBaseline="middle"
-                  textAnchor="end"
+      <Box minWidth="700px" maxWidth="1000px" width="100%">
+        <Stack spacing={1.25}>
+          {chromosomes.map((chromosome) => {
+            const loci = groupedLoci.get(chromosome)!;
+            const lociByHighlightId = new Map<string, RiskLocus>();
+            const highlights: Highlight[] = loci.map((locus, index) => {
+              const id = `${chromosome}:${locus.start}-${locus.end}:${index}`;
+              lociByHighlightId.set(id, locus);
+              return {
+                id,
+                region: {
+                  chromosome,
+                  start: locus.start,
+                  end: locus.end,
+                },
+                color: colorGradient(-Math.log10(locus.minimump)),
+                opacity: 0.5,
+              };
+            });
+            const width =
+              (950 * HG38_CHROMOSOME_LENGTHS[chromosome]) /
+              HG38_CHROMOSOME_LENGTHS.chr1;
+
+            return (
+              <Stack
+                key={chromosome}
+                direction="row"
+                spacing={1.25}
+                alignItems="flex-start"
+              >
+                <Typography
+                  width={40}
+                  flexShrink={0}
+                  fontSize={18}
                   fontWeight="bold"
-                  fontFamily="roboto"
+                  lineHeight="20px"
+                  textAlign="right"
                 >
-                  {chromosome?.replace(/chr/g, "")}
-                </text>
-                <Cytobands
-                  transform={`translate(50,${i * 30})`}
-                  data={groupedCytobands.get(chromosome!)!}
-                  highlights={groupedLoci.get(chromosome)?.map((x) => ({
-                    ...x,
-                    //start: x.start - 1500000 < 0 ? 0 : x.start - 1500000,
-                    //end: x.end + 1500000,
-                    color: colorGradient(-Math.log10(x.minimump)),
-                  }))}
-                  width={(950 * maxes.get(chromosome!)!) / maxes.get("chr1")!}
-                  height={20}
-                  id=""
-                  domain={{ start: 0, end: maxes.get(chromosome!)! }}
-                  onHighlightMouseOver={(_, x, ii) =>
-                    setSelected([chromosome!, ii, x + 50, i * 30])
-                  }
-                  onHighlightMouseOut={() => setSelected(null)}
-                  onHighlightClick={(_, __, ii) =>
-                    props.onLocusClick &&
-                    selected &&
-                    props.onLocusClick(
-                      {
-                        chromosome: groupedLoci.get(chromosome!)![ii]
-                          .chromosome,
-                        start:
-                          groupedLoci.get(chromosome!)![ii].start + 1400000,
-                        end: groupedLoci.get(chromosome!)![ii].end - 1400000,
-                      },
-                      {
-                        SNPCount: groupedLoci.get(selected[0])![selected[1]]
-                          .count,
-                        minimump: +groupedLoci
-                          .get(selected[0])!
-                          [selected[1]].minimump.toExponential(1),
+                  {chromosome.replace("chr", "")}
+                </Typography>
+                <Box flex={1}>
+                  <Box
+                    position="relative"
+                    width={`${(100 * HG38_CHROMOSOME_LENGTHS[chromosome]) / HG38_CHROMOSOME_LENGTHS.chr1}%`}
+                    sx={{
+                      "&:hover": { zIndex: 1 },
+                      "& > svg": { width: "100%" },
+                    }}
+                  >
+                    <Cytobands
+                      assembly="GRCh38"
+                      chromosome={chromosome}
+                      width={width}
+                      height={20}
+                      highlights={highlights}
+                      renderHighlightTooltip={(highlight) => {
+                        const locus = lociByHighlightId.get(highlight.id);
+                        return locus ? (
+                          <RiskLocusTooltip
+                            locus={locus}
+                            clickable={props.onLocusClick !== undefined}
+                          />
+                        ) : null;
+                      }}
+                      onHighlightClick={
+                        props.onLocusClick
+                          ? (highlight) => {
+                              const locus = lociByHighlightId.get(highlight.id);
+                              if (!locus) return;
+                              props.onLocusClick?.(focusedRiskLocus(locus), {
+                                SNPCount: locus.count,
+                                minimump: +locus.minimump.toExponential(1),
+                              });
+                            }
+                          : undefined
                       }
-                    )
-                  }
-                  opacity={0.4}
-                />
-              </g>
-            ))}
-          {selected ? (
-            <g
-              transform={`translate(${
-                selected[2] < 180
-                  ? 30
-                  : selected[2] > 700
-                  ? 700
-                  : selected[2] - 150
-              },${selected[3] + (selected[3] >= 550 ? -105 : 30)})`}
-              fontFamily="roboto"
-              fontSize="18px"
-            >
-              <rect
-                x={0}
-                y={0}
-                width={300}
-                height={100}
-                stroke="#444444"
-                strokeWidth={5}
-                fill="#ffffff"
-                fillOpacity={0.95}
-              />
-              <text x={12} y={24} fontWeight="bold">
-                {groupedLoci.get(selected[0])![selected[1]].chromosome}:
-                {(
-                  groupedLoci.get(selected[0])![selected[1]].start + 1400000
-                ).toLocaleString()}
-                -
-                {(
-                  groupedLoci.get(selected[0])![selected[1]].end - 1400000
-                ).toLocaleString()}
-              </text>
-              <text x={28} y={48}>
-                {groupedLoci.get(selected[0])![selected[1]].count} significant
-                SNP
-                {groupedLoci.get(selected[0])![selected[1]].count !== 1
-                  ? "s"
-                  : ""}{" "}
-                at locus
-              </text>
-              <text x={28} y={68}>
-                lowest <tspan fontStyle="italic">P</tspan> at locus:{" "}
-                {toScientificNotation(
-                  groupedLoci.get(selected[0])![selected[1]].minimump,
-                  2
-                )}
-              </text>
-              {props.onLocusClick && (
-                <text x={12} y={88} fill="#0000ff">
-                  Click to explore this locus
-                </text>
-              )}
-            </g>
-          ) : null}
-        </svg>
+                    />
+                  </Box>
+                </Box>
+              </Stack>
+            );
+          })}
+        </Stack>
       </Box>
     </Stack>
   );
 };
+
+function RiskLocusTooltip({
+  locus,
+  clickable,
+}: {
+  locus: RiskLocus;
+  clickable: boolean;
+}) {
+  const { start, end } = focusedRiskLocus(locus);
+
+  return (
+    <g>
+      <text y={0} dominantBaseline="hanging" fontWeight="bold">
+        {locus.chromosome}:{start.toLocaleString()}-{end.toLocaleString()}
+      </text>
+      <text y={18} dominantBaseline="hanging">
+        {locus.count} significant SNP{locus.count === 1 ? "" : "s"} at locus
+      </text>
+      <text y={36} dominantBaseline="hanging">
+        lowest <tspan fontStyle="italic">P</tspan> at locus:{" "}
+        {toScientificNotation(locus.minimump, 2)}
+      </text>
+      {clickable ? (
+        <text y={54} dominantBaseline="hanging" fill="#0000ff">
+          Click to explore this locus
+        </text>
+      ) : null}
+    </g>
+  );
+}
+
 export default RiskLocusView;

@@ -158,7 +158,7 @@ const AppBar: React.FC<AppBarProps> = ({ centered, ...props }) => {
             menu={
               <PortalsMenu
                 onPortalClicked={(index) =>
-                  navigate(`/psychscreen${PORTALS[index][0]}`)
+                  navigate(PORTALS[index][0])
                 }
               />
             }
@@ -167,13 +167,13 @@ const AppBar: React.FC<AppBarProps> = ({ centered, ...props }) => {
           </DropDownMenuItem>
           <NavText
             variant="h6"
-            onClick={() => navigate("/psychscreen/aboutus")}
+            onClick={() => navigate("/aboutus")}
           >
             About Us
           </NavText>
           <NavText
             variant="h6"
-            onClick={() => navigate("/psychscreen/downloads")}
+            onClick={() => navigate("/downloads")}
           >
             Downloads
           </NavText>

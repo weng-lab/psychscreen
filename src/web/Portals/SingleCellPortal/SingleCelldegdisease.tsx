@@ -227,7 +227,7 @@ const SingleCelldegdisease: React.FC<GridProps> = (props) => {
               width={500}
               onCardClick={(v?: string) => {
                 navigate(
-                  `/psychscreen/single-cell/datasets/Diff-expressed-genes/${disease}/${v}`,
+                  `/single-cell/datasets/Diff-expressed-genes/${disease}/${v}`,
                   { state: { searchvalue: v } }
                 );
               }}

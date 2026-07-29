@@ -52,6 +52,7 @@ const gwasColumns: TableColDef<GWASEntry>[] = [
 const GwasPage: React.FC<GWASPageProps> = (props) => {
   const { data } = useQuery<QueryResponse>(QUERY, {
     variables: { id: props.id },
+    context: { clientName: "staging" },
   });
 
   return (

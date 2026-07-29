@@ -1,4 +1,42 @@
-import { GenomicRange } from "../GenePortal/AssociatedxQTL";
+import type { Highlight } from "@weng-lab/genomebrowser";
+import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
+
+const RISK_LOCUS_FOCUS_INSET = 1_400_000;
+
+type BroadRiskLocus = Pick<GenomicRange, "chromosome" | "start" | "end">;
+
+export function focusedRiskLocus<T extends BroadRiskLocus>(
+  locus: T,
+): BroadRiskLocus {
+  return {
+    chromosome: locus.chromosome,
+    start: locus.start + RISK_LOCUS_FOCUS_INSET,
+    end: locus.end - RISK_LOCUS_FOCUS_INSET,
+  };
+}
+
+export function diseaseRiskLocusHighlights(
+  disease: string,
+  loci: readonly BroadRiskLocus[],
+): Highlight[] {
+  return loci.map((locus, index) => {
+    const region = focusedRiskLocus(locus);
+    if (!region.chromosome) {
+      throw new Error("Disease risk loci must include a chromosome");
+    }
+
+    return {
+      id: `disease-risk-locus:${encodeURIComponent(disease)}:${encodeURIComponent(region.chromosome)}:${region.start}-${region.end}:${index}`,
+      region: {
+        chromosome: region.chromosome,
+        start: region.start,
+        end: region.end,
+      },
+      color: "#eba80c",
+      opacity: 0.5,
+    };
+  });
+}
 
 function compare(a: GenomicRange, b: GenomicRange): number {
   const ca = +a

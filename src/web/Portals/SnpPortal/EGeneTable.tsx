@@ -6,7 +6,6 @@ import { EGene } from "./SNPDetails";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Table, TableColDef } from "@weng-lab/ui-components";
 
-
 import { useNavigate } from "react-router-dom";
 import { toScientificNotation } from "../DiseaseTraitPortal/utils";
 const QUERY = gql`
@@ -80,7 +79,7 @@ const qtlsigColumns: TableColDef[] = [
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`/psychscreen/gene/${params.value}`}
+          href={`/gene/${params.value}`}
           style={{ color: "#0000EE" }}
         >
           <i>{params.value}</i>
@@ -164,7 +163,7 @@ const egenesColumns: TableColDef[] = [
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`/psychscreen/gene/${params.value}`}
+        href={`/gene/${params.value}`}
         style={{ color: "#0000EE" }}
       >
         <i>{params.value}</i>
@@ -197,11 +196,13 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
   const navigate = useNavigate();
   const { data, loading } = useQuery<QueryResponse>(QUERY, {
     variables: { id: props.genes.map((x) => x.gene.split(".")[0]) },
+    context: { clientName: "staging" },
   });
   const { data: eqtlData, loading: eqtlLoading } = useQuery(DECONQTL_QUERY, {
     variables: {
       snpid: props.snp,
     },
+    context: { clientName: "staging" },
   });
 
   const { data: qtlsigassocData, loading: qtlsigassocLoading } = useQuery(
@@ -210,7 +211,8 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       variables: {
         snpid: props.snp,
       },
-    }
+      context: { clientName: "staging" },
+    },
   );
 
   const { data: geneNameData } = useQuery(GENE_NAME_QUERY, {
@@ -223,6 +225,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       assembly: "GRCh38",
     },
     skip: qtlsigassocLoading || !qtlsigassocData,
+    context: { clientName: "staging" },
   });
 
   const { data: transcriptNameData } = useQuery(TRANSCRIPT_NAME_QUERY, {
@@ -235,6 +238,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       assembly: "GRCh38",
     },
     skip: qtlsigassocLoading || !qtlsigassocData,
+    context: { clientName: "staging" },
   });
 
   const deconqtlData = eqtlData && eqtlData.deconqtlsQuery;
@@ -244,9 +248,9 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       associateBy(
         props.genes,
         (x) => x.gene,
-        (x) => x
+        (x) => x,
       ),
-    [props]
+    [props],
   );
   const genes = useMemo(
     () =>
@@ -254,11 +258,11 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
         data?.gene || [],
         (x) => x.id,
         (x) =>
-          ({ ...genemap.get(x.id.split(".")[0]), name: x.name } as EGene & {
+          ({ ...genemap.get(x.id.split(".")[0]), name: x.name }) as EGene & {
             name: string;
-          })
+          },
       ),
-    [data, genemap]
+    [data, genemap],
   );
 
   const egeneData =
@@ -266,7 +270,8 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
 
   return loading || !egeneData || qtlsigassocLoading || eqtlLoading ? (
     <>
-      <Typography variant="body1"
+      <Typography
+        variant="body1"
         style={{
           display: "flex",
           alignItems: "center",
@@ -286,9 +291,7 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
       {" "}
       {egeneData && egeneData.length > 0 ? (
         <>
-          <Typography variant="subtitle1">
-            eGenes for {props.snp}:
-          </Typography>
+          <Typography variant="subtitle1">eGenes for {props.snp}:</Typography>
 
           <Table
             label="eGenes"
@@ -339,12 +342,12 @@ const EGeneTable: React.FC<{ genes: EGene[]; snp: string }> = (props) => {
                 geneid: x.geneid.includes("ENSG")
                   ? (geneNameData &&
                       geneNameData.gene.find(
-                        (g) => g.id.split(".")[0] === x.geneid
+                        (g) => g.id.split(".")[0] === x.geneid,
                       )?.name) ||
                     x.geneid
                   : (transcriptNameData &&
                       transcriptNameData.transcript.find(
-                        (g) => g.id.split(".")[0] === x.geneid.split(".")[0]
+                        (g) => g.id.split(".")[0] === x.geneid.split(".")[0],
                       )?.name) ||
                     x.geneid,
               };
