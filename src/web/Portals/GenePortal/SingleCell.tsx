@@ -8,13 +8,13 @@ import {
   Button,
   Stack,
   FormLabel,
-  Typography,
-  useMediaQuery } from "@mui/material";
+  Typography } from "@mui/material";
 
 import Grid from "@mui/material/Grid";
 import { linearTransform } from "jubilant-carnival";
 import { Point, ScatterPlot, DownloadPlotHandle, DotPlot } from "@weng-lab/visualization";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { TwoPaneLayout } from "@weng-lab/ui-components";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -159,13 +159,6 @@ function useSingleCellUMAPData(dataset: string) {
   });
 }
 
-function generateColors(n: number) {
-  const colors: string[] = [];
-  for (let i = 0; i < n; ++i)
-    colors.push(`hsl(${(360 / n) * (n - i)}, 80%, 50%)`);
-  return colors;
-}
-
 const celltypeColors = {
   ExcitatoryNeurons: "#E31A1C",
   InhibitoryNeurons: "#1F78B4",
@@ -210,9 +203,6 @@ const subClassColors = {
 function useSingleCellData(dataset: string, gene: string, ctClass: string) {
   const { loading: expressionLoading, data: expressionData } =
     useSingleCellGeneData(dataset, gene);
-  let f =
-    expressionData &&
-    expressionData.singleCellGenesQuery.filter((e) => e.val > 0);
 
   const { loading: UMAPLoading, data: UMAPData } =
     useSingleCellUMAPData(dataset);
@@ -265,9 +255,8 @@ function useSingleCellData(dataset: string, gene: string, ctClass: string) {
       )
     );
 
-    const rcolors = generateColors(unique_celltypes.size);
     return new Map(
-      [...unique_celltypes].map((x, i) => [
+      [...unique_celltypes].map((x) => [
         x,
         ctClass === "by Cell type" ? subClassColors[x] : celltypeColors[x],
       ])
@@ -370,7 +359,7 @@ const SingleCell: React.FC<{
     "expression"
   );
   const [tabIndex, setTabIndex] = useState(0);
-  const handleTabChange = (_: any, newTabIndex: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
   };
   const { loading: byCtDataLoading, data: byCtData } =
@@ -448,7 +437,7 @@ const SingleCell: React.FC<{
 
   const [cttabIndex, setCtTabIndex] = useState(0);
 
-  const handleCtTabChange = (_: any, newTabIndex: number) => {
+  const handleCtTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setCtTabIndex(newTabIndex);
   };
 
@@ -467,37 +456,10 @@ const SingleCell: React.FC<{
     return () => observer.disconnect();
   }, []);
 
-  // Match the table's height to the UMAP column (plot + legend + download row) so they end at the same line.
-  // Uses callback refs (not useRef + useEffect([])) since these elements only mount once data resolves,
-  // which happens after the initial render -- a one-time effect would miss the later mount.
-  const [umapColumnHeight, setUmapColumnHeight] = useState(0);
-  const umapColumnObserver = useRef<ResizeObserver | null>(null);
-  const umapColumnRef = useCallback((el: HTMLDivElement | null) => {
-    umapColumnObserver.current?.disconnect();
-    if (!el) return;
-    const observer = new ResizeObserver(([entry]) => setUmapColumnHeight(entry.contentRect.height));
-    observer.observe(el);
-    umapColumnObserver.current = observer;
-  }, []);
-  // Height (including margin) of the "By Cell Type"/"By Broader Cell Type" buttons sitting above the
-  // table in its column, subtracted from umapColumnHeight so the table itself (not its column) ends
-  // level with the UMAP column.
-  const [tableHeaderHeight, setTableHeaderHeight] = useState(0);
-  const tableHeaderObserver = useRef<ResizeObserver | null>(null);
-  const tableHeaderRef = useCallback((el: HTMLDivElement | null) => {
-    tableHeaderObserver.current?.disconnect();
-    if (!el) return;
-    const measure = () => setTableHeaderHeight(el.getBoundingClientRect().height + parseFloat(theme.spacing(1)));
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    tableHeaderObserver.current = observer;
-  }, [theme]);
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const handleChange = (event) => {
     setDataset(event.target.value);
   };
-  let keys = Array.from(DATASETS.keys());
+  const keys = Array.from(DATASETS.keys());
 
   return (
     <Grid container spacing={2} alignItems="flex-start">
@@ -521,7 +483,7 @@ const SingleCell: React.FC<{
                 >
                   {keys.map((d) => {
                     return (
-                      <MenuItem value={DATASETS.get(d)!.cohort}>
+                      <MenuItem key={d} value={DATASETS.get(d)!.cohort}>
                         {d}
                         {" - "}
                         {DATASETS.get(d)!.shortdesc}
@@ -625,28 +587,30 @@ const SingleCell: React.FC<{
           )}
         </Grid>
       ) : (
-        <>
+        <Grid size={12}>
+          <Stack direction="row" spacing={1} mb={1}>
+            <Button
+              variant={ctClass === "by Cell type" ? "contained" : "outlined"}
+              key={"by Cell type"}
+              onClick={() => setCtClass("by Cell type")}
+            >
+              By Cell Type
+            </Button>
+            <Button
+              variant={ctClass === "by Broader Cell type" ? "contained" : "outlined"}
+              key={"by Broader Cell type"}
+              onClick={() => setCtClass("by Broader Cell type")}
+            >
+              By Broader Cell Type
+            </Button>
+          </Stack>
           {byCtDataLoading || byScDataLoading ? (
             <CircularProgress />
           ) : (
-            <Grid size={{ xs: 12, md: 5 }}>
-              <Stack direction="row" spacing={1} mb={1} ref={tableHeaderRef}>
-                <Button
-                  variant={ctClass === "by Cell type" ? "contained" : "outlined"}
-                  key={"by Cell type"}
-                  onClick={() => setCtClass("by Cell type")}
-                >
-                  By Cell Type
-                </Button>
-                <Button
-                  variant={ctClass === "by Broader Cell type" ? "contained" : "outlined"}
-                  key={"by Broader Cell type"}
-                  onClick={() => setCtClass("by Broader Cell type")}
-                >
-                  By Broader Cell Type
-                </Button>
-              </Stack>
-              {scrows && ctrows && ctrows.length > 0 && scrows.length > 0 ? (
+            <TwoPaneLayout
+              direction={{ xs: "column", md: "row" }}
+              rowHeight="700px"
+              TableComponent={
                 <SingleCellExpressionTable
                   rows={
                     ctClass === "by Cell type"
@@ -657,107 +621,109 @@ const SingleCell: React.FC<{
                   }
                   onRowMouseEnter={(row) => setHighlighted(row.celltype)}
                   onRowMouseLeave={() => setHighlighted("")}
-                  height={
-                    isMdUp && umapColumnHeight > 0
-                      ? Math.max(umapColumnHeight - tableHeaderHeight, 0)
-                      : undefined
-                  }
                 />
-              ) : (
-                <>{"Data Not available"}</>
-              )}
-            </Grid>
+              }
+              plots={[
+                {
+                  tabTitle: "UMAP",
+                  onDownloadPNG:
+                    points.length > 0 ? () => chartRef.current?.downloadPNG() : undefined,
+                  plotComponent:
+                    points.length > 0 ? (
+                      <Stack sx={{ height: "100%", overflow: "hidden" }}>
+                        <FormControl size="small" sx={{ alignItems: "flex-start", mb: 1, flexShrink: 0 }}>
+                          <FormLabel sx={{ fontSize: "0.75rem" }}>UMAP Color Scheme:</FormLabel>
+                          <ToggleButtonGroup
+                            size="small"
+                            value={colorScheme}
+                            exclusive
+                            onChange={(_, x) => setColorScheme(x)}
+                            sx={{ textTransform: "none" }}
+                          >
+                            <ToggleButton
+                              value="expression"
+                              sx={{ textTransform: "none" }}
+                            >
+                              Gene Expression
+                            </ToggleButton>
+                            <ToggleButton
+                              value="cluster"
+                              sx={{ textTransform: "none" }}
+                            >
+                              Cell Type Cluster
+                            </ToggleButton>
+                          </ToggleButtonGroup>
+                        </FormControl>
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{ flex: 1, minHeight: 0, overflow: "hidden" }}
+                        >
+                          <Box
+                            ref={plotContainerRef}
+                            sx={{
+                              flex: 1,
+                              minWidth: 0,
+                              minHeight: 0,
+                              alignSelf: "center",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              position: "relative",
+                              height: "100%",
+                              overflow: "hidden",
+                              ...(plotContainerWidth > 0 && {
+                                maxHeight: plotContainerWidth - CONTROLS_OFFSET,
+                              }),
+                            }}
+                          >
+                            <ScatterPlot
+                              key={dataset}
+                              pointData={points}
+                              loading={loading}
+                              groupPointsAnchor="cluster"
+                              controlsHighlight={theme.palette.primary.main}
+                              tooltipBody={(point) => (
+                                <Typography>
+                                  {point.metaData?.cluster.replace(/_/g, " ")}
+                                </Typography>
+                              )}
+                              leftAxisLabel="UMAP-1"
+                              bottomAxisLabel="UMAP-2"
+                              ref={chartRef}
+                              downloadFileName={`${gene}-${dataset}-single-cell-UMAP.png`}
+                            />
+                          </Box>
+                          {colorScheme === "expression" && (
+                            <Stack alignItems="center" spacing={0.5} sx={{ minHeight: 0, flexShrink: 0 }}>
+                              <Typography variant="caption">
+                                {maximumValue.toFixed(1)}
+                              </Typography>
+                              <Box
+                                sx={{
+                                  width: 14,
+                                  flex: 1,
+                                  borderRadius: 1,
+                                  background: "linear-gradient(to bottom, red, #ffcd00)",
+                                }}
+                              />
+                              <Typography variant="caption">0.0</Typography>
+                              <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                                {gene}
+                              </Typography>
+                              <Typography variant="caption">Expression</Typography>
+                            </Stack>
+                          )}
+                        </Stack>
+                      </Stack>
+                    ) : (
+                      <Typography>Data Not available</Typography>
+                    ),
+                },
+              ]}
+            />
           )}
-          {points && points.length > 0 ? (
-            <Grid size={{ xs: 12, md: 7 }} ref={umapColumnRef}>
-              <Stack direction="row" spacing={1}>
-                <Box
-                  ref={plotContainerRef}
-                  sx={{
-                    flex: 1,
-                    minWidth: 0,
-                    position: "relative",
-                    height: 650,
-                    ...(plotContainerWidth > 0 && {
-                      maxHeight: plotContainerWidth - CONTROLS_OFFSET,
-                    }),
-                  }}
-                >
-                  <ScatterPlot
-                    key={dataset}
-                    pointData={points}
-                    loading={loading}
-                    groupPointsAnchor="cluster"
-                    controlsHighlight={theme.palette.primary.main}
-                    tooltipBody={(point) => (
-                      <Typography>
-                        {point.metaData?.cluster.replace(/_/g, " ")}
-                      </Typography>
-                    )}
-                    leftAxisLabel="UMAP-1"
-                    bottomAxisLabel="UMAP-2"
-                    ref={chartRef}
-                    downloadFileName={`${gene}-${dataset}-single-cell-UMAP.png`}
-                  />
-                </Box>
-                {colorScheme === "expression" && (
-                  <Stack alignItems="center" spacing={0.5}>
-                    <Typography variant="caption">
-                      {maximumValue.toFixed(1)}
-                    </Typography>
-                    <Box
-                      sx={{
-                        width: 14,
-                        flex: 1,
-                        borderRadius: 1,
-                        background: "linear-gradient(to bottom, red, #ffcd00)",
-                      }}
-                    />
-                    <Typography variant="caption">0.0</Typography>
-                    <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-                      {gene}
-                    </Typography>
-                    <Typography variant="caption">Expression</Typography>
-                  </Stack>
-                )}
-              </Stack>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <FormControl>
-                  <FormLabel>UMAP Color Scheme:</FormLabel>
-                  <ToggleButtonGroup
-                    size={"small"}
-                    value={colorScheme}
-                    exclusive
-                    onChange={(_, x) => setColorScheme(x)}
-                    sx={{ textTransform: "none" }}
-                  >
-                    <ToggleButton
-                      value="expression"
-                      sx={{ textTransform: "none" }}
-                    >
-                      Gene Expression
-                    </ToggleButton>
-                    <ToggleButton
-                      value="cluster"
-                      sx={{ textTransform: "none" }}
-                    >
-                      Cell Type Cluster
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </FormControl>
-                <Button
-                  startIcon={<Download />}
-                  onClick={() => chartRef.current?.downloadPNG()}
-                  sx={{ textTransform: "none", ml: 1, alignSelf: "flex-end" }}
-                >
-                  Download
-                </Button>
-              </div>
-            </Grid>
-          ) : (
-            <></>
-          )}
-        </>
+        </Grid>
       )}
     </Grid>
   );
