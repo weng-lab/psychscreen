@@ -1,4 +1,5 @@
-﻿import { gql, useQuery } from "@apollo/client";
+﻿"use client";
+import { gql, useQuery } from "@apollo/client";
 import {
   Box,
   CircularProgress,
@@ -10,7 +11,6 @@ import {
   FormLabel,
   Typography,
 } from "@mui/material";
-
 import Grid from "@mui/material/Grid";
 import { linearTransform } from "jubilant-carnival";
 import {
@@ -472,6 +472,7 @@ const SingleCell: React.FC<{
   const keys = Array.from(DATASETS.keys());
 
   return (
+    <>
     <Grid container spacing={2} alignItems="flex-start">
       {selectDatasets && (
         <>
@@ -753,6 +754,31 @@ const SingleCell: React.FC<{
         </Grid>
       )}
     </Grid>
+    <Box sx={{ mt: 6, border: "2px dashed red", height: "700px" }}>
+      <Typography variant="h6" gutterBottom>
+        DEBUG: Dummy TwoPaneLayout (for height comparison)
+      </Typography>
+      <TwoPaneLayout
+        direction={{ xs: "column", md: "row" }}
+        // rowHeight="700px"
+        TableComponent={
+          <Box sx={{ height: "100%", background: "#eee" }}>
+            Dummy Table
+          </Box>
+        }
+        plots={[
+          {
+            tabTitle: "Dummy Plot",
+            plotComponent: (
+              <Box sx={{ height: "100%", background: "#ccc" }}>
+                Dummy Plot
+              </Box>
+            ),
+          },
+        ]}
+      />
+    </Box>
+    </>
   );
 };
 export default SingleCell;
