@@ -1,140 +1,39 @@
-﻿import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { debounce } from "@mui/material/utils";
-import { useNavigate } from "react-router-dom";
-import { QueryResponse } from "./GeneOverview";
-import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
-import { gql } from "@apollo/client";
-import { apolloClient } from "../../../graphql/client";
+import { useNavigate } from "react-router-dom";
+import { GenomeSearch, Result } from "@weng-lab/ui-components";
+import { SCREEN_GRAPHQL_PATH } from "../../../graphql/client";
 
-const GENE_AUTOCOMPLETE_QUERY = gql`
-  query GeneAutocomplete(
-    $assembly: String!
-    $name_prefix: [String!]
-    $limit: Int
-  ) {
-    gene(
-      assembly: $assembly
-      name_prefix: $name_prefix
-      limit: $limit
-      version: 40
-    ) {
-      name
-      id
-      coordinates {
-        start
-        chromosome
-        end
-      }
-    }
-  }
-`;
+export const DEFAULT_GENE_RESULTS: Result[] = ["APOE", "MBP", "PCP4"].map(
+  (name) => ({
+    title: name,
+    type: "Gene",
+  }),
+);
 
 export const GeneAutoComplete = (props) => {
-  const [inputValue, setInputValue] = React.useState("");
-  const [options, setOptions] = React.useState<string[]>([]);
-  const [geneids, setGeneIds] = React.useState<
-    { chrom: string; start: number; end: number; id: string; name: string }[]
-  >([]);
   const navigate = useNavigate();
-  const [geneDesc, setgeneDesc] =
-    React.useState<{ name: string; desc: string }[]>();
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      let f = await Promise.all(
-        options.map((gene) =>
-          fetch(
-            "https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?authenticity_token=&terms=" +
-              gene.toUpperCase(),
-          )
-            .then((x) => x && x.json())
-            .then((x) => {
-              const matches =
-                (x as QueryResponse)[3] &&
-                (x as QueryResponse)[3].filter(
-                  (x) => x[3] === gene.toUpperCase(),
-                );
-              return {
-                desc:
-                  matches && matches.length >= 1
-                    ? matches[0][4]
-                    : "(no description available)",
-                name: gene,
-              };
-            })
-            .catch(() => {
-              return { desc: "(no description available)", name: gene };
-            }),
-        ),
-      );
-      setgeneDesc(f);
-    };
-
-    options && fetchData();
-  }, [options]);
-
-  const onSearchChange = async (value: string) => {
-    setOptions([]);
-    const { data } = await apolloClient.query({
-      query: GENE_AUTOCOMPLETE_QUERY,
-      variables: {
-        assembly: "GRCh38",
-        name_prefix: value,
-        limit: 1000,
-      },
-      context: { clientName: "staging" },
-    });
-    const genesSuggestion = data?.gene;
-    if (genesSuggestion && genesSuggestion.length > 0) {
-      const r = genesSuggestion.map((g) => g.name);
-      const g = genesSuggestion.map((g) => {
-        return {
-          chrom: g.coordinates.chromosome,
-          start: g.coordinates.start,
-          end: g.coordinates.end,
-          id: g.id,
-          name: g.name,
-        };
+  const onSearchSubmit = (result: Result) => {
+    if (!result.title) return;
+    props.onSelected &&
+      props.onSelected({
+        name: result.title,
+        chromosome: result.domain?.chromosome,
+        start: result.domain?.start,
+        end: result.domain?.end,
       });
-      setOptions(r);
-      setGeneIds(g);
-    } else if (genesSuggestion && genesSuggestion.length === 0) {
-      setOptions([]);
-      setGeneIds([]);
-    }
+    props.navigateto &&
+      navigate(props.navigateto + result.title, {
+        state: {
+          chromosome: result.domain?.chromosome,
+          start: result.domain?.start,
+          end: result.domain?.end,
+        },
+      });
   };
-
-  const onSubmit = () => {
-    const inputStr = inputValue.toUpperCase();
-    const submittedGene = geneids.find((g) => g.name === inputStr);
-    if (submittedGene) {
-      props.onSelected &&
-        props.onSelected({
-          geneid: submittedGene?.id.split(".")[0],
-          name: inputValue,
-          chromosome: submittedGene?.chrom,
-          start: submittedGene?.start,
-          end: submittedGene?.end,
-        });
-      props.navigateto &&
-        navigate(props.navigateto + inputStr, {
-          state: {
-            geneid: submittedGene?.id.split(".")[0],
-            chromosome: submittedGene?.chrom,
-            start: submittedGene?.start,
-            end: submittedGene?.end,
-          },
-        });
-    }
-  };
-
-  const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
 
   return (
     <Stack>
@@ -144,71 +43,23 @@ export const GeneAutoComplete = (props) => {
           <br />
         </Grid>
       )}
-      <Grid container alignItems="center" wrap="nowrap" gap={2}>
-        <Grid>
-          <Autocomplete
-            freeSolo
-            id="gene-autocomplete"
-            sx={{ width: 300, paper: { height: 200 } }}
-            options={options}
-            ListboxProps={{
-              style: {
-                maxHeight: "250px",
-              },
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.defaultPrevented = true;
-                onSubmit();
-              }
-            }}
-            inputValue={inputValue}
-            onInputChange={(event, newInputValue) => {
-              if (newInputValue !== "") {
-                debounceFn(newInputValue);
-              }
-              setInputValue(newInputValue);
-            }}
-            noOptionsText="No Genes Found"
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={
-                  <>
-                    e.g., <i>PCP4</i>, <i>APOE</i>, <i>MBP</i>
-                  </>
-                }
-                fullWidth
-              />
-            )}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={props.id}>
-                  <Grid container alignItems="center">
-                    <Grid sx={{ width: "calc(100% - 44px)" }}>
-                      <Box component="span" sx={{ fontWeight: "regular" }}>
-                        <i>{option}</i>
-                      </Box>
-                      {geneDesc && geneDesc.find((g) => g.name === option) && (
-                        <Typography variant="body2" color="text.secondary">
-                          {geneDesc.find((g) => g.name === option)?.desc}
-                        </Typography>
-                      )}
-                    </Grid>
-                  </Grid>
-                </li>
-              );
-            }}
-          />
-        </Grid>
-        {!props.hideSearchButton && (
-          <Grid sx={{ verticalAlign: "middle", textAlign: "center" }}>
-            <Button variant="contained" onClick={() => onSubmit()}>
-              Search
-            </Button>
-          </Grid>
-        )}
-      </Grid>
+      <GenomeSearch
+        assembly="GRCh38"
+        geneVersion={40}
+        graphqlUrl={SCREEN_GRAPHQL_PATH}
+        queries={["Gene"]}
+        defaultResults={DEFAULT_GENE_RESULTS}
+        onSearchSubmit={onSearchSubmit}
+        size="small"
+        sx={{ width: 400 }}
+        slotProps={{
+          box: { alignItems: "center" },
+          input: {
+            label: "e.g., PCP4, APOE, MBP",
+          },
+          button: { children: "Search", size: "medium" },
+        }}
+      />
     </Stack>
   );
 };

@@ -1,28 +1,33 @@
-﻿import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
-import { CELLTYPE_CARDS } from "./consts";
-import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { GenomeSearch, Result, StaticListOption } from "@weng-lab/ui-components";
+import { CELLTYPE_CARDS } from "./consts";
+import { SCREEN_GRAPHQL_PATH } from "../../../graphql/client";
 
-const OPTIONS = CELLTYPE_CARDS.map((d) => d.cardLabel).sort();
+export const CELLTYPE_OPTIONS: StaticListOption[] = CELLTYPE_CARDS.map((d) => ({
+  label: d.cardLabel,
+  value: d.cardLabel,
+  description: d.cardDesc,
+}));
+
+export const DEFAULT_CELLTYPE_RESULTS: Result[] = CELLTYPE_OPTIONS.map((o) => ({
+  title: o.label,
+  description: o.description,
+  type: "CellType",
+  id: o.value,
+}));
+
 export const CelltypeAutoComplete = (props) => {
-  const [inputValue, setInputValue] = React.useState("");
   const navigate = useNavigate();
 
-  const onSubmit = () => {
-    const submittedCell = CELLTYPE_CARDS.find(
-      (d) => d.cardLabel.toLowerCase() === inputValue.toLowerCase()
-    );
-    if (submittedCell) {
-      navigate(props.navigateto + submittedCell.cardLabel, {
-        state: { searchvalue: submittedCell.cardLabel },
-      });
-    }
+  const onSearchSubmit = (result: Result) => {
+    if (!result.id) return;
+    navigate(props.navigateto + result.id, {
+      state: { searchvalue: result.id },
+    });
   };
 
   return (
@@ -33,77 +38,24 @@ export const CelltypeAutoComplete = (props) => {
           <br />
         </Grid>
       )}
-      <Grid container alignItems="center" wrap="nowrap" gap={2}>
-        <Grid>
-          <Autocomplete
-            freeSolo
-            sx={{ width: 300, paper: { height: 200 } }}
-            options={OPTIONS}
-            ListboxProps={{
-              style: {
-                maxHeight: "250px",
-              },
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.defaultPrevented = true;
-                onSubmit();
-              }
-            }}
-            inputValue={inputValue}
-            onInputChange={(_, newInputValue) => {
-              setInputValue(newInputValue);
-            }}
-            noOptionsText="e.g., Astrocytes, Chandelier"
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="e.g., Astrocytes, Chandelier"
-                fullWidth
-              />
-            )}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={props.id}>
-                  <Grid container alignItems="center">
-                    <Grid
-                      sx={{
-                        width: "calc(100% - 44px)",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      <Box component="span" sx={{ fontWeight: "regular" }}>
-                        {option.includes("-expressing") ? (
-                          <>
-                            <i>{option.split("-expressing")[0]}</i>
-                            <>
-                              {" -expressing"}
-                              {option.split("-expressing")[1]}
-                            </>
-                          </>
-                        ) : (
-                          option
-                        )}
-                      </Box>
-                      <Typography variant="body2" color="text.secondary">
-                        {
-                          CELLTYPE_CARDS.find((d) => d.cardLabel === option)
-                            ?.cardDesc
-                        }
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </li>
-              );
-            }}
-          />
-        </Grid>
-        <Grid sx={{ verticalAlign: "middle", textAlign: "center" }}>
-          <Button variant="contained" onClick={onSubmit}>
-            Search
-          </Button>
-        </Grid>
-      </Grid>
+      <GenomeSearch
+        assembly="GRCh38"
+        graphqlUrl={SCREEN_GRAPHQL_PATH}
+        queries={[]}
+        staticLists={{ CellType: CELLTYPE_OPTIONS }}
+        limit={10}
+        defaultResults={DEFAULT_CELLTYPE_RESULTS}
+        onSearchSubmit={onSearchSubmit}
+        size="small"
+        sx={{ width: 400 }}
+        slotProps={{
+          box: { alignItems: "center" },
+          input: {
+            label: "e.g., Astrocytes, Chandelier",
+          },
+          button: { children: "Search", size: "medium" },
+        }}
+      />
     </Stack>
   );
 };

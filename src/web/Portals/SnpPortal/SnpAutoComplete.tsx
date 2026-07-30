@@ -1,87 +1,39 @@
-﻿import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { debounce } from "@mui/material/utils";
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
-import { gql } from "@apollo/client";
-import { apolloClient } from "../../../graphql/client";
+import { useNavigate } from "react-router-dom";
+import { GenomeSearch, Result } from "@weng-lab/ui-components";
+import { SCREEN_GRAPHQL_PATH } from "../../../graphql/client";
 
-const SNP_AUTOCOMPLETE_QUERY = gql`
-  query snpAutocompleteQuery($snpid: String!, $assembly: String!) {
-    snpAutocompleteQuery(snpid: $snpid, assembly: $assembly) {
-      id
-      coordinates {
-        chromosome
-        start
-        end
-      }
-    }
-  }
-`;
+export const DEFAULT_SNP_RESULTS: Result[] = ["rs11669173", "rs7690700"].map(
+  (id) => ({
+    title: id,
+    type: "SNP",
+  }),
+);
+
 export const SnpAutoComplete = (props) => {
-  const [inputValue, setInputValue] = React.useState("");
-  const [options, setOptions] = React.useState<any[]>([]);
-  const [snpids, setSnpIds] = React.useState<any[]>([]);
   const navigate = useNavigate();
 
-  const onSearchChange = async (value: any) => {
-    setOptions([]);
-    const { data } = await apolloClient.query({
-      query: SNP_AUTOCOMPLETE_QUERY,
-      variables: {
-        assembly: "grch38",
-        snpid: value,
-      },
-      context: { clientName: "staging" },
-    });
-    const snpSuggestion = data?.snpAutocompleteQuery;
-    if (snpSuggestion && snpSuggestion.length > 0) {
-      const r = snpSuggestion.map((g: any) => g.id);
-      const snp = snpSuggestion.map((g: any) => {
-        return {
-          chrom: g.coordinates.chromosome,
-          start: g.coordinates.start,
-          end: g.coordinates.end,
-          id: g.id,
-        };
+  const onSearchSubmit = (result: Result) => {
+    if (!result.title) return;
+    props.onSelected &&
+      props.onSelected({
+        snpid: result.title,
+        chromosome: result.domain?.chromosome,
+        start: result.domain?.start,
+        end: result.domain?.end,
       });
-      setOptions(r);
-      setSnpIds(snp);
-    } else if (snpSuggestion && snpSuggestion.length === 0) {
-      setOptions([]);
-      setSnpIds([]);
-    }
-  };
-
-  const debounceFn = React.useCallback(debounce(onSearchChange, 500), []);
-
-  const onSubmit = () => {
-    const submittedSNP = snpids.find(
-      (g) => g.id.toLowerCase() === inputValue.toLowerCase(),
-    );
-    if (submittedSNP) {
-      props.onSelected &&
-        props.onSelected({
-          snpid: submittedSNP.id,
-          chromosome: submittedSNP.chrom,
-          start: submittedSNP.start,
-          end: submittedSNP.end,
-        });
-      props.navigateto &&
-        navigate(props.navigateto + submittedSNP.id, {
-          state: {
-            snpid: submittedSNP.id,
-            chromosome: submittedSNP.chrom,
-            start: submittedSNP.start,
-            end: submittedSNP.end,
-          },
-        });
-    }
+    props.navigateto &&
+      navigate(props.navigateto + result.title, {
+        state: {
+          snpid: result.title,
+          chromosome: result.domain?.chromosome,
+          start: result.domain?.start,
+          end: result.domain?.end,
+        },
+      });
   };
 
   return (
@@ -92,69 +44,22 @@ export const SnpAutoComplete = (props) => {
           <br />
         </Grid>
       )}
-      <Grid container alignItems="center" wrap="nowrap" gap={2}>
-        <Grid>
-          <Autocomplete
-            freeSolo
-            sx={{ width: 300, paper: { height: 200 } }}
-            options={options}
-            ListboxProps={{
-              style: {
-                maxHeight: "250px",
-              },
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.defaultPrevented = true;
-                onSubmit();
-              }
-            }}
-            inputValue={inputValue}
-            onInputChange={(_, newInputValue) => {
-              if (newInputValue !== "") {
-                debounceFn(newInputValue);
-              }
-              setInputValue(newInputValue);
-            }}
-            noOptionsText="e.g. rs11669173"
-            renderInput={(params) => (
-              <TextField {...params} label="e.g. rs11669173" fullWidth />
-            )}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={props.id}>
-                  <Grid container alignItems="center">
-                    <Grid
-                      sx={{
-                        width: "calc(100% - 44px)",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      <Box component="span" sx={{ fontWeight: "regular" }}>
-                        {option}
-                      </Box>
-                      {snpids && snpids.find((g) => g.id === option) && (
-                        <Typography variant="body2" color="text.secondary">
-                          {`${snpids.find((g) => g.id === option)?.chrom}:${
-                            snpids.find((g) => g.id === option)?.start
-                          }:${snpids.find((g) => g.id === option)?.end}`}
-                        </Typography>
-                      )}
-                    </Grid>
-                  </Grid>
-                </li>
-              );
-            }}
-          />
-        </Grid>
-        {!props.hideSearchButton && (
-          <Grid sx={{ verticalAlign: "middle", textAlign: "center" }}>
-            <Button variant="contained" onClick={onSubmit}>
-              Search
-            </Button>
-          </Grid>
-        )}
-      </Grid>
+      <GenomeSearch
+        assembly="GRCh38"
+        graphqlUrl={SCREEN_GRAPHQL_PATH}
+        queries={["SNP"]}
+        defaultResults={DEFAULT_SNP_RESULTS}
+        onSearchSubmit={onSearchSubmit}
+        size="small"
+        sx={{ width: 400 }}
+        slotProps={{
+          box: { alignItems: "center" },
+          input: {
+            label: "e.g. rs11669173",
+          },
+          button: { children: "Search", size: "medium" },
+        }}
+      />
     </Stack>
   );
 };

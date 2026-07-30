@@ -1,23 +1,70 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { GeneAutoComplete } from "../Portals/GenePortal/GeneAutocomplete";
-import { DiseaseTraitAutoComplete } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
-import { SnpAutoComplete } from "../Portals/SnpPortal/SnpAutoComplete";
+import { useNavigate } from "react-router-dom";
+import { GenomeSearch, Result } from "@weng-lab/ui-components";
+import { SCREEN_GRAPHQL_PATH } from "../../graphql/client";
+import {
+  DISEASE_OPTIONS,
+  DEFAULT_DISEASE_RESULTS,
+} from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
+import { DISEASE_CARDS } from "../Portals/DiseaseTraitPortal/config/constants";
+import {
+  CELLTYPE_OPTIONS,
+  DEFAULT_CELLTYPE_RESULTS,
+} from "../Portals/SingleCellPortal/CelltypeAutoComplete";
+import { DEFAULT_GENE_RESULTS } from "../Portals/GenePortal/GeneAutocomplete";
+import { DEFAULT_SNP_RESULTS } from "../Portals/SnpPortal/SnpAutoComplete";
 import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { CelltypeAutoComplete } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
+
+const DEFAULT_SEARCH_RESULTS: Result[] = [
+  ...DEFAULT_DISEASE_RESULTS,
+  ...DEFAULT_GENE_RESULTS,
+  ...DEFAULT_SNP_RESULTS,
+  ...DEFAULT_CELLTYPE_RESULTS,
+];
 
 const MainPanel: React.FC = () => {
-  const [selectedPortal, setSelectedPortal] = useState<string>("Gene/b-cCRE");
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedPortal(event.target.value);
+  const navigate = useNavigate();
+
+  const onSearchSubmit = (result: Result) => {
+    switch (result.type) {
+      case "Gene":
+        navigate("/gene/" + result.title, {
+          state: {
+            chromosome: result.domain?.chromosome,
+            start: result.domain?.start,
+            end: result.domain?.end,
+          },
+        });
+        break;
+      case "SNP":
+        navigate("/snp/" + result.title, {
+          state: {
+            snpid: result.title,
+            chromosome: result.domain?.chromosome,
+            start: result.domain?.start,
+            end: result.domain?.end,
+          },
+        });
+        break;
+      case "Disease": {
+        const trait = DISEASE_CARDS.find((d) => d.val === result.id);
+        navigate("/traits/" + result.id, {
+          state: { searchvalue: result.id, diseaseDesc: trait?.diseaseDesc },
+        });
+        break;
+      }
+      case "CellType":
+        navigate("/single-cell/celltype/" + result.id, {
+          state: { searchvalue: result.id },
+        });
+        break;
+    }
   };
 
   const theme = useTheme();
@@ -94,23 +141,27 @@ const MainPanel: React.FC = () => {
                 Accessible to all
               </Typography>
             </div>
-            <FormControl variant="standard">
-              <Select value={selectedPortal} onChange={handleChange}>
-                <MenuItem value={"Disease/Trait"}>Disease/Trait</MenuItem>
-                <MenuItem value={"Gene/b-cCRE"}>Gene/b-cCRE</MenuItem>
-                <MenuItem value={"SNP/QTL"}>SNP/QTL</MenuItem>
-                <MenuItem value={"Single-Cell"}>Single-Cell</MenuItem>
-              </Select>
-            </FormControl>
-            {selectedPortal === "Disease/Trait" ? (
-              <DiseaseTraitAutoComplete navigateto="/traits/" />
-            ) : selectedPortal === "Gene/b-cCRE" ? (
-              <GeneAutoComplete navigateto="/gene/" />
-            ) : selectedPortal === "Single-Cell" ? (
-              <CelltypeAutoComplete navigateto="/single-cell/celltype/" />
-            ) : (
-              <SnpAutoComplete navigateto="/snp/" />
-            )}
+            <Typography variant="body1" >
+              Search a gene, SNP, disease/trait, or cell type:
+            </Typography>
+            <GenomeSearch
+              assembly="GRCh38"
+              geneVersion={40}
+              graphqlUrl={SCREEN_GRAPHQL_PATH}
+              queries={["Gene", "SNP"]}
+              staticLists={{ Disease: DISEASE_OPTIONS, CellType: CELLTYPE_OPTIONS }}
+              defaultResults={DEFAULT_SEARCH_RESULTS}
+              onSearchSubmit={onSearchSubmit}
+              size="small"
+              sx={{ width: 400 }}
+              slotProps={{
+                box: { alignItems: "center" },
+                input: {
+                  label: "e.g., APOE, rs2836883, Schizophrenia, Astrocytes",
+                },
+                button: { children: "Search", size: "medium" },
+              }}
+            />
           </Stack>
         </Grid>
         <Grid
