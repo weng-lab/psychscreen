@@ -253,12 +253,12 @@ const GeneDetails: React.FC = () => {
           </Typography>
         </Stack>
       </Grid>
-      <Grid size={12}>
+      {/*<Grid size={12}>
         <Typography variant="body1" mb={1}>
           Switch to another gene:
         </Typography>
         <GeneAutoComplete navigateto="/gene/" gridsize={3.5} />
-      </Grid>
+      </Grid>*/}
       <Grid size={12}>
         <Box>
           <Tabs

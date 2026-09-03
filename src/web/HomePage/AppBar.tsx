@@ -14,8 +14,15 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import { PORTALS } from "../../App";
+import { GenomeSearch, Result } from "@weng-lab/ui-components";
+import { SCREEN_GRAPHQL_PATH } from "../../graphql/client";
+import { DISEASE_OPTIONS } from "../Portals/DiseaseTraitPortal/DiseaseTraitAutoComplete";
+import { DEFAULT_SEARCH_RESULTS } from "./MainPanel";
+import { DISEASE_CARDS } from "../Portals/DiseaseTraitPortal/config/constants";
+import { CELLTYPE_OPTIONS } from "../Portals/SingleCellPortal/CelltypeAutoComplete";
 
 export type AppBarProps = MuiAppBarProps & {
   centered?: boolean;
@@ -135,7 +142,41 @@ const DropDownMenuItem: React.FC<{
 
 const AppBar: React.FC<AppBarProps> = ({ centered, ...props }) => {
   const navigate = useNavigate();
-
+const onSearchSubmit = (result: Result) => {
+    switch (result.type) {
+      case "Gene":
+        navigate("/gene/" + result.title, {
+          state: {
+            chromosome: result.domain?.chromosome,
+            start: result.domain?.start,
+            end: result.domain?.end,
+          },
+        });
+        break;
+      case "SNP":
+        navigate("/snp/" + result.title, {
+          state: {
+            snpid: result.title,
+            chromosome: result.domain?.chromosome,
+            start: result.domain?.start,
+            end: result.domain?.end,
+          },
+        });
+        break;
+      case "Disease": {
+        const trait = DISEASE_CARDS.find((d) => d.val === result.id);
+        navigate("/traits/" + result.id, {
+          state: { searchvalue: result.id, diseaseDesc: trait?.diseaseDesc },
+        });
+        break;
+      }
+      case "CellType":
+        navigate("/single-cell/celltype/" + result.id, {
+          state: { searchvalue: result.id },
+        });
+        break;
+    }
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <StyledAppBar position="static" centered={centered} {...props}>
@@ -144,7 +185,6 @@ const AppBar: React.FC<AppBarProps> = ({ centered, ...props }) => {
             variant="h6"
             onClick={() => navigate("/")}
             sx={{
-              flexGrow: 1,
               fontWeight: 700,
               fontSize: "20px",
               lineHeight: "15px",
@@ -154,17 +194,6 @@ const AppBar: React.FC<AppBarProps> = ({ centered, ...props }) => {
             <br />
             {" screen"}
           </NavText>
-          <DropDownMenuItem
-            menu={
-              <PortalsMenu
-                onPortalClicked={(index) =>
-                  navigate(PORTALS[index][0])
-                }
-              />
-            }
-          >
-            Portals
-          </DropDownMenuItem>
           <NavText
             variant="h6"
             onClick={() => navigate("/aboutus")}
@@ -177,6 +206,41 @@ const AppBar: React.FC<AppBarProps> = ({ centered, ...props }) => {
           >
             Downloads
           </NavText>
+          <DropDownMenuItem
+            menu={
+              <PortalsMenu
+                onPortalClicked={(index) =>
+                  navigate(PORTALS[index][0])
+                }
+              />
+            }
+          >
+            Portals
+          </DropDownMenuItem>
+          <Box sx={{ flexGrow: 1 }} />
+          <GenomeSearch
+              assembly="GRCh38"
+              geneVersion={40}
+              graphqlUrl={SCREEN_GRAPHQL_PATH}
+              queries={["Gene", "SNP"]}
+              staticLists={{ Disease: DISEASE_OPTIONS, CellType: CELLTYPE_OPTIONS }}
+              defaultResults={DEFAULT_SEARCH_RESULTS}
+              onSearchSubmit={onSearchSubmit}
+              size="small"
+              sx={{ width: 400 }}
+              slotProps={{
+                box: { alignItems: "center" },
+                input: {
+                  label: "e.g., APOE, rs2836883, Schizophrenia, Astrocytes",
+                },
+
+                button: {
+                  children: <SearchIcon />,
+                  size: "medium",
+                  "aria-label": "Search",
+                },
+              }}
+            />
         </Toolbar>
       </StyledAppBar>
     </Box>

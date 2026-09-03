@@ -21,7 +21,7 @@ import Grid from "@mui/material/Grid";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const DEFAULT_SEARCH_RESULTS: Result[] = [
+export const DEFAULT_SEARCH_RESULTS: Result[] = [
   ...DEFAULT_DISEASE_RESULTS,
   ...DEFAULT_GENE_RESULTS,
   ...DEFAULT_SNP_RESULTS,
