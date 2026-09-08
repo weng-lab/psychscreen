@@ -2,6 +2,8 @@ import { Search } from "@mui/icons-material";
 import { IconButton, useTheme } from "@mui/material";
 import type { ButtonProps } from "@mui/material";
 import { Box } from "@mui/system";
+import { useState } from "react";
+import { Alert } from "@mui/material";
 import { GenomeSearch, Result } from "@weng-lab/ui-components";
 import type { BrowserStoreInstance } from "@weng-lab/genomebrowser";
 import { SCREEN_GRAPHQL_PATH } from "../../graphql/client";
@@ -24,14 +26,16 @@ export default function BrowserSearch({
 }) {
   const theme = useTheme();
   const setRegion = useBrowserStore((state) => state.setRegion);
+  const [error, setError] = useState<string>();
 
   const handleSearchSubmit = (result: Result) => {
     if (!result.domain) return;
-    setRegion({
+    const update = setRegion({
       chromosome: result.domain.chromosome,
       start: result.domain.start,
       end: result.domain.end,
     });
+    setError(update.ok ? undefined : update.error);
   };
 
   return (
@@ -72,6 +76,7 @@ export default function BrowserSearch({
           },
         }}
       />
+      {error && <Alert severity="error">{error}</Alert>}
     </Box>
   );
 }

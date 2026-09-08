@@ -1,7 +1,4 @@
-import type {
-  BrowserRegion,
-  Highlight,
-} from "@weng-lab/genomebrowser";
+import type { GenomicRegion, Highlight } from "@weng-lab/genomebrowser";
 
 export function combineCytobandHighlights(
   cytobandMarkers: readonly Highlight[] | undefined,
@@ -13,7 +10,7 @@ export function combineCytobandHighlights(
 export function cytobandHighlightRegion(
   highlight: Highlight,
   activeChromosome: string,
-): BrowserRegion {
+): GenomicRegion {
   return {
     chromosome: highlight.region.chromosome ?? activeChromosome,
     start: highlight.region.start,

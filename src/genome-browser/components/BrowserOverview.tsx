@@ -1,15 +1,13 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { Cytobands } from "@weng-lab/genomebrowser-ui";
-import type {
-  BrowserStoreInstance,
-  Highlight,
-} from "@weng-lab/genomebrowser";
+import bands from "../data/hg38-cytobands.json";
+import type { BrowserStoreInstance, Highlight } from "@weng-lab/genomebrowser";
 import {
   combineCytobandHighlights,
   cytobandHighlightRegion,
-} from "./cytobandHighlights";
+} from "../highlights";
 
-export default function DomainDisplay({
+export default function BrowserOverview({
   useBrowserStore,
   cytobandMarkers,
 }: {
@@ -17,6 +15,7 @@ export default function DomainDisplay({
   cytobandMarkers?: readonly Highlight[];
 }) {
   const region = useBrowserStore((state) => state.region);
+  const assembly = useBrowserStore((state) => state.assembly);
   const highlights = useBrowserStore((state) => state.highlights);
   const setRegion = useBrowserStore((state) => state.setRegion);
 
@@ -28,7 +27,8 @@ export default function DomainDisplay({
       </Typography>
       <Box minHeight={20} width="100%" sx={{ "& > svg": { width: "100%" } }}>
         <Cytobands
-          assembly="GRCh38"
+          bands={bands}
+          chromosomeLength={assembly.chromosomes[region.chromosome]}
           chromosome={region.chromosome}
           currentRegion={region}
           highlights={combineCytobandHighlights(cytobandMarkers, highlights)}

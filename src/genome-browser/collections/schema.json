@@ -106,101 +106,6 @@
                 "minLength": 1
               },
               "display": {
-                "default": "full",
-                "type": "string",
-                "enum": [
-                  "full",
-                  "dense"
-                ]
-              },
-              "height": {
-                "default": 80,
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "color": {
-                "type": "string"
-              },
-              "config": {
-                "type": "object",
-                "properties": {
-                  "url": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "fillWithZero": {
-                    "default": false,
-                    "type": "boolean"
-                  },
-                  "yRange": {
-                    "type": "object",
-                    "properties": {
-                      "min": {
-                        "type": "number"
-                      },
-                      "max": {
-                        "type": "number"
-                      }
-                    },
-                    "required": [
-                      "min",
-                      "max"
-                    ]
-                  }
-                },
-                "required": [
-                  "url"
-                ],
-                "additionalProperties": false
-              },
-              "type": {
-                "type": "string",
-                "const": "bigwig"
-              },
-              "metadata": {
-                "default": {},
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
-                },
-                "additionalProperties": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
-                }
-              }
-            },
-            "required": [
-              "id",
-              "title",
-              "config",
-              "type"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "minLength": 1
-              },
-              "title": {
-                "type": "string",
-                "minLength": 1
-              },
-              "display": {
                 "default": "dense",
                 "type": "string",
                 "enum": [
@@ -209,12 +114,13 @@
                 ]
               },
               "height": {
-                "default": 60,
+                "default": 12,
                 "type": "number",
                 "exclusiveMinimum": 0
               },
               "color": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
               },
               "config": {
                 "type": "object",
@@ -222,6 +128,11 @@
                   "url": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "rowHeight": {
+                    "default": 12,
+                    "type": "number",
+                    "minimum": 1
                   }
                 },
                 "required": [
@@ -277,57 +188,62 @@
                 "minLength": 1
               },
               "display": {
-                "default": "squish",
+                "default": "full",
                 "type": "string",
                 "enum": [
-                  "squish",
-                  "pack"
+                  "full",
+                  "dense"
                 ]
               },
               "height": {
-                "default": 90,
+                "default": 80,
                 "type": "number",
                 "exclusiveMinimum": 0
               },
               "color": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
               },
               "config": {
                 "type": "object",
                 "properties": {
-                  "endpoint": {
-                    "default": "/api/screen-graphql",
+                  "url": {
                     "type": "string",
                     "minLength": 1
                   },
-                  "assembly": {
+                  "fillWithZero": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "yRange": {
+                    "type": "object",
+                    "properties": {
+                      "min": {
+                        "type": "number"
+                      },
+                      "max": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "showClampIndicators": {
+                    "default": true,
+                    "type": "boolean"
+                  },
+                  "clampIndicatorColor": {
+                    "default": "#ff0000",
                     "type": "string",
-                    "minLength": 1
-                  },
-                  "version": {
-                    "type": "integer",
-                    "exclusiveMinimum": 0,
-                    "maximum": 9007199254740991
-                  },
-                  "geneName": {
-                    "type": "string"
-                  },
-                  "canonicalColor": {
-                    "type": "string"
-                  },
-                  "highlightColor": {
-                    "type": "string"
+                    "pattern": "^#[0-9a-f]{6}$"
                   }
                 },
                 "required": [
-                  "assembly",
-                  "version"
+                  "url"
                 ],
                 "additionalProperties": false
               },
               "type": {
                 "type": "string",
-                "const": "transcript"
+                "const": "bigwig"
               },
               "metadata": {
                 "default": {},
@@ -385,7 +301,8 @@
                 "exclusiveMinimum": 0
               },
               "color": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
               },
               "config": {
                 "type": "object",
@@ -407,6 +324,16 @@
                       "Early_Adulthood",
                       "Adulthood"
                     ]
+                  },
+                  "topColor": {
+                    "default": "#000000",
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  "bottomColor": {
+                    "default": "#000000",
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
                   }
                 },
                 "required": [
@@ -418,6 +345,117 @@
               "type": {
                 "type": "string",
                 "const": "cave"
+              },
+              "metadata": {
+                "default": {},
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "config",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "display": {
+                "default": "full",
+                "type": "string",
+                "enum": [
+                  "full",
+                  "merged",
+                  "tagged"
+                ]
+              },
+              "height": {
+                "default": 12,
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
+              },
+              "config": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "geneName": {
+                    "type": "string"
+                  },
+                  "tagColors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tag": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "color": {
+                          "type": "string",
+                          "pattern": "^#[0-9a-f]{6}$"
+                        }
+                      },
+                      "required": [
+                        "tag",
+                        "color"
+                      ]
+                    }
+                  },
+                  "highlightColor": {
+                    "default": "#000000",
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  "rowHeight": {
+                    "default": 12,
+                    "type": "number",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "url"
+                ],
+                "additionalProperties": false
+              },
+              "type": {
+                "type": "string",
+                "const": "gene"
               },
               "metadata": {
                 "default": {},
@@ -475,7 +513,8 @@
                 "exclusiveMinimum": 0
               },
               "color": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
               },
               "config": {
                 "type": "object",
@@ -610,19 +649,23 @@
                     "properties": {
                       "cpg": {
                         "default": "#648bd8",
-                        "type": "string"
+                        "type": "string",
+                        "pattern": "^#[0-9a-f]{6}$"
                       },
                       "chg": {
                         "default": "#ff944d",
-                        "type": "string"
+                        "type": "string",
+                        "pattern": "^#[0-9a-f]{6}$"
                       },
                       "chh": {
                         "default": "#ff00ff",
-                        "type": "string"
+                        "type": "string",
+                        "pattern": "^#[0-9a-f]{6}$"
                       },
                       "depth": {
                         "default": "#525252",
-                        "type": "string"
+                        "type": "string",
+                        "pattern": "^#[0-9a-f]{6}$"
                       }
                     }
                   },
@@ -654,156 +697,6 @@
               "type": {
                 "type": "string",
                 "const": "methylc"
-              },
-              "metadata": {
-                "default": {},
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
-                },
-                "additionalProperties": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
-                }
-              }
-            },
-            "required": [
-              "id",
-              "title",
-              "config",
-              "type"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "minLength": 1
-              },
-              "title": {
-                "type": "string",
-                "minLength": 1
-              },
-              "display": {
-                "default": "full",
-                "type": "string",
-                "enum": [
-                  "full"
-                ]
-              },
-              "height": {
-                "default": 50,
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "color": {
-                "type": "string"
-              },
-              "config": {
-                "type": "object",
-                "properties": {
-                  "url": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "url"
-                ],
-                "additionalProperties": false
-              },
-              "type": {
-                "type": "string",
-                "const": "singleCellGrn"
-              },
-              "metadata": {
-                "default": {},
-                "type": "object",
-                "propertyNames": {
-                  "type": "string"
-                },
-                "additionalProperties": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
-                }
-              }
-            },
-            "required": [
-              "id",
-              "title",
-              "config",
-              "type"
-            ],
-            "additionalProperties": false
-          },
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "minLength": 1
-              },
-              "title": {
-                "type": "string",
-                "minLength": 1
-              },
-              "display": {
-                "default": "full",
-                "type": "string",
-                "enum": [
-                  "full"
-                ]
-              },
-              "height": {
-                "default": 50,
-                "type": "number",
-                "exclusiveMinimum": 0
-              },
-              "color": {
-                "type": "string"
-              },
-              "config": {
-                "type": "object",
-                "properties": {
-                  "url": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "url"
-                ],
-                "additionalProperties": false
-              },
-              "type": {
-                "type": "string",
-                "const": "singleCellQtl"
               },
               "metadata": {
                 "default": {},

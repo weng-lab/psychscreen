@@ -4,34 +4,54 @@ import EditIcon from "@mui/icons-material/Edit";
 import HighlightIcon from "@mui/icons-material/Highlight";
 import {
   GenomeBrowser,
+  createSettingsStore,
   type BrowserStoreInstance,
   type Highlight,
   type TrackStoreInstance,
 } from "@weng-lab/genomebrowser";
 
-import { TrackSelect } from "@weng-lab/genomebrowser-ui";
-import { useState } from "react";
-import { MAIN_TRACK_CATALOGS } from "./catalogs";
+import { HighlightDialog, TrackSelect } from "@weng-lab/genomebrowser-ui";
+import { TrackBaseSettings } from "@weng-lab/genomebrowser-tracks/shared";
+import { useEffect, useRef, useState } from "react";
+import { TRACK_COLLECTIONS } from "./collections";
 import BrowserSearch from "./components/BrowserSearch";
-import ControlButtons from "./components/ControlButtons";
-import DomainDisplay from "./components/DomainDisplay";
-import HighlightDialog from "./components/HighlightDialog";
+import BrowserControls from "./components/BrowserControls";
+import BrowserOverview from "./components/BrowserOverview";
 
 export default function GenomeBrowserView({
   browserStore,
   trackStore,
-  trackCatalogs = MAIN_TRACK_CATALOGS,
+  trackCollections = TRACK_COLLECTIONS,
   defaultTrackIds,
   cytobandMarkers,
 }: {
   browserStore: BrowserStoreInstance;
   trackStore: TrackStoreInstance;
-  trackCatalogs?: unknown[];
+  trackCollections?: unknown[];
   defaultTrackIds?: readonly string[];
   cytobandMarkers?: readonly Highlight[];
 }) {
   const [trackSelectOpen, setTrackSelectOpen] = useState(false);
   const [highlightOpen, setHighlightOpen] = useState(false);
+  const [useSettingsStore] = useState(() =>
+    createSettingsStore({ baseSettingsComponent: TrackBaseSettings }),
+  );
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      // Preserve the last measured width while a portal tab is hidden.
+      if (entry.contentRect.width <= 0) return;
+      const state = browserStore.getState();
+      const width = Math.max(1, entry.contentRect.width - state.marginWidth);
+      if (width !== state.trackWidth) state.setTrackWidth(width);
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [browserStore]);
 
   return (
     <>
@@ -81,23 +101,29 @@ export default function GenomeBrowserView({
           p={1}
           mt={2}
         >
-          <DomainDisplay
+          <BrowserOverview
             useBrowserStore={browserStore}
             cytobandMarkers={cytobandMarkers}
           />
-          <ControlButtons useBrowserStore={browserStore} />
+          <BrowserControls useBrowserStore={browserStore} />
         </Stack>
-        <GenomeBrowser browserStore={browserStore} trackStore={trackStore} />
+        <div ref={containerRef} style={{ width: "100%", minWidth: 0 }}>
+          <GenomeBrowser
+            browserStore={browserStore}
+            trackStore={trackStore}
+            settingsStore={useSettingsStore}
+          />
+        </div>
       </Stack>
       <HighlightDialog
         open={highlightOpen}
         onClose={() => setHighlightOpen(false)}
-        useBrowserStore={browserStore}
+        browserStore={browserStore}
       />
       <TrackSelect
         open={trackSelectOpen}
         onClose={() => setTrackSelectOpen(false)}
-        trackCatalogs={trackCatalogs}
+        trackCollections={trackCollections}
         useTrackStore={trackStore}
         title="Psychscreen Tracks"
         defaultTrackIds={defaultTrackIds}

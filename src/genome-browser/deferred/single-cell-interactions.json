@@ -1,5 +1,4 @@
 {
-  "$schema": "./schema.json",
   "id": "single-cell-interactions",
   "label": "Single Cell Interactions",
   "description": "Cell-type-specific gene regulatory network and eQTL interactions",

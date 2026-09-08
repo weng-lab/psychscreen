@@ -1,4 +1,9 @@
-﻿/**
+import {
+  GenomeBrowserView,
+  DISEASE_TRAIT_DEFAULT_TRACK_IDS,
+  createDiseaseTraitBrowserSession,
+} from "../../../genome-browser";
+/**
  * @Jonathan 5/3/24 -
  */
 
@@ -11,43 +16,29 @@ import Grid from "@mui/material/Grid";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import {
-  DISEASE_CARDS,
-  FULLSUMSTAT_URL_MAP,
-  URL_CHROM_MAP,
-  URL_MAP,
-} from "./config/constants";
+import { DISEASE_CARDS, URL_CHROM_MAP, URL_MAP } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { diseaseRiskLocusHighlights, riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
 import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import Button from "@mui/material/Button";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import { DISEASE_TRAIT_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
-import { createDiseaseTraitBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion, Highlight } from "@weng-lab/genomebrowser";
+import type { GenomicRegion, Highlight } from "@weng-lab/genomebrowser";
 
 function DiseaseTraitBrowserPanel({
   region,
-  summaryStatisticsUrl,
   cytobandMarkers,
   visible,
 }: {
-  region: BrowserRegion;
-  summaryStatisticsUrl?: string;
+  region: GenomicRegion;
   cytobandMarkers?: readonly Highlight[];
   visible: boolean;
 }) {
-  const [session] = useState(() =>
-    createDiseaseTraitBrowserSession(region, summaryStatisticsUrl),
-  );
+  const [session] = useState(() => createDiseaseTraitBrowserSession(region));
 
   useEffect(() => {
     session.setRegion(region);
   }, [region, session]);
-
-  useEffect(() => () => session.dispose(), [session]);
 
   return (
     <Stack sx={{ display: visible ? "block" : "none" }}>
@@ -240,7 +231,7 @@ const DiseaseTraitDetails: React.FC = () => {
   const [page, setPage] = useState<number>(-1);
   const [selectedBrowserRegion, setSelectedBrowserRegion] = useState<{
     disease?: string;
-    region: BrowserRegion;
+    region: GenomicRegion;
   }>();
   const { state } = useLocation() as {
     state: { diseaseDesc?: string } | null;
@@ -255,7 +246,7 @@ const DiseaseTraitDetails: React.FC = () => {
     () => diseaseRiskLocusHighlights(disease || "", loci || []),
     [disease, loci],
   );
-  const locusCoordinates = useMemo<BrowserRegion | undefined>(() => {
+  const locusCoordinates = useMemo<GenomicRegion | undefined>(() => {
     const firstLocus = loci?.[0];
     if (!firstLocus?.chromosome) return undefined;
 
@@ -265,7 +256,7 @@ const DiseaseTraitDetails: React.FC = () => {
       end: firstLocus.end - 1_500_000,
     };
   }, [loci]);
-  const defaultBrowserCoordinates = useMemo<BrowserRegion | undefined>(() => {
+  const defaultBrowserCoordinates = useMemo<GenomicRegion | undefined>(() => {
     if (!locusCoordinates) return undefined;
 
     const range = locusCoordinates.end - locusCoordinates.start;
@@ -284,9 +275,6 @@ const DiseaseTraitDetails: React.FC = () => {
     selectedBrowserRegion && selectedBrowserRegion.disease === disease
       ? selectedBrowserRegion.region
       : defaultBrowserCoordinates;
-  const summaryStatisticsUrl = disease
-    ? FULLSUMSTAT_URL_MAP[disease as keyof typeof FULLSUMSTAT_URL_MAP]
-    : undefined;
 
   const { data: genesdata } = useQuery(AssociatedGenesQuery, {
     variables: {
@@ -504,7 +492,6 @@ const DiseaseTraitDetails: React.FC = () => {
           <DiseaseTraitBrowserPanel
             key={disease}
             region={browserCoordinates}
-            summaryStatisticsUrl={summaryStatisticsUrl}
             cytobandMarkers={riskLocusMarkers}
             visible={page === 3}
           />

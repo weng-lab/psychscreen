@@ -1,4 +1,9 @@
-﻿import React, { useEffect } from "react";
+import {
+  GenomeBrowserView,
+  SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
+  createSingleCellBrowserSession,
+} from "../../../genome-browser";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Divider, Box, Tabs, Tab, Typography } from "@mui/material";
@@ -7,18 +12,10 @@ import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import {
-  SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
-  SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
-  SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
-} from "../../../gb-view/defaultTrackIds";
-import { createSingleCellBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser";
+import type { GenomicRegion } from "@weng-lab/genomebrowser";
 import type { SelectChangeEvent } from "@mui/material/Select";
-import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
 
-const SINGLE_CELL_BROWSER_REGION: BrowserRegion = {
+const SINGLE_CELL_BROWSER_REGION: GenomicRegion = {
   chromosome: "chr11",
   start: 6_192_271,
   end: 6_680_547,
@@ -31,33 +28,12 @@ const SingleCellCellTypeDetails: React.FC = () => {
     setDataset(event.target.value);
   };
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [browserSessions] = React.useState(() => ({
-    atac: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
-    grn: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
-    qtl: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
-  }));
-  const [visitedBrowserTabs, setVisitedBrowserTabs] = React.useState<
-    ReadonlySet<number>
-  >(() => new Set([0]));
-
-  useEffect(
-    () => () => {
-      browserSessions.atac.dispose();
-      browserSessions.grn.dispose();
-      browserSessions.qtl.dispose();
-    },
-    [browserSessions],
+  const [session] = React.useState(() =>
+    createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
   );
 
   const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
-    if (newTabIndex <= 2) {
-      setVisitedBrowserTabs((visitedTabs) =>
-        visitedTabs.has(newTabIndex)
-          ? visitedTabs
-          : new Set([...visitedTabs, newTabIndex]),
-      );
-    }
   };
 
   const degDiseases: string[] = [];
@@ -143,50 +119,25 @@ const SingleCellCellTypeDetails: React.FC = () => {
             allowScrollButtonsMobile
           >
             <Tab label="scATAC-Seq Peaks " tabIndex={0} />
-            <Tab label="Gene Regulatory Networks" tabIndex={1} />
-            <Tab label="eQTLs" tabIndex={2} />
-            <Tab label="Differential Gene Expression" tabIndex={3} />
+            <Tab label="Differential Gene Expression" tabIndex={1} />
           </Tabs>
           <Divider />
         </Box>
-        {visitedBrowserTabs.has(0) && (
-          <Box sx={{ display: tabIndex === 0 ? "block" : "none" }}>
-            <GenomeBrowserView
-              browserStore={browserSessions.atac.browserStore}
-              trackStore={browserSessions.atac.trackStore}
-              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-              defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
-            />
-          </Box>
-        )}
-        {visitedBrowserTabs.has(1) && (
-          <Box sx={{ display: tabIndex === 1 ? "block" : "none" }}>
-            <GenomeBrowserView
-              browserStore={browserSessions.grn.browserStore}
-              trackStore={browserSessions.grn.trackStore}
-              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-              defaultTrackIds={SINGLE_CELL_GRN_DEFAULT_TRACK_IDS}
-            />
-          </Box>
-        )}
-        {visitedBrowserTabs.has(2) && (
-          <Box sx={{ display: tabIndex === 2 ? "block" : "none" }}>
-            <GenomeBrowserView
-              browserStore={browserSessions.qtl.browserStore}
-              trackStore={browserSessions.qtl.trackStore}
-              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-              defaultTrackIds={SINGLE_CELL_QTL_DEFAULT_TRACK_IDS}
-            />
-          </Box>
-        )}
-        {tabIndex == 3 && degDiseases && degDiseases.length == 0 && (
+        <Box sx={{ display: tabIndex === 0 ? "block" : "none" }}>
+          <GenomeBrowserView
+            browserStore={session.browserStore}
+            trackStore={session.trackStore}
+            defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
+          />
+        </Box>
+        {tabIndex == 1 && degDiseases && degDiseases.length == 0 && (
           <>
             <br />{" "}
             {"No data diff. expressed genes available for " +
               celltype?.replace(" or ", "/")}{" "}
           </>
         )}
-        {tabIndex == 3 && degDiseases.length > 0 && dataset && (
+        {tabIndex == 1 && degDiseases.length > 0 && dataset && (
           <SingleCelldegCelltypeDotplot
             disease={dataset}
             dataset={dataset}
