@@ -13,16 +13,16 @@ The integration uses the coordinated `2.0.0-beta.1` runtime, tracks, and UI pack
 - Each browser view owns a stable settings store configured with the tracks package's MUI `TrackBaseSettings`, alongside each module's first-party settings panel.
 - `highlights.ts` contains the shared highlight helpers.
 - `data/` contains shared hg38 cytobands and source attribution.
-- `deferred/` preserves the unported custom tracks, their collection, and their defaults. It is excluded from TypeScript checking and is not imported by the active browser.
+- `modules/` contains the beta Manhattan, LD, GRN, and QTL modules, including shared BigBed reading and interaction rendering. All modules are included in TypeScript checking.
 
 ## Tracks and state
 
 The fixed annotation track uses the first-party `geneModule` with GENCODE v40 comprehensive BigBed annotations in merged mode. Gene search still uses the existing SCREEN proxy and requires a working server-side `SCREEN_API_KEY`; the gene track reads its BigBed directly.
 
-All portals share the same collection inventory: 90 BigWig/BigBed tracks, 261 Mukamel methylation tracks, and 12 Brainome CAVE tracks. Portal defaults determine the initial selection. Manhattan, LD, GRN, and QTL tracks remain deferred; GRN/QTL browser tabs are omitted until their modules are ported.
+All portals share the same collection inventory: 90 BigWig/BigBed tracks, 261 Mukamel methylation tracks, 12 Brainome CAVE tracks, and six single-cell interaction tracks. Portal defaults determine the initial selection. The disease/trait browser adds host-owned Manhattan and LD tracks from the existing full-summary-statistics URL map. Single-cell details has separate ATAC, GRN, and eQTL browser sessions.
 
-Portal components retain their session in React state so tab changes preserve navigation and track selection. Sessions have no external subscriptions to dispose.
+Portal components retain their session in React state so tab changes preserve navigation and track selection. The disease browser owns the LD selection provider and controller, resets selection on navigation, and disposes its subscription/controller on unmount.
 
 ## Validation
 
-Run `yarn browser:schema` after changing registered modules and `yarn browser:schema:check` to check the generated schema. The command reads `registry.ts` directly. Run `yarn build` to verify the production bundle and TypeScript integration.
+Run `yarn browser:schema` after changing registered modules and `yarn browser:schema:check` to check the generated schema. The command reads `registry.ts` directly. Run `yarn browser:test` for custom module regressions and `yarn build` to verify the production bundle and TypeScript integration. Schema generation enables Jiti JSX support because the registry imports local TSX modules.

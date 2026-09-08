@@ -1,3 +1,13 @@
+// @refresh reset
+import {
+  DISEASE_MANHATTAN_TRACK_ID,
+  DISEASE_LD_TRACK_ID,
+} from "../../../genome-browser/sessions";
+import { attachLDInteractions } from "../../../genome-browser/modules/ld/interactions";
+import {
+  createLDSelectionStore,
+  LDSelectionProvider,
+} from "../../../genome-browser/modules/ld/selection";
 import {
   GenomeBrowserView,
   DISEASE_TRAIT_DEFAULT_TRACK_IDS,
@@ -16,7 +26,12 @@ import Grid from "@mui/material/Grid";
 import GeneAssociations from "./GeneAssociations";
 import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
-import { DISEASE_CARDS, URL_CHROM_MAP, URL_MAP } from "./config/constants";
+import {
+  DISEASE_CARDS,
+  URL_CHROM_MAP,
+  URL_MAP,
+  FULLSUMSTAT_URL_MAP,
+} from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { diseaseRiskLocusHighlights, riskLoci } from "./utils";
 import RiskLocusView from "./RiskLoci";
@@ -29,12 +44,35 @@ function DiseaseTraitBrowserPanel({
   region,
   cytobandMarkers,
   visible,
+  gwas,
 }: {
   region: GenomicRegion;
   cytobandMarkers?: readonly Highlight[];
   visible: boolean;
+  gwas?: { url: string; title: string };
 }) {
-  const [session] = useState(() => createDiseaseTraitBrowserSession(region));
+  const [session] = useState(() =>
+    createDiseaseTraitBrowserSession(region, gwas),
+  );
+
+  const [selectionStore] = useState(createLDSelectionStore);
+  const hasGwas = Boolean(gwas);
+  useEffect(() => {
+    if (!hasGwas) return;
+    const controller = attachLDInteractions({
+      useTrackStore: session.trackStore,
+      manhattanTrackId: DISEASE_MANHATTAN_TRACK_ID,
+      ldTrackId: DISEASE_LD_TRACK_ID,
+      selectionStore,
+    });
+    const unsubscribe = session.browserStore.subscribe((state, previous) => {
+      if (state.region !== previous.region) controller.reset();
+    });
+    return () => {
+      unsubscribe();
+      controller.dispose();
+    };
+  }, [session, selectionStore, hasGwas]);
 
   useEffect(() => {
     session.setRegion(region);
@@ -42,12 +80,14 @@ function DiseaseTraitBrowserPanel({
 
   return (
     <Stack sx={{ display: visible ? "block" : "none" }}>
-      <GenomeBrowserView
-        browserStore={session.browserStore}
-        trackStore={session.trackStore}
-        defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
-        cytobandMarkers={cytobandMarkers}
-      />
+      <LDSelectionProvider value={selectionStore}>
+        <GenomeBrowserView
+          browserStore={session.browserStore}
+          trackStore={session.trackStore}
+          defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
+          cytobandMarkers={cytobandMarkers}
+        />
+      </LDSelectionProvider>
     </Stack>
   );
 }
@@ -491,6 +531,14 @@ const DiseaseTraitDetails: React.FC = () => {
         {browserCoordinates ? (
           <DiseaseTraitBrowserPanel
             key={disease}
+            gwas={
+              disease && FULLSUMSTAT_URL_MAP[disease]
+                ? {
+                    url: FULLSUMSTAT_URL_MAP[disease],
+                    title: diseaseLabel || disease,
+                  }
+                : undefined
+            }
             region={browserCoordinates}
             cytobandMarkers={riskLocusMarkers}
             visible={page === 3}

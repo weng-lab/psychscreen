@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "browser:schema": "trackselect schema --from ./src/genome-browser/registry.ts#TRACK_MODULES --out src/genome-browser/collections/schema.json",
+    "browser:schema": "JITI_JSX=1 trackselect schema --from ./src/genome-browser/registry.ts#TRACK_MODULES --out src/genome-browser/collections/schema.json",
     "browser:schema:check": "yarn browser:schema --check",
-    "prettier": "prettier --write src app"
+    "prettier": "prettier --write src app",
+    "browser:test": "node src/genome-browser/tests/modules.test.cjs"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",

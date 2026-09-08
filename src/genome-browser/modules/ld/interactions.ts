@@ -1,0 +1,182 @@
+import type { TrackStoreInstance } from "@weng-lab/genomebrowser";
+import { fetchLDRelationships } from "./fetchRelationships";
+import { parseLDAnchor } from "./anchor";
+import type { LDAnchor } from "./types";
+import type { LDSelectionStore } from "./selection";
+
+const HOVER_REQUEST_DELAY_MS = 200;
+
+export function attachLDInteractions({
+  useTrackStore,
+  manhattanTrackId,
+  ldTrackId,
+  selectionStore,
+  fetchRelationships = fetchLDRelationships,
+}: {
+  useTrackStore: TrackStoreInstance;
+  manhattanTrackId: string;
+  ldTrackId: string;
+  selectionStore: LDSelectionStore;
+  fetchRelationships?: typeof fetchLDRelationships;
+}) {
+  // Browser interaction callbacks run outside React, so this state is session-local.
+  let disposed = false;
+  let hoveredAnchor: LDAnchor | undefined;
+  let pinnedAnchor: LDAnchor | undefined;
+  let activeRequest:
+    { anchorId: string; controller: AbortController } | undefined;
+  let pendingHover:
+    { anchorId: string; timeout: ReturnType<typeof setTimeout> } | undefined;
+  const relationshipCache = new Map<string, string[]>();
+
+  const cancelPendingHover = () => {
+    if (pendingHover) clearTimeout(pendingHover.timeout);
+    pendingHover = undefined;
+  };
+
+  const updateSelection = (
+    anchor: LDAnchor | undefined,
+    associatedVariantIds: string[],
+  ) => {
+    selectionStore.set({
+      anchor,
+      associatedVariantIds,
+      pinnedVariantId: pinnedAnchor?.id,
+    });
+  };
+
+  const clear = () => {
+    cancelPendingHover();
+    activeRequest?.controller.abort();
+    activeRequest = undefined;
+    updateSelection(undefined, []);
+  };
+
+  const show = async (anchor: LDAnchor) => {
+    const cached = relationshipCache.get(anchor.id);
+    if (cached) {
+      activeRequest?.controller.abort();
+      activeRequest = undefined;
+      updateSelection(anchor, cached);
+      return;
+    }
+
+    updateSelection(anchor, []);
+    if (activeRequest?.anchorId === anchor.id) return;
+
+    activeRequest?.controller.abort();
+    const controller = new AbortController();
+    const request = { anchorId: anchor.id, controller };
+    activeRequest = request;
+
+    try {
+      const associatedVariantIds = await fetchRelationships(
+        anchor.id,
+        controller.signal,
+      );
+      // Hover or selection can change while a request is in flight.
+      if (controller.signal.aborted || activeRequest !== request) return;
+
+      relationshipCache.set(anchor.id, associatedVariantIds);
+      const currentAnchor = hoveredAnchor ?? pinnedAnchor;
+      if (currentAnchor?.id === anchor.id) {
+        updateSelection(currentAnchor, associatedVariantIds);
+      }
+    } catch (error) {
+      if (!controller.signal.aborted) {
+        console.error(error);
+        const currentAnchor = hoveredAnchor ?? pinnedAnchor;
+        if (currentAnchor?.id === anchor.id) updateSelection(currentAnchor, []);
+      }
+    } finally {
+      if (activeRequest === request) activeRequest = undefined;
+    }
+  };
+
+  const handleHover = (item: unknown) => {
+    if (disposed) return;
+    const anchor = parseLDAnchor(item);
+    if (!anchor) return;
+    hoveredAnchor = anchor;
+
+    if (
+      relationshipCache.has(anchor.id) ||
+      activeRequest?.anchorId === anchor.id
+    ) {
+      cancelPendingHover();
+      void show(anchor);
+      return;
+    }
+    if (pendingHover?.anchorId === anchor.id) return;
+
+    cancelPendingHover();
+    updateSelection(anchor, []);
+    pendingHover = {
+      anchorId: anchor.id,
+      timeout: setTimeout(() => {
+        pendingHover = undefined;
+        if (hoveredAnchor?.id === anchor.id) void show(anchor);
+      }, HOVER_REQUEST_DELAY_MS),
+    };
+  };
+
+  const handleLeave = (item: unknown) => {
+    if (disposed) return;
+    const anchor = parseLDAnchor(item);
+    if (!anchor || hoveredAnchor?.id !== anchor.id) return;
+    hoveredAnchor = undefined;
+    cancelPendingHover();
+    if (pinnedAnchor) void show(pinnedAnchor);
+    else clear();
+  };
+
+  const handleClick = (item: unknown) => {
+    if (disposed) return;
+    const anchor = parseLDAnchor(item);
+    if (!anchor) return;
+    cancelPendingHover();
+    pinnedAnchor = pinnedAnchor?.id === anchor.id ? undefined : anchor;
+    const activeAnchor = hoveredAnchor ?? pinnedAnchor;
+    if (activeAnchor) void show(activeAnchor);
+    else clear();
+  };
+
+  const manhattanResult = useTrackStore
+    .getState()
+    .updateTrack(manhattanTrackId, {
+      interaction: {
+        onHover: handleHover,
+        onLeave: handleLeave,
+      },
+    });
+  if (!manhattanResult.ok) throw new Error(manhattanResult.error);
+
+  const ldResult = useTrackStore.getState().updateTrack(ldTrackId, {
+    interaction: {
+      onClick: handleClick,
+      onHover: handleHover,
+      onLeave: handleLeave,
+    },
+  });
+  if (!ldResult.ok) throw new Error(ldResult.error);
+
+  return {
+    reset() {
+      if (disposed) return;
+      hoveredAnchor = undefined;
+      pinnedAnchor = undefined;
+      relationshipCache.clear();
+      clear();
+    },
+    dispose() {
+      disposed = true;
+      cancelPendingHover();
+      activeRequest?.controller.abort();
+      activeRequest = undefined;
+      hoveredAnchor = undefined;
+      pinnedAnchor = undefined;
+      relationshipCache.clear();
+      selectionStore.set({ associatedVariantIds: [] });
+    },
+  };
+}

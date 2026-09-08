@@ -42,7 +42,6 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "src/genome-browser/deferred"
+    "node_modules"
   ]
 }

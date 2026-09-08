@@ -1,3 +1,9 @@
+import { manhattanModule } from "./modules/manhattan/module";
+import { ldModule } from "./modules/ld/module";
+
+export const DISEASE_MANHATTAN_TRACK_ID = "disease-trait-manhattan";
+export const DISEASE_LD_TRACK_ID = "disease-trait-ld";
+
 import {
   createBrowserStore,
   createTrackStore,
@@ -51,8 +57,33 @@ export function createGenePortalBrowserSession(region: GenomicRegion) {
   return createPortalBrowserSession(region, "gene-portal");
 }
 
-export function createDiseaseTraitBrowserSession(region: GenomicRegion) {
-  return createPortalBrowserSession(region, "disease-trait");
+export function createDiseaseTraitBrowserSession(
+  region: GenomicRegion,
+  gwas?: { url: string; title: string },
+) {
+  const session = createPortalBrowserSession(region, "disease-trait");
+  if (gwas) {
+    const result = session.trackStore
+      .getState()
+      .applyTrackChanges({
+        add: [
+          manhattanModule.create({
+            id: DISEASE_MANHATTAN_TRACK_ID,
+            title: `${gwas.title} GWAS`,
+            source: "host",
+            config: { url: gwas.url },
+          }),
+          ldModule.create({
+            id: DISEASE_LD_TRACK_ID,
+            title: "Linkage disequilibrium",
+            source: "host",
+            config: { url: gwas.url },
+          }),
+        ],
+      });
+    if (!result.ok) throw new Error(result.error);
+  }
+  return session;
 }
 
 export function createSingleCellGeneBrowserSession(region: GenomicRegion) {

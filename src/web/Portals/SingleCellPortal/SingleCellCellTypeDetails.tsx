@@ -1,6 +1,8 @@
 import {
   GenomeBrowserView,
   SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
+  SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
+  SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
   createSingleCellBrowserSession,
 } from "../../../genome-browser";
 import React, { useEffect } from "react";
@@ -29,6 +31,13 @@ const SingleCellCellTypeDetails: React.FC = () => {
   };
   const [tabIndex, setTabIndex] = React.useState(0);
   const [session] = React.useState(() =>
+    createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+  );
+
+  const [grnSession] = React.useState(() =>
+    createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+  );
+  const [qtlSession] = React.useState(() =>
     createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
   );
 
@@ -120,6 +129,8 @@ const SingleCellCellTypeDetails: React.FC = () => {
           >
             <Tab label="scATAC-Seq Peaks " tabIndex={0} />
             <Tab label="Differential Gene Expression" tabIndex={1} />
+            <Tab label="Gene Regulatory Networks" tabIndex={2} />
+            <Tab label="eQTL Interactions" tabIndex={3} />
           </Tabs>
           <Divider />
         </Box>
@@ -128,6 +139,20 @@ const SingleCellCellTypeDetails: React.FC = () => {
             browserStore={session.browserStore}
             trackStore={session.trackStore}
             defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
+          />
+        </Box>
+        <Box sx={{ display: tabIndex === 2 ? "block" : "none" }}>
+          <GenomeBrowserView
+            browserStore={grnSession.browserStore}
+            trackStore={grnSession.trackStore}
+            defaultTrackIds={SINGLE_CELL_GRN_DEFAULT_TRACK_IDS}
+          />
+        </Box>
+        <Box sx={{ display: tabIndex === 3 ? "block" : "none" }}>
+          <GenomeBrowserView
+            browserStore={qtlSession.browserStore}
+            trackStore={qtlSession.trackStore}
+            defaultTrackIds={SINGLE_CELL_QTL_DEFAULT_TRACK_IDS}
           />
         </Box>
         {tabIndex == 1 && degDiseases && degDiseases.length == 0 && (
