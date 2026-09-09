@@ -28,18 +28,25 @@ export function applyLDSelection(data: LDData, selection: LDSelection): LDData {
   const visibleIds = new Set(data.variants.map((variant) => variant.id));
   if (!visibleIds.has(anchorId)) return data;
 
-  const connections: LDConnection[] = [];
-  for (const targetId of selection.associatedVariantIds) {
+  const connectionsById = new Map<string, LDConnection>();
+  for (const { id: targetId, rSquared } of selection.relationships) {
     if (targetId !== anchorId && visibleIds.has(targetId)) {
-      connections.push({ sourceId: anchorId, targetId });
+      const previous = connectionsById.get(targetId);
+      if (!previous || rSquared > previous.rSquared) {
+        connectionsById.set(targetId, {
+          sourceId: anchorId,
+          targetId,
+          rSquared,
+        });
+      }
     }
   }
 
   return {
     variants: data.variants.map((variant) =>
-      variant.id === anchorId ? { ...variant, isLead: true } : variant,
+      variant.id === anchorId ? { ...variant, isSelected: true } : variant,
     ),
-    connections,
+    connections: [...connectionsById.values()],
   };
 }
 

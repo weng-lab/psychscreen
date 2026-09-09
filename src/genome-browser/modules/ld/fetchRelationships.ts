@@ -1,13 +1,16 @@
 import { gql } from "@apollo/client";
 import { z } from "zod";
 import { apolloClient } from "../../../graphql/client";
-
-const R_SQUARED_THRESHOLD = 0.7;
+import { LD_REQUEST } from "./requestConfig";
+import type { LDRelationship } from "./types";
 
 const PSYCHSCREEN_LD_QUERY = gql`
   query PsychscreenLD($ids: [String!]!) {
-    snp: snpQuery(assembly: "hg38", snpids: $ids) {
-      linkageDisequilibrium(rSquaredThreshold: 0.7, population: EUROPEAN) {
+    snp: snpQuery(assembly: "${LD_REQUEST.assembly}", snpids: $ids) {
+      linkageDisequilibrium(
+        rSquaredThreshold: ${LD_REQUEST.rSquaredThreshold}
+        population: ${LD_REQUEST.population}
+      ) {
         id
         rSquared
       }
@@ -23,7 +26,9 @@ const responseSchema = z.object({
           .array(
             z.object({
               id: z.string().min(1),
-              rSquared: z.coerce.number(),
+              rSquared: z
+                .union([z.number(), z.string().trim().min(1).transform(Number)])
+                .pipe(z.number().min(0).max(1)),
             }),
           )
           .nullish(),
@@ -35,23 +40,29 @@ const responseSchema = z.object({
 export async function fetchLDRelationships(
   anchorId: string,
   signal: AbortSignal,
-): Promise<string[]> {
+): Promise<LDRelationship[]> {
   const response = await apolloClient.query({
     query: PSYCHSCREEN_LD_QUERY,
     variables: { ids: [anchorId] },
     context: {
-      clientName: "psychscreen",
       fetchOptions: { signal },
       queryDeduplication: false,
     },
     fetchPolicy: "no-cache",
   });
   const data = responseSchema.parse(response.data);
-  const associatedVariantIdSet = new Set<string>();
+  const relationshipsById = new Map<string, LDRelationship>();
   for (const relationship of data.snp?.[0]?.linkageDisequilibrium ?? []) {
-    if (relationship.rSquared >= R_SQUARED_THRESHOLD) {
-      associatedVariantIdSet.add(relationship.id);
+    if (
+      relationship.id !== anchorId &&
+      relationship.rSquared >= LD_REQUEST.rSquaredThreshold
+    ) {
+      // Duplicate partners use the highest valid score, regardless of row order.
+      const previous = relationshipsById.get(relationship.id);
+      if (!previous || relationship.rSquared > previous.rSquared) {
+        relationshipsById.set(relationship.id, relationship);
+      }
     }
   }
-  return [...associatedVariantIdSet];
+  return [...relationshipsById.values()];
 }

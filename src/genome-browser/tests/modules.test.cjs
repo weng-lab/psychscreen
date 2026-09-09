@@ -126,10 +126,12 @@ test("LD ignores stale responses, caches relationships and clears selection on r
     callbacks.ld.onClick(anchor("a"));
     callbacks.ld.onClick(anchor("b"));
     assert.equal(requests[0].signal.aborted, true);
-    requests[0].resolve(["stale"]);
-    requests[1].resolve(["c"]);
+    requests[0].resolve([{ id: "stale", rSquared: 0.8 }]);
+    requests[1].resolve([{ id: "c", rSquared: 0.8 }]);
     await settle();
-    assert.deepEqual(selectionStore.getSnapshot().associatedVariantIds, ["c"]);
+    assert.deepEqual(selectionStore.getSnapshot().relationships, [
+      { id: "c", rSquared: 0.8 },
+    ]);
     assert.equal(selectionStore.getSnapshot().pinnedVariantId, "b");
     callbacks.ld.onHover(anchor("b"));
     callbacks.ld.onLeave(anchor("b"));
@@ -137,7 +139,7 @@ test("LD ignores stale responses, caches relationships and clears selection on r
     controller.reset();
     assert.equal(selectionStore.getSnapshot().anchor, undefined);
     assert.equal(selectionStore.getSnapshot().pinnedVariantId, undefined);
-    assert.deepEqual(selectionStore.getSnapshot().associatedVariantIds, []);
+    assert.deepEqual(selectionStore.getSnapshot().relationships, []);
   } finally {
     controller.dispose();
   }
@@ -146,7 +148,7 @@ test("LD ignores stale responses, caches relationships and clears selection on r
 test("LD hover cancellation preserves pinning and dispose prevents late updates", async () => {
   const { selectionStore, callbacks, requests, controller } = setup();
   callbacks.ld.onClick(anchor("a"));
-  requests[0].resolve(["b"]);
+  requests[0].resolve([{ id: "b", rSquared: 0.8 }]);
   await settle();
   callbacks.manhattan.onHover(anchor("b"));
   assert.equal(selectionStore.getSnapshot().anchor.id, "b");
@@ -156,11 +158,14 @@ test("LD hover cancellation preserves pinning and dispose prevents late updates"
   callbacks.ld.onClick(anchor("c"));
   controller.dispose();
   assert.equal(requests[1].signal.aborted, true);
-  requests[1].resolve(["late"]);
+  requests[1].resolve([{ id: "late", rSquared: 0.8 }]);
   await settle();
   callbacks.ld.onClick(anchor("after-dispose"));
   assert.equal(requests.length, 2);
-  assert.deepEqual(selectionStore.getSnapshot(), { associatedVariantIds: [] });
+  assert.deepEqual(selectionStore.getSnapshot(), {
+    relationships: [],
+    status: "idle",
+  });
 });
 
 test("LD selection only connects visible variants and does not mutate fetched data", () => {
@@ -168,11 +173,14 @@ test("LD selection only connects visible variants and does not mutate fetched da
   const baseline = { variants: [anchor("a"), anchor("b")], connections: [] };
   const result = applyLDSelection(baseline, {
     anchor: anchor("a"),
-    associatedVariantIds: ["a", "b", "outside"],
+    relationships: ["a", "b", "outside"].map((id) => ({ id, rSquared: 0.8 })),
+    status: "success",
   });
-  assert.deepEqual(result.connections, [{ sourceId: "a", targetId: "b" }]);
-  assert.equal(result.variants[0].isLead, true);
-  assert.equal(baseline.variants[0].isLead, undefined);
+  assert.deepEqual(result.connections, [
+    { sourceId: "a", targetId: "b", rSquared: 0.8 },
+  ]);
+  assert.equal(result.variants[0].isSelected, true);
+  assert.equal(baseline.variants[0].isSelected, undefined);
   assert.deepEqual(baseline.connections, []);
 });
 
@@ -285,7 +293,8 @@ test("Manhattan highlights the LD-selected SNP and renders a correctly scaled th
     "../ld/selection": {
       useOptionalLDSelection: () => ({
         anchor: anchor("rs2"),
-        associatedVariantIds: [],
+        relationships: [],
+        status: "idle",
       }),
     },
     react: { ...react, useEffect() {}, useEffectEvent: (callback) => callback },

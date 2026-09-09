@@ -25,7 +25,7 @@ export function layoutLDVariants(
     const end = x(variant.end);
     const centerX = (start + end) / 2;
     const rectWidth = Math.max(3.25, Math.abs(end - start));
-    const isProminent = variant.isLead || variant.id === prominentId;
+    const isProminent = variant.isSelected || variant.id === prominentId;
     const rectHeight = isProminent ? (height * 2) / 3 : height / 3;
 
     return {

@@ -3,12 +3,18 @@ export type LDVariant = {
   chromosome: string;
   start: number;
   end: number;
-  isLead?: boolean;
+  isSelected?: boolean;
+};
+
+export type LDRelationship = {
+  id: string;
+  rSquared: number;
 };
 
 export type LDConnection = {
   sourceId: string;
   targetId: string;
+  rSquared: number;
 };
 
 export type LDData = {
@@ -24,6 +30,7 @@ export type LDConfig = {
 
 export type LDSelection = {
   anchor?: LDAnchor;
-  associatedVariantIds: string[];
+  relationships: LDRelationship[];
+  status: "idle" | "loading" | "success" | "error";
   pinnedVariantId?: string;
 };

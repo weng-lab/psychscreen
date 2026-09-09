@@ -1,7 +1,7 @@
 import type { TrackStoreInstance } from "@weng-lab/genomebrowser";
 import { fetchLDRelationships } from "./fetchRelationships";
 import { parseLDAnchor } from "./anchor";
-import type { LDAnchor } from "./types";
+import type { LDAnchor, LDRelationship, LDSelection } from "./types";
 import type { LDSelectionStore } from "./selection";
 
 const HOVER_REQUEST_DELAY_MS = 200;
@@ -27,7 +27,7 @@ export function attachLDInteractions({
     { anchorId: string; controller: AbortController } | undefined;
   let pendingHover:
     { anchorId: string; timeout: ReturnType<typeof setTimeout> } | undefined;
-  const relationshipCache = new Map<string, string[]>();
+  const relationshipCache = new Map<string, LDRelationship[]>();
 
   const cancelPendingHover = () => {
     if (pendingHover) clearTimeout(pendingHover.timeout);
@@ -36,11 +36,13 @@ export function attachLDInteractions({
 
   const updateSelection = (
     anchor: LDAnchor | undefined,
-    associatedVariantIds: string[],
+    relationships: LDRelationship[],
+    status: LDSelection["status"],
   ) => {
     selectionStore.set({
       anchor,
-      associatedVariantIds,
+      relationships,
+      status,
       pinnedVariantId: pinnedAnchor?.id,
     });
   };
@@ -49,7 +51,7 @@ export function attachLDInteractions({
     cancelPendingHover();
     activeRequest?.controller.abort();
     activeRequest = undefined;
-    updateSelection(undefined, []);
+    updateSelection(undefined, [], "idle");
   };
 
   const show = async (anchor: LDAnchor) => {
@@ -57,11 +59,11 @@ export function attachLDInteractions({
     if (cached) {
       activeRequest?.controller.abort();
       activeRequest = undefined;
-      updateSelection(anchor, cached);
+      updateSelection(anchor, cached, "success");
       return;
     }
 
-    updateSelection(anchor, []);
+    updateSelection(anchor, [], "loading");
     if (activeRequest?.anchorId === anchor.id) return;
 
     activeRequest?.controller.abort();
@@ -70,23 +72,24 @@ export function attachLDInteractions({
     activeRequest = request;
 
     try {
-      const associatedVariantIds = await fetchRelationships(
+      const relationships = await fetchRelationships(
         anchor.id,
         controller.signal,
       );
       // Hover or selection can change while a request is in flight.
       if (controller.signal.aborted || activeRequest !== request) return;
 
-      relationshipCache.set(anchor.id, associatedVariantIds);
+      relationshipCache.set(anchor.id, relationships);
       const currentAnchor = hoveredAnchor ?? pinnedAnchor;
       if (currentAnchor?.id === anchor.id) {
-        updateSelection(currentAnchor, associatedVariantIds);
+        updateSelection(currentAnchor, relationships, "success");
       }
     } catch (error) {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && activeRequest === request) {
         console.error(error);
         const currentAnchor = hoveredAnchor ?? pinnedAnchor;
-        if (currentAnchor?.id === anchor.id) updateSelection(currentAnchor, []);
+        if (currentAnchor?.id === anchor.id)
+          updateSelection(currentAnchor, [], "error");
       }
     } finally {
       if (activeRequest === request) activeRequest = undefined;
@@ -110,7 +113,7 @@ export function attachLDInteractions({
     if (pendingHover?.anchorId === anchor.id) return;
 
     cancelPendingHover();
-    updateSelection(anchor, []);
+    updateSelection(anchor, [], "loading");
     pendingHover = {
       anchorId: anchor.id,
       timeout: setTimeout(() => {
@@ -161,6 +164,13 @@ export function attachLDInteractions({
   if (!ldResult.ok) throw new Error(ldResult.error);
 
   return {
+    clearHover() {
+      if (disposed) return;
+      hoveredAnchor = undefined;
+      cancelPendingHover();
+      if (pinnedAnchor) void show(pinnedAnchor);
+      else clear();
+    },
     reset() {
       if (disposed) return;
       hoveredAnchor = undefined;
@@ -176,7 +186,7 @@ export function attachLDInteractions({
       hoveredAnchor = undefined;
       pinnedAnchor = undefined;
       relationshipCache.clear();
-      selectionStore.set({ associatedVariantIds: [] });
+      selectionStore.set({ relationships: [], status: "idle" });
     },
   };
 }

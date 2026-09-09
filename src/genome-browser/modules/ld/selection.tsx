@@ -2,7 +2,7 @@ import { createContext, useContext, useSyncExternalStore } from "react";
 import type { LDSelection } from "./types";
 
 export function createLDSelectionStore() {
-  let selection: LDSelection = { associatedVariantIds: [] };
+  let selection: LDSelection = { relationships: [], status: "idle" };
   const listeners = new Set<() => void>();
   return {
     getSnapshot: () => selection,
@@ -33,7 +33,7 @@ export function useLDSelection() {
   );
 }
 
-const EMPTY_SELECTION: LDSelection = { associatedVariantIds: [] };
+const EMPTY_SELECTION: LDSelection = { relationships: [], status: "idle" };
 const emptySnapshot = () => EMPTY_SELECTION;
 const emptySubscribe = () => () => {};
 

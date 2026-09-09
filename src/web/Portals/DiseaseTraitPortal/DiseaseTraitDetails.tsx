@@ -18,7 +18,7 @@ import {
  */
 
 import { useParams } from "react-router-dom";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -66,7 +66,12 @@ function DiseaseTraitBrowserPanel({
       selectionStore,
     });
     const unsubscribe = session.browserStore.subscribe((state, previous) => {
-      if (state.region !== previous.region) controller.reset();
+      if (
+        state.region.chromosome !== previous.region.chromosome ||
+        state.region.start !== previous.region.start ||
+        state.region.end !== previous.region.end
+      )
+        controller.clearHover();
     });
     return () => {
       unsubscribe();
@@ -74,7 +79,16 @@ function DiseaseTraitBrowserPanel({
     };
   }, [session, selectionStore, hasGwas]);
 
+  const previousRegionRef = useRef(region);
   useEffect(() => {
+    const previous = previousRegionRef.current;
+    if (
+      previous.chromosome === region.chromosome &&
+      previous.start === region.start &&
+      previous.end === region.end
+    )
+      return;
+    previousRegionRef.current = region;
     session.setRegion(region);
   }, [region, session]);
 
