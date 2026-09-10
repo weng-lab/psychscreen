@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "prettier": "prettier --write src app"
+    "browser:schema": "JITI_JSX=1 trackselect schema --from ./src/genome-browser/registry.ts#TRACK_MODULES --out src/genome-browser/collections/schema.json",
+    "browser:schema:check": "yarn browser:schema --check",
+    "prettier": "prettier --write src app",
+    "browser:test": "node src/genome-browser/tests/modules.test.cjs"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -23,8 +26,10 @@
     "@mui/x-tree-view": "^8.18.0",
     "@visx/tooltip": "^3.3.0",
     "@visx/visx": "^3.12.0",
-    "@weng-lab/genomebrowser": "2.0.0-alpha.1",
-    "@weng-lab/genomebrowser-ui": "2.0.0-alpha.1",
+    "@weng-lab/genomebrowser": "2.0.0-beta.3",
+    "@weng-lab/genomebrowser-tracks": "2.0.0-beta.2",
+    "@weng-lab/genomebrowser-ui": "2.0.0-beta.2",
+    "@weng-lab/genomic-reader": "2.0.0-beta.1",
     "@weng-lab/ui-components": "^3.2.1",
     "@weng-lab/visualization": "1.6.2",
     "bpnet-ui": "^0.2.9",

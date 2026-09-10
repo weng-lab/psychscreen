@@ -1,4 +1,9 @@
-﻿import React, { useState, useMemo, useRef, useEffect } from "react";
+import {
+  GenomeBrowserView,
+  GENE_PORTAL_DEFAULT_TRACK_IDS,
+  createGenePortalBrowserSession,
+} from "../../../genome-browser";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
 import {
@@ -23,10 +28,7 @@ import SingleCell from "./SingleCell";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import { GENE_PORTAL_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
-import { createGenePortalBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser";
+import type { GenomicRegion } from "@weng-lab/genomebrowser";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -42,7 +44,7 @@ type GeneCoordinatesQueryResponse = {
   gene: Array<{
     name: string;
     id: string;
-    coordinates: BrowserRegion;
+    coordinates: GenomicRegion;
   }>;
 };
 
@@ -55,7 +57,7 @@ function GeneBrowserPanel({
   region,
   visible,
 }: {
-  region: BrowserRegion;
+  region: GenomicRegion;
   visible: boolean;
 }) {
   // Keep one browser session mounted so switching tabs does not recreate stores.
@@ -75,8 +77,6 @@ function GeneBrowserPanel({
     // The session captures its initial region; route changes update the store explicitly.
     session.setRegion(region);
   }, [region, session]);
-
-  useEffect(() => () => session.dispose(), [session]);
 
   return (
     <Box sx={{ display: visible ? "block" : "none" }}>
@@ -160,7 +160,7 @@ const GeneDetails: React.FC = () => {
       ),
     [gene, geneCoords],
   );
-  const geneBrowserRegion = useMemo<BrowserRegion | undefined>(() => {
+  const geneBrowserRegion = useMemo<GenomicRegion | undefined>(() => {
     if (!selectedGene) return undefined;
     return {
       chromosome: selectedGene.coordinates.chromosome,
