@@ -1,6 +1,6 @@
 # Psychscreen genome browser
 
-The integration uses the coordinated `2.0.0-beta.1` runtime, tracks, and UI packages.
+The integration uses the `2.0.0-beta.3` runtime and `2.0.0-beta.2` tracks and UI packages.
 
 ## Layout
 
@@ -17,7 +17,7 @@ The integration uses the coordinated `2.0.0-beta.1` runtime, tracks, and UI pack
 
 ## Tracks and state
 
-The fixed annotation track uses the first-party `geneModule` with GENCODE v40 comprehensive BigBed annotations in merged mode. Gene search still uses the existing SCREEN proxy and requires a working server-side `SCREEN_API_KEY`; the gene track reads its BigBed directly.
+Every browser pins the first-party ruler track at the top, followed by the gene track. The annotation track uses the first-party `geneModule` with GENCODE v40 comprehensive BigBed annotations in merged mode. Gene search still uses the existing SCREEN proxy and requires a working server-side `SCREEN_API_KEY`; the gene track reads its BigBed directly.
 
 All portals share the same collection inventory: 90 BigWig/BigBed tracks, 261 Mukamel methylation tracks, 12 Brainome CAVE tracks, and six single-cell interaction tracks. Portal defaults determine the initial selection. The disease/trait browser adds host-owned Manhattan and LD tracks from the existing full-summary-statistics URL map. Single-cell details has separate ATAC, GRN, and eQTL browser sessions.
 

@@ -106,6 +106,94 @@
                 "minLength": 1
               },
               "display": {
+                "default": "full",
+                "type": "string",
+                "enum": [
+                  "full"
+                ]
+              },
+              "height": {
+                "default": 22,
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
+              },
+              "config": {
+                "type": "object",
+                "properties": {
+                  "sequenceHighlightColor": {
+                    "default": "#64748b",
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  "distinguishMaskedBases": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "sequenceUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "sequenceMinPixelsPerBase": {
+                    "default": 15,
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "additionalProperties": false
+              },
+              "type": {
+                "type": "string",
+                "const": "ruler"
+              },
+              "metadata": {
+                "default": {},
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "config",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "display": {
                 "default": "dense",
                 "type": "string",
                 "enum": [

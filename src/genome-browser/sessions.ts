@@ -13,6 +13,7 @@ import {
   type TrackStoreInstance,
 } from "@weng-lab/genomebrowser";
 import { geneModule } from "@weng-lab/genomebrowser-tracks/gene";
+import { rulerModule } from "@weng-lab/genomebrowser-tracks/ruler";
 import { TRACK_MODULES } from "./registry";
 
 export type GenomeBrowserSession = {
@@ -33,7 +34,14 @@ function createPortalBrowserSession(
   });
   const useTrackStore = createTrackStore({
     modules: TRACK_MODULES,
+    pinnedTrackIds: [`${trackIdPrefix}-ruler`, `${trackIdPrefix}-genes`],
     tracks: [
+      rulerModule.create({
+        id: `${trackIdPrefix}-ruler`,
+        title: "Genomic ruler",
+        source: "host",
+        config: {},
+      }),
       geneModule.create({
         id: `${trackIdPrefix}-genes`,
         title: "GENCODE Genes",

@@ -7,8 +7,10 @@ import { bigWigModule } from "@weng-lab/genomebrowser-tracks/bigwig";
 import { caveModule } from "@weng-lab/genomebrowser-tracks/cave";
 import { geneModule } from "@weng-lab/genomebrowser-tracks/gene";
 import { methylCModule } from "@weng-lab/genomebrowser-tracks/methylc";
+import { rulerModule } from "@weng-lab/genomebrowser-tracks/ruler";
 
 export const TRACK_MODULES = [
+  rulerModule,
   bigBedModule,
   bigWigModule,
   caveModule,
