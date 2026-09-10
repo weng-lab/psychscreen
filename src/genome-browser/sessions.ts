@@ -40,7 +40,10 @@ function createPortalBrowserSession(
         id: `${trackIdPrefix}-ruler`,
         title: "Genomic ruler",
         source: "host",
-        config: {},
+        config: {
+          sequenceUrl:
+            "https://hgdownload.soe.ucsc.edu/goldenpath/hg38/bigZips/hg38.2bit",
+        },
       }),
       geneModule.create({
         id: `${trackIdPrefix}-genes`,
