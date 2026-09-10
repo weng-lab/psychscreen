@@ -84,6 +84,34 @@ export function FullLD({
           {requestStatus ? ` · ${requestStatus}` : ""}
         </text>
       </svg>
+      {pinnedId && selection.anchor && (
+        <foreignObject
+          x={headerX + Math.max(0, headerWidth - 230)}
+          y={0}
+          width={Math.min(230, headerWidth)}
+          height={18}
+        >
+          <button
+            type="button"
+            onClick={() => interaction?.onClick?.(selection.anchor!)}
+            title={`Clear pinned SNP ${pinnedId}`}
+            style={{
+              float: "right",
+              background: "white",
+              border: "1px solid #aaa",
+              borderRadius: 3,
+              fontSize: 11,
+              cursor: "pointer",
+              maxWidth: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Pinned: {pinnedId} ×
+          </button>
+        </foreignObject>
+      )}
       <g transform="translate(0, 18)">
         {activeConnections.map((connection) => {
           const source = renderedById.get(connection.sourceId);
@@ -97,7 +125,9 @@ export function FullLD({
               fill="none"
               stroke={color}
               strokeWidth={2}
-              opacity={0.55}
+              opacity={
+                0.2 + 0.8 * Math.max(0, Math.min(1, connection.rSquared))
+              }
               pointerEvents="stroke"
             >
               <title>{`${connection.sourceId} ↔ ${connection.targetId}: r² = ${connection.rSquared} (${LD_REQUEST.assembly} · ${LD_CONTEXT})`}</title>
@@ -132,6 +162,26 @@ export function FullLD({
             />
           );
         })}
+        {activeId && renderedById.has(activeId) && (
+          <text
+            x={Math.max(
+              headerX + 4,
+              Math.min(
+                headerX + headerWidth - activeId.length * 7 - 4,
+                renderedById.get(activeId)!.centerX + 7,
+              ),
+            )}
+            y={Math.max(12, renderedById.get(activeId)!.y - 5)}
+            fontSize={12}
+            fill="#111111"
+            stroke="white"
+            strokeWidth={3}
+            paintOrder="stroke"
+            pointerEvents="none"
+          >
+            {activeId}
+          </text>
+        )}
       </g>
     </g>
   );

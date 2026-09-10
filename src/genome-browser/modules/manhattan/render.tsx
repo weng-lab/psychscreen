@@ -16,9 +16,7 @@ import type { ManhattanConfig, ManhattanData, ManhattanPoint } from "./types";
 
 const POINT_RADIUS = 3.25;
 const HOVER_STYLE = `
-  .gb-manhattan-points:has(.gb-manhattan-point:hover) .gb-manhattan-point:not(:hover) {
-    opacity: 0.15;
-  }
+  .gb-manhattan-point:hover { opacity: 1; }
 `;
 
 export function FullManhattan({
@@ -63,15 +61,6 @@ export function FullManhattan({
             stroke="#666666"
             strokeDasharray="2 4"
           />
-          <text
-            x={x(visibleRegion.start) + 5}
-            y={Math.max(11, y(thresholdScore) - 4)}
-            fontSize={10}
-            fill="#555555"
-          >
-            P ≤ {pValueThreshold.toExponential()} (−log10 P ={" "}
-            {thresholdScore.toFixed(2)})
-          </text>
         </g>
       )}
       <g className="gb-manhattan-points">
@@ -86,7 +75,12 @@ export function FullManhattan({
             r={point.id === activePoint?.id ? 5 : POINT_RADIUS}
             stroke={point.id === activePoint?.id ? "#111111" : "none"}
             strokeWidth={2}
-            opacity={activePoint && point.id !== activePoint.id ? 0.15 : 1}
+            opacity={
+              point.id === activePoint?.id
+                ? 1
+                : 0.2 +
+                  0.8 * Math.min(1, Math.max(0, point.value / thresholdScore))
+            }
             fill={color}
             style={{ cursor: interaction?.onClick ? "pointer" : "default" }}
             onClick={() => interaction?.onClick?.(point)}
@@ -101,10 +95,32 @@ export function FullManhattan({
           />
         ))}
       </g>
+      {showThreshold && (
+        <g pointerEvents="none">
+          <text
+            x={x(visibleRegion.start) + 5}
+            y={Math.max(11, y(thresholdScore) - 4)}
+            fontSize={10}
+            stroke="#ffffff"
+            strokeWidth={5}
+            strokeLinejoin="round"
+            paintOrder="stroke"
+            fill="#555555"
+          >
+            P ≤ {pValueThreshold.toExponential()}
+          </text>
+        </g>
+      )}
       {activePoint && (
         <text
           className="gb-manhattan-active-label"
-          x={x((activePoint.start + activePoint.end) / 2) + 7}
+          x={Math.max(
+            x(visibleRegion.start) + 4,
+            Math.min(
+              x(visibleRegion.end) - activePoint.id.length * 7 - 4,
+              x((activePoint.start + activePoint.end) / 2) + 7,
+            ),
+          )}
           y={Math.max(12, y(activePoint.value) - 7)}
           fontSize={12}
           fill="#111111"

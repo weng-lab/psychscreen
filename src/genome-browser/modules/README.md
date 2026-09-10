@@ -25,3 +25,5 @@ Manhattan renders the source −log10(P) scores and shows both score and P in it
 All custom settings compose the tracks package’s shared MUI settings controls. Source fields are disabled for host-owned tracks; Manhattan additionally uses the shared independent range and validated numeric fields. Every tooltip composes `TrackTooltip` with the package’s coordinate and signal formatters, preserving track colors and domain-specific content.
 
 The disease panel resets its development session on Fast Refresh so schema edits do not leave the retained track store validating against an older module.
+
+Clicking a SNP in Manhattan or LD toggles the shared pin; clicking another SNP replaces it. While pinned, hover keeps the LD anchor fixed. The LD header includes a clear-pin button. Manhattan fades weaker association scores and draws its threshold label above the points with a white halo; LD arc opacity follows r².

@@ -145,13 +145,30 @@ test("LD ignores stale responses, caches relationships and clears selection on r
   }
 });
 
+test("Manhattan clicks replace and clear the shared pin despite a previous hover", () => {
+  const { selectionStore, callbacks, controller } = setup();
+  try {
+    callbacks.manhattan.onHover(anchor("a"));
+    callbacks.manhattan.onClick(anchor("b"));
+    assert.equal(selectionStore.getSnapshot().anchor.id, "b");
+    assert.equal(selectionStore.getSnapshot().pinnedVariantId, "b");
+    callbacks.manhattan.onHover(anchor("c"));
+    assert.equal(selectionStore.getSnapshot().anchor.id, "b");
+    callbacks.manhattan.onClick(anchor("b"));
+    assert.equal(selectionStore.getSnapshot().pinnedVariantId, undefined);
+    assert.equal(selectionStore.getSnapshot().anchor, undefined);
+  } finally {
+    controller.dispose();
+  }
+});
+
 test("LD hover cancellation preserves pinning and dispose prevents late updates", async () => {
   const { selectionStore, callbacks, requests, controller } = setup();
-  callbacks.ld.onClick(anchor("a"));
+  callbacks.manhattan.onClick(anchor("a"));
   requests[0].resolve([{ id: "b", rSquared: 0.8 }]);
   await settle();
   callbacks.manhattan.onHover(anchor("b"));
-  assert.equal(selectionStore.getSnapshot().anchor.id, "b");
+  assert.equal(selectionStore.getSnapshot().anchor.id, "a");
   callbacks.manhattan.onLeave(anchor("b"));
   assert.equal(selectionStore.getSnapshot().anchor.id, "a");
   assert.equal(requests.length, 1);

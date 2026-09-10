@@ -80,14 +80,14 @@ export function attachLDInteractions({
       if (controller.signal.aborted || activeRequest !== request) return;
 
       relationshipCache.set(anchor.id, relationships);
-      const currentAnchor = hoveredAnchor ?? pinnedAnchor;
+      const currentAnchor = pinnedAnchor ?? hoveredAnchor;
       if (currentAnchor?.id === anchor.id) {
         updateSelection(currentAnchor, relationships, "success");
       }
     } catch (error) {
       if (!controller.signal.aborted && activeRequest === request) {
         console.error(error);
-        const currentAnchor = hoveredAnchor ?? pinnedAnchor;
+        const currentAnchor = pinnedAnchor ?? hoveredAnchor;
         if (currentAnchor?.id === anchor.id)
           updateSelection(currentAnchor, [], "error");
       }
@@ -101,6 +101,10 @@ export function attachLDInteractions({
     const anchor = parseLDAnchor(item);
     if (!anchor) return;
     hoveredAnchor = anchor;
+    if (pinnedAnchor) {
+      if (selectionStore.getSnapshot().status === "error") void show(pinnedAnchor);
+      return;
+    }
 
     if (
       relationshipCache.has(anchor.id) ||
@@ -139,7 +143,8 @@ export function attachLDInteractions({
     if (!anchor) return;
     cancelPendingHover();
     pinnedAnchor = pinnedAnchor?.id === anchor.id ? undefined : anchor;
-    const activeAnchor = hoveredAnchor ?? pinnedAnchor;
+    hoveredAnchor = undefined;
+    const activeAnchor = pinnedAnchor ?? hoveredAnchor;
     if (activeAnchor) void show(activeAnchor);
     else clear();
   };
@@ -148,6 +153,7 @@ export function attachLDInteractions({
     .getState()
     .updateTrack(manhattanTrackId, {
       interaction: {
+        onClick: handleClick,
         onHover: handleHover,
         onLeave: handleLeave,
       },
