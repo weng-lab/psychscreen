@@ -1,6 +1,7 @@
 import type { TrackSettingsProps } from "@weng-lab/genomebrowser";
 import {
   TrackSettingsLayout,
+  TrackBaseSettings,
   TrackSettingsSection,
   TrackSettingsFieldGrid,
   TrackSettingsNumberField,
@@ -12,10 +13,16 @@ import type { ManhattanConfig, ManhattanPoint } from "./types";
 export function ManhattanSettings({
   track,
   updateTrack,
+  displayOptions,
 }: TrackSettingsProps<ManhattanConfig, ManhattanPoint>) {
   const { config } = track;
   return (
     <TrackSettingsLayout>
+      <TrackBaseSettings
+        track={track}
+        updateTrack={updateTrack}
+        displayOptions={displayOptions}
+      />
       <SourceSettingsSection
         title="GWAS source"
         url={config.url}

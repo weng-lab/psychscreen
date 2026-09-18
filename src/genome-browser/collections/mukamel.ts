@@ -1,4 +1,4 @@
-import type { TrackSelectCollection } from "@weng-lab/genomebrowser-ui";
+import type { TrackCollection } from "@weng-lab/genomebrowser";
 
 const MUKAMEL_BASE_URL =
   "https://users.wenglab.org/phanh/PsychENCODE/hg38/data/Mukamel_2024/binsize1/level3/";
@@ -57,10 +57,12 @@ function createMukamelTrack(
 
   return {
     type: "methylc",
-    id: name,
-    title: `Mukamel ${name}`,
-    height: 50,
-    color: "#000000",
+    base: {
+      id: name,
+      title: `Mukamel ${name}`,
+      height: 50,
+      color: "#000000",
+    },
     config: {
       colors: {
         cpg: "#648bd8",
@@ -92,6 +94,7 @@ function createMukamelTrack(
 }
 
 export const MUKAMEL_COLLECTION = {
+  assembly: "hg38",
   id: "mukamel-2024",
   label: "Mukamel 2024 Methylation",
   description: "Mukamel 2024 DNA methylation tracks",
@@ -122,4 +125,4 @@ export const MUKAMEL_COLLECTION = {
   tracks: MUKAMEL_CELL_TYPES.flatMap((cellType) =>
     MUKAMEL_VARIANTS.map((variant) => createMukamelTrack(cellType, variant)),
   ),
-} satisfies TrackSelectCollection;
+} satisfies TrackCollection;

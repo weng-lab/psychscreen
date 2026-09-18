@@ -37,8 +37,10 @@ function createPortalBrowserSession(
     pinnedTrackIds: [`${trackIdPrefix}-ruler`, `${trackIdPrefix}-genes`],
     tracks: [
       rulerModule.create({
-        id: `${trackIdPrefix}-ruler`,
-        title: "Genomic ruler",
+        base: {
+          id: `${trackIdPrefix}-ruler`,
+          title: "Genomic ruler",
+        },
         source: "host",
         config: {
           sequenceUrl:
@@ -46,11 +48,13 @@ function createPortalBrowserSession(
         },
       }),
       geneModule.create({
-        id: `${trackIdPrefix}-genes`,
-        title: "GENCODE Genes",
+        base: {
+          id: `${trackIdPrefix}-genes`,
+          title: "GENCODE Genes",
+          display: "merged",
+          color: "#444444",
+        },
         source: "host",
-        display: "merged",
-        color: "#444444",
         config: {
           url: "https://users.wenglab.org/niship/gencodefiles/human.gencode.v40.comprehensive.annotation.bb",
         },
@@ -74,24 +78,26 @@ export function createDiseaseTraitBrowserSession(
 ) {
   const session = createPortalBrowserSession(region, "disease-trait");
   if (gwas) {
-    const result = session.trackStore
-      .getState()
-      .applyTrackChanges({
-        add: [
-          manhattanModule.create({
+    const result = session.trackStore.getState().applyTrackChanges({
+      add: [
+        manhattanModule.create({
+          base: {
             id: DISEASE_MANHATTAN_TRACK_ID,
             title: `${gwas.title} GWAS`,
-            source: "host",
-            config: { url: gwas.url },
-          }),
-          ldModule.create({
+          },
+          source: "host",
+          config: { url: gwas.url },
+        }),
+        ldModule.create({
+          base: {
             id: DISEASE_LD_TRACK_ID,
             title: "Linkage disequilibrium",
-            source: "host",
-            config: { url: gwas.url },
-          }),
-        ],
-      });
+          },
+          source: "host",
+          config: { url: gwas.url },
+        }),
+      ],
+    });
     if (!result.ok) throw new Error(result.error);
   }
   return session;

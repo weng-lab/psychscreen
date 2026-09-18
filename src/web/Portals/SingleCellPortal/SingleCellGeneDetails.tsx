@@ -1,5 +1,7 @@
 import {
   GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
   SINGLE_CELL_GENE_DEFAULT_TRACK_IDS,
   createSingleCellGeneBrowserSession,
 } from "../../../genome-browser";
@@ -117,9 +119,8 @@ export const SingleCellGeneDetails = (props: GridProps) => {
   };
 
   return (
-    <Grid container {...props} style={{ marginTop: "0.5em" }}>
-      <Grid size={{ sm: 1, lg: 1.5 }} />
-      <Grid size={{ sm: 9 }}>
+    <Grid container {...props} style={{ marginTop: "0.5em" }} width="100%">
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="h4"
           style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
@@ -143,18 +144,26 @@ export const SingleCellGeneDetails = (props: GridProps) => {
           <GeneAutoComplete navigateto="/single-cell/gene/" gridsize={3.5} />
         </div>
       </Grid>
-      <Grid size={{ sm: 1, lg: 1.5 }} />
       <Grid size={{ sm: 12 }} style={{ marginBottom: "10px" }} />
-      <Grid size={{ sm: 1, lg: 1.5 }} />
-      <Grid size={{ sm: 9 }}>
-        <Box>
+      <Grid size={12}>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
           <Tabs value={tabIndex} onChange={handleTabChange}>
             <Tab label="Brain Single Cell Expression" />
             <Tab label="Brain Epigenome Browser" />
           </Tabs>
           <Divider />
         </Box>
-        <Box sx={{ padding: 2 }}>
+        <Box
+          sx={{
+            py: 2,
+            px: tabIndex === 1 ? 0 : 2,
+            maxWidth:
+              tabIndex === 1
+                ? BROWSER_PAGE_MAX_WIDTH
+                : PORTAL_CONTENT_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           {tabIndex === 0 && (
             <Box>
               <SingleCell

@@ -1,5 +1,7 @@
 import {
   GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
   SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
   SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
   SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
@@ -83,9 +85,9 @@ const SingleCellCellTypeDetails: React.FC = () => {
       mb={8}
       ml={"auto"}
       mr={"auto"}
-      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+      width="100%"
     >
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="h4"
           style={{ marginTop: "1em", marginBottom: "0.2em" }}
@@ -119,7 +121,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
         </div>
       </Grid>
       <Grid size={12}>
-        <Box>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
           <Tabs
             value={tabIndex}
             onChange={handleTabChange}
@@ -134,49 +136,70 @@ const SingleCellCellTypeDetails: React.FC = () => {
           </Tabs>
           <Divider />
         </Box>
-        <Box sx={{ display: tabIndex === 0 ? "block" : "none" }}>
+        <Box
+          sx={{
+            display: tabIndex === 0 ? "block" : "none",
+            maxWidth: BROWSER_PAGE_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           <GenomeBrowserView
             browserStore={session.browserStore}
             trackStore={session.trackStore}
             defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
           />
         </Box>
-        <Box sx={{ display: tabIndex === 2 ? "block" : "none" }}>
+        <Box
+          sx={{
+            display: tabIndex === 2 ? "block" : "none",
+            maxWidth: BROWSER_PAGE_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           <GenomeBrowserView
             browserStore={grnSession.browserStore}
             trackStore={grnSession.trackStore}
             defaultTrackIds={SINGLE_CELL_GRN_DEFAULT_TRACK_IDS}
           />
         </Box>
-        <Box sx={{ display: tabIndex === 3 ? "block" : "none" }}>
+        <Box
+          sx={{
+            display: tabIndex === 3 ? "block" : "none",
+            maxWidth: BROWSER_PAGE_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           <GenomeBrowserView
             browserStore={qtlSession.browserStore}
             trackStore={qtlSession.trackStore}
             defaultTrackIds={SINGLE_CELL_QTL_DEFAULT_TRACK_IDS}
           />
         </Box>
-        {tabIndex == 1 && degDiseases && degDiseases.length == 0 && (
-          <>
-            <br />{" "}
-            {"No data diff. expressed genes available for " +
-              celltype?.replace(" or ", "/")}{" "}
-          </>
-        )}
-        {tabIndex == 1 && degDiseases.length > 0 && dataset && (
-          <SingleCelldegCelltypeDotplot
-            disease={dataset}
-            dataset={dataset}
-            degDiseases={degDiseases}
-            handleChange={handleChange}
-            celltype={
-              diseaseCT[
-                dataset === "Autism Specturm Disorder"
-                  ? "ASD"
-                  : dataset.replace(" ", "_")
-              ].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))?.val
-            }
-          />
-        )}
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
+          {tabIndex == 1 && degDiseases && degDiseases.length == 0 && (
+            <>
+              <br />{" "}
+              {"No data diff. expressed genes available for " +
+                celltype?.replace(" or ", "/")}{" "}
+            </>
+          )}
+          {tabIndex == 1 && degDiseases.length > 0 && dataset && (
+            <SingleCelldegCelltypeDotplot
+              disease={dataset}
+              dataset={dataset}
+              degDiseases={degDiseases}
+              handleChange={handleChange}
+              celltype={
+                diseaseCT[
+                  dataset === "Autism Specturm Disorder"
+                    ? "ASD"
+                    : dataset.replace(" ", "_")
+                ].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))
+                  ?.val
+              }
+            />
+          )}
+        </Box>
       </Grid>
     </Grid>
   );

@@ -14,3 +14,4 @@ export {
   SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
   SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
 } from "./collections/defaults";
+export { BROWSER_PAGE_MAX_WIDTH, PORTAL_CONTENT_MAX_WIDTH } from "./layout";

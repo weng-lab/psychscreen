@@ -1,4 +1,4 @@
-import type { TrackSelectCollection } from "@weng-lab/genomebrowser-ui";
+import type { TrackCollection } from "@weng-lab/genomebrowser";
 
 export const BRAINOME_NEUROTRANSMITTERS = ["GABA", "GLU"] as const;
 
@@ -39,9 +39,11 @@ function createBrainomeTrack(
 ) {
   return {
     type: "cave",
-    id: `${neurotransmitter}.${age.value}`,
-    title: `Brainome ${neurotransmitter} ${age.label}`,
-    color: age.color,
+    base: {
+      id: `${neurotransmitter}.${age.value}`,
+      title: `Brainome ${neurotransmitter} ${age.label}`,
+      color: age.color,
+    },
     config: {
       neurotransmitter,
       age: age.value,
@@ -56,6 +58,7 @@ function createBrainomeTrack(
 }
 
 export const BRAINOME_COLLECTION = {
+  assembly: "hg38",
   id: "brainome",
   label: "Brainome Developmental Methylation",
   description: "Brainome developmental hmC and OXBS tracks",
@@ -84,4 +87,4 @@ export const BRAINOME_COLLECTION = {
   tracks: BRAINOME_NEUROTRANSMITTERS.flatMap((neurotransmitter) =>
     BRAINOME_AGES.map((age) => createBrainomeTrack(neurotransmitter, age)),
   ),
-} satisfies TrackSelectCollection;
+} satisfies TrackCollection;

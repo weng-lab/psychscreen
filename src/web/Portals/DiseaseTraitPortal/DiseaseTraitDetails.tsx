@@ -10,6 +10,8 @@ import {
 } from "../../../genome-browser/modules/ld/selection";
 import {
   GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
   DISEASE_TRAIT_DEFAULT_TRACK_IDS,
   createDiseaseTraitBrowserSession,
 } from "../../../genome-browser";
@@ -384,9 +386,9 @@ const DiseaseTraitDetails: React.FC = () => {
       mb={8}
       ml={"auto"}
       mr={"auto"}
-      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+      width="100%"
     >
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="h2"
           style={{
@@ -399,7 +401,7 @@ const DiseaseTraitDetails: React.FC = () => {
           {diseaseLabel}
         </Typography>
       </Grid>
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="body1"
           style={{
@@ -422,7 +424,7 @@ const DiseaseTraitDetails: React.FC = () => {
           )}
         </Typography>
       </Grid>
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Stack direction="row" spacing={1}>
           <Button
             variant={page === -1 ? "contained" : "outlined"}
@@ -483,7 +485,14 @@ const DiseaseTraitDetails: React.FC = () => {
           )}
         </Stack>
       </Grid>
-      <Grid size={12}>
+      <Grid
+        size={12}
+        sx={{
+          maxWidth:
+            page === 3 ? BROWSER_PAGE_MAX_WIDTH : PORTAL_CONTENT_MAX_WIDTH,
+          mx: "auto",
+        }}
+      >
         {page === -1 ? (
           <RiskLocusView
             loci={loci || []}

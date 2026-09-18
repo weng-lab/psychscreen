@@ -1,4 +1,8 @@
-import { SourceSettings } from "../shared/sourceSettings";
+import {
+  TrackBaseSettings,
+  TrackSettingsLayout,
+} from "@weng-lab/genomebrowser-tracks/shared";
+import { SourceSettingsSection } from "../shared/sourceSettings";
 import {
   defineTrackModule,
   fetchOnChange,
@@ -33,13 +37,20 @@ export function createInteractionModule({
     }: TrackFetchContext<InteractionConfig>) =>
       fetchInteractions(track.config.url, demand.region, parseRow, resources),
     render: { full: InteractionRenderer },
-    settingsComponent: ({ track, updateTrack }) => (
-      <SourceSettings
-        title="Interaction source"
-        url={track.config.url}
-        disabled={track.source === "host"}
-        onCommit={(url) => updateTrack({ config: { url } })}
-      />
+    settingsComponent: ({ track, updateTrack, displayOptions }) => (
+      <TrackSettingsLayout>
+        <TrackBaseSettings
+          track={track}
+          updateTrack={updateTrack}
+          displayOptions={displayOptions}
+        />
+        <SourceSettingsSection
+          title="Interaction source"
+          url={track.config.url}
+          disabled={track.source === "host"}
+          onCommit={(url) => updateTrack({ config: { url } })}
+        />
+      </TrackSettingsLayout>
     ),
     tooltipComponent: InteractionTooltip,
   });

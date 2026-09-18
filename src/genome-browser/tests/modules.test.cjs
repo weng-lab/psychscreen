@@ -5,6 +5,11 @@ const path = require("node:path");
 const ts = require("typescript");
 const packages = {};
 before(async () => {
+  for (const name of ["bigbed", "bigwig", "cave", "gene", "methylc", "ruler"]) {
+    packages[`@weng-lab/genomebrowser-tracks/${name}`] = await import(
+      `@weng-lab/genomebrowser-tracks/${name}`
+    );
+  }
   packages["@weng-lab/genomebrowser-tracks/shared"] =
     await import("@weng-lab/genomebrowser-tracks/shared");
   packages["@weng-lab/genomebrowser"] = await import("@weng-lab/genomebrowser");
@@ -201,7 +206,7 @@ test("LD selection only connects visible variants and does not mutate fetched da
   assert.deepEqual(baseline.connections, []);
 });
 
-test("beta modules create valid tracks and fetch through the resource-backed reader", async () => {
+test("modules create valid tracks and fetch through the resource-backed reader", async () => {
   const rows = [{ chromosome: "chr1", start: 10, end: 20, name: "rs1_4.5" }];
   const calls = [];
   const reader = {
@@ -223,8 +228,7 @@ test("beta modules create valid tracks and fetch through the resource-backed rea
   ];
   const tracks = modules.map((module) =>
     module.create({
-      id: module.type,
-      title: module.type,
+      base: { id: module.type, title: module.type },
       config: { url: "https://downloads.wenglab.org/Ast_GRN.bb" },
     }),
   );
@@ -359,8 +363,7 @@ test("the registered Manhattan schema accepts significance-threshold edits", () 
     modules: [manhattanModule],
     tracks: [
       manhattanModule.create({
-        id: "m",
-        title: "GWAS",
+        base: { id: "m", title: "GWAS" },
         config: { url: "unused" },
       }),
     ],
@@ -370,4 +373,67 @@ test("the registered Manhattan schema accepts significance-threshold edits", () 
     true,
   );
   assert.equal(store.getState().getTrack("m").config.pValueThreshold, 0.05);
+});
+
+test("all shipped collections validate and create tracks with the stable API", () => {
+  const { TRACK_MODULES } = load("../registry.ts");
+  const { validateTrackCollection, createTrackStore } =
+    packages["@weng-lab/genomebrowser"];
+  const collections = [
+    ...["psychscreen", "single-cell-interactions"].map((name) =>
+      JSON.parse(
+        readFileSync(
+          path.resolve(__dirname, `../collections/${name}.json`),
+          "utf8",
+        ),
+      ),
+    ),
+    load("../collections/brainome.ts").BRAINOME_COLLECTION,
+    load("../collections/mukamel.ts").MUKAMEL_COLLECTION,
+  ];
+  const store = createTrackStore({ modules: TRACK_MODULES });
+  const availableIds = new Set();
+  for (const input of collections) {
+    const collection = validateTrackCollection(input, TRACK_MODULES);
+    assert.equal(collection.assembly, "hg38");
+    for (const { type, base, config } of collection.tracks) {
+      const track = store
+        .getState()
+        .registry.get(type)
+        .create({ base, config });
+      assert.equal(track.base.id, base.id);
+      availableIds.add(`${collection.id}::${base.id}`);
+      if (type === "bigbed") assert.ok(config.bedSchema);
+    }
+  }
+  for (const ids of Object.values(load("../collections/defaults.ts"))) {
+    for (const id of ids)
+      assert.ok(availableIds.has(id), `Missing default track ${id}`);
+  }
+});
+
+test("portal sessions create pinned reference tracks and host-owned GWAS tracks", () => {
+  const sessions = load("../sessions.ts");
+  const region = { chromosome: "chr1", start: 1000, end: 2000 };
+  for (const create of [
+    sessions.createGenePortalBrowserSession,
+    sessions.createSingleCellGeneBrowserSession,
+    sessions.createSingleCellBrowserSession,
+  ]) {
+    const session = create(region);
+    assert.equal(session.trackStore.getState().tracks.length, 2);
+    assert.equal(session.trackStore.getState().pinnedTrackIds.length, 2);
+    assert.ok(
+      session.trackStore
+        .getState()
+        .tracks.every((track) => track.source === "host"),
+    );
+  }
+  const session = sessions.createDiseaseTraitBrowserSession(region, {
+    url: "https://example.org/gwas.bb",
+    title: "Trait",
+  });
+  const tracks = session.trackStore.getState().tracks;
+  assert.equal(tracks.length, 4);
+  assert.ok(tracks.every((track) => track.source === "host"));
 });

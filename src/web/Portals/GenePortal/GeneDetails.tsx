@@ -1,5 +1,7 @@
 import {
   GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
   GENE_PORTAL_DEFAULT_TRACK_IDS,
   createGenePortalBrowserSession,
 } from "../../../genome-browser";
@@ -239,9 +241,9 @@ const GeneDetails: React.FC = () => {
       mb={8}
       ml={"auto"}
       mr={"auto"}
-      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+      width="100%"
     >
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Stack direction="row" alignItems={"center"} gap={1}>
           <img
             alt="DNA"
@@ -260,7 +262,7 @@ const GeneDetails: React.FC = () => {
         <GeneAutoComplete navigateto="/gene/" gridsize={3.5} />
       </Grid>*/}
       <Grid size={12}>
-        <Box>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
           <Tabs
             value={tabIndex}
             onChange={handleTabChange}
@@ -277,7 +279,17 @@ const GeneDetails: React.FC = () => {
           </Tabs>
           <Divider />
         </Box>
-        <Box sx={{ padding: 2 }}>
+        <Box
+          sx={{
+            py: 2,
+            px: tabIndex === 0 ? 0 : 2,
+            maxWidth:
+              tabIndex === 0
+                ? BROWSER_PAGE_MAX_WIDTH
+                : PORTAL_CONTENT_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           {geneBrowserRegion ? (
             <GeneBrowserPanel
               region={geneBrowserRegion}

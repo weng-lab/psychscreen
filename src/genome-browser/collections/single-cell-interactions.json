@@ -1,4 +1,5 @@
 {
+  "assembly": "hg38",
   "id": "single-cell-interactions",
   "label": "Single Cell Interactions",
   "description": "Cell-type-specific gene regulatory network and eQTL interactions",
@@ -30,11 +31,13 @@
   "tracks": [
     {
       "type": "singleCellGrn",
-      "id": "grn-astrocytes",
-      "title": "Astrocyte enhancer-promoter interactions",
-      "display": "full",
-      "height": 50,
-      "color": "#9479bc",
+      "base": {
+        "id": "grn-astrocytes",
+        "title": "Astrocyte enhancer-promoter interactions",
+        "display": "full",
+        "height": 50,
+        "color": "#9479bc"
+      },
       "config": {
         "url": "https://downloads.wenglab.org/Ast_GRN.bb"
       },
@@ -45,11 +48,13 @@
     },
     {
       "type": "singleCellGrn",
-      "id": "grn-endothelial",
-      "title": "Endothelial cell enhancer-promoter interactions",
-      "display": "full",
-      "height": 50,
-      "color": "#9479bc",
+      "base": {
+        "id": "grn-endothelial",
+        "title": "Endothelial cell enhancer-promoter interactions",
+        "display": "full",
+        "height": 50,
+        "color": "#9479bc"
+      },
       "config": {
         "url": "https://downloads.wenglab.org/End_GRN.bb"
       },
@@ -60,11 +65,13 @@
     },
     {
       "type": "singleCellGrn",
-      "id": "grn-vip",
-      "title": "VIP interneuron enhancer-promoter interactions",
-      "display": "full",
-      "height": 50,
-      "color": "#9479bc",
+      "base": {
+        "id": "grn-vip",
+        "title": "VIP interneuron enhancer-promoter interactions",
+        "display": "full",
+        "height": 50,
+        "color": "#9479bc"
+      },
       "config": {
         "url": "https://downloads.wenglab.org/Vip_GRN.bb"
       },
@@ -75,11 +82,13 @@
     },
     {
       "type": "singleCellQtl",
-      "id": "qtl-l2-3-it",
-      "title": "Layer 2/3 IT variant-gene interactions",
-      "display": "full",
-      "height": 50,
-      "color": "#000000",
+      "base": {
+        "id": "qtl-l2-3-it",
+        "title": "Layer 2/3 IT variant-gene interactions",
+        "display": "full",
+        "height": 50,
+        "color": "#000000"
+      },
       "config": {
         "url": "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat.bb"
       },
@@ -90,11 +99,13 @@
     },
     {
       "type": "singleCellQtl",
-      "id": "qtl-l4-it",
-      "title": "Layer 4 IT variant-gene interactions",
-      "display": "full",
-      "height": 50,
-      "color": "#000000",
+      "base": {
+        "id": "qtl-l4-it",
+        "title": "Layer 4 IT variant-gene interactions",
+        "display": "full",
+        "height": 50,
+        "color": "#000000"
+      },
       "config": {
         "url": "https://downloads.wenglab.org/L4.IT_sig_QTLs.dat.bb"
       },
@@ -105,11 +116,13 @@
     },
     {
       "type": "singleCellQtl",
-      "id": "qtl-chandelier",
-      "title": "Chandelier PVALB variant-gene interactions",
-      "display": "full",
-      "height": 50,
-      "color": "#000000",
+      "base": {
+        "id": "qtl-chandelier",
+        "title": "Chandelier PVALB variant-gene interactions",
+        "display": "full",
+        "height": 50,
+        "color": "#000000"
+      },
       "config": {
         "url": "https://downloads.wenglab.org/Chandelier__Pvalb_sig_QTLs.dat.bb"
       },
