@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider, type Theme } from "@mui/material/styles";
 import type { BrowserStoreInstance } from "@weng-lab/genomebrowser";
 import { ControlToolbar } from "@weng-lab/genomebrowser-ui";
@@ -22,16 +23,27 @@ export default function BrowserControls({
 }) {
   return (
     <ThemeProvider theme={toolbarTheme}>
-      <ControlToolbar
-        browserStore={browserStore}
-        search={{
-          assembly: "GRCh38",
-          graphqlUrl: SCREEN_GRAPHQL_PATH,
-          queries: ["Gene", "SNP", "Coordinate"],
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 1440,
+          mx: "auto",
+          '& > [aria-label="Genome browser controls"]': {
+            justifyContent: "space-evenly",
+          },
         }}
-        onManageHighlights={onManageHighlights}
-        onSelectTracks={onSelectTracks}
-      />
+      >
+        <ControlToolbar
+          browserStore={browserStore}
+          search={{
+            assembly: "GRCh38",
+            graphqlUrl: SCREEN_GRAPHQL_PATH,
+            queries: ["Gene", "SNP", "Coordinate"],
+          }}
+          onManageHighlights={onManageHighlights}
+          onSelectTracks={onSelectTracks}
+        />
+      </Box>
     </ThemeProvider>
   );
 }
