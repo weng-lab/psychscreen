@@ -380,22 +380,34 @@ test("all shipped collections validate and create tracks with the stable API", (
   const { validateTrackCollection, createTrackStore } =
     packages["@weng-lab/genomebrowser"];
   const collections = [
-    ...["psychscreen", "single-cell-interactions"].map((name) =>
-      JSON.parse(
-        readFileSync(
-          path.resolve(__dirname, `../collections/${name}.json`),
-          "utf8",
+    ...["psychscreen-ccre-atlas", "single-cell-regulatory-interactions"].map(
+      (name) =>
+        JSON.parse(
+          readFileSync(
+            path.resolve(__dirname, `../collections/${name}.json`),
+            "utf8",
+          ),
         ),
-      ),
     ),
-    load("../collections/brainome.ts").BRAINOME_COLLECTION,
-    load("../collections/mukamel.ts").MUKAMEL_COLLECTION,
+    load("../collections/postnatal-methylome-development.ts")
+      .POSTNATAL_METHYLOME_DEVELOPMENT_COLLECTION,
+    load("../collections/adult-cortex-aging-sex.ts")
+      .ADULT_CORTEX_AGING_SEX_COLLECTION,
   ];
+  const expectedTrackCounts = {
+    psychscreen: 90,
+    "single-cell-interactions": 6,
+    brainome: 12,
+    "mukamel-2024": 261,
+  };
   const store = createTrackStore({ modules: TRACK_MODULES });
   const availableIds = new Set();
   for (const input of collections) {
     const collection = validateTrackCollection(input, TRACK_MODULES);
     assert.equal(collection.assembly, "hg38");
+    assert.equal(collection.tracks.length, expectedTrackCounts[collection.id]);
+    const titles = collection.tracks.map(({ base }) => base.title);
+    assert.equal(new Set(titles).size, titles.length, "Duplicate track title");
     for (const { type, base, config } of collection.tracks) {
       const track = store
         .getState()

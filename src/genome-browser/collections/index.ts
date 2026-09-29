@@ -1,11 +1,11 @@
-import interactions from "./single-cell-interactions.json";
-import tracks from "./psychscreen.json";
-import { BRAINOME_COLLECTION } from "./brainome";
-import { MUKAMEL_COLLECTION } from "./mukamel";
+import psychscreen from "./psychscreen-ccre-atlas.json";
+import interactions from "./single-cell-regulatory-interactions.json";
+import { ADULT_CORTEX_AGING_SEX_COLLECTION } from "./adult-cortex-aging-sex";
+import { POSTNATAL_METHYLOME_DEVELOPMENT_COLLECTION } from "./postnatal-methylome-development";
 
 export const TRACK_COLLECTIONS: unknown[] = [
-  tracks,
+  psychscreen,
+  ADULT_CORTEX_AGING_SEX_COLLECTION,
+  POSTNATAL_METHYLOME_DEVELOPMENT_COLLECTION,
   interactions,
-  MUKAMEL_COLLECTION,
-  BRAINOME_COLLECTION,
 ];

@@ -1,8 +1,8 @@
 {
   "assembly": "hg38",
   "id": "single-cell-interactions",
-  "label": "Single Cell Interactions",
-  "description": "Cell-type-specific gene regulatory network and eQTL interactions",
+  "label": "Single-Cell Regulatory Interactions",
+  "description": "Cell-type enhancer–promoter links and eQTLs from adult prefrontal cortex.",
   "views": [
     {
       "id": "default",
@@ -33,7 +33,7 @@
       "type": "singleCellGrn",
       "base": {
         "id": "grn-astrocytes",
-        "title": "Astrocyte enhancer-promoter interactions",
+        "title": "Astrocytes · enhancer–promoter links",
         "display": "full",
         "height": 50,
         "color": "#9479bc"
@@ -42,7 +42,7 @@
         "url": "https://downloads.wenglab.org/Ast_GRN.bb"
       },
       "metadata": {
-        "interactionType": "Gene Regulatory Network",
+        "interactionType": "Enhancer–promoter links (GRN)",
         "cellType": "Astrocytes"
       }
     },
@@ -50,7 +50,7 @@
       "type": "singleCellGrn",
       "base": {
         "id": "grn-endothelial",
-        "title": "Endothelial cell enhancer-promoter interactions",
+        "title": "Endothelial cells · enhancer–promoter links",
         "display": "full",
         "height": 50,
         "color": "#9479bc"
@@ -59,15 +59,15 @@
         "url": "https://downloads.wenglab.org/End_GRN.bb"
       },
       "metadata": {
-        "interactionType": "Gene Regulatory Network",
-        "cellType": "Endothelial Cells"
+        "interactionType": "Enhancer–promoter links (GRN)",
+        "cellType": "Endothelial cells"
       }
     },
     {
       "type": "singleCellGrn",
       "base": {
         "id": "grn-vip",
-        "title": "VIP interneuron enhancer-promoter interactions",
+        "title": "VIP interneurons · enhancer–promoter links",
         "display": "full",
         "height": 50,
         "color": "#9479bc"
@@ -76,15 +76,15 @@
         "url": "https://downloads.wenglab.org/Vip_GRN.bb"
       },
       "metadata": {
-        "interactionType": "Gene Regulatory Network",
-        "cellType": "VIP Interneurons"
+        "interactionType": "Enhancer–promoter links (GRN)",
+        "cellType": "VIP interneurons"
       }
     },
     {
       "type": "singleCellQtl",
       "base": {
         "id": "qtl-l2-3-it",
-        "title": "Layer 2/3 IT variant-gene interactions",
+        "title": "L2/3 IT neurons · eQTLs",
         "display": "full",
         "height": 50,
         "color": "#000000"
@@ -93,15 +93,15 @@
         "url": "https://downloads.wenglab.org/L2.3.IT_sig_QTLs.dat.bb"
       },
       "metadata": {
-        "interactionType": "Expression QTL",
-        "cellType": "Layer 2/3 Intratelencephalic Neurons"
+        "interactionType": "eQTLs",
+        "cellType": "L2/3 IT neurons"
       }
     },
     {
       "type": "singleCellQtl",
       "base": {
         "id": "qtl-l4-it",
-        "title": "Layer 4 IT variant-gene interactions",
+        "title": "L4 IT neurons · eQTLs",
         "display": "full",
         "height": 50,
         "color": "#000000"
@@ -110,15 +110,15 @@
         "url": "https://downloads.wenglab.org/L4.IT_sig_QTLs.dat.bb"
       },
       "metadata": {
-        "interactionType": "Expression QTL",
-        "cellType": "Layer 4 Intratelencephalic Neurons"
+        "interactionType": "eQTLs",
+        "cellType": "L4 IT neurons"
       }
     },
     {
       "type": "singleCellQtl",
       "base": {
         "id": "qtl-chandelier",
-        "title": "Chandelier PVALB variant-gene interactions",
+        "title": "Chandelier PVALB interneurons · eQTLs",
         "display": "full",
         "height": 50,
         "color": "#000000"
@@ -127,8 +127,8 @@
         "url": "https://downloads.wenglab.org/Chandelier__Pvalb_sig_QTLs.dat.bb"
       },
       "metadata": {
-        "interactionType": "Expression QTL",
-        "cellType": "Chandelier PVALB Neurons"
+        "interactionType": "eQTLs",
+        "cellType": "Chandelier PVALB interneurons"
       }
     }
   ]
