@@ -1,4 +1,11 @@
-﻿import {
+import {
+  GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
+  SINGLE_CELL_GENE_DEFAULT_TRACK_IDS,
+  createSingleCellGeneBrowserSession,
+} from "../../../genome-browser";
+import {
   useState,
   useEffect,
   useMemo,
@@ -21,16 +28,12 @@ import { gql, useQuery } from "@apollo/client";
 import SingleCell from "../GenePortal/SingleCell";
 
 import { GeneAutoComplete } from "../GenePortal/GeneAutocomplete";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import { SINGLE_CELL_GENE_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
-import { createSingleCellGeneBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser";
-import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
+import type { GenomicRegion } from "@weng-lab/genomebrowser";
 
 type GeneCoordinatesQueryResponse = {
   gene: Array<{
     name: string;
-    coordinates: BrowserRegion;
+    coordinates: GenomicRegion;
   }>;
 };
 
@@ -38,7 +41,7 @@ function SingleCellGeneBrowserPanel({
   region,
   visible,
 }: {
-  region: BrowserRegion;
+  region: GenomicRegion;
   visible: boolean;
 }) {
   const [session] = useState(() => createSingleCellGeneBrowserSession(region));
@@ -57,14 +60,11 @@ function SingleCellGeneBrowserPanel({
     session.setRegion(region);
   }, [region, session]);
 
-  useEffect(() => () => session.dispose(), [session]);
-
   return (
     <Box sx={{ display: visible ? "block" : "none" }}>
       <GenomeBrowserView
         browserStore={session.browserStore}
         trackStore={session.trackStore}
-        trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
         defaultTrackIds={SINGLE_CELL_GENE_DEFAULT_TRACK_IDS}
       />
     </Box>
@@ -106,7 +106,7 @@ export const SingleCellGeneDetails = (props: GridProps) => {
       ),
     [gene, geneCoords],
   );
-  const geneBrowserRegion = useMemo<BrowserRegion | undefined>(() => {
+  const geneBrowserRegion = useMemo<GenomicRegion | undefined>(() => {
     if (!selectedGene) return undefined;
     return {
       chromosome: selectedGene.coordinates.chromosome,
@@ -119,9 +119,8 @@ export const SingleCellGeneDetails = (props: GridProps) => {
   };
 
   return (
-    <Grid container {...props} style={{ marginTop: "0.5em" }}>
-      <Grid size={{ sm: 1, lg: 1.5 }} />
-      <Grid size={{ sm: 9 }}>
+    <Grid container {...props} style={{ marginTop: "0.5em" }} width="100%">
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="h4"
           style={{ marginTop: "-0.6em", marginBottom: "0.2em" }}
@@ -142,24 +141,29 @@ export const SingleCellGeneDetails = (props: GridProps) => {
           }}
         >
           <span style={{ marginRight: "10px" }}>Switch to another gene:</span>
-          <GeneAutoComplete
-            navigateto="/single-cell/gene/"
-            gridsize={3.5}
-          />
+          <GeneAutoComplete navigateto="/single-cell/gene/" gridsize={3.5} />
         </div>
       </Grid>
-      <Grid size={{ sm: 1, lg: 1.5 }} />
       <Grid size={{ sm: 12 }} style={{ marginBottom: "10px" }} />
-      <Grid size={{ sm: 1, lg: 1.5 }} />
-      <Grid size={{ sm: 9 }}>
-        <Box>
+      <Grid size={12}>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
           <Tabs value={tabIndex} onChange={handleTabChange}>
             <Tab label="Brain Single Cell Expression" />
             <Tab label="Brain Epigenome Browser" />
           </Tabs>
           <Divider />
         </Box>
-        <Box sx={{ padding: 2 }}>
+        <Box
+          sx={{
+            py: 2,
+            px: tabIndex === 1 ? 0 : 2,
+            maxWidth:
+              tabIndex === 1
+                ? BROWSER_PAGE_MAX_WIDTH
+                : PORTAL_CONTENT_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           {tabIndex === 0 && (
             <Box>
               <SingleCell

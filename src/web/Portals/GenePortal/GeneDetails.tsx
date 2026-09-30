@@ -1,4 +1,11 @@
-﻿import React, { useState, useMemo, useRef, useEffect } from "react";
+import {
+  GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
+  GENE_PORTAL_DEFAULT_TRACK_IDS,
+  createGenePortalBrowserSession,
+} from "../../../genome-browser";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
 import {
@@ -23,10 +30,7 @@ import SingleCell from "./SingleCell";
 import { GeneAutoComplete } from "./GeneAutocomplete";
 import { DegExpression } from "./DegExpression";
 import BrainSpatial from "./BrainSpatial";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import { GENE_PORTAL_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
-import { createGenePortalBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser";
+import type { GenomicRegion } from "@weng-lab/genomebrowser";
 
 type GTExGeneQueryResponse = {
   gtex_genes: {
@@ -42,7 +46,7 @@ type GeneCoordinatesQueryResponse = {
   gene: Array<{
     name: string;
     id: string;
-    coordinates: BrowserRegion;
+    coordinates: GenomicRegion;
   }>;
 };
 
@@ -55,7 +59,7 @@ function GeneBrowserPanel({
   region,
   visible,
 }: {
-  region: BrowserRegion;
+  region: GenomicRegion;
   visible: boolean;
 }) {
   // Keep one browser session mounted so switching tabs does not recreate stores.
@@ -75,8 +79,6 @@ function GeneBrowserPanel({
     // The session captures its initial region; route changes update the store explicitly.
     session.setRegion(region);
   }, [region, session]);
-
-  useEffect(() => () => session.dispose(), [session]);
 
   return (
     <Box sx={{ display: visible ? "block" : "none" }}>
@@ -160,7 +162,7 @@ const GeneDetails: React.FC = () => {
       ),
     [gene, geneCoords],
   );
-  const geneBrowserRegion = useMemo<BrowserRegion | undefined>(() => {
+  const geneBrowserRegion = useMemo<GenomicRegion | undefined>(() => {
     if (!selectedGene) return undefined;
     return {
       chromosome: selectedGene.coordinates.chromosome,
@@ -239,9 +241,9 @@ const GeneDetails: React.FC = () => {
       mb={8}
       ml={"auto"}
       mr={"auto"}
-      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+      width="100%"
     >
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Stack direction="row" alignItems={"center"} gap={1}>
           <img
             alt="DNA"
@@ -260,7 +262,7 @@ const GeneDetails: React.FC = () => {
         <GeneAutoComplete navigateto="/gene/" gridsize={3.5} />
       </Grid>*/}
       <Grid size={12}>
-        <Box>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
           <Tabs
             value={tabIndex}
             onChange={handleTabChange}
@@ -277,7 +279,17 @@ const GeneDetails: React.FC = () => {
           </Tabs>
           <Divider />
         </Box>
-        <Box sx={{ padding: 2 }}>
+        <Box
+          sx={{
+            py: 2,
+            px: tabIndex === 0 ? 0 : 2,
+            maxWidth:
+              tabIndex === 0
+                ? BROWSER_PAGE_MAX_WIDTH
+                : PORTAL_CONTENT_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
           {geneBrowserRegion ? (
             <GeneBrowserPanel
               region={geneBrowserRegion}

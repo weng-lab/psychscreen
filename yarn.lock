@@ -5742,12 +5742,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@weng-lab/genomebrowser-ui@npm:2.0.0-alpha.1":
-  version: 2.0.0-alpha.1
-  resolution: "@weng-lab/genomebrowser-ui@npm:2.0.0-alpha.1"
+"@weng-lab/genomebrowser-tracks@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@weng-lab/genomebrowser-tracks@npm:2.0.0"
   dependencies:
-    "@weng-lab/genomebrowser": "npm:^2.0.0-alpha.0"
-    jiti: "npm:^2.6.2"
+    "@dnd-kit/core": "npm:^6.3.1"
+    "@dnd-kit/sortable": "npm:^10.0.0"
+    "@dnd-kit/utilities": "npm:^3.2.2"
+    "@weng-lab/genomic-reader": "npm:^2.0.0"
+    react-colorful: "npm:^5.8.0"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    "@emotion/react": ^11.0.0
+    "@emotion/styled": ^11.0.0
+    "@mui/material": ^7.0.0
+    "@weng-lab/genomebrowser": ^2.0.0
+    react: ^19.2.0
+    react-dom: ^19.2.0
+  checksum: 10c0/5e1d453bda26be5aae71662256becbd8f15ab8ff3be734ce31d06e6c8317d46e68705d36ac35581d8849cd3783a81259a2ba1df8d452599a7b56d01282d15f07
+  languageName: node
+  linkType: hard
+
+"@weng-lab/genomebrowser-ui@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@weng-lab/genomebrowser-ui@npm:2.0.1"
+  dependencies:
+    "@weng-lab/genomebrowser": "npm:^2.0.0"
+    "@weng-lab/genomic-reader": "npm:^2.0.0"
     zod: "npm:^4.4.3"
   peerDependencies:
     "@emotion/react": ^11.0.0
@@ -5757,43 +5778,59 @@ __metadata:
     "@mui/x-data-grid-premium": ^8.0.0
     "@mui/x-license": ^8.0.0
     "@mui/x-tree-view": ^8.0.0
+    "@weng-lab/ui-components": ^3.1.4
+    react: ^19.2.0
+    react-dom: ^19.2.0
+  checksum: 10c0/a1f56ef604655a66b84bdd30303bcd09a862acda157d5315166625a3e294a68dc22aa9d126eb57f81a59fd640f60f67340e78ffea05f7fec25a3a3c8048ac9c4
+  languageName: node
+  linkType: hard
+
+"@weng-lab/genomebrowser-ui@patch:@weng-lab/genomebrowser-ui@npm%3A2.0.1#~/.yarn/patches/@weng-lab-genomebrowser-ui-npm-2.0.1-8acc757e25.patch":
+  version: 2.0.1
+  resolution: "@weng-lab/genomebrowser-ui@patch:@weng-lab/genomebrowser-ui@npm%3A2.0.1#~/.yarn/patches/@weng-lab-genomebrowser-ui-npm-2.0.1-8acc757e25.patch::version=2.0.1&hash=0bd8d8"
+  dependencies:
+    "@weng-lab/genomebrowser": "npm:^2.0.0"
+    "@weng-lab/genomic-reader": "npm:^2.0.0"
+    zod: "npm:^4.4.3"
+  peerDependencies:
+    "@emotion/react": ^11.0.0
+    "@emotion/styled": ^11.0.0
+    "@mui/icons-material": ^7.0.0
+    "@mui/material": ^7.0.0
+    "@mui/x-data-grid-premium": ^8.0.0
+    "@mui/x-license": ^8.0.0
+    "@mui/x-tree-view": ^8.0.0
+    "@weng-lab/ui-components": ^3.1.4
+    react: ^19.2.0
+    react-dom: ^19.2.0
+  checksum: 10c0/2c6c3a78d7a8039d93c3b65dafe11dae94589c0e0a38971494d558fb1536efa75e0395b5c1d218ad94ee045000f9f5a40baf0022966c93f3592b8a5cfc2dde9b
+  languageName: node
+  linkType: hard
+
+"@weng-lab/genomebrowser@npm:2.0.0, @weng-lab/genomebrowser@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@weng-lab/genomebrowser@npm:2.0.0"
+  dependencies:
+    jiti: "npm:^2.6.2"
+    zod: "npm:^4.4.3"
+    zustand: "npm:5.0.13"
+  peerDependencies:
     react: ^19.2.0
     react-dom: ^19.2.0
   bin:
-    trackselect: dist/trackselect.js
-  checksum: 10c0/1b6b50d02702db889bd8f9520ee82208214fbcfdbbe6019c5487e8873d70c584ec203c01d93d4b06c0f197316d0498eeb029b19ef52b48e58b2aaaa36d217250
+    genomebrowser: dist/cli.js
+  checksum: 10c0/96f6c783e4f826dfae052a3802e56a51867a587e7ff9bca3e1cc52c1bb2f82a7e83a842917848b1692007011f507219bcbafc0d33395103189218aa625076abc
   languageName: node
   linkType: hard
 
-"@weng-lab/genomebrowser@npm:2.0.0-alpha.1":
-  version: 2.0.0-alpha.1
-  resolution: "@weng-lab/genomebrowser@npm:2.0.0-alpha.1"
+"@weng-lab/genomic-reader@npm:2.0.0, @weng-lab/genomic-reader@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@weng-lab/genomic-reader@npm:2.0.0"
   dependencies:
-    axios: "npm:0.33.0"
-    buffer: "npm:^6.0.3"
-    genomic-reader: "npm:^1.4.10"
-    zod: "npm:^4.4.3"
-    zustand: "npm:^5.0.13"
+    fflate: "npm:^0.8.2"
   peerDependencies:
-    react: ^19.2.0
-    react-dom: ^19.2.0
-  checksum: 10c0/36ac560ac0dfae10d8bb2a290534d17e131d61facd2d06783beaa8f80a3ca6a22685b1b8b35c6760047812d7814ef935b6157ccade44dd27cac73cb82e22ff5e
-  languageName: node
-  linkType: hard
-
-"@weng-lab/genomebrowser@npm:^2.0.0-alpha.0":
-  version: 2.0.0-alpha.0
-  resolution: "@weng-lab/genomebrowser@npm:2.0.0-alpha.0"
-  dependencies:
-    axios: "npm:0.33.0"
-    buffer: "npm:^6.0.3"
-    genomic-reader: "npm:^1.4.10"
-    zod: "npm:^4.4.3"
-    zustand: "npm:^5.0.13"
-  peerDependencies:
-    react: ^19.2.0
-    react-dom: ^19.2.0
-  checksum: 10c0/a1b73359b818f3998adf2311a8c08bf2f36617d311f4fab0a51a701b2b918d4e57cf5abe2728e256e8189187f3652581b83ad7948d17ab74bc01e23e975db6ea
+    zod: ^4.0.0
+  checksum: 10c0/18565f76c30c6d3118cb175ba99c592f520bf9431eed2583855e417dc6585791e15f1755c0b737307f89709fd0206f5d4fe508e97e4d762ebd8254c739992cd6
   languageName: node
   linkType: hard
 
@@ -6341,26 +6378,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.33.0":
-  version: 0.33.0
-  resolution: "axios@npm:0.33.0"
-  dependencies:
-    follow-redirects: "npm:^1.15.4"
-    form-data: "npm:^4.0.4"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/9e8ae9d26768a9884c121c33286f6b85fe915cf1bb1c0ac7adff2def81e18b4b7c5bb9630dec3900ec88c037822d602439f2bff23d15c41c2216b89b27fbe524
-  languageName: node
-  linkType: hard
-
-"axios@npm:^0.21.1":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4"
-  dependencies:
-    follow-redirects: "npm:^1.14.0"
-  checksum: 10c0/fbcff55ec68f71f02d3773d467db2fcecdf04e749826c82c2427a232f9eba63242150a05f15af9ef15818352b814257541155de0281f8fb2b7e8a5b79f7f2142
-  languageName: node
-  linkType: hard
-
 "axobject-query@npm:^4.1.0":
   version: 4.1.0
   resolution: "axobject-query@npm:4.1.0"
@@ -6877,7 +6894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"combined-stream@npm:^1.0.6, combined-stream@npm:^1.0.8, combined-stream@npm:~1.0.6":
+"combined-stream@npm:^1.0.6, combined-stream@npm:~1.0.6":
   version: 1.0.8
   resolution: "combined-stream@npm:1.0.8"
   dependencies:
@@ -9030,7 +9047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fflate@npm:^0.8.0":
+"fflate@npm:^0.8.0, fflate@npm:^0.8.2":
   version: 0.8.3
   resolution: "fflate@npm:0.8.3"
   checksum: 10c0/eab181ca37f5348ae76d4b6f840e0026e30220e33153289ac942222d8b9638237d486507dbcc09878d724095bd354993a2ee48bbee99c8f2c6440d4448719aa7
@@ -9105,16 +9122,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.4":
-  version: 1.16.0
-  resolution: "follow-redirects@npm:1.16.0"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: 10c0/a1e2900163e6f1b4d1ed5c221b607f41decbab65534c63fe7e287e40a5d552a6496e7d9d7d976fa4ba77b4c51c11e5e9f683f10b43011ea11e442ff128d0e181
-  languageName: node
-  linkType: hard
-
 "for-each@npm:^0.3.3, for-each@npm:^0.3.5":
   version: 0.3.5
   resolution: "for-each@npm:0.3.5"
@@ -9138,19 +9145,6 @@ __metadata:
   version: 0.6.1
   resolution: "forever-agent@npm:0.6.1"
   checksum: 10c0/364f7f5f7d93ab661455351ce116a67877b66f59aca199559a999bd39e3cfadbfbfacc10415a915255e2210b30c23febe9aec3ca16bf2d1ff11c935a1000e24c
-  languageName: node
-  linkType: hard
-
-"form-data@npm:^4.0.4":
-  version: 4.0.6
-  resolution: "form-data@npm:4.0.6"
-  dependencies:
-    asynckit: "npm:^0.4.0"
-    combined-stream: "npm:^1.0.8"
-    es-set-tostringtag: "npm:^2.1.0"
-    hasown: "npm:^2.0.4"
-    mime-types: "npm:^2.1.35"
-  checksum: 10c0/43947a77bf0ff45c6ceed789778982d47a3f3e720a74b71721174ebf3310a5f1a8be1d6b38a3ee3688e8a18a2c4273073ec0844cd37efda3eaf46d41c9c318ff
   languageName: node
   linkType: hard
 
@@ -9275,16 +9269,6 @@ __metadata:
   version: 2.0.1
   resolution: "generator-function@npm:2.0.1"
   checksum: 10c0/8a9f59df0f01cfefafdb3b451b80555e5cf6d76487095db91ac461a0e682e4ff7a9dbce15f4ecec191e53586d59eece01949e05a4b4492879600bbbe8e28d6b8
-  languageName: node
-  linkType: hard
-
-"genomic-reader@npm:^1.4.10":
-  version: 1.4.10
-  resolution: "genomic-reader@npm:1.4.10"
-  dependencies:
-    axios: "npm:^0.21.1"
-    pako: "npm:^1.0.10"
-  checksum: 10c0/5f08fbb3ab0ad222a463d0883800089832b8b79cb37ac8c149198777b74fc718f5f429713454859a121dd686cbdc5e2a70dd850e194631c824af5b195e5ed477
   languageName: node
   linkType: hard
 
@@ -11743,7 +11727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12, mime-types@npm:^2.1.35, mime-types@npm:~2.1.19":
+"mime-types@npm:^2.1.12, mime-types@npm:~2.1.19":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -12395,7 +12379,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pako@npm:^1.0.10, pako@npm:^1.0.11, pako@npm:~1.0.2":
+"pako@npm:^1.0.11, pako@npm:~1.0.2":
   version: 1.0.11
   resolution: "pako@npm:1.0.11"
   checksum: 10c0/86dd99d8b34c3930345b8bbeb5e1cd8a05f608eeb40967b293f72fe469d0e9c88b783a8777e4cc7dc7c91ce54c5e93d88ff4b4f060e6ff18408fd21030d9ffbe
@@ -12744,13 +12728,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-from-env@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "proxy-from-env@npm:1.1.0"
-  checksum: 10c0/fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b
-  languageName: node
-  linkType: hard
-
 "psl@npm:^1.1.28":
   version: 1.15.0
   resolution: "psl@npm:1.15.0"
@@ -12785,8 +12762,10 @@ __metadata:
     "@types/react-dom": "npm:^19.2.3"
     "@visx/tooltip": "npm:^3.3.0"
     "@visx/visx": "npm:^3.12.0"
-    "@weng-lab/genomebrowser": "npm:2.0.0-alpha.1"
-    "@weng-lab/genomebrowser-ui": "npm:2.0.0-alpha.1"
+    "@weng-lab/genomebrowser": "npm:2.0.0"
+    "@weng-lab/genomebrowser-tracks": "npm:2.0.0"
+    "@weng-lab/genomebrowser-ui": "patch:@weng-lab/genomebrowser-ui@npm%3A2.0.1#~/.yarn/patches/@weng-lab-genomebrowser-ui-npm-2.0.1-8acc757e25.patch"
+    "@weng-lab/genomic-reader": "npm:2.0.0"
     "@weng-lab/ui-components": "npm:^3.2.1"
     "@weng-lab/visualization": "npm:1.6.2"
     bpnet-ui: "npm:^0.2.9"
@@ -13028,6 +13007,16 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 10c0/6f9fce9ff3014926d960abccd5d79ecb391a41f835a4b85663fd48ff933554391222f40ed8cfc5417305d47b1e480023981ec22e13c3b16b0d8d718270fa815e
+  languageName: node
+  linkType: hard
+
+"react-colorful@npm:^5.8.0":
+  version: 5.8.1
+  resolution: "react-colorful@npm:5.8.1"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10c0/cd1705cdb218f9f43d376f36306968aa304e0d8018dcff198c798c2c56bf4873ea918580a57a0cceaab62ba7621663234ffad35f3d4ebd9198e65f926f9ec8fe
   languageName: node
   linkType: hard
 
@@ -16294,7 +16283,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^5.0.13, zustand@npm:^5.0.4":
+"zustand@npm:5.0.13":
+  version: 5.0.13
+  resolution: "zustand@npm:5.0.13"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    immer: ">=9.0.6"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    immer:
+      optional: true
+    react:
+      optional: true
+    use-sync-external-store:
+      optional: true
+  checksum: 10c0/e4e76af1c324c797e3cc6ef094cb15c5884ca6713697140c2be292b2c612f5445fa21d222671b97797a4376154cac14a140f05728f0ac17b4b9e10f45e0ff29e
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^5.0.4":
   version: 5.0.14
   resolution: "zustand@npm:5.0.14"
   peerDependencies:

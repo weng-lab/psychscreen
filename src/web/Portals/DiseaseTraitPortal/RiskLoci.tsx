@@ -1,5 +1,6 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { Cytobands } from "@weng-lab/genomebrowser-ui";
+import bands from "../../../genome-browser/data/hg38-cytobands.json";
 import type { Highlight } from "@weng-lab/genomebrowser";
 import { groupBy } from "queryz";
 import React, { useMemo } from "react";
@@ -171,7 +172,8 @@ const RiskLocusView: React.FC<{
                     }}
                   >
                     <Cytobands
-                      assembly="GRCh38"
+                      bands={bands}
+                      chromosomeLength={HG38_CHROMOSOME_LENGTHS[chromosome]}
                       chromosome={chromosome}
                       width={width}
                       height={20}

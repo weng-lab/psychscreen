@@ -1,4 +1,13 @@
-﻿import React, { useEffect } from "react";
+import {
+  GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
+  SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
+  SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
+  SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
+  createSingleCellBrowserSession,
+} from "../../../genome-browser";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Divider, Box, Tabs, Tab, Typography } from "@mui/material";
@@ -7,18 +16,10 @@ import { CelltypeAutoComplete } from "./CelltypeAutoComplete";
 
 import { diseaseCT } from "./consts";
 import SingleCelldegCelltypeDotplot from "./SingleCelldegCelltypeDotplot";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import {
-  SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS,
-  SINGLE_CELL_GRN_DEFAULT_TRACK_IDS,
-  SINGLE_CELL_QTL_DEFAULT_TRACK_IDS,
-} from "../../../gb-view/defaultTrackIds";
-import { createSingleCellBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion } from "@weng-lab/genomebrowser";
+import type { GenomicRegion } from "@weng-lab/genomebrowser";
 import type { SelectChangeEvent } from "@mui/material/Select";
-import { SINGLE_CELL_TRACK_CATALOGS } from "../../../gb-view/catalogs";
 
-const SINGLE_CELL_BROWSER_REGION: BrowserRegion = {
+const SINGLE_CELL_BROWSER_REGION: GenomicRegion = {
   chromosome: "chr11",
   start: 6_192_271,
   end: 6_680_547,
@@ -31,33 +32,19 @@ const SingleCellCellTypeDetails: React.FC = () => {
     setDataset(event.target.value);
   };
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [browserSessions] = React.useState(() => ({
-    atac: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
-    grn: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
-    qtl: createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
-  }));
-  const [visitedBrowserTabs, setVisitedBrowserTabs] = React.useState<
-    ReadonlySet<number>
-  >(() => new Set([0]));
+  const [session] = React.useState(() =>
+    createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+  );
 
-  useEffect(
-    () => () => {
-      browserSessions.atac.dispose();
-      browserSessions.grn.dispose();
-      browserSessions.qtl.dispose();
-    },
-    [browserSessions],
+  const [grnSession] = React.useState(() =>
+    createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
+  );
+  const [qtlSession] = React.useState(() =>
+    createSingleCellBrowserSession(SINGLE_CELL_BROWSER_REGION),
   );
 
   const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number) => {
     setTabIndex(newTabIndex);
-    if (newTabIndex <= 2) {
-      setVisitedBrowserTabs((visitedTabs) =>
-        visitedTabs.has(newTabIndex)
-          ? visitedTabs
-          : new Set([...visitedTabs, newTabIndex]),
-      );
-    }
   };
 
   const degDiseases: string[] = [];
@@ -98,9 +85,9 @@ const SingleCellCellTypeDetails: React.FC = () => {
       mb={8}
       ml={"auto"}
       mr={"auto"}
-      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+      width="100%"
     >
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="h4"
           style={{ marginTop: "1em", marginBottom: "0.2em" }}
@@ -134,7 +121,7 @@ const SingleCellCellTypeDetails: React.FC = () => {
         </div>
       </Grid>
       <Grid size={12}>
-        <Box>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
           <Tabs
             value={tabIndex}
             onChange={handleTabChange}
@@ -143,64 +130,76 @@ const SingleCellCellTypeDetails: React.FC = () => {
             allowScrollButtonsMobile
           >
             <Tab label="scATAC-Seq Peaks " tabIndex={0} />
-            <Tab label="Gene Regulatory Networks" tabIndex={1} />
-            <Tab label="eQTLs" tabIndex={2} />
-            <Tab label="Differential Gene Expression" tabIndex={3} />
+            <Tab label="Differential Gene Expression" tabIndex={1} />
+            <Tab label="Gene Regulatory Networks" tabIndex={2} />
+            <Tab label="eQTL Interactions" tabIndex={3} />
           </Tabs>
           <Divider />
         </Box>
-        {visitedBrowserTabs.has(0) && (
-          <Box sx={{ display: tabIndex === 0 ? "block" : "none" }}>
-            <GenomeBrowserView
-              browserStore={browserSessions.atac.browserStore}
-              trackStore={browserSessions.atac.trackStore}
-              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-              defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
-            />
-          </Box>
-        )}
-        {visitedBrowserTabs.has(1) && (
-          <Box sx={{ display: tabIndex === 1 ? "block" : "none" }}>
-            <GenomeBrowserView
-              browserStore={browserSessions.grn.browserStore}
-              trackStore={browserSessions.grn.trackStore}
-              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-              defaultTrackIds={SINGLE_CELL_GRN_DEFAULT_TRACK_IDS}
-            />
-          </Box>
-        )}
-        {visitedBrowserTabs.has(2) && (
-          <Box sx={{ display: tabIndex === 2 ? "block" : "none" }}>
-            <GenomeBrowserView
-              browserStore={browserSessions.qtl.browserStore}
-              trackStore={browserSessions.qtl.trackStore}
-              trackCatalogs={SINGLE_CELL_TRACK_CATALOGS}
-              defaultTrackIds={SINGLE_CELL_QTL_DEFAULT_TRACK_IDS}
-            />
-          </Box>
-        )}
-        {tabIndex == 3 && degDiseases && degDiseases.length == 0 && (
-          <>
-            <br />{" "}
-            {"No data diff. expressed genes available for " +
-              celltype?.replace(" or ", "/")}{" "}
-          </>
-        )}
-        {tabIndex == 3 && degDiseases.length > 0 && dataset && (
-          <SingleCelldegCelltypeDotplot
-            disease={dataset}
-            dataset={dataset}
-            degDiseases={degDiseases}
-            handleChange={handleChange}
-            celltype={
-              diseaseCT[
-                dataset === "Autism Specturm Disorder"
-                  ? "ASD"
-                  : dataset.replace(" ", "_")
-              ].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))?.val
-            }
+        <Box
+          sx={{
+            display: tabIndex === 0 ? "block" : "none",
+            maxWidth: BROWSER_PAGE_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
+          <GenomeBrowserView
+            browserStore={session.browserStore}
+            trackStore={session.trackStore}
+            defaultTrackIds={SINGLE_CELL_ATAC_DEFAULT_TRACK_IDS}
           />
-        )}
+        </Box>
+        <Box
+          sx={{
+            display: tabIndex === 2 ? "block" : "none",
+            maxWidth: BROWSER_PAGE_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
+          <GenomeBrowserView
+            browserStore={grnSession.browserStore}
+            trackStore={grnSession.trackStore}
+            defaultTrackIds={SINGLE_CELL_GRN_DEFAULT_TRACK_IDS}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: tabIndex === 3 ? "block" : "none",
+            maxWidth: BROWSER_PAGE_MAX_WIDTH,
+            mx: "auto",
+          }}
+        >
+          <GenomeBrowserView
+            browserStore={qtlSession.browserStore}
+            trackStore={qtlSession.trackStore}
+            defaultTrackIds={SINGLE_CELL_QTL_DEFAULT_TRACK_IDS}
+          />
+        </Box>
+        <Box sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
+          {tabIndex == 1 && degDiseases && degDiseases.length == 0 && (
+            <>
+              <br />{" "}
+              {"No data diff. expressed genes available for " +
+                celltype?.replace(" or ", "/")}{" "}
+            </>
+          )}
+          {tabIndex == 1 && degDiseases.length > 0 && dataset && (
+            <SingleCelldegCelltypeDotplot
+              disease={dataset}
+              dataset={dataset}
+              degDiseases={degDiseases}
+              handleChange={handleChange}
+              celltype={
+                diseaseCT[
+                  dataset === "Autism Specturm Disorder"
+                    ? "ASD"
+                    : dataset.replace(" ", "_")
+                ].find((d) => d.cardLabel === celltype?.replace(" or ", "/"))
+                  ?.val
+              }
+            />
+          )}
+        </Box>
       </Grid>
     </Grid>
   );

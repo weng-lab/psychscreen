@@ -1,9 +1,26 @@
-﻿/**
+// @refresh reset
+import {
+  DISEASE_MANHATTAN_TRACK_ID,
+  DISEASE_LD_TRACK_ID,
+} from "../../../genome-browser/sessions";
+import { attachLDInteractions } from "../../../genome-browser/modules/ld/interactions";
+import {
+  createLDSelectionStore,
+  LDSelectionProvider,
+} from "../../../genome-browser/modules/ld/selection";
+import {
+  GenomeBrowserView,
+  BROWSER_PAGE_MAX_WIDTH,
+  PORTAL_CONTENT_MAX_WIDTH,
+  DISEASE_TRAIT_DEFAULT_TRACK_IDS,
+  createDiseaseTraitBrowserSession,
+} from "../../../genome-browser";
+/**
  * @Jonathan 5/3/24 -
  */
 
 import { useParams } from "react-router-dom";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -13,9 +30,9 @@ import AssociatedSnpQtl, { GWAS_SNP } from "./AssociatedSnpQtl";
 import DiseaseIntersectingSnpsWithccres from "./DiseaseIntersectingSnpsWithccres";
 import {
   DISEASE_CARDS,
-  FULLSUMSTAT_URL_MAP,
   URL_CHROM_MAP,
   URL_MAP,
+  FULLSUMSTAT_URL_MAP,
 } from "./config/constants";
 import { gql, useQuery } from "@apollo/client";
 import { diseaseRiskLocusHighlights, riskLoci } from "./utils";
@@ -23,40 +40,70 @@ import RiskLocusView from "./RiskLoci";
 import type { GenomicRange } from "../GenePortal/AssociatedxQTL";
 import SignifcantSNPs, { traitKey, useSNPs } from "./SignificantSNPs";
 import Button from "@mui/material/Button";
-import GenomeBrowserView from "../../../gb-view/GenomeBrowserView";
-import { DISEASE_TRAIT_DEFAULT_TRACK_IDS } from "../../../gb-view/defaultTrackIds";
-import { createDiseaseTraitBrowserSession } from "../../../gb-view/stores";
-import type { BrowserRegion, Highlight } from "@weng-lab/genomebrowser";
+import type { GenomicRegion, Highlight } from "@weng-lab/genomebrowser";
 
 function DiseaseTraitBrowserPanel({
   region,
-  summaryStatisticsUrl,
   cytobandMarkers,
   visible,
+  gwas,
 }: {
-  region: BrowserRegion;
-  summaryStatisticsUrl?: string;
+  region: GenomicRegion;
   cytobandMarkers?: readonly Highlight[];
   visible: boolean;
+  gwas?: { url: string; title: string };
 }) {
   const [session] = useState(() =>
-    createDiseaseTraitBrowserSession(region, summaryStatisticsUrl),
+    createDiseaseTraitBrowserSession(region, gwas),
   );
 
+  const [selectionStore] = useState(createLDSelectionStore);
+  const hasGwas = Boolean(gwas);
   useEffect(() => {
+    if (!hasGwas) return;
+    const controller = attachLDInteractions({
+      useTrackStore: session.trackStore,
+      manhattanTrackId: DISEASE_MANHATTAN_TRACK_ID,
+      ldTrackId: DISEASE_LD_TRACK_ID,
+      selectionStore,
+    });
+    const unsubscribe = session.browserStore.subscribe((state, previous) => {
+      if (
+        state.region.chromosome !== previous.region.chromosome ||
+        state.region.start !== previous.region.start ||
+        state.region.end !== previous.region.end
+      )
+        controller.clearHover();
+    });
+    return () => {
+      unsubscribe();
+      controller.dispose();
+    };
+  }, [session, selectionStore, hasGwas]);
+
+  const previousRegionRef = useRef(region);
+  useEffect(() => {
+    const previous = previousRegionRef.current;
+    if (
+      previous.chromosome === region.chromosome &&
+      previous.start === region.start &&
+      previous.end === region.end
+    )
+      return;
+    previousRegionRef.current = region;
     session.setRegion(region);
   }, [region, session]);
 
-  useEffect(() => () => session.dispose(), [session]);
-
   return (
     <Stack sx={{ display: visible ? "block" : "none" }}>
-      <GenomeBrowserView
-        browserStore={session.browserStore}
-        trackStore={session.trackStore}
-        defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
-        cytobandMarkers={cytobandMarkers}
-      />
+      <LDSelectionProvider value={selectionStore}>
+        <GenomeBrowserView
+          browserStore={session.browserStore}
+          trackStore={session.trackStore}
+          defaultTrackIds={DISEASE_TRAIT_DEFAULT_TRACK_IDS}
+          cytobandMarkers={cytobandMarkers}
+        />
+      </LDSelectionProvider>
     </Stack>
   );
 }
@@ -240,7 +287,7 @@ const DiseaseTraitDetails: React.FC = () => {
   const [page, setPage] = useState<number>(-1);
   const [selectedBrowserRegion, setSelectedBrowserRegion] = useState<{
     disease?: string;
-    region: BrowserRegion;
+    region: GenomicRegion;
   }>();
   const { state } = useLocation() as {
     state: { diseaseDesc?: string } | null;
@@ -255,7 +302,7 @@ const DiseaseTraitDetails: React.FC = () => {
     () => diseaseRiskLocusHighlights(disease || "", loci || []),
     [disease, loci],
   );
-  const locusCoordinates = useMemo<BrowserRegion | undefined>(() => {
+  const locusCoordinates = useMemo<GenomicRegion | undefined>(() => {
     const firstLocus = loci?.[0];
     if (!firstLocus?.chromosome) return undefined;
 
@@ -265,7 +312,7 @@ const DiseaseTraitDetails: React.FC = () => {
       end: firstLocus.end - 1_500_000,
     };
   }, [loci]);
-  const defaultBrowserCoordinates = useMemo<BrowserRegion | undefined>(() => {
+  const defaultBrowserCoordinates = useMemo<GenomicRegion | undefined>(() => {
     if (!locusCoordinates) return undefined;
 
     const range = locusCoordinates.end - locusCoordinates.start;
@@ -284,9 +331,6 @@ const DiseaseTraitDetails: React.FC = () => {
     selectedBrowserRegion && selectedBrowserRegion.disease === disease
       ? selectedBrowserRegion.region
       : defaultBrowserCoordinates;
-  const summaryStatisticsUrl = disease
-    ? FULLSUMSTAT_URL_MAP[disease as keyof typeof FULLSUMSTAT_URL_MAP]
-    : undefined;
 
   const { data: genesdata } = useQuery(AssociatedGenesQuery, {
     variables: {
@@ -342,9 +386,9 @@ const DiseaseTraitDetails: React.FC = () => {
       mb={8}
       ml={"auto"}
       mr={"auto"}
-      maxWidth={{ xl: "65%", lg: "75%", md: "85%", sm: "90%", xs: "90%" }}
+      width="100%"
     >
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="h2"
           style={{
@@ -357,7 +401,7 @@ const DiseaseTraitDetails: React.FC = () => {
           {diseaseLabel}
         </Typography>
       </Grid>
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Typography
           variant="body1"
           style={{
@@ -380,7 +424,7 @@ const DiseaseTraitDetails: React.FC = () => {
           )}
         </Typography>
       </Grid>
-      <Grid size={12}>
+      <Grid size={12} sx={{ maxWidth: PORTAL_CONTENT_MAX_WIDTH, mx: "auto" }}>
         <Stack direction="row" spacing={1}>
           <Button
             variant={page === -1 ? "contained" : "outlined"}
@@ -441,7 +485,14 @@ const DiseaseTraitDetails: React.FC = () => {
           )}
         </Stack>
       </Grid>
-      <Grid size={12}>
+      <Grid
+        size={12}
+        sx={{
+          maxWidth:
+            page === 3 ? BROWSER_PAGE_MAX_WIDTH : PORTAL_CONTENT_MAX_WIDTH,
+          mx: "auto",
+        }}
+      >
         {page === -1 ? (
           <RiskLocusView
             loci={loci || []}
@@ -503,8 +554,15 @@ const DiseaseTraitDetails: React.FC = () => {
         {browserCoordinates ? (
           <DiseaseTraitBrowserPanel
             key={disease}
+            gwas={
+              disease && FULLSUMSTAT_URL_MAP[disease]
+                ? {
+                    url: FULLSUMSTAT_URL_MAP[disease],
+                    title: diseaseLabel || disease,
+                  }
+                : undefined
+            }
             region={browserCoordinates}
-            summaryStatisticsUrl={summaryStatisticsUrl}
             cytobandMarkers={riskLocusMarkers}
             visible={page === 3}
           />
