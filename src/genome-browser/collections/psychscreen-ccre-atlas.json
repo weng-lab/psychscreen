@@ -3,7 +3,7 @@
   "$schema": "./schema.json",
   "id": "psychscreen",
   "label": "PsychSCREEN cCRE Atlas",
-  "description": "Brain cis-regulatory elements, chromatin accessibility, and conservation. Pratt et al., Science Advances (2024) · doi:10.1126/sciadv.adj4452",
+  "description": "Brain cis-regulatory elements, chromatin accessibility, and conservation. Pratt et al., Weng, *Science Advances* (2024) · doi:10.1126/sciadv.adj4452",
   "views": [
     {
       "id": "default",
@@ -1664,25 +1664,6 @@
     {
       "type": "bigwig",
       "base": {
-        "id": "conservation/240-mammal-phylop",
-        "title": "240 mammals · phyloP",
-        "display": "full",
-        "height": 50,
-        "color": "#c0a9e2"
-      },
-      "config": {
-        "url": "https://downloads.wenglab.org/241-mammalian-2020v2.bigWig"
-      },
-      "metadata": {
-        "sourceId": "conservation/240-mammal-phylop",
-        "category": "Evolutionary conservation",
-        "subcategory": "Conservation scores",
-        "trackType": "bigwig"
-      }
-    },
-    {
-      "type": "bigwig",
-      "base": {
         "id": "conservation/240-mammal-phylop-vertical-range",
         "title": "240 mammals · phyloP, y-axis −2 to 9",
         "display": "full",
@@ -1698,25 +1679,6 @@
       },
       "metadata": {
         "sourceId": "conservation/240-mammal-phylop-vertical-range",
-        "category": "Evolutionary conservation",
-        "subcategory": "Conservation scores",
-        "trackType": "bigwig"
-      }
-    },
-    {
-      "type": "bigwig",
-      "base": {
-        "id": "deep-learned/241-way-mammalian-phylop",
-        "title": "240 mammals · phyloP (copy)",
-        "display": "full",
-        "height": 50,
-        "color": "#758c7b"
-      },
-      "config": {
-        "url": "https://downloads.wenglab.org/psychscreen/241-mammalian-2020v2.bigWig"
-      },
-      "metadata": {
-        "sourceId": "deep-learned/241-way-mammalian-phylop",
         "category": "Evolutionary conservation",
         "subcategory": "Conservation scores",
         "trackType": "bigwig"

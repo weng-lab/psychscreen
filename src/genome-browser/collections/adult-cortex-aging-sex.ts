@@ -205,7 +205,7 @@ export const ADULT_CORTEX_AGING_SEX_COLLECTION = {
   id: "mukamel-2024",
   label: "Adult Cortex Aging & Sex",
   description:
-    "DNA methylation by cell type, sex, and age in adult prefrontal cortex. Chien et al., Neuron (2024) · doi:10.1016/j.neuron.2024.05.013",
+    "DNA methylation by cell type, sex, and age in adult prefrontal cortex. Chien et al., Mukamel, *Neuron* (2024) · doi:10.1016/j.neuron.2024.05.013",
   views: [
     {
       id: "cell-type",

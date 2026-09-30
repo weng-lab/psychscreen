@@ -42,7 +42,7 @@
         "url": "https://downloads.wenglab.org/Ast_GRN.bb"
       },
       "metadata": {
-        "interactionType": "Enhancer–promoter links (GRN)",
+        "interactionType": "Enhancer–promoter links",
         "cellType": "Astrocytes"
       }
     },
@@ -59,7 +59,7 @@
         "url": "https://downloads.wenglab.org/End_GRN.bb"
       },
       "metadata": {
-        "interactionType": "Enhancer–promoter links (GRN)",
+        "interactionType": "Enhancer–promoter links",
         "cellType": "Endothelial cells"
       }
     },
@@ -76,7 +76,7 @@
         "url": "https://downloads.wenglab.org/Vip_GRN.bb"
       },
       "metadata": {
-        "interactionType": "Enhancer–promoter links (GRN)",
+        "interactionType": "Enhancer–promoter links",
         "cellType": "VIP interneurons"
       }
     },

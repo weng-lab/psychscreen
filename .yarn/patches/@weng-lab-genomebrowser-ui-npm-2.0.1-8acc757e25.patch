@@ -1,0 +1,17 @@
+diff --git a/dist/genomebrowser-ui.es.js b/dist/genomebrowser-ui.es.js
+index 271b2d46942634a91c851e87079f94937d05b60a..4931335ad184cac49caf22cf4146d2613039697f 100644
+--- a/dist/genomebrowser-ui.es.js
++++ b/dist/genomebrowser-ui.es.js
+@@ -2132,7 +2132,11 @@ function mn({ collection: e, onClick: t }) {
+ 					variant: "body2",
+ 					color: "text.secondary",
+ 					gutterBottom: !0,
+-					children: e.description
++					children: e.description.split(/(\*[^*]+\*)/g).map((part, index) =>
++                        part.startsWith("*") && part.endsWith("*")
++                            ? D("em", { children: part.slice(1, -1) }, index)
++                            : part
++                    )
+ 				}) : null,
+ 				/* @__PURE__ */ O(z, {
+ 					variant: "caption",

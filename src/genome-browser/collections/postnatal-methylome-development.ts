@@ -6,36 +6,36 @@ export const POSTNATAL_NEURON_CLASSES = [
 ] as const;
 
 export const POSTNATAL_STAGES = [
-  { value: "Infancy", label: "infancy", color: "#F7C98A", topColor: "#FFEFDA" },
+  { value: "Infancy", label: "infancy", color: "#D59A4B", topColor: "#FFEFDA" },
   {
     value: "Early_Childhood",
     label: "early childhood",
-    color: "#F4A154",
-    topColor: "#FCE1C8",
+    color: "#D77F32",
+    topColor: "#FCE8D6",
   },
   {
     value: "Late_Childhood",
     label: "late childhood",
-    color: "#EF7A3B",
-    topColor: "#FBD5BF",
+    color: "#CE5D26",
+    topColor: "#FBE2D4",
   },
   {
     value: "Adolescence",
     label: "adolescence",
-    color: "#D2614D",
-    topColor: "#ECCCC7",
+    color: "#B44535",
+    topColor: "#F4DEDA",
   },
   {
     value: "Early_Adulthood",
     label: "early adulthood",
-    color: "#9D4255",
-    topColor: "#D3B7BD",
+    color: "#813045",
+    topColor: "#E8D8DC",
   },
   {
     value: "Adulthood",
     label: "adulthood",
-    color: "#774147",
-    topColor: "#C7B8BA",
+    color: "#5E2E34",
+    topColor: "#DFD4D5",
   },
 ] as const;
 
@@ -68,7 +68,7 @@ export const POSTNATAL_METHYLOME_DEVELOPMENT_COLLECTION = {
   id: "brainome",
   label: "Postnatal Neuronal Methylome Development",
   description:
-    "5hmC and 5mC in GABAergic and glutamatergic neurons from infancy to adulthood. Xu et al., bioRxiv (2026) · doi:10.64898/2026.02.18.706675",
+    "5hmC and 5mC in GABAergic and glutamatergic neurons from infancy to adulthood. Xu et al., Dracheva & Mukamel, *bioRxiv* (2026) · doi:10.64898/2026.02.18.706675",
   views: [
     {
       id: "neurotransmitter",

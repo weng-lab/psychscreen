@@ -395,7 +395,7 @@ test("all shipped collections validate and create tracks with the stable API", (
       .ADULT_CORTEX_AGING_SEX_COLLECTION,
   ];
   const expectedTrackCounts = {
-    psychscreen: 90,
+    psychscreen: 88,
     "single-cell-interactions": 6,
     brainome: 12,
     "mukamel-2024": 261,
